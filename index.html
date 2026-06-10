@@ -66,7 +66,8 @@ button{font-family:inherit}
 /* Sidebar */
 .side{width:var(--side-w);flex-shrink:0;position:sticky;top:0;height:100dvh;background:linear-gradient(180deg,rgba(20,20,29,.9),rgba(11,11,18,.9));backdrop-filter:blur(12px);border-right:1px solid var(--border);padding:22px 16px;display:flex;flex-direction:column;gap:4px;z-index:30;overflow-y:auto}
 .brand{display:flex;align-items:center;gap:12px;padding:4px 8px 18px;margin-bottom:8px;border-bottom:1px solid var(--border)}
-.gc{width:44px;height:44px;border-radius:13px;display:grid;place-items:center;flex-shrink:0;background:linear-gradient(135deg,var(--brand-2),var(--brand) 60%,#3a0fb0);font-family:'Space Grotesk';font-weight:700;font-size:19px;color:#fff;box-shadow:var(--glow)}
+.gc{width:44px;height:44px;border-radius:13px;display:grid;place-items:center;flex-shrink:0;background:linear-gradient(135deg,var(--brand-2),var(--brand) 60%,#3a0fb0);color:#fff;box-shadow:var(--glow)}
+.gc svg{width:58%;height:58%;stroke:#fff;stroke-width:3;fill:none;stroke-linecap:round;stroke-linejoin:round}
 .brand .bt{font-family:'Space Grotesk';font-weight:700;font-size:15.5px;line-height:1.15}
 .brand .bs{font-size:11px;color:var(--txt-3)}
 .navlbl{font-size:10.5px;font-weight:700;letter-spacing:.12em;color:var(--txt-3);text-transform:uppercase;padding:14px 12px 6px}
@@ -359,7 +360,7 @@ canvas{max-width:100%}
 <!-- ===== LOGIN ===== -->
 <div id="auth-gate">
   <div class="auth-card">
-    <div class="gc">GC</div>
+    <div class="gc"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.2 4.2L19 6.8"/></svg></div>
     <h2 id="auth-title">Odoo Task</h2>
     <p class="ahint">Odoo Factura IA · Acceso privado</p>
     <div id="auth-loading">Conectando…</div>
@@ -377,7 +378,7 @@ canvas{max-width:100%}
 
   <!-- SIDEBAR -->
   <aside class="side">
-    <div class="brand"><div class="gc">GC</div><div><div class="bt">Odoo Task</div><div class="bs">Odoo Factura IA</div></div></div>
+    <div class="brand"><div class="gc"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.2 4.2L19 6.8"/></svg></div><div><div class="bt">Odoo Task</div><div class="bs">Odoo Factura IA</div></div></div>
     <div class="navlbl">Panel</div>
     <nav class="nav" data-nav>
       <button data-view="inicio" class="active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9.5L12 3l9 6.5"/><path d="M5 10v10h14V10"/></svg><span>Inicio</span><span class="navbadge" data-badge></span></button>
@@ -399,7 +400,7 @@ canvas{max-width:100%}
   <div class="main">
     <header class="topbar">
       <div class="tb-left">
-        <div class="brand-mini"><div class="gc">GC</div></div>
+        <div class="brand-mini"><div class="gc"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.2 4.2L19 6.8"/></svg></div></div>
         <div class="tb-titles"><h1 id="bar-title">Inicio</h1><p id="bar-sub"></p></div>
       </div>
       <div class="tb-right">
