@@ -286,6 +286,29 @@ canvas{max-width:100%}
 .detail-head .dh-name{font-size:22px;font-weight:700;font-family:'Space Grotesk'}
 .detail-head .dh-meta{font-size:13px;color:var(--txt-3);margin-top:4px;display:flex;gap:14px;flex-wrap:wrap;align-items:center}
 .detail-head select{min-height:38px;width:auto}
+/* BANT + embudo */
+.bant{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.bchk{display:flex;align-items:center;gap:9px;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:10px 12px;cursor:pointer;font-size:13px;min-height:44px}
+.bchk input{width:18px;height:18px;accent-color:var(--brand);flex:0 0 auto}
+.bchk b{color:var(--brand-3)}
+@media(max-width:520px){.bant{grid-template-columns:1fr}}
+.conv-strip{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:16px}
+.conv-chip{background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:11px 14px;flex:1;min-width:118px}
+.conv-chip .cc-v{font-family:'Space Grotesk';font-weight:700;font-size:21px;font-variant-numeric:tabular-nums}
+.conv-chip .cc-l{font-size:10.5px;color:var(--txt-3);font-weight:700;text-transform:uppercase;letter-spacing:.04em;margin-top:3px}
+.conv-chip .cc-n{font-size:11px;color:var(--txt-2);margin-top:2px}
+.conv-chip.win{border-color:rgba(52,211,153,.4)}.conv-chip.win .cc-v{color:var(--ok)}
+.bant-pill{background:var(--info-bg);color:#93c5fd;border-radius:7px;padding:2px 8px;font-size:11px;font-weight:700}
+.bant-pill.ok{background:var(--ok-bg);color:#6ee7b7}
+.nextstep{font-size:12px;color:var(--txt-2);margin-top:7px;display:flex;align-items:center;gap:6px;line-height:1.4}
+.nextstep svg{width:13px;height:13px;flex-shrink:0;stroke-width:2}
+.nextstep.over{color:#fca5a5} .nextstep.none{color:#fbbf24;font-style:italic}
+/* pulso masivo */
+.pulso{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px}
+.pulso .pz{background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:13px 15px}
+.pulso .pz .pl{font-size:11px;color:var(--txt-3);font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+.pulso .pz .pv{font-family:'Space Grotesk';font-weight:700;font-size:24px;margin-top:5px;font-variant-numeric:tabular-nums}
+.pulso .pz .pv.ok{color:var(--ok)} .pulso .pz .pv.red{color:var(--danger)} .pulso .pz .pv.lav{color:var(--lavanda)}
 /* campaign metrics */
 .mgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(118px,1fr));gap:10px;margin:14px 0}
 .metric{background:var(--bg);border:1px solid var(--border);border-radius:11px;padding:12px}
@@ -424,6 +447,11 @@ canvas{max-width:100%}
           <div class="card kpi"><div class="khead"><span class="klabel">Horas invertidas</span><span class="kchip green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></span></div><div class="kval tnum" id="k-horas">0h</div><div class="kmeta">Tiempo total registrado</div></div>
         </div>
         <div class="card" style="margin-bottom:18px">
+          <div class="section-head"><h2>Pulso Masivo · Hoy</h2><span class="hint" id="pulso-fecha"></span></div>
+          <div class="pulso" id="pulso"></div>
+          <div style="margin-top:16px"><div class="bar green"><i id="pulso-mrr-bar"></i></div><div class="muted-3" id="pulso-mrr-label" style="font-size:12px;margin-top:7px"></div></div>
+        </div>
+        <div class="card" style="margin-bottom:18px">
           <div class="section-head"><h2>Agenda de hoy</h2><span class="hint" id="hoy-fecha"></span></div>
           <div id="hoy-agenda"></div>
         </div>
@@ -478,7 +506,11 @@ canvas{max-width:100%}
           <div class="card kpi"><div class="khead"><span class="klabel">Tasa de conversión</span><span class="kchip green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M22 12A10 10 0 1 1 12 2v10z"/></svg></span></div><div class="kval green" id="p-conv">—</div><div class="kmeta" id="p-conv-meta">ganadas vs cerradas</div></div>
           <div class="card kpi"><div class="khead"><span class="klabel">Ganadas</span><span class="kchip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"/></svg></span></div><div class="kval" id="p-won">0</div><div class="kmeta" id="p-lost-meta">0 perdidas</div></div>
         </div>
-        <div class="card pad-lg"><div class="board" id="pipe-board" style="--cols:5"></div></div>
+        <div class="card" style="margin-bottom:16px">
+          <div class="section-head"><h2>Embudo de conversión</h2><span class="hint">Lead → MQL → SQL → Oportunidad → Cierre · tasas calculadas</span></div>
+          <div class="conv-strip" id="conv-strip"></div>
+        </div>
+        <div class="card pad-lg"><div class="board" id="pipe-board" style="--cols:6"></div></div>
       </section>
 
       <!-- ====== CAMPAÑAS ====== -->
@@ -553,8 +585,8 @@ canvas{max-width:100%}
           <div class="section-head"><h2>Punto de partida y metas</h2></div>
           <div class="row c2"><div class="field"><label>Clientes base (ya existentes)</label><input type="number" id="c-baseClients" /></div><div class="field"><label>Meta de clientes</label><input type="number" id="c-goalClients" /></div></div>
           <div class="row c2"><div class="field"><label>Recurrencia mensual base (USD)</label><input type="number" step="0.01" id="c-baseRecurring" /></div><div class="field"><label>Meta de recurrencia mensual (USD)</label><input type="number" step="0.01" id="c-goalRecurring" /></div></div>
-          <div class="field"><label>Pagos anuales adelantados (USD)</label><input type="number" step="0.01" id="c-annual" /></div>
-          <p class="helper" style="margin-bottom:16px">La implementación es pago único; la mensualidad cuenta al MRR a partir del 3er mes desde la fecha de inicio.</p>
+          <div class="row c2"><div class="field"><label>Pagos anuales adelantados (USD)</label><input type="number" step="0.01" id="c-annual" /></div><div class="field"><label>Meta de MRR nuevo por mes (USD)</label><input type="number" step="0.01" id="c-mrrmes" /></div></div>
+          <p class="helper" style="margin-bottom:16px">La implementación es pago único; la mensualidad cuenta al MRR a partir del 3er mes. La meta de MRR nuevo por mes alimenta el Pulso Masivo.</p>
           <button class="btn" id="cfg-save">Guardar ajustes</button>
         </div>
 
@@ -621,8 +653,17 @@ canvas{max-width:100%}
   <div class="modal-head"><div><h3 id="prospect-modal-title">Nuevo prospecto</h3><p>Llévalo por el embudo hasta cerrarlo.</p></div><button class="iconbtn" data-close="modal-prospect" aria-label="Cerrar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
   <input type="hidden" id="pr-id" />
   <div class="field"><label>Nombre / Empresa <span class="req">*</span></label><input id="pr-client" placeholder="Ej. Ferretería El Constructor" /></div>
-  <div class="row c2"><div class="field"><label>Plan estimado</label><select id="pr-plan"></select></div><div class="field"><label>Etapa</label><select id="pr-stage"><option>Prospecto</option><option>Demo</option><option>Negociación</option><option>Ganada</option><option>Perdida</option></select></div></div>
-  <div class="field"><label>Campaña de origen</label><select id="pr-campaign"></select></div>
+  <div class="row c2"><div class="field"><label>Plan estimado</label><select id="pr-plan"></select></div><div class="field"><label>Etapa del embudo</label><select id="pr-stage"></select></div></div>
+  <div class="field"><label>Calificación BANT <span class="muted-3" style="font-weight:400">· 3 de 4 → califica como SQL</span></label>
+    <div class="bant">
+      <label class="bchk"><input type="checkbox" id="pr-b"><span><b>B</b> Budget — presupuesto</span></label>
+      <label class="bchk"><input type="checkbox" id="pr-a"><span><b>A</b> Authority — decisor</span></label>
+      <label class="bchk"><input type="checkbox" id="pr-n"><span><b>N</b> Need — dolor real</span></label>
+      <label class="bchk"><input type="checkbox" id="pr-t"><span><b>T</b> Timing — cuándo</span></label>
+    </div>
+  </div>
+  <div class="row c2"><div class="field"><label>Próximo paso</label><input id="pr-next" placeholder="Ej. Enviar cotización"></div><div class="field"><label>Fecha del próximo paso</label><input type="date" id="pr-nextdate"></div></div>
+  <div class="field"><label>Campaña de origen (canal)</label><select id="pr-campaign"></select></div>
   <div class="field"><label>Notas / contexto</label><textarea id="pr-note" rows="2" placeholder="Cómo llegó, objeciones, próximos pasos…"></textarea></div>
   <div class="actions"><button class="btn ghost" data-close="modal-prospect">Cancelar</button><button class="btn" id="pr-save">Guardar prospecto</button></div>
 </div></div>
@@ -654,9 +695,14 @@ canvas{max-width:100%}
 const PLANS={starter:{label:'Starter',impl:30,monthly:9.99},professional:{label:'Professional',impl:40,monthly:19.99},advanced:{label:'Advanced',impl:50,monthly:29.99},deluxe:{label:'Deluxe',impl:60,monthly:49.99},enterprise:{label:'Enterprise',impl:100,monthly:100}};
 const RECURRING_START_MONTH=3;
 const STORE_KEY='odoo_factura_dashboard_v1';
-const STAGES=[{k:'Prospecto',c:'#7b7b92'},{k:'Demo',c:'#60a5fa'},{k:'Negociación',c:'#fbbf24'},{k:'Ganada',c:'#34d399'},{k:'Perdida',c:'#f87171'}];
-const defaultState={tasks:[],sales:[],prospects:[],campaigns:[],projects:[],history:[],config:{baseClients:494,goalClients:1000,baseRecurring:7151.23,goalRecurring:25000,annualPayments:11988.18,salaryBase:0,bono:0,metaMes:24,lastBackup:null}};
-function normalize(d){const s={...structuredClone(defaultState),...d,config:{...defaultState.config,...(d.config||{})}};['tasks','sales','prospects','campaigns','projects','history'].forEach(k=>{if(!Array.isArray(s[k]))s[k]=[];});return s;}
+const STAGES=[{k:'Lead',c:'#7b7b92'},{k:'MQL',c:'#60a5fa'},{k:'SQL',c:'#9a73ff'},{k:'Oportunidad',c:'#fbbf24'},{k:'Ganada',c:'#34d399'},{k:'Perdida',c:'#f87171'}];
+const FUNNEL=['Lead','MQL','SQL','Oportunidad','Ganada']; // orden acumulativo (Ganada = Cierre)
+const STAGE_RANK={Lead:0,MQL:1,SQL:2,Oportunidad:3,Ganada:4,Perdida:-1};
+const STAGEMAP={Prospecto:'Lead',Demo:'MQL','Negociación':'Oportunidad'}; // migración de etapas viejas
+const defaultState={tasks:[],sales:[],prospects:[],campaigns:[],projects:[],history:[],config:{baseClients:494,goalClients:1000,baseRecurring:7151.23,goalRecurring:25000,annualPayments:11988.18,mrrMesMeta:1000,salaryBase:0,bono:0,metaMes:24,lastBackup:null}};
+function normalize(d){const s={...structuredClone(defaultState),...d,config:{...defaultState.config,...(d.config||{})}};['tasks','sales','prospects','campaigns','projects','history'].forEach(k=>{if(!Array.isArray(s[k]))s[k]=[];});
+  s.prospects.forEach(p=>{if(STAGEMAP[p.stage])p.stage=STAGEMAP[p.stage];if(!p.bant)p.bant={b:false,a:false,n:false,t:false};});
+  return s;}
 function loadLocal(){try{const r=localStorage.getItem(STORE_KEY);if(!r)return structuredClone(defaultState);return normalize(JSON.parse(r));}catch(e){return structuredClone(defaultState);}}
 let state=loadLocal();
 function snapshot(){const m=new Date().toISOString().slice(0,7);const v={m,clients:totalClients(),mrr:currentMRR()};const e=state.history.find(h=>h.m===m);if(e)Object.assign(e,v);else state.history.push(v);}
@@ -778,6 +824,26 @@ function renderInicio(){
   $('k-tareas').textContent=state.tasks.filter(t=>t.status==='En curso').length;$('k-tareas-meta').textContent=`${state.tasks.filter(t=>t.status!=='Finalizada').length} activas · ${overdue.length} vencidas`;
   $('k-horas').textContent=(state.tasks.reduce((s,t)=>s+taskMs(t),0)/3600000).toFixed(1)+'h';
   drawDoughnut('chartClientes',tc,gc,'#7c4dff','n');drawDoughnut('chartMrr',mrr,gm,'#9a73ff','usd');
+  renderPulso();
+}
+function renderPulso(){
+  $('pulso-fecha').textContent=new Date().toLocaleDateString('es-SV',{day:'numeric',month:'long'});
+  const T=todayISO(),M=curMonth();
+  const leadsHoy=state.prospects.filter(p=>p.createdAt&&new Date(p.createdAt).toISOString().slice(0,10)===T).length;
+  const enPipe=state.prospects.filter(p=>STAGE_RANK[p.stage]>=0&&STAGE_RANK[p.stage]<4).length;
+  const cierresMes=activeSales().filter(s=>(s.start||'').slice(0,7)===M).length;
+  const mrrMes=activeSales().filter(s=>(s.start||'').slice(0,7)===M&&s.mode==='mensual').reduce((a,s)=>a+(PLANS[s.plan]?.monthly||0),0);
+  const vencidos=state.prospects.filter(p=>STAGE_RANK[p.stage]>=0&&STAGE_RANK[p.stage]<4&&p.nextDate&&p.nextDate<T).length;
+  const meta=state.config.mrrMesMeta||0;
+  $('pulso').innerHTML=`
+    <div class="pz"><div class="pl">Leads nuevos hoy</div><div class="pv">${leadsHoy}</div></div>
+    <div class="pz"><div class="pl">En pipeline</div><div class="pv">${enPipe}</div></div>
+    <div class="pz"><div class="pl">Cierres del mes</div><div class="pv ok">${cierresMes}</div></div>
+    <div class="pz"><div class="pl">MRR nuevo del mes</div><div class="pv lav">${fmtUSD(mrrMes)}</div></div>
+    <div class="pz"><div class="pl">Pasos vencidos</div><div class="pv ${vencidos?'red':''}">${vencidos}</div></div>`;
+  const pctv=meta?Math.min(100,mrrMes/meta*100):0;
+  $('pulso-mrr-bar').style.width=pctv+'%';
+  $('pulso-mrr-label').textContent=`Meta MRR nuevo del mes: ${fmtUSD(mrrMes)} de ${fmtUSD(meta)} · ${meta?Math.round(mrrMes/meta*100):0}%`;
 }
 function agendaBlock(title,list,cls){
   return `<div style="margin-bottom:14px"><div style="font-size:12px;font-weight:700;color:var(--txt-3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">${title} · ${list.length}</div>`+
@@ -902,22 +968,27 @@ function bindDnD(cardSel,colSel,onDrop){
 /* ===================== PIPELINE ===================== */
 $('btn-new-campaign').onclick=()=>openCampaign();
 function renderPipeline(){
-  const open=state.prospects.filter(p=>!['Ganada','Perdida'].includes(p.stage));
-  const won=state.prospects.filter(p=>p.stage==='Ganada').length;
-  const lost=state.prospects.filter(p=>p.stage==='Perdida').length;
-  const closed=won+lost;
+  const all=state.prospects;
+  const ge=lvl=>all.filter(p=>STAGE_RANK[p.stage]>=lvl).length;
+  const nLead=all.length,nMQL=ge(1),nSQL=ge(2),nOpp=ge(3),nWin=ge(4);
+  const lost=all.filter(p=>p.stage==='Perdida').length;
+  const open=all.filter(p=>STAGE_RANK[p.stage]>=0&&STAGE_RANK[p.stage]<4);
+  const pc=(a,b)=>b?Math.round(a/b*100):0;
   $('p-open').textContent=open.length;
   $('p-value').textContent=fmtUSD(open.reduce((s,p)=>s+(PLANS[p.plan]?.monthly||0),0));
-  $('p-conv').textContent=closed?Math.round(won/closed*100)+'%':'—';
-  $('p-conv-meta').textContent=`${won} ganadas de ${closed} cerradas`;
-  $('p-won').textContent=won;$('p-lost-meta').textContent=`${lost} perdidas`;
+  $('p-conv').textContent=nOpp?pc(nWin,nOpp)+'%':'—';
+  $('p-conv-meta').textContent=`${nWin} ganadas de ${nOpp} oport.`;
+  $('p-won').textContent=nWin;$('p-lost-meta').textContent=`${lost} perdidas`;
+  const conv=[{l:'Lead → MQL',v:pc(nMQL,nLead),n:nMQL+'/'+nLead},{l:'MQL → SQL',v:pc(nSQL,nMQL),n:nSQL+'/'+nMQL},{l:'SQL → Opp',v:pc(nOpp,nSQL),n:nOpp+'/'+nSQL},{l:'Win Rate',v:pc(nWin,nOpp),n:nWin+'/'+nOpp,win:1},{l:'Lead → Cierre',v:pc(nWin,nLead),n:nWin+'/'+nLead,win:1}];
+  $('conv-strip').innerHTML=conv.map(c=>`<div class="conv-chip ${c.win?'win':''}"><div class="cc-v">${c.v}%</div><div class="cc-l">${c.l}</div><div class="cc-n">${c.n}</div></div>`).join('');
   $('pipe-board').innerHTML=STAGES.map(stg=>{
     const items=state.prospects.filter(p=>p.stage===stg.k);
     return `<div class="col" data-stage="${stg.k}"><div class="col-h"><span><i class="dotc" style="background:${stg.c}"></i>${stg.k}</span><span class="cnt">${items.length}</span></div>${items.map(p=>`
       <div class="kcard" data-id="${p.id}" draggable="true">
         <div class="kc-t">${esc(p.client)}</div>
-        <div class="kc-m"><span class="tag">${PLANS[p.plan]?.label||'—'}</span><span class="muted-3" style="font-size:12px">${fmtUSD(PLANS[p.plan]?.monthly||0)}/mes</span></div>
+        <div class="kc-m"><span class="tag">${PLANS[p.plan]?.label||'—'}</span><span class="muted-3" style="font-size:12px">${fmtUSD(PLANS[p.plan]?.monthly||0)}/mes</span>${(()=>{const bs=p.bant?['b','a','n','t'].filter(k=>p.bant[k]).length:0;return `<span class="bant-pill ${bs>=3?'ok':''}">BANT ${bs}/4</span>`;})()}</div>
         ${p.campaignId?`<div class="kc-m"><span class="tag rec">📣 ${esc(campaignName(p.campaignId))}</span></div>`:''}
+        ${p.nextStep?`<div class="nextstep ${p.nextDate&&p.nextDate<todayISO()?'over':''}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M5 12h14M12 5l7 7-7 7"/></svg>${p.nextDate?fmtDate(p.nextDate)+': ':''}${esc(p.nextStep)}</div>`:(STAGE_RANK[p.stage]>=0&&STAGE_RANK[p.stage]<4?'<div class="nextstep none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>Sin próximo paso</div>':'')}
         ${p.note?`<div class="cellsub">${esc(p.note)}</div>`:''}
         <div class="kc-actions">${p.stage==='Ganada'?`<button class="btn sm" onclick="convertProspect('${p.id}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>A venta</button>`:''}<button class="btn sm ghost icon" onclick="openProspect('${p.id}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4z"/></svg></button><button class="btn sm danger icon" onclick="delProspect('${p.id}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg></button></div>
       </div>`).join('')||'<div class="muted-3" style="font-size:12px;padding:8px 4px">—</div>'}</div>`;
@@ -928,12 +999,14 @@ const findProspect=id=>state.prospects.find(p=>p.id===id);
 function campaignOptions(sel){return '<option value="">— Sin campaña —</option>'+state.campaigns.map(c=>`<option value="${c.id}" ${c.id===sel?'selected':''}>${esc(c.name)}</option>`).join('');}
 function openProspect(id){
   $('pr-plan').innerHTML=Object.entries(PLANS).map(([k,p])=>`<option value="${k}">${p.label} — ${fmtUSD(p.monthly)}/mes</option>`).join('');
-  if(id){const p=findProspect(id);$('prospect-modal-title').textContent='Editar prospecto';$('pr-id').value=p.id;$('pr-client').value=p.client;$('pr-plan').value=p.plan;$('pr-stage').value=p.stage;$('pr-campaign').innerHTML=campaignOptions(p.campaignId);$('pr-note').value=p.note||'';}
-  else{$('prospect-modal-title').textContent='Nuevo prospecto';$('pr-id').value='';$('pr-client').value='';$('pr-plan').value='starter';$('pr-stage').value='Prospecto';$('pr-campaign').innerHTML=campaignOptions('');$('pr-note').value='';}
+  $('pr-stage').innerHTML=STAGES.map(s=>`<option>${s.k}</option>`).join('');
+  const setBant=b=>{$('pr-b').checked=!!(b&&b.b);$('pr-a').checked=!!(b&&b.a);$('pr-n').checked=!!(b&&b.n);$('pr-t').checked=!!(b&&b.t);};
+  if(id){const p=findProspect(id);$('prospect-modal-title').textContent='Editar prospecto';$('pr-id').value=p.id;$('pr-client').value=p.client;$('pr-plan').value=p.plan;$('pr-stage').value=p.stage;setBant(p.bant);$('pr-next').value=p.nextStep||'';$('pr-nextdate').value=p.nextDate||'';$('pr-campaign').innerHTML=campaignOptions(p.campaignId);$('pr-note').value=p.note||'';}
+  else{$('prospect-modal-title').textContent='Nuevo prospecto';$('pr-id').value='';$('pr-client').value='';$('pr-plan').value='starter';$('pr-stage').value='Lead';setBant(null);$('pr-next').value='';$('pr-nextdate').value='';$('pr-campaign').innerHTML=campaignOptions('');$('pr-note').value='';}
   openModal('modal-prospect','pr-client');
 }
 $('pr-save').onclick=()=>{const client=$('pr-client').value.trim();if(!client){$('pr-client').focus();$('pr-client').style.borderColor='var(--danger)';return;}
-  const id=$('pr-id').value,data={client,plan:$('pr-plan').value,stage:$('pr-stage').value,campaignId:$('pr-campaign').value||null,note:$('pr-note').value.trim()};
+  const id=$('pr-id').value,data={client,plan:$('pr-plan').value,stage:$('pr-stage').value,campaignId:$('pr-campaign').value||null,note:$('pr-note').value.trim(),bant:{b:$('pr-b').checked,a:$('pr-a').checked,n:$('pr-n').checked,t:$('pr-t').checked},nextStep:$('pr-next').value.trim(),nextDate:$('pr-nextdate').value};
   if(id)Object.assign(findProspect(id),data,{updatedAt:Date.now()});else state.prospects.push({id:uid(),...data,createdAt:Date.now(),updatedAt:Date.now()});
   save();closeModal('modal-prospect');renderPipeline();};
 $('pr-client').addEventListener('input',()=>$('pr-client').style.borderColor='');
@@ -1235,8 +1308,8 @@ function renderComision(){
 }
 
 /* ===================== CONFIG / DATOS ===================== */
-function fillConfig(){const c=state.config;$('c-baseClients').value=c.baseClients;$('c-goalClients').value=c.goalClients;$('c-baseRecurring').value=c.baseRecurring;$('c-goalRecurring').value=c.goalRecurring;$('c-annual').value=c.annualPayments;$('c-salary').value=c.salaryBase;$('c-bono').value=c.bono;$('c-metaMes').value=c.metaMes;renderBackupBanner();}
-$('cfg-save').onclick=()=>{const c=state.config;c.baseClients=+$('c-baseClients').value||0;c.goalClients=+$('c-goalClients').value||1;c.baseRecurring=+$('c-baseRecurring').value||0;c.goalRecurring=+$('c-goalRecurring').value||1;c.annualPayments=+$('c-annual').value||0;save();go('inicio');};
+function fillConfig(){const c=state.config;$('c-baseClients').value=c.baseClients;$('c-goalClients').value=c.goalClients;$('c-baseRecurring').value=c.baseRecurring;$('c-goalRecurring').value=c.goalRecurring;$('c-annual').value=c.annualPayments;$('c-mrrmes').value=c.mrrMesMeta;$('c-salary').value=c.salaryBase;$('c-bono').value=c.bono;$('c-metaMes').value=c.metaMes;renderBackupBanner();}
+$('cfg-save').onclick=()=>{const c=state.config;c.baseClients=+$('c-baseClients').value||0;c.goalClients=+$('c-goalClients').value||1;c.baseRecurring=+$('c-baseRecurring').value||0;c.goalRecurring=+$('c-goalRecurring').value||1;c.annualPayments=+$('c-annual').value||0;c.mrrMesMeta=+$('c-mrrmes').value||0;save();go('inicio');};
 $('cfg-save2').onclick=()=>{const c=state.config;c.salaryBase=+$('c-salary').value||0;c.bono=+$('c-bono').value||0;c.metaMes=+$('c-metaMes').value||24;save();alert('Comisiones actualizadas.');go('metas');};
 $('cfg-export').onclick=()=>{const b=new Blob([JSON.stringify(state,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='dashboard-odoo-factura-'+todayISO()+'.json';a.click();state.config.lastBackup=todayISO();save();renderBackupBanner();};
 $('cfg-import-btn').onclick=()=>$('importer').click();
