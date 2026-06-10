@@ -417,15 +417,15 @@ canvas{max-width:100%}
 
       <!-- ====== INICIO ====== -->
       <section class="view active" id="view-inicio">
-        <div class="card" style="margin-bottom:18px">
-          <div class="section-head"><h2>Agenda de hoy</h2><span class="hint" id="hoy-fecha"></span></div>
-          <div id="hoy-agenda"></div>
-        </div>
         <div class="grid kpis" style="margin-bottom:18px">
           <div class="card kpi"><div class="khead"><span class="klabel">Clientes activos</span><span class="kchip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span></div><div class="kval" id="k-clientes">0</div><div class="kmeta" id="k-clientes-meta"></div><div class="bar"><i id="k-clientes-bar"></i></div></div>
           <div class="card kpi"><div class="khead"><span class="klabel">Recurrencia mensual</span><span class="kchip lav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M23 6l-9.5 9.5-5-5L1 18"/><path d="M17 6h6v6"/></svg></span></div><div class="kval lav tnum" id="k-mrr">$0</div><div class="kmeta" id="k-mrr-meta"></div><div class="bar"><i id="k-mrr-bar"></i></div></div>
           <div class="card kpi"><div class="khead"><span class="klabel">Tareas en curso</span><span class="kchip amber"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg></span></div><div class="kval" id="k-tareas">0</div><div class="kmeta" id="k-tareas-meta"></div></div>
           <div class="card kpi"><div class="khead"><span class="klabel">Horas invertidas</span><span class="kchip green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></span></div><div class="kval tnum" id="k-horas">0h</div><div class="kmeta">Tiempo total registrado</div></div>
+        </div>
+        <div class="card" style="margin-bottom:18px">
+          <div class="section-head"><h2>Agenda de hoy</h2><span class="hint" id="hoy-fecha"></span></div>
+          <div id="hoy-agenda"></div>
         </div>
         <div class="two">
           <div class="card"><div class="section-head"><h2>Avance a 1,000 clientes</h2></div><div class="chart-box"><canvas id="chartClientes"></canvas></div></div>
