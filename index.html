@@ -664,7 +664,8 @@ canvas{max-width:100%}
     </div>
   </div>
   <div class="row c2"><div class="field"><label>Próximo paso</label><input id="pr-next" placeholder="Ej. Enviar cotización"></div><div class="field"><label>Fecha del próximo paso</label><input type="date" id="pr-nextdate"></div></div>
-  <div class="field"><label>Campaña de origen (canal)</label><select id="pr-campaign"></select></div>
+  <div class="row c2"><div class="field"><label>Medio de contacto</label><select id="pr-medio"></select></div><div class="field"><label>Origen</label><select id="pr-origen"></select></div></div>
+  <div class="field"><label>Campaña (si vino de pauta)</label><select id="pr-campaign"></select></div>
   <div class="field"><label>Notas / contexto</label><textarea id="pr-note" rows="2" placeholder="Cómo llegó, objeciones, próximos pasos…"></textarea></div>
   <div class="actions"><button class="btn ghost" data-close="modal-prospect">Cancelar</button><button class="btn" id="pr-save">Guardar prospecto</button></div>
 </div></div>
@@ -700,6 +701,8 @@ const STAGES=[{k:'Lead',c:'#7b7b92'},{k:'MQL',c:'#60a5fa'},{k:'SQL',c:'#9a73ff'}
 const FUNNEL=['Lead','MQL','SQL','Oportunidad','Ganada']; // orden acumulativo (Ganada = Cierre)
 const STAGE_RANK={Lead:0,MQL:1,SQL:2,Oportunidad:3,Ganada:4,Perdida:-1};
 const STAGEMAP={Prospecto:'Lead',Demo:'MQL','Negociación':'Oportunidad'}; // migración de etapas viejas
+const MEDIOS=['WhatsApp','Facebook','Reunión','Visita','Llamada'];
+const ORIGENES=['Pauta','Referido','Alianza Contable','Contacto personal'];
 const defaultState={tasks:[],sales:[],prospects:[],campaigns:[],projects:[],history:[],config:{baseClients:494,goalClients:1000,baseRecurring:7151.23,goalRecurring:25000,annualPayments:11988.18,mrrMesMeta:1000,salaryBase:0,bono:0,metaMes:24,lastBackup:null}};
 function normalize(d){const s={...structuredClone(defaultState),...d,config:{...defaultState.config,...(d.config||{})}};['tasks','sales','prospects','campaigns','projects','history'].forEach(k=>{if(!Array.isArray(s[k]))s[k]=[];});
   s.prospects.forEach(p=>{if(STAGEMAP[p.stage])p.stage=STAGEMAP[p.stage];if(!p.bant)p.bant={b:false,a:false,n:false,t:false};});
@@ -991,9 +994,8 @@ function renderPipeline(){
       <div class="kcard" data-id="${p.id}" draggable="true">
         <div class="kc-t">${esc(p.client)}</div>
         <div class="kc-m"><span class="tag">${PLANS[p.plan]?.label||'—'}</span><span class="muted-3" style="font-size:12px">${fmtUSD(PLANS[p.plan]?.monthly||0)}/mes</span>${(()=>{const bs=p.bant?['b','a','n','t'].filter(k=>p.bant[k]).length:0;return `<span class="bant-pill ${bs>=3?'ok':''}">BANT ${bs}/4</span>`;})()}</div>
-        ${p.campaignId?`<div class="kc-m"><span class="tag rec">📣 ${esc(campaignName(p.campaignId))}</span></div>`:''}
+        ${(p.origen||p.medio||p.campaignId)?`<div class="kc-m">${p.origen?`<span class="tag">${esc(p.origen)}</span>`:''}${p.medio?`<span class="tag" style="background:rgba(96,165,250,.12);color:#93c5fd">${esc(p.medio)}</span>`:''}${p.campaignId?`<span class="tag rec">📣 ${esc(campaignName(p.campaignId))}</span>`:''}</div>`:''}
         ${p.nextStep?`<div class="nextstep ${p.nextDate&&p.nextDate<todayISO()?'over':''}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M5 12h14M12 5l7 7-7 7"/></svg>${p.nextDate?fmtDate(p.nextDate)+': ':''}${esc(p.nextStep)}</div>`:(STAGE_RANK[p.stage]>=0&&STAGE_RANK[p.stage]<4?'<div class="nextstep none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>Sin próximo paso</div>':'')}
-        ${p.note?`<div class="cellsub">${esc(p.note)}</div>`:''}
         <div class="kc-actions">${p.stage==='Ganada'?`<button class="btn sm" onclick="convertProspect('${p.id}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>A venta</button>`:''}<button class="btn sm ghost icon" onclick="openProspect('${p.id}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4z"/></svg></button><button class="btn sm danger icon" onclick="delProspect('${p.id}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg></button></div>
       </div>`).join('')||'<div class="muted-3" style="font-size:12px;padding:8px 4px">—</div>'}</div>`;
   }).join('');
@@ -1004,13 +1006,15 @@ function campaignOptions(sel){return '<option value="">— Sin campaña —</opt
 function openProspect(id){
   $('pr-plan').innerHTML=Object.entries(PLANS).map(([k,p])=>`<option value="${k}">${p.label} — ${fmtUSD(p.monthly)}/mes</option>`).join('');
   $('pr-stage').innerHTML=STAGES.map(s=>`<option>${s.k}</option>`).join('');
+  $('pr-medio').innerHTML='<option value="">—</option>'+MEDIOS.map(m=>`<option>${m}</option>`).join('');
+  $('pr-origen').innerHTML='<option value="">—</option>'+ORIGENES.map(o=>`<option>${o}</option>`).join('');
   const setBant=b=>{$('pr-b').checked=!!(b&&b.b);$('pr-a').checked=!!(b&&b.a);$('pr-n').checked=!!(b&&b.n);$('pr-t').checked=!!(b&&b.t);};
-  if(id){const p=findProspect(id);$('prospect-modal-title').textContent='Editar prospecto';$('pr-id').value=p.id;$('pr-client').value=p.client;$('pr-plan').value=p.plan;$('pr-stage').value=p.stage;setBant(p.bant);$('pr-next').value=p.nextStep||'';$('pr-nextdate').value=p.nextDate||'';$('pr-campaign').innerHTML=campaignOptions(p.campaignId);$('pr-note').value=p.note||'';}
-  else{$('prospect-modal-title').textContent='Nuevo prospecto';$('pr-id').value='';$('pr-client').value='';$('pr-plan').value='starter';$('pr-stage').value='Lead';setBant(null);$('pr-next').value='';$('pr-nextdate').value='';$('pr-campaign').innerHTML=campaignOptions('');$('pr-note').value='';}
+  if(id){const p=findProspect(id);$('prospect-modal-title').textContent='Editar prospecto';$('pr-id').value=p.id;$('pr-client').value=p.client;$('pr-plan').value=p.plan;$('pr-stage').value=p.stage;setBant(p.bant);$('pr-next').value=p.nextStep||'';$('pr-nextdate').value=p.nextDate||'';$('pr-medio').value=p.medio||'';$('pr-origen').value=p.origen||'';$('pr-campaign').innerHTML=campaignOptions(p.campaignId);$('pr-note').value=p.note||'';}
+  else{$('prospect-modal-title').textContent='Nuevo prospecto';$('pr-id').value='';$('pr-client').value='';$('pr-plan').value='starter';$('pr-stage').value='Lead';setBant(null);$('pr-next').value='';$('pr-nextdate').value='';$('pr-medio').value='';$('pr-origen').value='';$('pr-campaign').innerHTML=campaignOptions('');$('pr-note').value='';}
   openModal('modal-prospect','pr-client');
 }
 $('pr-save').onclick=()=>{const client=$('pr-client').value.trim();if(!client){$('pr-client').focus();$('pr-client').style.borderColor='var(--danger)';return;}
-  const id=$('pr-id').value,data={client,plan:$('pr-plan').value,stage:$('pr-stage').value,campaignId:$('pr-campaign').value||null,note:$('pr-note').value.trim(),bant:{b:$('pr-b').checked,a:$('pr-a').checked,n:$('pr-n').checked,t:$('pr-t').checked},nextStep:$('pr-next').value.trim(),nextDate:$('pr-nextdate').value};
+  const id=$('pr-id').value,data={client,plan:$('pr-plan').value,stage:$('pr-stage').value,medio:$('pr-medio').value,origen:$('pr-origen').value,campaignId:$('pr-campaign').value||null,note:$('pr-note').value.trim(),bant:{b:$('pr-b').checked,a:$('pr-a').checked,n:$('pr-n').checked,t:$('pr-t').checked},nextStep:$('pr-next').value.trim(),nextDate:$('pr-nextdate').value};
   if(id)Object.assign(findProspect(id),data,{updatedAt:Date.now()});else state.prospects.push({id:uid(),...data,createdAt:Date.now(),updatedAt:Date.now()});
   save();closeModal('modal-prospect');renderPipeline();};
 $('pr-client').addEventListener('input',()=>$('pr-client').style.borderColor='');
