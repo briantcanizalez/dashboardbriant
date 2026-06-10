@@ -753,21 +753,29 @@ const CGRID='#23233a',CTXT='#b2b2c6';
 function renderInicio(){
   $('hoy-fecha').textContent=new Date().toLocaleDateString('es-SV',{weekday:'long',day:'numeric',month:'long'});
   const tISO=todayISO();
-  const overdue=state.tasks.filter(isOverdue).sort((a,b)=>(a.due||'').localeCompare(b.due||''));
-  const today=state.tasks.filter(t=>t.status!=='Finalizada'&&t.due===tISO);
-  const running=state.tasks.filter(t=>t.status==='En curso');
+  const byDue=(a,b)=>(a.due||'9999-99').localeCompare(b.due||'9999-99');
+  const PRIO={Alta:0,Media:1,Baja:2};
+  const shown=new Set(),take=arr=>{const r=arr.filter(t=>!shown.has(t.id));r.forEach(t=>shown.add(t.id));return r;};
+  const overdue=take(state.tasks.filter(isOverdue).sort(byDue));
+  const running=take(state.tasks.filter(t=>t.status==='En curso').sort(byDue));
+  const todayDue=take(state.tasks.filter(t=>t.status!=='Finalizada'&&t.due===tISO).sort(byDue));
+  const pendingAll=state.tasks.filter(t=>t.status==='Pendiente'&&!shown.has(t.id)).sort((a,b)=>((PRIO[a.priority]??1)-(PRIO[b.priority]??1))||byDue(a,b));
+  const pending=pendingAll.slice(0,8);
   const blocks=[];
   if(overdue.length)blocks.push(agendaBlock('Vencidas',overdue,'b-overdue'));
   if(running.length)blocks.push(agendaBlock('En curso ahora',running,'st-curso'));
-  if(today.length)blocks.push(agendaBlock('Vencen hoy',today,'b-soon'));
-  $('hoy-agenda').innerHTML=blocks.length?blocks.join(''):'<div class="empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg><p>Todo al día</p><span>No tienes tareas vencidas ni en curso.</span></div>';
+  if(todayDue.length)blocks.push(agendaBlock('Vencen hoy',todayDue,'b-soon'));
+  if(pending.length)blocks.push(agendaBlock('Pendientes',pending,'st-pendiente'));
+  let html=blocks.length?blocks.join(''):'<div class="empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg><p>¡Todo al día!</p><span>No tienes tareas pendientes ni en curso.</span></div>';
+  if(pendingAll.length>pending.length)html+=`<button class="btn ghost sm" data-go="tareas" style="margin-top:6px">Ver ${pendingAll.length-pending.length} pendientes más →</button>`;
+  $('hoy-agenda').innerHTML=html;
 
   const tc=totalClients(),gc=state.config.goalClients,mrr=currentMRR(),gm=state.config.goalRecurring;
   $('k-clientes').textContent=tc.toLocaleString('en-US');
   $('k-clientes-meta').textContent=`Meta ${gc.toLocaleString('en-US')} · faltan ${Math.max(0,gc-tc).toLocaleString('en-US')}`;
   $('k-clientes-bar').style.width=Math.min(100,tc/gc*100)+'%';
   $('k-mrr').textContent=fmtUSD(mrr);$('k-mrr-meta').textContent=`Meta ${fmtUSD0(gm)} · ${(mrr/gm*100).toFixed(1)}%`;$('k-mrr-bar').style.width=Math.min(100,mrr/gm*100)+'%';
-  $('k-tareas').textContent=running.length;$('k-tareas-meta').textContent=`${state.tasks.filter(t=>t.status!=='Finalizada').length} activas · ${overdue.length} vencidas`;
+  $('k-tareas').textContent=state.tasks.filter(t=>t.status==='En curso').length;$('k-tareas-meta').textContent=`${state.tasks.filter(t=>t.status!=='Finalizada').length} activas · ${overdue.length} vencidas`;
   $('k-horas').textContent=(state.tasks.reduce((s,t)=>s+taskMs(t),0)/3600000).toFixed(1)+'h';
   drawDoughnut('chartClientes',tc,gc,'#7c4dff','n');drawDoughnut('chartMrr',mrr,gm,'#9a73ff','usd');
 }
