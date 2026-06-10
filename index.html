@@ -89,8 +89,9 @@ button{font-family:inherit}
 .tb-right{display:flex;align-items:center;gap:10px;flex-shrink:0}
 .content{padding:clamp(18px,3vw,30px) clamp(16px,3vw,36px) 40px;max-width:var(--maxw);width:100%;margin:0 auto}
 /* Bottom nav */
-.botnav{display:none;position:fixed;left:0;right:0;bottom:0;z-index:40;background:rgba(15,15,22,.92);backdrop-filter:blur(16px);border-top:1px solid var(--border);padding:8px 4px calc(8px + env(safe-area-inset-bottom));grid-template-columns:repeat(5,1fr);gap:2px}
-.botnav button{display:flex;flex-direction:column;align-items:center;gap:4px;border:none;background:transparent;color:var(--txt-3);font-size:10px;font-weight:600;padding:6px 2px;border-radius:12px;cursor:pointer;min-height:52px;transition:color .15s;position:relative}
+.botnav{display:none;position:fixed;left:0;right:0;bottom:0;z-index:40;background:rgba(15,15,22,.92);backdrop-filter:blur(16px);border-top:1px solid var(--border);padding:8px 2px calc(8px + env(safe-area-inset-bottom));grid-template-columns:repeat(5,1fr);gap:1px}
+.botnav.b6{grid-template-columns:repeat(6,1fr)}
+.botnav button{display:flex;flex-direction:column;align-items:center;gap:4px;border:none;background:transparent;color:var(--txt-3);font-size:9.5px;font-weight:600;padding:6px 1px;border-radius:12px;cursor:pointer;min-height:52px;transition:color .15s;position:relative}
 .botnav svg{width:22px;height:22px;stroke-width:2}
 .botnav .active{color:var(--brand-3)}
 .botnav .navbadge{position:absolute;top:2px;right:18px;background:var(--danger);color:#fff;font-size:10px;font-weight:700;min-width:16px;height:16px;border-radius:99px;display:none;align-items:center;justify-content:center;padding:0 4px}
@@ -218,7 +219,7 @@ td.num{font-variant-numeric:tabular-nums;white-space:nowrap}
 .cell .d{font-weight:700;color:var(--txt-2);font-size:13px;margin-bottom:5px;font-variant-numeric:tabular-nums}
 .cell.today .d{color:var(--brand-3)}
 .ev{font-size:11px;padding:3px 7px;border-radius:7px;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:500}
-.ev.task{background:var(--brand-soft);color:var(--brand-3)} .ev.due{background:var(--warn-bg);color:#fcd34d} .ev.sale{background:var(--ok-bg);color:#6ee7b7}
+.ev.task{background:var(--brand-soft);color:var(--brand-3)} .ev.due{background:var(--warn-bg);color:#fcd34d} .ev.sale{background:var(--ok-bg);color:#6ee7b7} .ev.meet{background:var(--info-bg);color:#93c5fd}
 .legend{display:flex;gap:18px;flex-wrap:wrap;font-size:12.5px;color:var(--txt-2);margin-top:16px}
 .legend span{display:inline-flex;align-items:center;gap:7px}
 .dot{width:11px;height:11px;border-radius:4px}
@@ -250,6 +251,38 @@ canvas{max-width:100%}
 .comprow .cv{font-variant-numeric:tabular-nums;font-weight:600}
 .comprow.total .cv{color:var(--brand-3)}
 
+/* proyectos */
+.proj-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:16px}
+.proj-card{cursor:pointer;transition:transform .18s var(--ease),border-color .18s,box-shadow .18s}
+.proj-card:hover{transform:translateY(-3px);border-color:var(--border-2);box-shadow:var(--sh-2)}
+.proj-card .pc-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:6px}
+.proj-card .pc-name{font-size:16px;font-weight:700;font-family:'Space Grotesk'}
+.proj-card .pc-desc{font-size:13px;color:var(--txt-3);margin:2px 0 12px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.proj-card .pc-meta{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--txt-3);margin-top:12px}
+.badge.phase{background:var(--brand-soft);color:var(--brand-3)}
+.badge.phase.done{background:var(--ok-bg);color:#6ee7b7}
+.dsec{background:linear-gradient(180deg,var(--surface-1),#101019);border:1px solid var(--border);border-radius:var(--r);padding:20px;margin-bottom:16px;box-shadow:var(--sh-1)}
+.dsec h3{font-size:15px;font-weight:600;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.dsec h3 .cnt{font-size:12px;color:var(--txt-3);font-weight:600}
+.addform{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;align-items:flex-end}
+.addform>div{flex:1;min-width:120px}
+.addform input,.addform select{min-height:42px}
+.addform .btn{flex:0 0 auto}
+.deliv{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--border)}
+.deliv:last-child{border-bottom:none}
+.deliv input[type=checkbox]{width:20px;height:20px;flex-shrink:0;accent-color:var(--ok);cursor:pointer}
+.deliv .dl-t{flex:1;font-size:14px}
+.deliv .dl-t.done{text-decoration:line-through;color:var(--txt-3)}
+.member{display:inline-flex;align-items:center;gap:8px;background:var(--bg);border:1px solid var(--border);border-radius:99px;padding:6px 8px 6px 12px;font-size:13px;margin:0 8px 8px 0}
+.member .mrole{color:var(--txt-3);font-size:12px}
+.member .x{cursor:pointer;color:var(--txt-3);width:22px;height:22px;display:grid;place-items:center;border-radius:99px}
+.member .x:hover{background:var(--danger-bg);color:var(--danger)}
+.av-circle{display:flex;align-items:center;gap:16px}
+.av-ring{position:relative;width:90px;height:90px;flex-shrink:0}
+.detail-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+.detail-head .dh-name{font-size:22px;font-weight:700;font-family:'Space Grotesk'}
+.detail-head .dh-meta{font-size:13px;color:var(--txt-3);margin-top:4px;display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+.detail-head select{min-height:38px;width:auto}
 /* campaign metrics */
 .mgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(118px,1fr));gap:10px;margin:14px 0}
 .metric{background:var(--bg);border:1px solid var(--border);border-radius:11px;padding:12px}
@@ -347,6 +380,7 @@ canvas{max-width:100%}
     <nav class="nav" data-nav>
       <button data-view="inicio" class="active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9.5L12 3l9 6.5"/><path d="M5 10v10h14V10"/></svg><span>Inicio</span><span class="navbadge" data-badge></span></button>
       <button data-view="tareas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><span>Tareas</span></button>
+      <button data-view="projects"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg><span>Proyectos</span></button>
       <button data-view="pipeline"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M22 3H2l8 9.46V19l4 2v-8.54z"/></svg><span>Pipeline</span></button>
       <button data-view="campaigns"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 11l18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg><span>Campañas</span></button>
       <button data-view="ventas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="2" x2="12" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg><span>Ventas</span></button>
@@ -418,6 +452,21 @@ canvas{max-width:100%}
         <div id="task-board-wrap" style="display:none"><div class="board" id="task-board"></div></div>
       </section>
 
+      <!-- ====== PROYECTOS ====== -->
+      <section class="view" id="view-projects">
+        <div id="proj-list-wrap">
+          <div class="grid kpis" style="margin-bottom:18px">
+            <div class="card kpi"><div class="khead"><span class="klabel">Proyectos</span><span class="kchip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></span></div><div class="kval" id="pj-total">0</div><div class="kmeta" id="pj-total-meta">en total</div></div>
+            <div class="card kpi"><div class="khead"><span class="klabel">Activos</span><span class="kchip amber"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg></span></div><div class="kval" id="pj-active">0</div><div class="kmeta">sin cerrar</div></div>
+            <div class="card kpi"><div class="khead"><span class="klabel">Horas invertidas</span><span class="kchip green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></span></div><div class="kval tnum" id="pj-hours">0h</div><div class="kmeta">en todos los proyectos</div></div>
+            <div class="card kpi"><div class="khead"><span class="klabel">Avance promedio</span><span class="kchip lav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></span></div><div class="kval lav tnum" id="pj-avg">0%</div><div class="kmeta">según entregables</div></div>
+          </div>
+          <div id="proj-grid" class="proj-grid"></div>
+          <div id="proj-empty" class="card empty" style="display:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg><p>Aún no tienes proyectos</p><span>Crea el primero con “Nuevo proyecto”.</span></div>
+        </div>
+        <div id="proj-detail-wrap" style="display:none"></div>
+      </section>
+
       <!-- ====== PIPELINE ====== -->
       <section class="view" id="view-pipeline">
         <div class="grid kpis" style="margin-bottom:16px">
@@ -461,7 +510,7 @@ canvas{max-width:100%}
           <div class="cal-head"><button class="iconbtn" id="cal-prev" aria-label="Anterior"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="15 18 9 12 15 6"/></svg></button><h2 id="cal-title" class="font-display"></h2><button class="iconbtn" id="cal-next" aria-label="Siguiente"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="9 18 15 12 9 6"/></svg></button></div>
           <div class="cal-grid" id="cal-dows"></div>
           <div class="cal-grid" id="cal-cells" style="margin-top:6px"></div>
-          <div class="legend"><span><i class="dot" style="background:var(--brand-2)"></i> Inicio de tarea</span><span><i class="dot" style="background:var(--warn)"></i> Fin estimado</span><span><i class="dot" style="background:var(--ok)"></i> Inicio de venta</span></div>
+          <div class="legend"><span><i class="dot" style="background:var(--brand-2)"></i> Inicio de tarea</span><span><i class="dot" style="background:var(--warn)"></i> Fin estimado</span><span><i class="dot" style="background:var(--ok)"></i> Inicio de venta</span><span><i class="dot" style="background:var(--info)"></i> Reunión de proyecto</span></div>
         </div>
       </section>
 
@@ -531,9 +580,10 @@ canvas{max-width:100%}
   </div>
 
   <!-- BOTTOM NAV -->
-  <nav class="botnav" data-nav>
+  <nav class="botnav b6" data-nav>
     <button data-view="inicio" class="active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9.5L12 3l9 6.5"/><path d="M5 10v10h14V10"/></svg>Inicio<span class="navbadge" data-badge></span></button>
     <button data-view="tareas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>Tareas</button>
+    <button data-view="projects"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>Proyectos</button>
     <button data-view="pipeline"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M22 3H2l8 9.46V19l4 2v-8.54z"/></svg>Pipeline</button>
     <button data-view="ventas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="2" x2="12" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>Ventas</button>
     <button data-view="metas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/></svg>Metas</button>
@@ -586,14 +636,24 @@ canvas{max-width:100%}
   <div class="actions"><button class="btn ghost" data-close="modal-campaign">Cancelar</button><button class="btn" id="cp-save">Guardar campaña</button></div>
 </div></div>
 
+<!-- MODAL PROYECTO -->
+<div class="overlay" id="modal-project"><div class="modal" role="dialog" aria-modal="true">
+  <div class="modal-head"><div><h3 id="project-modal-title">Nuevo proyecto</h3><p>Datos generales del proyecto.</p></div><button class="iconbtn" data-close="modal-project" aria-label="Cerrar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+  <input type="hidden" id="pj-id" />
+  <div class="field"><label>Nombre del proyecto <span class="req">*</span></label><input id="pj-name" placeholder="Ej. Implementación Odoo — Ferretería El Constructor" /></div>
+  <div class="field"><label>Descripción</label><textarea id="pj-desc" rows="2" placeholder="Alcance, objetivo del proyecto…"></textarea></div>
+  <div class="row c2"><div class="field"><label>Fecha de inicio</label><input type="date" id="pj-start" /></div><div class="field"><label>Fase</label><select id="pj-phase"></select></div></div>
+  <div class="actions"><button class="btn ghost" data-close="modal-project">Cancelar</button><button class="btn" id="pj-save">Guardar proyecto</button></div>
+</div></div>
+
 <script>
 /* ===================== DATOS ===================== */
 const PLANS={starter:{label:'Starter',impl:30,monthly:9.99},professional:{label:'Professional',impl:40,monthly:19.99},advanced:{label:'Advanced',impl:50,monthly:29.99},deluxe:{label:'Deluxe',impl:60,monthly:49.99},enterprise:{label:'Enterprise',impl:100,monthly:100}};
 const RECURRING_START_MONTH=3;
 const STORE_KEY='odoo_factura_dashboard_v1';
 const STAGES=[{k:'Prospecto',c:'#7b7b92'},{k:'Demo',c:'#60a5fa'},{k:'Negociación',c:'#fbbf24'},{k:'Ganada',c:'#34d399'},{k:'Perdida',c:'#f87171'}];
-const defaultState={tasks:[],sales:[],prospects:[],campaigns:[],history:[],config:{baseClients:494,goalClients:1000,baseRecurring:7151.23,goalRecurring:25000,annualPayments:11988.18,salaryBase:0,bono:0,metaMes:24,lastBackup:null}};
-function normalize(d){const s={...structuredClone(defaultState),...d,config:{...defaultState.config,...(d.config||{})}};['tasks','sales','prospects','campaigns','history'].forEach(k=>{if(!Array.isArray(s[k]))s[k]=[];});return s;}
+const defaultState={tasks:[],sales:[],prospects:[],campaigns:[],projects:[],history:[],config:{baseClients:494,goalClients:1000,baseRecurring:7151.23,goalRecurring:25000,annualPayments:11988.18,salaryBase:0,bono:0,metaMes:24,lastBackup:null}};
+function normalize(d){const s={...structuredClone(defaultState),...d,config:{...defaultState.config,...(d.config||{})}};['tasks','sales','prospects','campaigns','projects','history'].forEach(k=>{if(!Array.isArray(s[k]))s[k]=[];});return s;}
 function loadLocal(){try{const r=localStorage.getItem(STORE_KEY);if(!r)return structuredClone(defaultState);return normalize(JSON.parse(r));}catch(e){return structuredClone(defaultState);}}
 let state=loadLocal();
 function snapshot(){const m=new Date().toISOString().slice(0,7);const v={m,clients:totalClients(),mrr:currentMRR()};const e=state.history.find(h=>h.m===m);if(e)Object.assign(e,v);else state.history.push(v);}
@@ -650,6 +710,7 @@ const lostMRR=()=>state.sales.filter(s=>s.churned&&s.mode==='mensual').reduce((s
 const VIEWS={
   inicio:{title:'Inicio',action:null},
   tareas:{title:'Tareas',sub:'Registra, prioriza y mide tu tiempo.',action:{label:'Nueva tarea',fn:()=>openTask()}},
+  projects:{title:'Proyectos',sub:'Fases, entregables, horas, involucrados y reuniones.',action:{label:'Nuevo proyecto',fn:()=>openProject()}},
   pipeline:{title:'Pipeline de ventas',sub:'Prospectos en camino hacia el cierre.',action:{label:'Nuevo prospecto',fn:()=>openProspect()}},
   campaigns:{title:'Campañas',sub:'Inversión en anuncios, CAC y rentabilidad.',action:{label:'Nueva campaña',fn:()=>openCampaign()}},
   ventas:{title:'Ventas',sub:'Cada venta suma a tus metas.',action:{label:'Nueva venta',fn:()=>openSale()}},
@@ -668,7 +729,7 @@ function go(view){
   if(cfg.action){act.classList.remove('hide');act.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>'+cfg.action.label;act.onclick=cfg.action.fn;}
   else{act.classList.add('hide');act.onclick=null;}
   window.scrollTo({top:0});
-  ({inicio:renderInicio,tareas:renderTasks,pipeline:renderPipeline,campaigns:renderCampaigns,ventas:renderSales,calendario:renderCalendar,metas:renderMetas,config:fillConfig}[view])();
+  ({inicio:renderInicio,tareas:renderTasks,projects:renderProjects,pipeline:renderPipeline,campaigns:renderCampaigns,ventas:renderSales,calendario:renderCalendar,metas:renderMetas,config:fillConfig}[view])();
 }
 document.addEventListener('click',e=>{
   const nav=e.target.closest('[data-nav] [data-view]');if(nav){go(nav.dataset.view);return;}
@@ -941,6 +1002,98 @@ function renderCampaigns(){
   }).join('');
 }
 
+/* ===================== PROYECTOS ===================== */
+const PHASES=['Planeación','Configuración','Pruebas','Capacitación','Implementación','Cerrado'];
+const ACT_TYPES=['Configuración','Reunión','Capacitación','Desarrollo','Soporte','Documentación','Análisis','Otro'];
+const MEET_TYPES=['Reunión','Seguimiento','Llamada','Demo'];
+const findProject=id=>state.projects.find(p=>p.id===id);
+function projectHours(p){const actH=(p.activities||[]).reduce((a,x)=>a+(+x.hours||0),0);const taskH=state.tasks.filter(t=>t.project===p.name).reduce((a,t)=>a+taskMs(t),0)/3600000;return actH+taskH;}
+function projectProgress(p){const d=p.deliverables||[];if(!d.length)return 0;return Math.round(d.filter(x=>x.done).length/d.length*100);}
+let curProjectId=null;
+function renderProjects(){
+  curProjectId=null;$('proj-list-wrap').style.display='block';$('proj-detail-wrap').style.display='none';
+  const ps=state.projects;
+  $('pj-total').textContent=ps.length;
+  $('pj-active').textContent=ps.filter(p=>p.phase!=='Cerrado').length;
+  $('pj-hours').textContent=ps.reduce((a,p)=>a+projectHours(p),0).toFixed(1)+'h';
+  $('pj-avg').textContent=(ps.length?Math.round(ps.reduce((a,p)=>a+projectProgress(p),0)/ps.length):0)+'%';
+  $('proj-empty').style.display=ps.length?'none':'block';
+  $('proj-grid').innerHTML=ps.slice().sort((a,b)=>(b.createdAt||0)-(a.createdAt||0)).map(p=>{
+    const prog=projectProgress(p),done=p.phase==='Cerrado';
+    return `<div class="card proj-card" onclick="openProjectDetail('${p.id}')">
+      <div class="pc-top"><div class="pc-name">${esc(p.name)}</div><span class="badge phase ${done?'done':''}">${p.phase}</span></div>
+      ${p.desc?`<div class="pc-desc">${esc(p.desc)}</div>`:''}
+      <div class="bar"><i style="width:${prog}%"></i></div>
+      <div class="pc-meta"><span>${prog}% avance</span><span>${projectHours(p).toFixed(1)} h</span><span>${(p.members||[]).length} involucrados</span>${p.start?`<span>Inicio ${fmtDate(p.start)}</span>`:''}</div>
+    </div>`;
+  }).join('');
+}
+function openProject(id){
+  $('pj-phase').innerHTML=PHASES.map(f=>`<option>${f}</option>`).join('');
+  if(id){const p=findProject(id);$('project-modal-title').textContent='Editar proyecto';$('pj-id').value=p.id;$('pj-name').value=p.name;$('pj-desc').value=p.desc||'';$('pj-start').value=p.start||'';$('pj-phase').value=p.phase;}
+  else{$('project-modal-title').textContent='Nuevo proyecto';$('pj-id').value='';$('pj-name').value='';$('pj-desc').value='';$('pj-start').value=todayISO();$('pj-phase').value=PHASES[0];}
+  openModal('modal-project','pj-name');
+}
+$('pj-save').onclick=()=>{const name=$('pj-name').value.trim();if(!name){$('pj-name').focus();$('pj-name').style.borderColor='var(--danger)';return;}
+  const id=$('pj-id').value,data={name,desc:$('pj-desc').value.trim(),start:$('pj-start').value,phase:$('pj-phase').value};
+  if(id)Object.assign(findProject(id),data);else state.projects.push({id:uid(),...data,members:[],deliverables:[],activities:[],meetings:[],createdAt:Date.now()});
+  save();closeModal('modal-project');if(curProjectId)renderProjectDetail();else renderProjects();
+};
+$('pj-name').addEventListener('input',()=>$('pj-name').style.borderColor='');
+function delProject(id){if(!confirm('¿Eliminar este proyecto y todo su contenido?'))return;state.projects=state.projects.filter(p=>p.id!==id);save();renderProjects();}
+function openProjectDetail(id){curProjectId=id;$('proj-list-wrap').style.display='none';$('proj-detail-wrap').style.display='block';renderProjectDetail();window.scrollTo({top:0});}
+function changeProjectPhase(v){const p=findProject(curProjectId);if(!p)return;p.phase=v;save();const b=document.querySelector('#proj-detail-wrap .badge.phase');}
+function renderProjectDetail(){
+  const p=findProject(curProjectId);if(!p){renderProjects();return;}
+  const prog=projectProgress(p);
+  const acts=(p.activities||[]).slice().sort((a,b)=>(b.date||'').localeCompare(a.date||''));
+  const meets=(p.meetings||[]).slice().sort((a,b)=>(a.date||'').localeCompare(b.date||''));
+  const T=todayISO();
+  $('proj-detail-wrap').innerHTML=`
+   <button class="btn ghost sm" onclick="renderProjects()" style="margin-bottom:16px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="15 18 9 12 15 6"/></svg>Volver a proyectos</button>
+   <div class="card" style="margin-bottom:16px">
+     <div class="detail-head">
+       <div style="min-width:0"><div class="dh-name">${esc(p.name)}</div>${p.desc?`<div class="muted-3" style="margin-top:4px;font-size:14px">${esc(p.desc)}</div>`:''}
+         <div class="dh-meta"><span>Fase: <select onchange="changeProjectPhase(this.value)">${PHASES.map(f=>`<option ${f===p.phase?'selected':''}>${f}</option>`).join('')}</select></span>${p.start?`<span>Inicio: ${fmtDate(p.start)}</span>`:''}<span><b>${projectHours(p).toFixed(1)} h</b> invertidas</span></div>
+       </div>
+       <div style="display:flex;gap:8px"><button class="btn ghost sm" onclick="openProject('${p.id}')">Editar</button><button class="btn danger sm" onclick="delProject('${p.id}')">Eliminar</button></div>
+     </div>
+     <div class="muted" style="font-size:13px;margin-bottom:6px">Avance por entregables: <b>${prog}%</b></div>
+     <div class="bar"><i style="width:${prog}%"></i></div>
+   </div>
+   <div class="dsec">
+     <h3>Entregables <span class="cnt">${(p.deliverables||[]).filter(d=>d.done).length}/${(p.deliverables||[]).length} completados</span></h3>
+     ${(p.deliverables||[]).map(d=>`<div class="deliv"><input type="checkbox" ${d.done?'checked':''} onchange="toggleDeliv('${d.id}')"><span class="dl-t ${d.done?'done':''}">${esc(d.title)}</span><button class="btn danger sm icon" onclick="delDeliv('${d.id}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg></button></div>`).join('')||'<div class="muted-3" style="font-size:13px">Sin entregables aún. Agrégalos para medir el avance.</div>'}
+     <div class="addform"><div><input id="d-deliv" placeholder="Nuevo entregable (ej. Configurar facturación electrónica)" onkeydown="if(event.key==='Enter')addDeliv()"></div><button class="btn sm" onclick="addDeliv()">Agregar</button></div>
+   </div>
+   <div class="dsec">
+     <h3>Involucrados y roles <span class="cnt">${(p.members||[]).length}</span></h3>
+     <div>${(p.members||[]).map(m=>`<span class="member"><b>${esc(m.name)}</b><span class="mrole">· ${esc(m.role||'—')}</span><span class="x" onclick="delMember('${m.id}')">×</span></span>`).join('')||'<span class="muted-3" style="font-size:13px">Sin involucrados aún.</span>'}</div>
+     <div class="addform"><div><input id="m-name" placeholder="Nombre"></div><div><input id="m-role" placeholder="Rol (ej. Sponsor, Contacto TI)"></div><button class="btn sm" onclick="addMember()">Agregar</button></div>
+   </div>
+   <div class="dsec">
+     <h3>Actividades y horas <span class="cnt">${(p.activities||[]).reduce((a,x)=>a+(+x.hours||0),0).toFixed(1)} h</span></h3>
+     ${acts.length?`<div class="tablewrap"><table class="responsive"><thead><tr><th>Fecha</th><th>Tipo</th><th>Actividad</th><th>Horas</th><th></th></tr></thead><tbody>${acts.map(a=>`<tr><td data-label="Fecha" class="num muted-3">${fmtDate(a.date)}</td><td data-label="Tipo"><span class="tag">${esc(a.type)}</span></td><td data-label="Actividad" class="cellwrap">${esc(a.desc||'—')}</td><td data-label="Horas" class="num">${(+a.hours||0).toFixed(1)} h</td><td class="t-actions-cell"><button class="btn danger sm icon" onclick="delActivity('${a.id}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg></button></td></tr>`).join('')}</tbody></table></div>`:'<div class="muted-3" style="font-size:13px">Sin actividades registradas.</div>'}
+     <div class="addform"><div style="flex:0 0 auto"><input type="date" id="a-date" value="${T}" style="min-width:148px"></div><div style="flex:0 0 auto"><select id="a-type">${ACT_TYPES.map(t=>`<option>${t}</option>`).join('')}</select></div><div><input id="a-desc" placeholder="¿Qué actividad realizaste?"></div><div style="flex:0 0 86px"><input type="number" step="0.25" min="0" id="a-hours" placeholder="Horas"></div><button class="btn sm" onclick="addActivity()">Agregar</button></div>
+   </div>
+   <div class="dsec">
+     <h3>Reuniones y seguimientos <span class="cnt">${(p.meetings||[]).length}</span></h3>
+     ${meets.length?meets.map(m=>`<div class="deliv"><input type="checkbox" ${m.done?'checked':''} onchange="toggleMeeting('${m.id}')"><span class="dl-t ${m.done?'done':''}"><b>${fmtDate(m.date)}${m.time?' · '+m.time:''}</b> · <span class="tag">${esc(m.type)}</span> ${esc(m.title||'')}</span><button class="btn danger sm icon" onclick="delMeeting('${m.id}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg></button></div>`).join(''):'<div class="muted-3" style="font-size:13px">Sin reuniones programadas. Aparecerán también en tu Calendario.</div>'}
+     <div class="addform"><div style="flex:0 0 auto"><input type="date" id="me-date" value="${T}" style="min-width:148px"></div><div style="flex:0 0 108px"><input type="time" id="me-time"></div><div style="flex:0 0 auto"><select id="me-type">${MEET_TYPES.map(t=>`<option>${t}</option>`).join('')}</select></div><div><input id="me-title" placeholder="Asunto de la reunión"></div><button class="btn sm" onclick="addMeeting()">Programar</button></div>
+   </div>`;
+}
+function pCur(){return findProject(curProjectId);}
+function addDeliv(){const p=pCur();const v=$('d-deliv').value.trim();if(!v)return;(p.deliverables=p.deliverables||[]).push({id:uid(),title:v,done:false});save();renderProjectDetail();}
+function toggleDeliv(id){const p=pCur();const d=p.deliverables.find(x=>x.id===id);if(d){d.done=!d.done;save();renderProjectDetail();}}
+function delDeliv(id){const p=pCur();p.deliverables=p.deliverables.filter(x=>x.id!==id);save();renderProjectDetail();}
+function addMember(){const p=pCur();const n=$('m-name').value.trim();if(!n)return;(p.members=p.members||[]).push({id:uid(),name:n,role:$('m-role').value.trim()});save();renderProjectDetail();}
+function delMember(id){const p=pCur();p.members=p.members.filter(x=>x.id!==id);save();renderProjectDetail();}
+function addActivity(){const p=pCur();const desc=$('a-desc').value.trim();const hours=+$('a-hours').value||0;if(!desc&&!hours){return;}(p.activities=p.activities||[]).push({id:uid(),date:$('a-date').value||todayISO(),type:$('a-type').value,desc,hours});save();renderProjectDetail();}
+function delActivity(id){const p=pCur();p.activities=p.activities.filter(x=>x.id!==id);save();renderProjectDetail();}
+function addMeeting(){const p=pCur();const title=$('me-title').value.trim();const date=$('me-date').value;if(!date){alert('Pon al menos la fecha de la reunión.');return;}(p.meetings=p.meetings||[]).push({id:uid(),date,time:$('me-time').value,type:$('me-type').value,title,done:false});save();renderProjectDetail();}
+function toggleMeeting(id){const p=pCur();const m=p.meetings.find(x=>x.id===id);if(m){m.done=!m.done;save();renderProjectDetail();}}
+function delMeeting(id){const p=pCur();p.meetings=p.meetings.filter(x=>x.id!==id);save();renderProjectDetail();}
+
 /* ===================== VENTAS ===================== */
 function fillPlanSelect(){$('s-plan').innerHTML=Object.entries(PLANS).map(([k,p])=>`<option value="${k}">${p.label} — ${fmtUSD(p.impl)} + ${fmtUSD(p.monthly)}/mes</option>`).join('');}
 function salePreview(){const p=PLANS[$('s-plan').value],mode=$('s-mode').value;if(!p){$('s-preview').innerHTML='';return;}
@@ -990,6 +1143,7 @@ function renderCalendar(){
   const ev={},add=(d,h)=>{if(!d)return;(ev[d]=ev[d]||[]).push(h);};
   state.tasks.forEach(t=>{add(t.start,`<div class="ev task">▶ ${esc(t.title)}</div>`);add(t.due,`<div class="ev due">◆ ${esc(t.title)}</div>`);});
   state.sales.forEach(s=>{if(!s.churned)add(s.start,`<div class="ev sale">$ ${esc(s.client)}</div>`);});
+  state.projects.forEach(pr=>(pr.meetings||[]).forEach(m=>add(m.date,`<div class="ev meet" title="${esc(pr.name)}: ${esc(m.type)} ${esc(m.title||'')}">◇ ${esc(m.title||m.type)}</div>`)));
   let c='';for(let i=0;i<startDow;i++)c+='<div class="cell out"></div>';
   for(let d=1;d<=days;d++){const iso=`${y}-${String(mo+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;c+=`<div class="cell ${iso===tStr?'today':''}"><div class="d">${d}</div>${(ev[iso]||[]).slice(0,3).join('')}${(ev[iso]||[]).length>3?`<div class="muted-3" style="font-size:10px">+${ev[iso].length-3}</div>`:''}</div>`;}
   $('cal-cells').innerHTML=c;
@@ -1075,7 +1229,7 @@ $('cfg-save').onclick=()=>{const c=state.config;c.baseClients=+$('c-baseClients'
 $('cfg-save2').onclick=()=>{const c=state.config;c.salaryBase=+$('c-salary').value||0;c.bono=+$('c-bono').value||0;c.metaMes=+$('c-metaMes').value||24;save();alert('Comisiones actualizadas.');go('metas');};
 $('cfg-export').onclick=()=>{const b=new Blob([JSON.stringify(state,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='dashboard-odoo-factura-'+todayISO()+'.json';a.click();state.config.lastBackup=todayISO();save();renderBackupBanner();};
 $('cfg-import-btn').onclick=()=>$('importer').click();
-$('importer').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const d=JSON.parse(r.result);state={...structuredClone(defaultState),...d,config:{...defaultState.config,...(d.config||{})}};['tasks','sales','prospects','campaigns','history'].forEach(k=>{if(!Array.isArray(state[k]))state[k]=[];});save();go('inicio');}catch(err){alert('Archivo inválido.');}};r.readAsText(f);};
+$('importer').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const d=JSON.parse(r.result);state={...structuredClone(defaultState),...d,config:{...defaultState.config,...(d.config||{})}};['tasks','sales','prospects','campaigns','projects','history'].forEach(k=>{if(!Array.isArray(state[k]))state[k]=[];});save();go('inicio');}catch(err){alert('Archivo inválido.');}};r.readAsText(f);};
 $('cfg-csv-ventas').onclick=()=>{const rows=[['cliente','plan','modalidad','fecha','baja']].concat(state.sales.map(s=>[s.client,s.plan,s.mode,s.start,s.churned?'si':'no']));const csv=rows.map(r=>r.map(x=>`"${(x??'').toString().replace(/"/g,'""')}"`).join(',')).join('\n');const b=new Blob([csv],{type:'text/csv'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='ventas-'+todayISO()+'.csv';a.click();};
 $('cfg-print').onclick=()=>{const v=$('view-metas');renderMetas();document.querySelectorAll('.view').forEach(x=>x.classList.remove('printing'));v.classList.add('printing');setTimeout(()=>{window.print();v.classList.remove('printing');},200);};
 $('csv-template').onclick=e=>{e.preventDefault();const csv='cliente,plan,modalidad,fecha\nEjemplo SA,professional,mensual,2026-01-15\nOtra Empresa,starter,anual,2026-02-01';const b=new Blob([csv],{type:'text/csv'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='plantilla-clientes.csv';a.click();};
