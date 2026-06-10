@@ -507,8 +507,9 @@ canvas{max-width:100%}
           <div class="card kpi"><div class="khead"><span class="klabel">Ganadas</span><span class="kchip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"/></svg></span></div><div class="kval" id="p-won">0</div><div class="kmeta" id="p-lost-meta">0 perdidas</div></div>
         </div>
         <div class="card" style="margin-bottom:16px">
-          <div class="section-head"><h2>Embudo de conversión</h2><span class="hint">Lead → MQL → SQL → Oportunidad → Cierre · tasas calculadas</span></div>
-          <div class="conv-strip" id="conv-strip"></div>
+          <div class="section-head"><h2>Embudo de conversión</h2><span class="hint">Lead → MQL → SQL → Oportunidad → Cierre</span></div>
+          <div class="chart-box" style="height:250px"><canvas id="chartFunnel"></canvas></div>
+          <div class="conv-strip" id="conv-strip" style="margin-top:18px;margin-bottom:0"></div>
         </div>
         <div class="card pad-lg"><div class="board" id="pipe-board" style="--cols:6"></div></div>
       </section>
@@ -981,6 +982,9 @@ function renderPipeline(){
   $('p-won').textContent=nWin;$('p-lost-meta').textContent=`${lost} perdidas`;
   const conv=[{l:'Lead → MQL',v:pc(nMQL,nLead),n:nMQL+'/'+nLead},{l:'MQL → SQL',v:pc(nSQL,nMQL),n:nSQL+'/'+nMQL},{l:'SQL → Opp',v:pc(nOpp,nSQL),n:nOpp+'/'+nSQL},{l:'Win Rate',v:pc(nWin,nOpp),n:nWin+'/'+nOpp,win:1},{l:'Lead → Cierre',v:pc(nWin,nLead),n:nWin+'/'+nLead,win:1}];
   $('conv-strip').innerHTML=conv.map(c=>`<div class="conv-chip ${c.win?'win':''}"><div class="cc-v">${c.v}%</div><div class="cc-l">${c.l}</div><div class="cc-n">${c.n}</div></div>`).join('');
+  const fLabels=['Lead','MQL','SQL','Oportunidad','Cierre'],fData=[nLead,nMQL,nSQL,nOpp,nWin],fColors=['#7b7b92','#60a5fa','#9a73ff','#fbbf24','#34d399'];
+  if(charts.funnel)charts.funnel.destroy();
+  charts.funnel=new Chart($('chartFunnel'),{type:'bar',data:{labels:fLabels,datasets:[{label:'Volumen',data:fData,backgroundColor:fColors,borderRadius:8}]},options:{indexAxis:'y',maintainAspectRatio:false,animation:{duration:500},plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>{const i=c.dataIndex,prev=i>0?fData[i-1]:null,rate=prev?Math.round(fData[i]/prev*100):100;return c.parsed.x+(i>0?` · ${rate}% del paso anterior`:' leads');}}}},scales:{x:{grid:{color:CGRID},ticks:{color:CTXT,precision:0}},y:{grid:{display:false},ticks:{color:CTXT,font:{weight:'600'}}}}}});
   $('pipe-board').innerHTML=STAGES.map(stg=>{
     const items=state.prospects.filter(p=>p.stage===stg.k);
     return `<div class="col" data-stage="${stg.k}"><div class="col-h"><span><i class="dotc" style="background:${stg.c}"></i>${stg.k}</span><span class="cnt">${items.length}</span></div>${items.map(p=>`
