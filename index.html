@@ -1137,21 +1137,22 @@ function bindDnD(cardSel,colSel,onDrop){
 $('btn-new-campaign').onclick=()=>openCampaign();
 function renderPipeline(){
   const all=state.prospects;
-  const ge=lvl=>all.filter(p=>STAGE_RANK[p.stage]>=lvl).length;
-  const nLead=all.length,nMQL=ge(1),nSQL=ge(2),nOpp=ge(3),nWin=ge(4);
-  const lost=all.filter(p=>p.stage==='Perdida').length;
-  const open=all.filter(p=>STAGE_RANK[p.stage]>=0&&STAGE_RANK[p.stage]<4);
+  const cnt=stg=>all.filter(p=>p.stage===stg).length;
+  // OCUPACIÓN real por etapa (cuántos hay AHORA en cada una), no acumulado
+  const nLead=cnt('Lead'),nMQL=cnt('MQL'),nSQL=cnt('SQL'),nOpp=cnt('Oportunidad'),nWin=cnt('Ganada'),lost=cnt('Perdida');
+  const total=all.length,closed=nWin+lost;
+  const open=all.filter(p=>p.stage!=='Ganada'&&p.stage!=='Perdida');
   const pc=(a,b)=>b?Math.round(a/b*100):0;
   $('p-open').textContent=open.length;
-  $('p-value').textContent=fmtUSD(open.reduce((s,p)=>s+(PLANS[p.plan]?.monthly||0),0));
-  $('p-conv').textContent=nOpp?pc(nWin,nOpp)+'%':'—';
-  $('p-conv-meta').textContent=`${nWin} ganadas de ${nOpp} oport.`;
+  $('p-value').textContent=fmtUSD(open.reduce((s,p)=>s+saleMonthly(p),0));
+  $('p-conv').textContent=total?pc(nWin,total)+'%':'—';
+  $('p-conv-meta').textContent=`${nWin} ganadas de ${total} prospectos`;
   $('p-won').textContent=nWin;$('p-lost-meta').textContent=`${lost} perdidas`;
-  const conv=[{l:'Lead → MQL',v:pc(nMQL,nLead),n:nMQL+'/'+nLead},{l:'MQL → SQL',v:pc(nSQL,nMQL),n:nSQL+'/'+nMQL},{l:'SQL → Opp',v:pc(nOpp,nSQL),n:nOpp+'/'+nSQL},{l:'Win Rate',v:pc(nWin,nOpp),n:nWin+'/'+nOpp,win:1},{l:'Lead → Cierre',v:pc(nWin,nLead),n:nWin+'/'+nLead,win:1}];
-  $('conv-strip').innerHTML=conv.map(c=>`<div class="conv-chip ${c.win?'win':''}"><div class="cc-v">${c.v}%</div><div class="cc-l">${c.l}</div><div class="cc-n">${c.n}</div></div>`).join('');
+  const conv=[{l:'En pipeline',v:open.length,n:'abiertos',raw:1},{l:'Ganadas',v:nWin,n:'cerradas ✓',raw:1,win:1},{l:'Win Rate',v:pc(nWin,closed),n:nWin+'/'+closed+' cerradas',win:1},{l:'Conversión',v:pc(nWin,total),n:nWin+'/'+total+' totales',win:1}];
+  $('conv-strip').innerHTML=conv.map(c=>`<div class="conv-chip ${c.win?'win':''}"><div class="cc-v">${c.raw?c.v:c.v+'%'}</div><div class="cc-l">${c.l}</div><div class="cc-n">${c.n}</div></div>`).join('');
   const fLabels=['Lead','MQL','SQL','Oportunidad','Cierre'],fData=[nLead,nMQL,nSQL,nOpp,nWin],fColors=['#7b7b92','#60a5fa','#9a73ff','#fbbf24','#34d399'];
   if(charts.funnel)charts.funnel.destroy();
-  charts.funnel=new Chart($('chartFunnel'),{type:'bar',data:{labels:fLabels,datasets:[{label:'Volumen',data:fData,backgroundColor:fColors,borderRadius:8}]},options:{indexAxis:'y',maintainAspectRatio:false,animation:{duration:500},plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>{const i=c.dataIndex,prev=i>0?fData[i-1]:null,rate=prev?Math.round(fData[i]/prev*100):100;return c.parsed.x+(i>0?` · ${rate}% del paso anterior`:' leads');}}}},scales:{x:{grid:{color:CGRID},ticks:{color:CTXT,precision:0}},y:{grid:{display:false},ticks:{color:CTXT,font:{weight:'600'}}}}}});
+  charts.funnel=new Chart($('chartFunnel'),{type:'bar',data:{labels:fLabels,datasets:[{label:'Volumen',data:fData,backgroundColor:fColors,borderRadius:8}]},options:{indexAxis:'y',maintainAspectRatio:false,animation:{duration:500},plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.parsed.x+' prospecto(s)'+(total?` · ${Math.round(c.parsed.x/total*100)}% del total`:'')}}},scales:{x:{grid:{color:CGRID},ticks:{color:CTXT,precision:0}},y:{grid:{display:false},ticks:{color:CTXT,font:{weight:'600'}}}}}});
   $('pipe-board').innerHTML=STAGES.map(stg=>{
     const items=state.prospects.filter(p=>p.stage===stg.k);
     return `<div class="col" data-stage="${stg.k}"><div class="col-h"><span><i class="dotc" style="background:${stg.c}"></i>${stg.k}</span><span class="cnt">${items.length}</span></div>${items.map(p=>`
@@ -1550,11 +1551,11 @@ function renderListModal(){
   }
 }
 function pipeList(which){
-  const all=state.prospects, R=STAGE_RANK;
-  const open=all.filter(p=>R[p.stage]>=0&&R[p.stage]<4);
+  const all=state.prospects;
+  const open=all.filter(p=>p.stage!=='Ganada'&&p.stage!=='Perdida');
   if(which==='value')openProspectList('Valor potencial','prospectos abiertos · MRR estimado',open);
   else if(which==='won')openProspectList('Ganadas','prospectos cerrados ganados',all.filter(p=>p.stage==='Ganada'));
-  else if(which==='conv')openProspectList('Oportunidades','llegaron a Oportunidad o cierre',all.filter(p=>R[p.stage]>=3));
+  else if(which==='conv')openProspectList('Todos los prospectos','base de conversión',all);
   else openProspectList('Prospectos abiertos','en negociación',open);
 }
 const _mat=s=>s.legacy||monthsSince(s.start)>=RECURRING_START_MONTH; // mensual que ya factura
