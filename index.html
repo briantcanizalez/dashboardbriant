@@ -1303,7 +1303,9 @@ function reactivateSale(id){const s=findSale(id);if(!s)return;s.churned=false;de
 function refreshSalesViews(){if($('view-ventas').classList.contains('active'))renderSales();if($('view-planes').classList.contains('active'))renderPlanes();if($('view-canales').classList.contains('active'))renderCanales();}
 
 /* ===================== PLANES (buscador + arbol Modalidad>Plan>Cliente) ===================== */
-const editBtn=id=>`<button class="btn sm ghost icon" onclick="openSale('${id}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4z"/></svg></button>`;
+const editBtn=id=>`<button class="btn sm ghost icon" title="Editar" onclick="openSale('${id}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4z"/></svg></button>`;
+const delBtn=id=>`<button class="btn sm danger icon" title="Eliminar" onclick="delSale('${id}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg></button>`;
+const rowActions=id=>`<div class="t-actions">${editBtn(id)}${delBtn(id)}</div>`;
 function renderPlanes(){
   const n=activeSales().length,mrr=salesMRR(false);
   $('pl-clients').textContent=n.toLocaleString('en-US');
@@ -1331,7 +1333,7 @@ function renderPlanesTree(){
       const amt=arr.reduce((a,s)=>a+saleMonthly(s)*(mode==='anual'?12:1),0);
       const impl=arr.reduce((a,s)=>a+saleImpl(s),0);
       html+=`<details class="plangrp" ${q?'open':''}><summary><span class="grp-name">${esc(p.label)} <span class="cnt">${arr.length}</span></span><span class="grp-meta">${fmtUSD(amt)}${mode==='anual'?'/año':'/mes'} &middot; impl ${fmtUSD(impl)}</span></summary>`+
-        `<div class="tablewrap"><table class="responsive"><thead><tr><th>Cliente</th><th>Monto</th><th>Comercial</th><th class="right"></th></tr></thead><tbody>`+arr.map(s=>{const mon=saleMonthly(s);return `<tr><td class="cellwrap" data-label="Cliente"><span class="cellmain">${esc(s.client)}</span></td><td data-label="Monto" class="num">${mode==='anual'?fmtUSD(mon*12)+'/año':fmtUSD(mon)+'/mes'}</td><td data-label="Comercial" class="muted-3">${esc(s.comercial||'—')}</td><td class="t-actions-cell">${editBtn(s.id)}</td></tr>`;}).join('')+`</tbody></table></div></details>`;
+        `<div class="tablewrap"><table class="responsive"><thead><tr><th>Cliente</th><th>Monto</th><th>Comercial</th><th class="right"></th></tr></thead><tbody>`+arr.map(s=>{const mon=saleMonthly(s);return `<tr><td class="cellwrap" data-label="Cliente"><span class="cellmain">${esc(s.client)}</span></td><td data-label="Monto" class="num">${mode==='anual'?fmtUSD(mon*12)+'/año':fmtUSD(mon)+'/mes'}</td><td data-label="Comercial" class="muted-3">${esc(s.comercial||'—')}</td><td class="t-actions-cell" data-label="Acciones">${rowActions(s.id)}</td></tr>`;}).join('')+`</tbody></table></div></details>`;
     });
     html+=`</div></details>`;
   });
