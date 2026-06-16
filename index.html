@@ -117,10 +117,11 @@ button{font-family:inherit}
 
 .kpi{display:flex;flex-direction:column;transition:transform .18s var(--ease),border-color .18s,box-shadow .18s;overflow:hidden}
 .kpi:hover{transform:translateY(-3px);border-color:var(--border-2);box-shadow:var(--sh-2)}
-.kpi[data-go]{cursor:pointer;position:relative}
-.kpi[data-go]:hover{border-color:var(--brand-3)}
-.kpi[data-go]::after{content:'ver ›';position:absolute;right:14px;bottom:11px;font-size:11px;font-weight:700;color:var(--brand-3);opacity:0;transition:opacity .15s}
-.kpi[data-go]:hover::after{opacity:1}
+.kpi[data-go],.kpi[onclick]{cursor:pointer;position:relative}
+.kpi[data-go]:hover,.kpi[onclick]:hover{border-color:var(--brand-3)}
+.kpi[data-go]::after,.kpi[onclick]::after{content:'ver ›';position:absolute;right:14px;bottom:11px;font-size:11px;font-weight:700;color:var(--brand-3);opacity:0;transition:opacity .15s}
+.kpi[data-go]:hover::after,.kpi[onclick]:hover::after{opacity:1}
+.kpi[onclick]::after{content:'ver lista ›'}
 .kpi .khead{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
 .kpi .klabel{font-size:12px;color:var(--txt-2);font-weight:600}
 .kchip{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;background:var(--brand-soft);color:var(--brand-3)}
@@ -468,8 +469,8 @@ canvas{max-width:100%}
       <!-- ====== INICIO ====== -->
       <section class="view active" id="view-inicio">
         <div class="grid kpis" style="margin-bottom:18px">
-          <div class="card kpi" data-go="planes"><div class="khead"><span class="klabel">Clientes activos</span><span class="kchip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span></div><div class="kval" id="k-clientes">0</div><div class="kmeta" id="k-clientes-meta"></div><div class="bar"><i id="k-clientes-bar"></i></div></div>
-          <div class="card kpi" data-go="planes"><div class="khead"><span class="klabel">Recurrencia mensual</span><span class="kchip lav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M23 6l-9.5 9.5-5-5L1 18"/><path d="M17 6h6v6"/></svg></span></div><div class="kval lav tnum" id="k-mrr">$0</div><div class="kmeta" id="k-mrr-meta"></div><div class="bar"><i id="k-mrr-bar"></i></div></div>
+          <div class="card kpi" onclick="showList('inicio-clientes')"><div class="khead"><span class="klabel">Clientes activos</span><span class="kchip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span></div><div class="kval" id="k-clientes">0</div><div class="kmeta" id="k-clientes-meta"></div><div class="bar"><i id="k-clientes-bar"></i></div></div>
+          <div class="card kpi" onclick="showList('inicio-mrr')"><div class="khead"><span class="klabel">Recurrencia mensual</span><span class="kchip lav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M23 6l-9.5 9.5-5-5L1 18"/><path d="M17 6h6v6"/></svg></span></div><div class="kval lav tnum" id="k-mrr">$0</div><div class="kmeta" id="k-mrr-meta"></div><div class="bar"><i id="k-mrr-bar"></i></div></div>
           <div class="card kpi" data-go="tareas"><div class="khead"><span class="klabel">Tareas en curso</span><span class="kchip amber"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg></span></div><div class="kval" id="k-tareas">0</div><div class="kmeta" id="k-tareas-meta"></div></div>
           <div class="card kpi" data-go="tareas"><div class="khead"><span class="klabel">Horas invertidas</span><span class="kchip green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></span></div><div class="kval tnum" id="k-horas">0h</div><div class="kmeta">Tiempo total registrado</div></div>
         </div>
@@ -541,10 +542,10 @@ canvas{max-width:100%}
       <!-- ====== VENTAS ====== -->
       <section class="view" id="view-ventas">
         <div class="grid kpis" style="margin-bottom:16px">
-          <div class="card kpi" data-go="planes"><div class="khead"><span class="klabel">Ventas activas</span></div><div class="kval tnum" id="v-count">0</div><div class="kmeta" id="v-count-meta">en este dashboard</div></div>
-          <div class="card kpi" data-go="planes"><div class="khead"><span class="klabel">Implementación cobrada</span></div><div class="kval lav tnum" id="v-impl">$0</div><div class="kmeta">pago único por cliente</div></div>
-          <div class="card kpi" data-go="planes"><div class="khead"><span class="klabel">MRR de estas ventas</span></div><div class="kval tnum" id="v-mrr">$0</div><div class="kmeta">activo desde el 3er mes</div></div>
-          <div class="card kpi" data-go="planes"><div class="khead"><span class="klabel">MRR potencial</span></div><div class="kval tnum" id="v-mrr-pot">$0</div><div class="kmeta">cuando todas maduren</div></div>
+          <div class="card kpi" onclick="showList('ventas-count')"><div class="khead"><span class="klabel">Ventas activas</span></div><div class="kval tnum" id="v-count">0</div><div class="kmeta" id="v-count-meta">en este dashboard</div></div>
+          <div class="card kpi" onclick="showList('ventas-impl')"><div class="khead"><span class="klabel">Implementación cobrada</span></div><div class="kval lav tnum" id="v-impl">$0</div><div class="kmeta">pago único por cliente</div></div>
+          <div class="card kpi" onclick="showList('ventas-mrr')"><div class="khead"><span class="klabel">MRR de estas ventas</span></div><div class="kval tnum" id="v-mrr">$0</div><div class="kmeta">activo desde el 3er mes</div></div>
+          <div class="card kpi" onclick="showList('ventas-mrrpot')"><div class="khead"><span class="klabel">MRR potencial</span></div><div class="kval tnum" id="v-mrr-pot">$0</div><div class="kmeta">cuando todas maduren</div></div>
         </div>
         <div class="card pad-lg">
           <div class="tablewrap"><table class="responsive"><thead><tr><th>Cliente</th><th>Plan</th><th>Implementación</th><th>Mensual</th><th>Inicio</th><th>Recurrencia</th><th class="right">Acciones</th></tr></thead><tbody id="tbody-ventas"></tbody></table></div>
@@ -578,10 +579,10 @@ canvas{max-width:100%}
           <button data-canal="Rene Gonzalez">Alianzas · Rene</button>
         </div>
         <div class="grid kpis" style="margin-bottom:16px">
-          <div class="card kpi"><div class="khead"><span class="klabel" id="cn-label">Clientes</span></div><div class="kval tnum" id="cn-count">0</div><div class="kmeta" id="cn-canal">canal</div></div>
-          <div class="card kpi"><div class="khead"><span class="klabel">Este mes</span></div><div class="kval tnum" id="cn-mes">0</div><div class="kmeta">clientes nuevos</div></div>
-          <div class="card kpi"><div class="khead"><span class="klabel">MRR aportado</span></div><div class="kval tnum" id="cn-mrr">$0</div><div class="kmeta">recurrente mensual</div></div>
-          <div class="card kpi"><div class="khead"><span class="klabel">Anual aportado</span></div><div class="kval lav tnum" id="cn-anual">$0</div><div class="kmeta">prepago/año</div></div>
+          <div class="card kpi" onclick="canalList('all')"><div class="khead"><span class="klabel" id="cn-label">Clientes</span></div><div class="kval tnum" id="cn-count">0</div><div class="kmeta" id="cn-canal">canal</div></div>
+          <div class="card kpi" onclick="canalList('mes')"><div class="khead"><span class="klabel">Este mes</span></div><div class="kval tnum" id="cn-mes">0</div><div class="kmeta">clientes nuevos</div></div>
+          <div class="card kpi" onclick="canalList('mrr')"><div class="khead"><span class="klabel">MRR aportado</span></div><div class="kval tnum" id="cn-mrr">$0</div><div class="kmeta">recurrente mensual</div></div>
+          <div class="card kpi" onclick="canalList('anual')"><div class="khead"><span class="klabel">Anual aportado</span></div><div class="kval lav tnum" id="cn-anual">$0</div><div class="kmeta">prepago/año</div></div>
         </div>
         <div class="card" style="margin-bottom:16px"><div class="section-head"><h2>Clientes por mes</h2><span class="hint" id="cn-hint">por fecha de alta</span></div><div class="chart-box"><canvas id="chartCanal"></canvas></div></div>
         <div id="canal-meses"></div>
@@ -600,8 +601,8 @@ canvas{max-width:100%}
       <!-- ====== METAS Y PROYECCIÓN ====== -->
       <section class="view" id="view-metas">
         <div class="two" style="margin-bottom:16px">
-          <div class="card kpi" data-go="planes"><div class="khead"><span class="klabel">Meta · 1,000 clientes</span><span class="kchip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/></svg></span></div><div class="kval" id="m-cli-val">0%</div><div class="kmeta" id="m-cli-meta"></div><div class="bar"><i id="m-cli-bar"></i></div></div>
-          <div class="card kpi" data-go="planes"><div class="khead"><span class="klabel">Meta · $25,000 recurrentes / mes</span><span class="kchip green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="2" x2="12" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span></div><div class="kval lav" id="m-mrr-val">0%</div><div class="kmeta" id="m-mrr-meta"></div><div class="bar green"><i id="m-mrr-bar"></i></div></div>
+          <div class="card kpi" onclick="showList('metas-cli')"><div class="khead"><span class="klabel">Meta · 1,000 clientes</span><span class="kchip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/></svg></span></div><div class="kval" id="m-cli-val">0%</div><div class="kmeta" id="m-cli-meta"></div><div class="bar"><i id="m-cli-bar"></i></div></div>
+          <div class="card kpi" onclick="showList('metas-mrr')"><div class="khead"><span class="klabel">Meta · $25,000 recurrentes / mes</span><span class="kchip green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="2" x2="12" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span></div><div class="kval lav" id="m-mrr-val">0%</div><div class="kmeta" id="m-mrr-meta"></div><div class="bar green"><i id="m-mrr-bar"></i></div></div>
         </div>
 
         <div class="card" style="margin-bottom:16px">
@@ -739,6 +740,13 @@ canvas{max-width:100%}
   <div class="field"><label>Fecha</label><input type="date" id="sv-date" /></div>
   <div class="preview" id="sv-preview"></div>
   <div class="actions" style="margin-top:16px"><button class="btn ghost" data-close="modal-service">Cancelar</button><button class="btn" id="sv-save">Guardar servicio</button></div>
+</div></div>
+
+<!-- MODAL LISTA (detalle de un KPI: ¿cuáles son?) -->
+<div class="overlay" id="modal-list"><div class="modal" role="dialog" aria-modal="true" style="max-width:700px">
+  <div class="modal-head"><div><h3 id="list-title">Clientes</h3><p id="list-sub"></p></div><button class="iconbtn" data-close="modal-list" aria-label="Cerrar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+  <div class="searchbar" style="margin-bottom:12px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input id="list-search" type="search" placeholder="Filtrar por nombre…" oninput="renderListModal()"><span class="hint" id="list-count"></span></div>
+  <div class="tablewrap" style="max-height:55vh;overflow:auto"><table class="responsive"><thead><tr><th>Cliente</th><th>Plan</th><th>Monto</th><th>Alta</th></tr></thead><tbody id="list-tbody"></tbody></table></div>
 </div></div>
 
 <script>
@@ -1506,6 +1514,41 @@ function renderBackupBanner(){
 /* ===================== MODALES ===================== */
 function openModal(id,focusId){const o=$(id);o.classList.add('show');if(focusId)setTimeout(()=>$(focusId).focus(),80);}
 function closeModal(id){$(id).classList.remove('show');}
+
+/* ===== Detalle de un KPI: lista de "¿cuáles son?" ===== */
+let listCtx={list:[]};
+function openClientList(title,sub,list){listCtx={title,sub,list};$('list-title').textContent=title;$('list-sub').textContent=sub||'';$('list-search').value='';renderListModal();openModal('modal-list','list-search');}
+function renderListModal(){
+  const q=normName($('list-search').value||'');
+  const arr=(q?listCtx.list.filter(s=>normName(s.client).includes(q)):listCtx.list).slice().sort((a,b)=>normName(a.client).localeCompare(normName(b.client)));
+  $('list-count').textContent=arr.length+' de '+listCtx.list.length;
+  $('list-tbody').innerHTML=arr.map(s=>{const p=PLANS[s.plan]||{label:s.plan};const mon=saleMonthly(s);return `<tr><td class="cellwrap" data-label="Cliente"><span class="cellmain">${esc(s.client)}</span></td><td data-label="Plan"><span class="tag">${esc(p.label)}</span></td><td data-label="Monto" class="num">${s.mode==='anual'?fmtUSD(mon*12)+'/año':fmtUSD(mon)+'/mes'}</td><td data-label="Alta" class="num muted-3">${s.start?fmtDate(s.start):'—'}</td></tr>`;}).join('')||'<tr><td colspan="4" class="muted-3" style="padding:16px;text-align:center">Sin registros.</td></tr>';
+}
+const _mat=s=>s.legacy||monthsSince(s.start)>=RECURRING_START_MONTH; // mensual que ya factura
+function showList(key){
+  const A=activeSales();
+  const map={
+    'inicio-clientes':['Clientes activos','toda la cartera',A],
+    'inicio-mrr':['Recurrencia mensual','mensuales que ya facturan',A.filter(s=>s.mode!=='anual'&&_mat(s))],
+    'ventas-count':['Ventas activas','toda la cartera',A],
+    'ventas-impl':['Implementación cobrada','clientes con implementación',A.filter(s=>saleImpl(s)>0)],
+    'ventas-mrr':['MRR de estas ventas','mensuales ya facturando',A.filter(s=>s.mode!=='anual'&&_mat(s))],
+    'ventas-mrrpot':['MRR potencial','todos los mensuales',A.filter(s=>s.mode!=='anual')],
+    'metas-cli':['Clientes','toda la cartera',A],
+    'metas-mrr':['MRR actual','mensuales ya facturando',A.filter(s=>s.mode!=='anual'&&_mat(s))],
+  };
+  const e=map[key];if(e)openClientList(e[0],e[1],e[2]);
+}
+function canalList(which){
+  const isB=curCanal==='Briant Canizalez';
+  const base=activeSales().filter(s=>isB?(!s.comercial||s.comercial==='Briant Canizalez'):s.comercial===curCanal);
+  const who=isB?'Canal Digital · Briant':'Alianzas · Rene';
+  const M=curMonth();
+  if(which==='mes')openClientList(who+' · este mes',fmtMonth(M),base.filter(s=>(s.start||'').slice(0,7)===M));
+  else if(which==='mrr')openClientList(who+' · MRR aportado','mensuales',base.filter(s=>s.mode!=='anual'));
+  else if(which==='anual')openClientList(who+' · anual aportado','anuales (prepago)',base.filter(s=>s.mode==='anual'));
+  else openClientList(who,'todos los clientes',base);
+}
 document.querySelectorAll('.overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('show');}));
 document.addEventListener('keydown',e=>{if(e.key==='Escape')document.querySelectorAll('.overlay.show').forEach(o=>o.classList.remove('show'));});
 
