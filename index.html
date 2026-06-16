@@ -117,6 +117,10 @@ button{font-family:inherit}
 
 .kpi{display:flex;flex-direction:column;transition:transform .18s var(--ease),border-color .18s,box-shadow .18s;overflow:hidden}
 .kpi:hover{transform:translateY(-3px);border-color:var(--border-2);box-shadow:var(--sh-2)}
+.kpi[data-go]{cursor:pointer;position:relative}
+.kpi[data-go]:hover{border-color:var(--brand-3)}
+.kpi[data-go]::after{content:'ver ›';position:absolute;right:14px;bottom:11px;font-size:11px;font-weight:700;color:var(--brand-3);opacity:0;transition:opacity .15s}
+.kpi[data-go]:hover::after{opacity:1}
 .kpi .khead{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
 .kpi .klabel{font-size:12px;color:var(--txt-2);font-weight:600}
 .kchip{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;background:var(--brand-soft);color:var(--brand-3)}
@@ -464,10 +468,10 @@ canvas{max-width:100%}
       <!-- ====== INICIO ====== -->
       <section class="view active" id="view-inicio">
         <div class="grid kpis" style="margin-bottom:18px">
-          <div class="card kpi"><div class="khead"><span class="klabel">Clientes activos</span><span class="kchip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span></div><div class="kval" id="k-clientes">0</div><div class="kmeta" id="k-clientes-meta"></div><div class="bar"><i id="k-clientes-bar"></i></div></div>
-          <div class="card kpi"><div class="khead"><span class="klabel">Recurrencia mensual</span><span class="kchip lav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M23 6l-9.5 9.5-5-5L1 18"/><path d="M17 6h6v6"/></svg></span></div><div class="kval lav tnum" id="k-mrr">$0</div><div class="kmeta" id="k-mrr-meta"></div><div class="bar"><i id="k-mrr-bar"></i></div></div>
-          <div class="card kpi"><div class="khead"><span class="klabel">Tareas en curso</span><span class="kchip amber"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg></span></div><div class="kval" id="k-tareas">0</div><div class="kmeta" id="k-tareas-meta"></div></div>
-          <div class="card kpi"><div class="khead"><span class="klabel">Horas invertidas</span><span class="kchip green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></span></div><div class="kval tnum" id="k-horas">0h</div><div class="kmeta">Tiempo total registrado</div></div>
+          <div class="card kpi" data-go="planes"><div class="khead"><span class="klabel">Clientes activos</span><span class="kchip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span></div><div class="kval" id="k-clientes">0</div><div class="kmeta" id="k-clientes-meta"></div><div class="bar"><i id="k-clientes-bar"></i></div></div>
+          <div class="card kpi" data-go="planes"><div class="khead"><span class="klabel">Recurrencia mensual</span><span class="kchip lav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M23 6l-9.5 9.5-5-5L1 18"/><path d="M17 6h6v6"/></svg></span></div><div class="kval lav tnum" id="k-mrr">$0</div><div class="kmeta" id="k-mrr-meta"></div><div class="bar"><i id="k-mrr-bar"></i></div></div>
+          <div class="card kpi" data-go="tareas"><div class="khead"><span class="klabel">Tareas en curso</span><span class="kchip amber"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg></span></div><div class="kval" id="k-tareas">0</div><div class="kmeta" id="k-tareas-meta"></div></div>
+          <div class="card kpi" data-go="tareas"><div class="khead"><span class="klabel">Horas invertidas</span><span class="kchip green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></span></div><div class="kval tnum" id="k-horas">0h</div><div class="kmeta">Tiempo total registrado</div></div>
         </div>
         <div class="card" style="margin-bottom:18px">
           <div class="section-head"><h2>Pulso Masivo · Hoy</h2><span class="hint" id="pulso-fecha"></span></div>
@@ -537,10 +541,10 @@ canvas{max-width:100%}
       <!-- ====== VENTAS ====== -->
       <section class="view" id="view-ventas">
         <div class="grid kpis" style="margin-bottom:16px">
-          <div class="card kpi"><div class="khead"><span class="klabel">Ventas activas</span></div><div class="kval tnum" id="v-count">0</div><div class="kmeta" id="v-count-meta">en este dashboard</div></div>
-          <div class="card kpi"><div class="khead"><span class="klabel">Implementación cobrada</span></div><div class="kval lav tnum" id="v-impl">$0</div><div class="kmeta">pago único por cliente</div></div>
-          <div class="card kpi"><div class="khead"><span class="klabel">MRR de estas ventas</span></div><div class="kval tnum" id="v-mrr">$0</div><div class="kmeta">activo desde el 3er mes</div></div>
-          <div class="card kpi"><div class="khead"><span class="klabel">MRR potencial</span></div><div class="kval tnum" id="v-mrr-pot">$0</div><div class="kmeta">cuando todas maduren</div></div>
+          <div class="card kpi" data-go="planes"><div class="khead"><span class="klabel">Ventas activas</span></div><div class="kval tnum" id="v-count">0</div><div class="kmeta" id="v-count-meta">en este dashboard</div></div>
+          <div class="card kpi" data-go="planes"><div class="khead"><span class="klabel">Implementación cobrada</span></div><div class="kval lav tnum" id="v-impl">$0</div><div class="kmeta">pago único por cliente</div></div>
+          <div class="card kpi" data-go="planes"><div class="khead"><span class="klabel">MRR de estas ventas</span></div><div class="kval tnum" id="v-mrr">$0</div><div class="kmeta">activo desde el 3er mes</div></div>
+          <div class="card kpi" data-go="planes"><div class="khead"><span class="klabel">MRR potencial</span></div><div class="kval tnum" id="v-mrr-pot">$0</div><div class="kmeta">cuando todas maduren</div></div>
         </div>
         <div class="card pad-lg">
           <div class="tablewrap"><table class="responsive"><thead><tr><th>Cliente</th><th>Plan</th><th>Implementación</th><th>Mensual</th><th>Inicio</th><th>Recurrencia</th><th class="right">Acciones</th></tr></thead><tbody id="tbody-ventas"></tbody></table></div>
@@ -596,8 +600,8 @@ canvas{max-width:100%}
       <!-- ====== METAS Y PROYECCIÓN ====== -->
       <section class="view" id="view-metas">
         <div class="two" style="margin-bottom:16px">
-          <div class="card kpi"><div class="khead"><span class="klabel">Meta · 1,000 clientes</span><span class="kchip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/></svg></span></div><div class="kval" id="m-cli-val">0%</div><div class="kmeta" id="m-cli-meta"></div><div class="bar"><i id="m-cli-bar"></i></div></div>
-          <div class="card kpi"><div class="khead"><span class="klabel">Meta · $25,000 recurrentes / mes</span><span class="kchip green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="2" x2="12" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span></div><div class="kval lav" id="m-mrr-val">0%</div><div class="kmeta" id="m-mrr-meta"></div><div class="bar green"><i id="m-mrr-bar"></i></div></div>
+          <div class="card kpi" data-go="planes"><div class="khead"><span class="klabel">Meta · 1,000 clientes</span><span class="kchip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/></svg></span></div><div class="kval" id="m-cli-val">0%</div><div class="kmeta" id="m-cli-meta"></div><div class="bar"><i id="m-cli-bar"></i></div></div>
+          <div class="card kpi" data-go="planes"><div class="khead"><span class="klabel">Meta · $25,000 recurrentes / mes</span><span class="kchip green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="2" x2="12" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span></div><div class="kval lav" id="m-mrr-val">0%</div><div class="kmeta" id="m-mrr-meta"></div><div class="bar green"><i id="m-mrr-bar"></i></div></div>
         </div>
 
         <div class="card" style="margin-bottom:16px">
@@ -963,7 +967,7 @@ function renderInicio(){
   $('k-mrr').textContent=fmtUSD(mrr);$('k-mrr-meta').textContent=`Meta ${fmtUSD0(gm)} · ${(mrr/gm*100).toFixed(1)}%`;$('k-mrr-bar').style.width=Math.min(100,mrr/gm*100)+'%';
   $('k-tareas').textContent=state.tasks.filter(t=>t.status==='En curso').length;$('k-tareas-meta').textContent=`${state.tasks.filter(t=>t.status!=='Finalizada').length} activas · ${overdue.length} vencidas`;
   $('k-horas').textContent=(state.tasks.reduce((s,t)=>s+taskMs(t),0)/3600000).toFixed(1)+'h';
-  drawDoughnut('chartClientes',tc,gc,'#7c4dff','n');drawDoughnut('chartMrr',mrr,gm,'#9a73ff','usd');
+  drawDoughnut('chartClientes',tc,gc,'#7c4dff','n','planes');drawDoughnut('chartMrr',mrr,gm,'#9a73ff','usd','planes');
   renderPulso();
 }
 function renderPulso(){
@@ -993,9 +997,10 @@ function agendaBlock(title,list,cls){
      ${t.status==='En curso'?`<span class="timer live tnum" data-timer="${t.id}">${fmtDur(taskMs(t))}</span>`:`<button class="btn sm" onclick="startTask('${t.id}')">Iniciar</button>`}
    </div>`).join('')+`</div>`;
 }
-function drawDoughnut(id,val,goal,color,kind){
+function drawDoughnut(id,val,goal,color,kind,goView){
   const pct=Math.min(100,val/goal*100);if(charts[id])charts[id].destroy();
-  charts[id]=new Chart($(id),{type:'doughnut',data:{datasets:[{data:[pct,100-pct],backgroundColor:[color,'#1e1e2e'],borderWidth:0}]},options:{maintainAspectRatio:false,cutout:'74%',animation:{duration:700},plugins:{legend:{display:false},tooltip:{enabled:false}}},plugins:[{id:'ctr',afterDraw(c){const{ctx,chartArea}=c;const x=(chartArea.left+chartArea.right)/2,y=(chartArea.top+chartArea.bottom)/2;ctx.save();ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillStyle='#f5f5fa';ctx.font='700 30px Space Grotesk';ctx.fillText(pct.toFixed(1)+'%',x,y-8);ctx.fillStyle='#7b7b92';ctx.font='500 13px Inter';ctx.fillText(kind==='usd'?fmtUSD0(val)+' / '+fmtUSD0(goal):val.toLocaleString('en-US')+' / '+goal.toLocaleString('en-US'),x,y+16);ctx.restore();}}]});
+  if(goView)$(id).style.cursor='pointer';
+  charts[id]=new Chart($(id),{type:'doughnut',data:{datasets:[{data:[pct,100-pct],backgroundColor:[color,'#1e1e2e'],borderWidth:0}]},options:{maintainAspectRatio:false,cutout:'74%',animation:{duration:700},onClick:()=>{if(goView)go(goView);},plugins:{legend:{display:false},tooltip:{enabled:false}}},plugins:[{id:'ctr',afterDraw(c){const{ctx,chartArea}=c;const x=(chartArea.left+chartArea.right)/2,y=(chartArea.top+chartArea.bottom)/2;ctx.save();ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillStyle='#f5f5fa';ctx.font='700 30px Space Grotesk';ctx.fillText(pct.toFixed(1)+'%',x,y-8);ctx.fillStyle='#7b7b92';ctx.font='500 13px Inter';ctx.fillText(kind==='usd'?fmtUSD0(val)+' / '+fmtUSD0(goal):val.toLocaleString('en-US')+' / '+goal.toLocaleString('en-US'),x,y+16);ctx.restore();}}]});
 }
 
 /* ===================== TAREAS ===================== */
@@ -1423,13 +1428,13 @@ function renderMetas(){
   }
 
   if(charts.metaCli)charts.metaCli.destroy();
-  charts.metaCli=new Chart($('chartMetaCli'),{type:'bar',data:{labels:['Clientes'],datasets:[{label:'Actuales',data:[tc],backgroundColor:'#5216E7',borderRadius:8},{label:'Faltantes',data:[Math.max(0,gc-tc)],backgroundColor:'#23233a',borderRadius:8}]},options:{maintainAspectRatio:false,indexAxis:'y',scales:{x:{stacked:true,ticks:{color:CTXT},grid:{color:CGRID}},y:{stacked:true,ticks:{color:CTXT},grid:{display:false}}},plugins:{legend:{labels:{color:CTXT,boxWidth:12}}}}});
+  charts.metaCli=new Chart($('chartMetaCli'),{type:'bar',data:{labels:['Clientes'],datasets:[{label:'Actuales',data:[tc],backgroundColor:'#5216E7',borderRadius:8},{label:'Faltantes',data:[Math.max(0,gc-tc)],backgroundColor:'#23233a',borderRadius:8}]},options:{maintainAspectRatio:false,onClick:()=>go('planes'),indexAxis:'y',scales:{x:{stacked:true,ticks:{color:CTXT},grid:{color:CGRID}},y:{stacked:true,ticks:{color:CTXT},grid:{display:false}}},plugins:{legend:{labels:{color:CTXT,boxWidth:12}}}}});
   const recBase=state.config.baseRecurring,recV=salesMRR(true),an=annualCollected();
   if(charts.ingresos)charts.ingresos.destroy();
-  charts.ingresos=new Chart($('chartIngresos'),{type:'doughnut',data:{labels:['Recurrencia base','MRR nuevas ventas','Pagos anuales (÷12)'],datasets:[{data:[recBase,recV,an/12],backgroundColor:['#5216E7','#7c4dff','#DFD2FF'],borderWidth:0}]},options:{maintainAspectRatio:false,cutout:'62%',plugins:{legend:{position:'bottom',labels:{color:CTXT,boxWidth:12,font:{size:11},padding:14}},tooltip:{callbacks:{label:c=>c.label+': '+fmtUSD(c.parsed)}}}}});
+  charts.ingresos=new Chart($('chartIngresos'),{type:'doughnut',data:{labels:['Recurrencia base','MRR nuevas ventas','Pagos anuales (÷12)'],datasets:[{data:[recBase,recV,an/12],backgroundColor:['#5216E7','#7c4dff','#DFD2FF'],borderWidth:0}]},options:{maintainAspectRatio:false,cutout:'62%',onClick:()=>go('planes'),plugins:{legend:{position:'bottom',labels:{color:CTXT,boxWidth:12,font:{size:11},padding:14}},tooltip:{callbacks:{label:c=>c.label+': '+fmtUSD(c.parsed)}}}}});
   const counts=Object.keys(PLANS).map(k=>activeSales().filter(s=>s.plan===k).length);
   if(charts.planes)charts.planes.destroy();
-  charts.planes=new Chart($('chartPlanes'),{type:'bar',data:{labels:Object.values(PLANS).map(p=>p.label),datasets:[{label:'Ventas',data:counts,backgroundColor:'#7c4dff',borderRadius:8}]},options:{maintainAspectRatio:false,scales:{x:{ticks:{color:CTXT},grid:{display:false}},y:{ticks:{color:CTXT,precision:0},grid:{color:CGRID}}},plugins:{legend:{display:false}}}});
+  charts.planes=new Chart($('chartPlanes'),{type:'bar',data:{labels:Object.values(PLANS).map(p=>p.label),datasets:[{label:'Ventas',data:counts,backgroundColor:'#7c4dff',borderRadius:8}]},options:{maintainAspectRatio:false,onClick:()=>go('planes'),scales:{x:{ticks:{color:CTXT},grid:{display:false}},y:{ticks:{color:CTXT,precision:0},grid:{color:CGRID}}},plugins:{legend:{display:false}}}});
 
   renderComision();
 }
