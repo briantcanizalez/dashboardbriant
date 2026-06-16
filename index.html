@@ -94,6 +94,8 @@ button{font-family:inherit}
 /* Bottom nav */
 .botnav{display:none;position:fixed;left:0;right:0;bottom:0;z-index:40;background:rgba(15,15,22,.92);backdrop-filter:blur(16px);border-top:1px solid var(--border);padding:8px 2px calc(8px + env(safe-area-inset-bottom));grid-template-columns:repeat(5,1fr);gap:1px}
 .botnav.b6{grid-template-columns:repeat(6,1fr)}
+.botnav.b7{grid-template-columns:repeat(7,1fr)}
+.botnav.b7 button{font-size:8.5px}
 .botnav button{display:flex;flex-direction:column;align-items:center;gap:4px;border:none;background:transparent;color:var(--txt-3);font-size:9.5px;font-weight:600;padding:6px 1px;border-radius:12px;cursor:pointer;min-height:52px;transition:color .15s;position:relative}
 .botnav svg{width:22px;height:22px;stroke-width:2}
 .botnav .active{color:var(--brand-3)}
@@ -406,10 +408,11 @@ canvas{max-width:100%}
     <nav class="nav" data-nav>
       <button data-view="inicio" class="active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9.5L12 3l9 6.5"/><path d="M5 10v10h14V10"/></svg><span>Inicio</span><span class="navbadge" data-badge></span></button>
       <button data-view="tareas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><span>Tareas</span></button>
-      <button data-view="projects"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg><span>Proyectos</span></button>
       <button data-view="pipeline"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M22 3H2l8 9.46V19l4 2v-8.54z"/></svg><span>Pipeline</span></button>
       <button data-view="campaigns"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 11l18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg><span>Campañas</span></button>
       <button data-view="ventas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="2" x2="12" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg><span>Ventas</span></button>
+      <button data-view="planes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg><span>Planes</span></button>
+      <button data-view="alianzas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span>Alianzas</span></button>
       <button data-view="calendario"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="4" width="18" height="18" rx="2.5"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span>Calendario</span></button>
       <button data-view="metas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/></svg><span>Metas y Proyección</span></button>
     </nav>
@@ -483,21 +486,6 @@ canvas{max-width:100%}
         <div id="task-board-wrap" style="display:none"><div class="board" id="task-board"></div></div>
       </section>
 
-      <!-- ====== PROYECTOS ====== -->
-      <section class="view" id="view-projects">
-        <div id="proj-list-wrap">
-          <div class="grid kpis" style="margin-bottom:18px">
-            <div class="card kpi"><div class="khead"><span class="klabel">Proyectos</span><span class="kchip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></span></div><div class="kval" id="pj-total">0</div><div class="kmeta" id="pj-total-meta">en total</div></div>
-            <div class="card kpi"><div class="khead"><span class="klabel">Activos</span><span class="kchip amber"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg></span></div><div class="kval" id="pj-active">0</div><div class="kmeta">sin cerrar</div></div>
-            <div class="card kpi"><div class="khead"><span class="klabel">Horas invertidas</span><span class="kchip green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></span></div><div class="kval tnum" id="pj-hours">0h</div><div class="kmeta">en todos los proyectos</div></div>
-            <div class="card kpi"><div class="khead"><span class="klabel">Avance promedio</span><span class="kchip lav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></span></div><div class="kval lav tnum" id="pj-avg">0%</div><div class="kmeta">según entregables</div></div>
-          </div>
-          <div id="proj-grid" class="proj-grid"></div>
-          <div id="proj-empty" class="card empty" style="display:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg><p>Aún no tienes proyectos</p><span>Crea el primero con “Nuevo proyecto”.</span></div>
-        </div>
-        <div id="proj-detail-wrap" style="display:none"></div>
-      </section>
-
       <!-- ====== PIPELINE ====== -->
       <section class="view" id="view-pipeline">
         <div class="grid kpis" style="margin-bottom:16px">
@@ -538,6 +526,40 @@ canvas{max-width:100%}
           <div class="tablewrap"><table class="responsive"><thead><tr><th>Cliente</th><th>Plan</th><th>Implementación</th><th>Mensual</th><th>Inicio</th><th>Recurrencia</th><th class="right">Acciones</th></tr></thead><tbody id="tbody-ventas"></tbody></table></div>
           <div id="ventas-empty" class="empty" style="display:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="2" x2="12" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg><p>Aún no registras ventas</p><span>Agrega la primera con “Nueva venta”.</span></div>
         </div>
+
+        <div class="card pad-lg" style="margin-top:16px">
+          <div class="section-head"><h2 style="font-size:17px">Servicios especiales</h2><button class="btn sm" id="btn-new-service"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Nuevo servicio</button></div>
+          <p class="subt">Servicios fuera de los planes (ej. capacitación presencial). No suman al MRR ni al conteo de clientes; generan comisión propia.</p>
+          <div class="tablewrap"><table class="responsive"><thead><tr><th>Cliente</th><th>Servicio</th><th>Valor</th><th>Comisión</th><th>Fecha</th><th class="right">Acciones</th></tr></thead><tbody id="tbody-servicios"></tbody></table></div>
+          <div id="servicios-empty" class="empty" style="display:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><p>Aún no registras servicios</p><span>Agrega el primero con “Nuevo servicio”.</span></div>
+        </div>
+      </section>
+
+      <!-- ====== PLANES ====== -->
+      <section class="view" id="view-planes">
+        <div id="planes-list-wrap">
+          <div class="grid kpis" style="margin-bottom:18px">
+            <div class="card kpi"><div class="khead"><span class="klabel">Clientes en cartera</span></div><div class="kval tnum" id="pl-clients">0</div><div class="kmeta">suscripciones activas</div></div>
+            <div class="card kpi"><div class="khead"><span class="klabel">MRR total</span></div><div class="kval tnum" id="pl-mrr">$0</div><div class="kmeta">recurrente contratado/mes</div></div>
+            <div class="card kpi"><div class="khead"><span class="klabel">Implementaciones</span></div><div class="kval lav tnum" id="pl-impl">$0</div><div class="kmeta">pago único acumulado</div></div>
+            <div class="card kpi"><div class="khead"><span class="klabel">Ticket promedio</span></div><div class="kval tnum" id="pl-arpu">$0</div><div class="kmeta">MRR por cliente</div></div>
+          </div>
+          <p class="subt" style="margin-bottom:14px">Toca un plan para ver los clientes que pertenecen a él, su MRR y lo que generó en implementaciones.</p>
+          <div id="planes-grid" class="proj-grid"></div>
+        </div>
+        <div id="planes-detail-wrap" style="display:none"></div>
+      </section>
+
+      <!-- ====== ALIANZAS ====== -->
+      <section class="view" id="view-alianzas">
+        <div class="grid kpis" style="margin-bottom:16px">
+          <div class="card kpi"><div class="khead"><span class="klabel">Clientes de Rene</span></div><div class="kval tnum" id="al-count">0</div><div class="kmeta">canal Alianzas</div></div>
+          <div class="card kpi"><div class="khead"><span class="klabel">Este mes</span></div><div class="kval tnum" id="al-mes">0</div><div class="kmeta" id="al-mes-meta">clientes nuevos</div></div>
+          <div class="card kpi"><div class="khead"><span class="klabel">MRR aportado</span></div><div class="kval tnum" id="al-mrr">$0</div><div class="kmeta">recurrente mensual</div></div>
+          <div class="card kpi"><div class="khead"><span class="klabel">Anual aportado</span></div><div class="kval lav tnum" id="al-anual">$0</div><div class="kmeta">prepago/año</div></div>
+        </div>
+        <div class="card" style="margin-bottom:16px"><div class="section-head"><h2>Clientes por mes</h2><span class="hint">Rene Gonzalez · por fecha de alta</span></div><div class="chart-box"><canvas id="chartAlianzas"></canvas></div></div>
+        <div id="alianzas-meses"></div>
       </section>
 
       <!-- ====== CALENDARIO ====== -->
@@ -546,7 +568,7 @@ canvas{max-width:100%}
           <div class="cal-head"><button class="iconbtn" id="cal-prev" aria-label="Anterior"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="15 18 9 12 15 6"/></svg></button><h2 id="cal-title" class="font-display"></h2><button class="iconbtn" id="cal-next" aria-label="Siguiente"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="9 18 15 12 9 6"/></svg></button></div>
           <div class="cal-grid" id="cal-dows"></div>
           <div class="cal-grid" id="cal-cells" style="margin-top:6px"></div>
-          <div class="legend"><span><i class="dot" style="background:var(--brand-2)"></i> Inicio de tarea</span><span><i class="dot" style="background:var(--warn)"></i> Fin estimado</span><span><i class="dot" style="background:var(--ok)"></i> Inicio de venta</span><span><i class="dot" style="background:var(--info)"></i> Reunión de proyecto</span></div>
+          <div class="legend"><span><i class="dot" style="background:var(--brand-2)"></i> Inicio de tarea</span><span><i class="dot" style="background:var(--warn)"></i> Fin estimado</span><span><i class="dot" style="background:var(--ok)"></i> Inicio de venta</span><span><i class="dot" style="background:var(--info)"></i> Servicio especial</span></div>
         </div>
       </section>
 
@@ -568,9 +590,8 @@ canvas{max-width:100%}
           <div class="card"><div class="section-head"><h2>Clientes: actual vs meta</h2></div><div class="chart-box sm"><canvas id="chartMetaCli"></canvas></div></div>
           <div class="card"><div class="section-head"><h2>Composición de ingresos</h2></div><div class="chart-box"><canvas id="chartIngresos"></canvas></div></div>
         </div>
-        <div class="two" style="margin-bottom:16px">
+        <div style="margin-bottom:16px">
           <div class="card"><div class="section-head"><h2>Ventas por plan</h2></div><div class="chart-box sm"><canvas id="chartPlanes"></canvas></div></div>
-          <div class="card"><div class="section-head"><h2>Horas por proyecto</h2></div><div class="chart-box sm"><canvas id="chartHoras"></canvas></div><div id="horas-empty" class="empty" style="display:none"><span>Aún no hay tiempo registrado.</span></div></div>
         </div>
 
         <div class="card">
@@ -616,12 +637,13 @@ canvas{max-width:100%}
   </div>
 
   <!-- BOTTOM NAV -->
-  <nav class="botnav b6" data-nav>
+  <nav class="botnav b7" data-nav>
     <button data-view="inicio" class="active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9.5L12 3l9 6.5"/><path d="M5 10v10h14V10"/></svg>Inicio<span class="navbadge" data-badge></span></button>
     <button data-view="tareas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>Tareas</button>
-    <button data-view="projects"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>Proyectos</button>
-    <button data-view="pipeline"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M22 3H2l8 9.46V19l4 2v-8.54z"/></svg>Pipeline</button>
     <button data-view="ventas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="2" x2="12" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>Ventas</button>
+    <button data-view="planes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>Planes</button>
+    <button data-view="alianzas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Alianzas</button>
+    <button data-view="pipeline"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M22 3H2l8 9.46V19l4 2v-8.54z"/></svg>Pipeline</button>
     <button data-view="metas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/></svg>Metas</button>
   </nav>
 </div>
@@ -682,19 +704,24 @@ canvas{max-width:100%}
   <div class="actions"><button class="btn ghost" data-close="modal-campaign">Cancelar</button><button class="btn" id="cp-save">Guardar campaña</button></div>
 </div></div>
 
-<!-- MODAL PROYECTO -->
-<div class="overlay" id="modal-project"><div class="modal" role="dialog" aria-modal="true">
-  <div class="modal-head"><div><h3 id="project-modal-title">Nuevo proyecto</h3><p>Datos generales del proyecto.</p></div><button class="iconbtn" data-close="modal-project" aria-label="Cerrar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
-  <input type="hidden" id="pj-id" />
-  <div class="field"><label>Nombre del proyecto <span class="req">*</span></label><input id="pj-name" placeholder="Ej. Implementación Odoo — Ferretería El Constructor" /></div>
-  <div class="field"><label>Descripción</label><textarea id="pj-desc" rows="2" placeholder="Alcance, objetivo del proyecto…"></textarea></div>
-  <div class="row c2"><div class="field"><label>Fecha de inicio</label><input type="date" id="pj-start" /></div><div class="field"><label>Fase</label><select id="pj-phase"></select></div></div>
-  <div class="actions"><button class="btn ghost" data-close="modal-project">Cancelar</button><button class="btn" id="pj-save">Guardar proyecto</button></div>
+<!-- MODAL SERVICIO ESPECIAL -->
+<div class="overlay" id="modal-service"><div class="modal" role="dialog" aria-modal="true">
+  <div class="modal-head"><div><h3 id="service-modal-title">Nuevo servicio</h3><p>Servicios fuera de los planes (ej. capacitación).</p></div><button class="iconbtn" data-close="modal-service" aria-label="Cerrar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+  <input type="hidden" id="sv-id" />
+  <div class="field"><label>Nombre del cliente <span class="req">*</span></label><input id="sv-client" placeholder="Ej. Distribuidora La Salud" /></div>
+  <div class="field"><label>Servicio</label><input id="sv-type" list="svtypes" placeholder="Ej. Capacitación Presencial" /><datalist id="svtypes"><option value="Capacitación Presencial"></option><option value="Capacitación Virtual"></option><option value="Configuración especial"></option><option value="Soporte adicional"></option></datalist></div>
+  <div class="row c2"><div class="field"><label>Valor del servicio (USD)</label><input type="number" step="0.01" min="0" id="sv-amount" placeholder="Ej. 80.00" /></div><div class="field"><label>Comisión del vendedor (%)</label><input type="number" step="1" min="0" max="100" id="sv-pct" placeholder="50" /></div></div>
+  <div class="field"><label>Fecha</label><input type="date" id="sv-date" /></div>
+  <div class="preview" id="sv-preview"></div>
+  <div class="actions" style="margin-top:16px"><button class="btn ghost" data-close="modal-service">Cancelar</button><button class="btn" id="sv-save">Guardar servicio</button></div>
 </div></div>
 
 <script>
 /* ===================== DATOS ===================== */
-const PLANS={starter:{label:'Starter',impl:30,monthly:9.99},professional:{label:'Professional',impl:40,monthly:19.99},advanced:{label:'Advanced',impl:50,monthly:29.99},deluxe:{label:'Deluxe',impl:60,monthly:49.99},enterprise:{label:'Enterprise',impl:100,monthly:100}};
+const PLANS={starter:{label:'Starter',impl:30,monthly:9.99},basicoMensual:{label:'Plan Básico Mensual',impl:30,monthly:5},professional:{label:'Professional',impl:40,monthly:19.99},advanced:{label:'Advanced',impl:50,monthly:29.99},deluxe:{label:'Deluxe',impl:60,monthly:49.99},enterprise:{label:'Enterprise',impl:100,monthly:100},basicoAnual:{label:'Básico Anual',impl:30,monthly:5,annualOnly:true},starterAnual:{label:'Starter Anual',impl:30,monthly:9.99,annualOnly:true},professionalIncrize:{label:'Professional Incrize',impl:0,monthly:20,annualOnly:true},especial:{label:'Caso especial',impl:0,monthly:0,special:true}};
+/* monto mensual e implementación de una venta; si trae customMonthly/customImpl (anuales con monto real, especiales) se respeta, si no usa el del plan */
+const saleMonthly=s=>s.customMonthly!=null?(+s.customMonthly||0):(PLANS[s.plan]?.monthly||0);
+const saleImpl=s=>s.customImpl!=null?(+s.customImpl||0):(PLANS[s.plan]?.impl||0);
 const RECURRING_START_MONTH=3;
 const STORE_KEY='odoo_factura_dashboard_v1';
 const STAGES=[{k:'Lead',c:'#7b7b92'},{k:'MQL',c:'#60a5fa'},{k:'SQL',c:'#9a73ff'},{k:'Oportunidad',c:'#fbbf24'},{k:'Ganada',c:'#34d399'},{k:'Perdida',c:'#f87171'}];
@@ -703,10 +730,85 @@ const STAGE_RANK={Lead:0,MQL:1,SQL:2,Oportunidad:3,Ganada:4,Perdida:-1};
 const STAGEMAP={Prospecto:'Lead',Demo:'MQL','Negociación':'Oportunidad'}; // migración de etapas viejas
 const MEDIOS=['WhatsApp','Facebook','Reunión','Visita','Llamada'];
 const ORIGENES=['Pauta','Referido','Alianza Contable','Contacto personal'];
-const defaultState={tasks:[],sales:[],prospects:[],campaigns:[],projects:[],history:[],config:{baseClients:494,goalClients:1000,baseRecurring:7151.23,goalRecurring:25000,annualPayments:11988.18,mrrMesMeta:1000,salaryBase:0,bono:0,metaMes:24,lastBackup:null}};
-function normalize(d){const s={...structuredClone(defaultState),...d,config:{...defaultState.config,...(d.config||{})}};['tasks','sales','prospects','campaigns','projects','history'].forEach(k=>{if(!Array.isArray(s[k]))s[k]=[];});
+const defaultState={tasks:[],sales:[],services:[],prospects:[],campaigns:[],projects:[],history:[],config:{baseClients:494,goalClients:1000,baseRecurring:7151.23,goalRecurring:25000,annualPayments:11988.18,mrrMesMeta:1000,salaryBase:0,bono:0,metaMes:24,lastBackup:null,seededOdooBatch1:false,seededBookV3:false,seededAnnualV1:false,seededComercialV1:false}};
+function normalize(d){const s={...structuredClone(defaultState),...d,config:{...defaultState.config,...(d.config||{})}};['tasks','sales','services','prospects','campaigns','projects','history'].forEach(k=>{if(!Array.isArray(s[k]))s[k]=[];});
   s.prospects.forEach(p=>{if(STAGEMAP[p.stage])p.stage=STAGEMAP[p.stage];if(!p.bant)p.bant={b:false,a:false,n:false,t:false};});
   return s;}
+
+/* ---- Carga inicial: ventas y servicios desde el CRM (una sola vez) ---- */
+const SEED_SALES=[
+  {client:'ALVANEZ, GERMAN SALVADOR',plan:'advanced',mode:'mensual',start:'2026-06-12'},
+  {client:'AIRESEVEN, SOCIEDAD ANONIMA DE CAPITAL VARIABLE',plan:'professional',mode:'mensual',start:'2026-06-15'},
+  {client:'CANIZALES AMAYA, VANESSA NOEMI',plan:'professional',mode:'mensual',start:'2026-06-05'},
+  {client:'Diaz Vegas, Samuel David',plan:'professional',mode:'mensual',start:'2026-06-01'},
+  {client:'ZAVALA ALFARO, RAMON',plan:'basicoAnual',mode:'anual',start:'2026-06-10'},
+  {client:'FAJARDO ASENCIO, CRISTA BELL',plan:'starter',mode:'mensual',start:'2026-06-05'},
+  {client:'MIGUEL ALFONSO PRIETO HERNÁNDEZ',plan:'starter',mode:'mensual',start:'2026-06-04'},
+  {client:'Hugo Aristides Ángulo Rogel',plan:'starter',mode:'mensual',start:'2026-06-01'},
+];
+const SEED_SERVICES=[
+  {client:'MEDINA CUELLAR, JOSE ALBERTO',type:'Capacitación Presencial',amount:80,commissionPct:50,date:'2026-06-05'},
+];
+const normName=s=>(s||'').toString().trim().toLowerCase().replace(/\s+/g,' ');
+function seedOdooBatch1(){
+  if(state.config.seededOdooBatch1)return;
+  const have=new Set(state.sales.map(s=>normName(s.client)));
+  SEED_SALES.forEach(s=>{if(!have.has(normName(s.client))){state.sales.push({id:uid(),...s,createdAt:Date.now()});have.add(normName(s.client));}});
+  const haveSv=new Set(state.services.map(s=>normName(s.client)+'|'+normName(s.type)));
+  SEED_SERVICES.forEach(s=>{if(!haveSv.has(normName(s.client)+'|'+normName(s.type))){state.services.push({id:uid(),...s,createdAt:Date.now()});}});
+  state.config.seededOdooBatch1=true;
+  save();
+}
+
+/* ---- Cartera real (8 listados por plan, crm.lead): 494 clientes unicos ---- */
+/* Formato: {c:nombre, p:planKey, m:modalidad, d:fecha de creacion ISO} */
+const SEED_BOOK_V3=[{"c":"JAIME SALVADOR CALDERON RIVERA","p":"starterAnual","m":"anual","d":"2026-05-07"},{"c":"CRISTIAN IVAN HERNANDEZ MOLINA","p":"starterAnual","m":"anual","d":"2026-03-27"},{"c":"Carolina Ivette Alfaro de Augspurg","p":"starterAnual","m":"anual","d":"2026-02-02"},{"c":"QUINTANILLA MORENO, DOUGLAS ANTONIO","p":"basicoAnual","m":"anual","d":"2026-01-29"},{"c":"ARTIGA LUNA, JUAN JOSÉ","p":"basicoAnual","m":"anual","d":"2026-01-23"},{"c":"María Elena Ramos de Aragón","p":"basicoAnual","m":"anual","d":"2026-01-21"},{"c":"MENJÍVAR RODRÍGUEZ, IRVING JOSUE","p":"basicoAnual","m":"anual","d":"2026-01-21"},{"c":"ARTIGA LUNA, JUAN JOSÉ","p":"basicoAnual","m":"anual","d":"2026-01-20"},{"c":"María Alicia Romero de Melara","p":"basicoAnual","m":"anual","d":"2025-12-23"},{"c":"Hector Alejandro Retana Chinchilla","p":"basicoAnual","m":"anual","d":"2025-11-27"},{"c":"ZAVALA ALFARO, RAMON","p":"basicoAnual","m":"anual","d":"2026-06-10"},{"c":"CASTILLO MACHADO FREDI ARNOLDO","p":"basicoAnual","m":"anual","d":"2026-05-31"},{"c":"HEIDI GUADALUPE OROZCO VILLA","p":"basicoAnual","m":"anual","d":"2026-05-22"},{"c":"LINARES, GABRIELA YAMILLETH","p":"basicoAnual","m":"anual","d":"2026-05-22"},{"c":"GONZALEZ CORDOVA LUIS ALBERTO","p":"basicoAnual","m":"anual","d":"2026-05-22"},{"c":"GONZALEZ CORDOVA, DENNYS EDWARD","p":"basicoAnual","m":"anual","d":"2026-05-20"},{"c":"MARTINEZ RIVAS, DANIEL ANTONIO","p":"basicoAnual","m":"anual","d":"2026-05-20"},{"c":"MARTINEZ RIVAS, JOSE FERNANDO","p":"basicoAnual","m":"anual","d":"2026-05-20"},{"c":"ESCOBAR HERRERA, JOSE MAURICIO","p":"basicoAnual","m":"anual","d":"2026-05-20"},{"c":"ERICK FRANCISCO RUANO FUENTES","p":"basicoAnual","m":"anual","d":"2026-05-07"},{"c":"PINEDA ZOMETA, JAIME GUILLERMO","p":"basicoAnual","m":"anual","d":"2026-04-20"},{"c":"Lizeth Virginia Vargas de Hernández","p":"basicoAnual","m":"anual","d":"2026-04-06"},{"c":"ALVARENGA ZETINO, JORGE ALEXANDER","p":"basicoAnual","m":"anual","d":"2026-02-25"},{"c":"ROMERO GUADRON, OSCAR MOUSELY","p":"basicoAnual","m":"anual","d":"2026-02-17"},{"c":"MARTÍNEZ VENTURA, NESTOR DE JESUS","p":"basicoAnual","m":"anual","d":"2026-02-17"},{"c":"MOLINA DE SERNA, LILIAN NOEMY","p":"basicoAnual","m":"anual","d":"2026-02-07"},{"c":"ARGUETA ACEVEDO, KARLA MARIA","p":"basicoAnual","m":"anual","d":"2026-01-30"},{"c":"Carmen Aida Saravia de Vides","p":"basicoMensual","m":"mensual","d":"2025-12-16"},{"c":"BORJAS MANCIA, WILBER AMILCAR","p":"basicoMensual","m":"mensual","d":"2025-12-09"},{"c":"LAZO ROMERO OSCAR ANTONIO","p":"basicoMensual","m":"mensual","d":"2025-12-05"},{"c":"CHILIN TORRES, JUAN RICARDO","p":"basicoMensual","m":"mensual","d":"2025-12-05"},{"c":"JULIO ERNESTO GARCIA COLOCHO","p":"basicoMensual","m":"mensual","d":"2025-12-05"},{"c":"RICARDO ARMANDO PEÑATE GUERRA","p":"basicoMensual","m":"mensual","d":"2025-12-01"},{"c":"Bernarda Victoria Espinoza de Segovia","p":"basicoMensual","m":"mensual","d":"2025-12-01"},{"c":"IRAHETA ESCOBAR, DORIS BEATRIZ","p":"basicoMensual","m":"mensual","d":"2025-11-25"},{"c":"Luis Gustavo Flores Torres","p":"basicoMensual","m":"mensual","d":"2025-11-21"},{"c":"CRC INGENIEROS SOCIEDAD ANONIMA DE CAPITAL VARIABLE","p":"basicoMensual","m":"mensual","d":"2025-11-19"},{"c":"Carlos Humberto Nolasco Arroyo","p":"basicoMensual","m":"mensual","d":"2025-11-18"},{"c":"HECTOR ARMANDO CARDOZA FRANCO","p":"basicoMensual","m":"mensual","d":"2025-10-30"},{"c":"CARDOZA MELENDEZ, HECTOR WILFREDO","p":"basicoMensual","m":"mensual","d":"2025-10-30"},{"c":"Catherine Michelle Minero Reyes","p":"basicoMensual","m":"mensual","d":"2025-10-21"},{"c":"Margarita Minero","p":"basicoMensual","m":"mensual","d":"2025-10-21"},{"c":"Ricardo Antonio Chacón Chacón","p":"basicoMensual","m":"mensual","d":"2025-10-21"},{"c":"Barrera Gallegos Carlos Javier","p":"basicoMensual","m":"mensual","d":"2025-10-16"},{"c":"JSL, S.A. de C.V.","p":"basicoMensual","m":"mensual","d":"2025-10-16"},{"c":"HERNANDEZ DOMINGUEZ, MAX PATRICIO","p":"basicoMensual","m":"mensual","d":"2025-10-13"},{"c":"HERNANDEZ GONZALEZ, JAIME ARTURO","p":"basicoMensual","m":"mensual","d":"2025-09-29"},{"c":"Noé Ernesto Martínez Navas","p":"basicoMensual","m":"mensual","d":"2025-09-24"},{"c":"G+H CONSULTORES, S.A. DE C.V.","p":"basicoMensual","m":"mensual","d":"2025-09-19"},{"c":"Be So Creative","p":"basicoMensual","m":"mensual","d":"2025-09-05"},{"c":"Soluciones Integrales en Construcción S.A.S DE C.V.","p":"basicoMensual","m":"mensual","d":"2025-08-01"},{"c":"José Ernesto Martínez Argueta","p":"basicoMensual","m":"mensual","d":"2025-07-29"},{"c":"Orlando José Baires Salinas","p":"basicoMensual","m":"mensual","d":"2025-07-17"},{"c":"Idalia Elizabeth Salazar Molina","p":"basicoMensual","m":"mensual","d":"2025-07-14"},{"c":"Hans Stuart Valle Romero","p":"basicoMensual","m":"mensual","d":"2025-07-12"},{"c":"Fidias Noé Paz Hernández","p":"basicoMensual","m":"mensual","d":"2025-07-10"},{"c":"TANIA VANESSA AGUILAR FLORES","p":"basicoMensual","m":"mensual","d":"2025-07-09"},{"c":"RENE MAURICIO MEDINA SALAZAR","p":"basicoMensual","m":"mensual","d":"2025-07-06"},{"c":"Jerónima Elizabeth Peñate Sanchez","p":"basicoMensual","m":"mensual","d":"2025-06-26"},{"c":"METAFORA KIDS S.A. DE C.V.","p":"basicoMensual","m":"mensual","d":"2025-06-22"},{"c":"EDWIN MAURICIO AVILES CHAVEZ","p":"basicoMensual","m":"mensual","d":"2025-06-16"},{"c":"Mayora Re Consultores S.A. de C.V.","p":"basicoMensual","m":"mensual","d":"2025-06-16"},{"c":"DCREATIVE S.A. DE C.V.","p":"basicoMensual","m":"mensual","d":"2025-06-16"},{"c":"EDWIN JOSUÉ MARROQUÍN CARRANZA","p":"basicoMensual","m":"mensual","d":"2025-11-12"},{"c":"Carmen Elena Zepeda de Romero","p":"basicoMensual","m":"mensual","d":"2025-11-10"},{"c":"GUEVARA VASQUEZ, BEATRIZ MARIA","p":"basicoMensual","m":"mensual","d":"2025-11-10"},{"c":"Marta Leonor Monge de Hernandez","p":"basicoMensual","m":"mensual","d":"2025-11-10"},{"c":"IRIS BEATRIZ HERNANDEZ FLORES","p":"basicoMensual","m":"mensual","d":"2025-11-03"},{"c":"Maritza Elena Roldan Vasquez","p":"basicoMensual","m":"mensual","d":"2025-10-06"},{"c":"JOSE CALIXTO HERRERA HURTADO","p":"basicoMensual","m":"mensual","d":"2025-09-25"},{"c":"MUEBLES METÁLICOS GUIMAR’T S.A. DE C.V.","p":"basicoMensual","m":"mensual","d":"2025-09-25"},{"c":"Milk factory, s.a de c.v","p":"basicoMensual","m":"mensual","d":"2025-09-16"},{"c":"Allan Humberto Escapini","p":"basicoMensual","m":"mensual","d":"2025-09-12"},{"c":"Edwin Osmin Romero Portillo","p":"basicoMensual","m":"mensual","d":"2025-09-10"},{"c":"JOSE RAUL ALFARO HERNANDEZ","p":"basicoMensual","m":"mensual","d":"2025-09-09"},{"c":"GRUPO DOV, SOCIEDAD ANONIMA DE CAPITAL VARIABLE","p":"basicoMensual","m":"mensual","d":"2025-08-12"},{"c":"José Daniel Tejada Alvarado","p":"basicoMensual","m":"mensual","d":"2025-08-08"},{"c":"NENEOS, SOCIEDAD ANONIMA DE CAPITAL VARAIBLE NENEOS, S.A DE C.V","p":"basicoMensual","m":"mensual","d":"2025-07-25"},{"c":"MARIA VERONICA AYALA AREVALO","p":"basicoMensual","m":"mensual","d":"2025-07-25"},{"c":"IGUAZU S.A DE C.V","p":"basicoMensual","m":"mensual","d":"2025-07-25"},{"c":"SOLUCIONES ELECTRICAS Y CONSTRUCCION S.A. DE C.V.","p":"basicoMensual","m":"mensual","d":"2025-07-02"},{"c":"Oscar Armando Jubis Gomez","p":"basicoMensual","m":"mensual","d":"2025-07-01"},{"c":"GRUPO GUEVARA S.A. DE C.V.","p":"enterprise","m":"mensual","d":"2025-07-25"},{"c":"EVELYN ISABEL AMAYA DE RAMÍREZ","p":"enterprise","m":"mensual","d":"2025-06-27"},{"c":"LENTILLAS S.A DE C.V","p":"enterprise","m":"mensual","d":"2025-05-30"},{"c":"FRANCISCO RIVERA AGUILAR","p":"deluxe","m":"mensual","d":"2026-06-03"},{"c":"Restaurante kailán chino S.A.S. de C.V.","p":"deluxe","m":"mensual","d":"2026-01-28"},{"c":"CLAUDIA LILIANA MELENDEZ DE HERNANDEZ","p":"deluxe","m":"mensual","d":"2026-01-23"},{"c":"CARRANZA DE MENDOZA, SILVIA","p":"deluxe","m":"mensual","d":"2025-11-04"},{"c":"GRUPO ESTRADA BONILLA, SOCIEDAD ANONIMA DE CAPITAL VARIABLE","p":"deluxe","m":"mensual","d":"2025-10-27"},{"c":"ARIGATO, S.A. DE C.V.","p":"deluxe","m":"mensual","d":"2025-09-04"},{"c":"Alaska’s Ice S.A. de C.V.","p":"deluxe","m":"mensual","d":"2025-09-01"},{"c":"VENUM GROUP S.A. DE C.V.","p":"deluxe","m":"mensual","d":"2025-06-22"},{"c":"Jorge Américo Portillo Orellana","p":"deluxe","m":"mensual","d":"2025-06-05"},{"c":"ESTRADA, JOSE HUMBERTO","p":"deluxe","m":"mensual","d":"2026-05-31"},{"c":"PEREZ HERNANDEZ, FRANKLIN BLADIMIR","p":"deluxe","m":"mensual","d":"2026-05-22"},{"c":"MIRA TRIGUEROS, JOSE FABIO","p":"deluxe","m":"mensual","d":"2026-05-09"},{"c":"CAMPOS MARTÍNEZ, CLAUDIA JACQUELINE","p":"deluxe","m":"mensual","d":"2026-04-08"},{"c":"Gutierres de Regalado, Ingrid Nasaret","p":"deluxe","m":"mensual","d":"2026-03-20"},{"c":"DEL CID ARGUELLO, ROGER FRANCISCO","p":"deluxe","m":"mensual","d":"2026-02-25"},{"c":"COCINA ESPERANZA, SOCIEDAD ANÓNIMA DE CAPITAL VARIABLE SOCIEDAD ANÓNIMA","p":"deluxe","m":"mensual","d":"2026-02-20"},{"c":"Lorenzo Ernesto Itzep Guerrero","p":"deluxe","m":"mensual","d":"2026-02-12"},{"c":"DORA MERCEDES VILLALOBOS CASTRO","p":"advanced","m":"mensual","d":"2026-02-12"},{"c":"GLENDA TATIANA CARDONA DE MORATAYA","p":"advanced","m":"mensual","d":"2026-02-09"},{"c":"JOSE XAM TAMUP","p":"advanced","m":"mensual","d":"2026-02-03"},{"c":"PEÑATE CASTRO, PEDRO ANTONIO","p":"advanced","m":"mensual","d":"2026-01-21"},{"c":"KARLA MARIA RIVAS DE REYES","p":"advanced","m":"mensual","d":"2026-01-08"},{"c":"Grupo Cina S.A de C.V","p":"advanced","m":"mensual","d":"2026-01-07"},{"c":"LEIDI ADELI GOMEZ DE GUEVARA","p":"advanced","m":"mensual","d":"2025-12-15"},{"c":"Corporacion Mundo Maya S.A. de C.V.","p":"advanced","m":"mensual","d":"2025-11-26"},{"c":"Walter Carlos Cerón Gutierrez","p":"advanced","m":"mensual","d":"2025-11-24"},{"c":"PACIFIC NORTHWEST INVESTMENTS, S.A. DE C.V.","p":"advanced","m":"mensual","d":"2025-11-21"},{"c":"GRUPO GOMEZ VIDES, S.A. DE C.V.","p":"advanced","m":"mensual","d":"2025-11-19"},{"c":"GRUPO DIBELLA SOCIEDAD ANONIMA DE CAPITAL VARIABLE","p":"advanced","m":"mensual","d":"2025-11-15"},{"c":"ADUANERA CERRITOS, S.A. DE C.V.","p":"advanced","m":"mensual","d":"2025-11-11"},{"c":"Blanca Aracely Arévalo de Rodas","p":"advanced","m":"mensual","d":"2025-11-06"},{"c":"Olga Elizabeth Ayala de Montes","p":"advanced","m":"mensual","d":"2025-10-13"},{"c":"Jeremías Cruz Rivas","p":"advanced","m":"mensual","d":"2025-09-26"},{"c":"DELMI VASQUEZ DE HERRARTE","p":"advanced","m":"mensual","d":"2025-09-23"},{"c":"Clínicas Metabólicas S.A. de C.V.","p":"advanced","m":"mensual","d":"2025-09-19"},{"c":"Clínicas Contreras Hernández S.A. de C.V.","p":"advanced","m":"mensual","d":"2025-09-19"},{"c":"GLORIA ESPERANZA LOPEZ DE RODRIGUEZ","p":"advanced","m":"mensual","d":"2025-09-17"},{"c":"LUNA PAN S.A DE C.V","p":"advanced","m":"mensual","d":"2025-09-16"},{"c":"NELSON ARMANDO INGLES PORTILLO","p":"advanced","m":"mensual","d":"2025-09-11"},{"c":"Mirella Guadalupe González de Segovia","p":"advanced","m":"mensual","d":"2025-09-09"},{"c":"VIGIL ROMERO OLGA DINORA","p":"advanced","m":"mensual","d":"2025-09-05"},{"c":"Grupo M.C. S.A. DE C.V.","p":"advanced","m":"mensual","d":"2025-09-01"},{"c":"EMPRENDEDORES EN MOVIMIENTO, SOCIEDAD POR ACCIONES SIMPLIFICADA","p":"advanced","m":"mensual","d":"2025-08-19"},{"c":"José Antonio Marenco Granados","p":"advanced","m":"mensual","d":"2025-08-18"},{"c":"VIDENTAL S.A. DE C.V.","p":"advanced","m":"mensual","d":"2025-07-25"},{"c":"Grupo Davsa, S.A. de C.V.","p":"advanced","m":"mensual","d":"2025-07-22"},{"c":"UNION DE PERSONAS ADRICA","p":"advanced","m":"mensual","d":"2025-07-12"},{"c":"BICI GARLO S. A. DE C. V.","p":"advanced","m":"mensual","d":"2025-07-07"},{"c":"JOVITA ALVARADO & ABOGADOS ASOCIADOS S.A. DE C.V.","p":"advanced","m":"mensual","d":"2025-07-04"},{"c":"ASESORÍA TÉCNICA DE POLIGRAFÍA INTERNACIONAL EL SALVADOR, S.A. DE C.V.","p":"advanced","m":"mensual","d":"2025-06-23"},{"c":"José Mauricio Linares Reyes","p":"advanced","m":"mensual","d":"2025-06-16"},{"c":"Mario Francisco Melgar Melgar","p":"advanced","m":"mensual","d":"2025-06-16"},{"c":"Marto Xam Grave","p":"advanced","m":"mensual","d":"2025-06-09"},{"c":"JAIME EDUARDO GARCIA ORANTES","p":"advanced","m":"mensual","d":"2025-06-04"},{"c":"SARA GUIROLA ERROA","p":"advanced","m":"mensual","d":"2025-05-30"},{"c":"ALVANEZ, GERMAN SALVADOR","p":"advanced","m":"mensual","d":"2026-06-12"},{"c":"QUINTANILLA DE CUYUCH, ALMA JANETH","p":"advanced","m":"mensual","d":"2026-05-13"},{"c":"MELENDEZ MANCIA, CINTYA MERCEDES","p":"advanced","m":"mensual","d":"2026-04-30"},{"c":"MENENDEZ PEREZ, ROBINSON","p":"advanced","m":"mensual","d":"2026-04-25"},{"c":"Maynor Oswaldo Marroquín Samayoa","p":"advanced","m":"mensual","d":"2026-04-24"},{"c":"POLANCO HERNANDEZ, ENRIQUE ARTURO","p":"advanced","m":"mensual","d":"2026-03-04"},{"c":"FACTORIA AG, SOCIEDAD POR ACCIONES SIMPLIFICADA DE CAPITAL VARIABLE","p":"advanced","m":"mensual","d":"2026-03-03"},{"c":"MIRNA ELIZABET GUTIERREZ MEJIA","p":"advanced","m":"mensual","d":"2025-07-18"},{"c":"Edwin Ulises Munguia Hernandez","p":"advanced","m":"mensual","d":"2025-10-21"},{"c":"Karla Erika Leistenschneider de Castillo","p":"advanced","m":"mensual","d":"2025-09-30"},{"c":"RICARDO ALONSO TORRES GOMEZ","p":"advanced","m":"mensual","d":"2025-07-19"},{"c":"Pedro Luis Gomez Rosales","p":"advanced","m":"mensual","d":"2025-07-14"},{"c":"Ana María Torres de López","p":"advanced","m":"mensual","d":"2025-07-11"},{"c":"FERNANDO JAVIER FERNANDEZ AYALA","p":"professional","m":"mensual","d":"2026-05-29"},{"c":"RICARDO DAVID GONZALEZ MARQUEZ","p":"professional","m":"mensual","d":"2026-05-26"},{"c":"YANIRA ROXINY FUENTES MARQUEZ","p":"professional","m":"mensual","d":"2026-05-26"},{"c":"CARLOS ALBERTO MIRON CEA","p":"professional","m":"mensual","d":"2026-05-04"},{"c":"LINA MARIA MACHADO DE GARCIA","p":"professional","m":"mensual","d":"2026-04-20"},{"c":"RONALD JAIR RIVERA PORTILLO","p":"professional","m":"mensual","d":"2026-03-26"},{"c":"ANGEL LIZANDRO DIAZ BONILLA","p":"professional","m":"mensual","d":"2026-03-26"},{"c":"KARLA YANIRA AYALA MORENO","p":"professional","m":"mensual","d":"2026-03-26"},{"c":"JORGE ERNESTO POLANCO","p":"professional","m":"mensual","d":"2026-03-06"},{"c":"OSCAR ANIBAL LOPEZ MARTINEZ","p":"professional","m":"mensual","d":"2026-03-04"},{"c":"CRISTIAN ERNESTO MELENDEZ GOMEZ","p":"professional","m":"mensual","d":"2026-02-18"},{"c":"MARIO MAURICIO MELENDEZ GOMEZ","p":"professional","m":"mensual","d":"2026-02-17"},{"c":"NELSON EDGARDO FRANCO LOPEZ","p":"professional","m":"mensual","d":"2026-02-17"},{"c":"GABRIELA MABEL URRUTIA GARCIA","p":"professional","m":"mensual","d":"2026-02-17"},{"c":"RAUL OSWALDO GOMEZ MELENDEZ","p":"professional","m":"mensual","d":"2026-02-17"},{"c":"SELVIN ALEXY ORELLANA FUENTES","p":"professional","m":"mensual","d":"2026-02-17"},{"c":"FRANCISCO JAVIER QUINTANILLA MUNGUIA","p":"professional","m":"mensual","d":"2026-02-09"},{"c":"PABLO ADOLFO MURGAS ESCOBAR","p":"professional","m":"mensual","d":"2026-02-07"},{"c":"ORTEGA CRUZ, JOSE ELIAS","p":"professional","m":"mensual","d":"2026-02-03"},{"c":"JOSE RAUL GALLARDO NAJERA","p":"professional","m":"mensual","d":"2026-01-30"},{"c":"LUCILA VILMA QUIJADA PINEDA","p":"professional","m":"mensual","d":"2026-01-30"},{"c":"MARTA GLORIA AGUIRRE DE RIVAS","p":"professional","m":"mensual","d":"2026-01-29"},{"c":"COSTA BEBER DE VASQUEZ, IZABEL","p":"professional","m":"mensual","d":"2026-01-28"},{"c":"FONDO DE TITULARIZACION DE INMUEBLES HENCORP VALORES COMPLEJO EPIC CERO UNO","p":"professional","m":"mensual","d":"2026-01-27"},{"c":"ARANA RODRÍGUEZ, ELMER FRANCISCO","p":"professional","m":"mensual","d":"2026-01-27"},{"c":"KARLA ELIZABETH LEMUS ZETINO","p":"professional","m":"mensual","d":"2026-01-22"},{"c":"KATIA MARIA URRUTIA DE SERPAS","p":"professional","m":"mensual","d":"2026-01-19"},{"c":"JOSE ISIDRO CHAVEZ QUINTANILLA","p":"professional","m":"mensual","d":"2026-01-19"},{"c":"AVILES MURCIA, LUIS FERNANDO","p":"professional","m":"mensual","d":"2026-01-15"},{"c":"SANDOVAL SANTIAGO, NESTOR VLADIMIR","p":"professional","m":"mensual","d":"2026-01-14"},{"c":"Marroquín Hernández, Alma Marisol","p":"professional","m":"mensual","d":"2026-01-13"},{"c":"ALMA GUADALUPE HERRERA DE SOMOZA","p":"professional","m":"mensual","d":"2026-01-12"},{"c":"Melgar de Sánchez Marta Ruth","p":"professional","m":"mensual","d":"2026-01-12"},{"c":"MARIO EDUARDO HERNÁNDEZ MONTALVO","p":"professional","m":"mensual","d":"2026-01-08"},{"c":"SILVIA MARGARITA RAMIREZ PARADA","p":"professional","m":"mensual","d":"2025-12-20"},{"c":"PLANET FITNESS GYM S.A. DE C.V.","p":"professional","m":"mensual","d":"2025-12-17"},{"c":"KELVIN ALEXANDER SERPAS GOMEZ","p":"professional","m":"mensual","d":"2025-12-17"},{"c":"ROBERTO JOSE CHICAS MEDRANO","p":"professional","m":"mensual","d":"2025-12-17"},{"c":"MIGUEL ANGEL RIVERA MARQUEZ","p":"professional","m":"mensual","d":"2025-12-17"},{"c":"HILDA MARIA DEL CID SANCHEZ","p":"professional","m":"mensual","d":"2025-12-16"},{"c":"JOSE RICARDO URRUTIA GARCIA","p":"professional","m":"mensual","d":"2025-12-16"},{"c":"RAMÍREZ ALVARADO, MARÍA DEL CARMEN","p":"professional","m":"mensual","d":"2025-12-16"},{"c":"BLANCA ELIZABETH QUINTANILLA MARTINEZ","p":"professional","m":"mensual","d":"2025-12-15"},{"c":"SANDRA LORENA ROMERO DE GARCIA","p":"professional","m":"mensual","d":"2025-12-15"},{"c":"GUARDADO CRUZ, PASTOR","p":"professional","m":"mensual","d":"2025-12-15"},{"c":"CLIMA INDUSTRIAL S.A DE C.V.","p":"professional","m":"mensual","d":"2025-12-11"},{"c":"Villanueva García, Andrés Orlando","p":"professional","m":"mensual","d":"2025-12-11"},{"c":"Bautista Ramírez, Miguel Ángel","p":"professional","m":"mensual","d":"2025-12-11"},{"c":"Renderos de Bautista, Miriam Lorena","p":"professional","m":"mensual","d":"2025-12-11"},{"c":"Miriam Beatriz Bautista Renderos","p":"professional","m":"mensual","d":"2025-12-11"},{"c":"INJASIM, S.A. DE C.V.","p":"professional","m":"mensual","d":"2025-12-11"},{"c":"PRODUCTOS Y SERVICIOS RAMOS, S.A. DE C.V.","p":"professional","m":"mensual","d":"2025-12-11"},{"c":"FRANCISCO BENEKE LIMA","p":"professional","m":"mensual","d":"2025-12-11"},{"c":"INCREZE ACCOUNTING SA DE CV","p":"professional","m":"mensual","d":"2025-12-11"},{"c":"GABRIELA MARIA FLORES DE VALLE","p":"professional","m":"mensual","d":"2025-12-03"},{"c":"Sandra Estela Ortiz Romero","p":"professional","m":"mensual","d":"2025-12-02"},{"c":"Ricardo Napoleón Arce Galdámez","p":"professional","m":"mensual","d":"2025-12-02"},{"c":"Rhina del Carmen Ramos de Arce","p":"professional","m":"mensual","d":"2025-12-02"},{"c":"C. S. G., S.A. DE C.V.","p":"professional","m":"mensual","d":"2025-11-28"},{"c":"GARCIA UMANZOR, MARTIN","p":"professional","m":"mensual","d":"2025-11-28"},{"c":"Martínez Molina Rene Uziel","p":"professional","m":"mensual","d":"2025-11-27"},{"c":"Víctor Salvador Ramírez Chavez","p":"professional","m":"mensual","d":"2025-11-26"},{"c":"AGUILAR FUENTES, RENE FELIPE","p":"professional","m":"mensual","d":"2025-11-26"},{"c":"EGUIZABAL MATAMOROS, MANUEL ENRRIQUE","p":"professional","m":"mensual","d":"2025-11-24"},{"c":"JOSE ALEXANDER BONILLA SALGUERO","p":"professional","m":"mensual","d":"2025-11-24"},{"c":"EL PANITA, S.A. DE C.V.","p":"professional","m":"mensual","d":"2025-11-19"},{"c":"MATASOL AYALA, JOSE HECTOR HUGO","p":"professional","m":"mensual","d":"2025-11-19"},{"c":"COBERSAL SERVICIOS, S.A. DE C.V.","p":"professional","m":"mensual","d":"2025-11-19"},{"c":"Adán Ruiz Arteaga","p":"professional","m":"mensual","d":"2025-11-13"},{"c":"Francisco Eduardo Murillo Hernandez","p":"professional","m":"mensual","d":"2025-11-11"},{"c":"RICARDO ANTONIO RODAS RUIZ","p":"professional","m":"mensual","d":"2025-11-07"},{"c":"LOBOS GONZALEZ, WALTER EDUARDO","p":"professional","m":"mensual","d":"2025-11-06"},{"c":"Yolanda Marcela Martínez Gutiérrez","p":"professional","m":"mensual","d":"2025-11-03"},{"c":"Aguilar Trujillo, Edenilson Alberto","p":"professional","m":"mensual","d":"2025-10-29"},{"c":"GUADRON CORNEJO, CARLOS ATILIO","p":"professional","m":"mensual","d":"2025-10-16"},{"c":"JOSUE ISAAC DEL CID ORELLANA","p":"professional","m":"mensual","d":"2025-09-25"},{"c":"OSCAR ANTONIO SAAVEDRA PLEITES","p":"professional","m":"mensual","d":"2025-09-18"},{"c":"Miguel Ángel Sánchez","p":"professional","m":"mensual","d":"2025-09-17"},{"c":"ANA INES SANCHEZ DE HUEZO","p":"professional","m":"mensual","d":"2025-09-16"},{"c":"MARIA DEL CARMEN GUERRERO DE LARIN","p":"professional","m":"mensual","d":"2025-09-16"},{"c":"Marixa del Carmen Pineda Argueta","p":"professional","m":"mensual","d":"2025-09-11"},{"c":"Carmen Melgar de Abarca","p":"professional","m":"mensual","d":"2025-09-02"},{"c":"Peletería Los Chantas S.A. de C.V.","p":"professional","m":"mensual","d":"2025-08-12"},{"c":"Ricardo Hércules Paulino","p":"professional","m":"mensual","d":"2025-08-01"},{"c":"ENLACES LOGÍSTICOS DE CENTROAMÉRICA SOCIEDAD ANÓNIMA DE CAPITAL VARIABLE","p":"professional","m":"mensual","d":"2025-07-24"},{"c":"Christopher Alesandro Mayorga Méndez","p":"professional","m":"mensual","d":"2025-07-24"},{"c":"Carlos Ernesto Méndez","p":"professional","m":"mensual","d":"2025-07-08"},{"c":"Jaime Eduardo Cañas Avilés","p":"professional","m":"mensual","d":"2025-07-07"},{"c":"CORPORACIÓN EMPRESARIAL LÓPEZ ÁLVAREZ","p":"professional","m":"mensual","d":"2025-07-07"},{"c":"JOSE MAURICIO LOZA RODRÍGUEZ","p":"professional","m":"mensual","d":"2025-07-07"},{"c":"JACQUELINE TATIANA CARPIO CALDERON","p":"professional","m":"mensual","d":"2025-07-06"},{"c":"TRS LOGISTICA SA DE CV","p":"professional","m":"mensual","d":"2025-06-27"},{"c":"INFINITY HAIR & MAKEUP S.A. DE C.V.","p":"professional","m":"mensual","d":"2025-06-25"},{"c":"CONSTRUCTORA BETON, S.A. DE C.V.","p":"professional","m":"mensual","d":"2025-06-19"},{"c":"Jesús Roberto Ramírez Morales","p":"professional","m":"mensual","d":"2025-06-16"},{"c":"ANNA MERCEDES SALAZAR MORENO","p":"professional","m":"mensual","d":"2025-06-16"},{"c":"MELVIN JOSUE URIAS RIVAS","p":"professional","m":"mensual","d":"2025-06-16"},{"c":"JUAN FELIX VIANA SALAZAR","p":"professional","m":"mensual","d":"2025-06-16"},{"c":"VICTOR MANUEL CARCAMO GONZALEZ","p":"professional","m":"mensual","d":"2025-06-16"},{"c":"SANDRA PATRICIA MARTINEZ DE CARCAMO","p":"professional","m":"mensual","d":"2025-06-16"},{"c":"ROLANDO ANTONIO URIAS","p":"professional","m":"mensual","d":"2025-05-30"},{"c":"Oftalmologica, S. A de C. V.","p":"professional","m":"mensual","d":"2025-05-30"},{"c":"SANDRA PATRICIA MARTINEZ DE CARCAMO","p":"professional","m":"mensual","d":"2025-05-30"},{"c":"Doris Argentina Carranza Alvarenga","p":"professional","m":"mensual","d":"2025-05-30"},{"c":"FORZATOOLS, SOCIEDAD POR ACCIONES SIMPLIFICADA DE CAPITAL VARIABLE","p":"professional","m":"mensual","d":"2026-01-12"},{"c":"AIRESEVEN, SOCIEDAD ANONIMA DE CAPITAL VARIABLE","p":"professional","m":"mensual","d":"2026-06-15"},{"c":"CANIZALES AMAYA, VANESSA NOEMI","p":"professional","m":"mensual","d":"2026-06-05"},{"c":"Diaz Vegas, Samuel David","p":"professional","m":"mensual","d":"2026-06-01"},{"c":"SANDOVAL VASQUEZ, CHRISTIAN JOSUE","p":"professional","m":"mensual","d":"2026-05-31"},{"c":"JOSEPH ARTURO RIVERA MARQUEZ","p":"professional","m":"mensual","d":"2026-05-29"},{"c":"RAUL MAURICIO GARCIA HERNANDEZ","p":"professional","m":"mensual","d":"2026-05-27"},{"c":"CASTILLO HERNANDEZ, PABLO ENRIQUE","p":"professional","m":"mensual","d":"2026-05-17"},{"c":"WALTER ALEXANDER TORRES AVALOS","p":"professional","m":"mensual","d":"2026-05-16"},{"c":"MIRANDA DE GIL, MAYRA JOSEFINA","p":"professional","m":"mensual","d":"2026-05-15"},{"c":"MENDOZA DE GALDAMEZ, ANA RAQUEL","p":"professional","m":"mensual","d":"2026-05-14"},{"c":"OCHOA DE GODOY, MAYRA LIZETH","p":"professional","m":"mensual","d":"2026-05-14"},{"c":"PISCINAS EL PACIFICO, SOCIEDAD POR ACCIONES SIMPLIFICADA DE CAPITAL VARIABLE","p":"professional","m":"mensual","d":"2026-05-13"},{"c":"PEREZ CONTRERAS, CARLOS ALEJANDRO","p":"professional","m":"mensual","d":"2026-05-13"},{"c":"HASBUN QUAN, GERARDO JOSE","p":"professional","m":"mensual","d":"2026-05-11"},{"c":"José Luis Larin Vásquez","p":"professional","m":"mensual","d":"2026-05-01"},{"c":"WALTER ARMANDO RODRIGUEZ GARCIA","p":"professional","m":"mensual","d":"2026-04-30"},{"c":"JEREMÍAS MINERO CANO","p":"professional","m":"mensual","d":"2026-04-30"},{"c":"MEJIA DE NAJO, MARIA TERESA","p":"professional","m":"mensual","d":"2026-04-14"},{"c":"ARC MULTISERVICIOS, SOCIEDAD POR ACCIONES SIMPLIFICADA DE CAPITAL VARIABLE","p":"professional","m":"mensual","d":"2026-03-25"},{"c":"PORTILLO LOPEZ, ANGELA MARIA","p":"professional","m":"mensual","d":"2026-03-20"},{"c":"CORTEZ CRUZ, JOSE REYNALDO","p":"professional","m":"mensual","d":"2026-03-17"},{"c":"Menjívar de Gutiérrez, Josefa Marisol","p":"professional","m":"mensual","d":"2026-03-11"},{"c":"Freddy Armando Pérez Montiel","p":"professional","m":"mensual","d":"2026-03-03"},{"c":"H&M LOGISTICS, SOCIEDAD ANÓNIMA DE CAPITAL VARIABLE","p":"professional","m":"mensual","d":"2026-02-27"},{"c":"Orquídea Lourdes Dorali Salas Linares","p":"professional","m":"mensual","d":"2026-02-27"},{"c":"SERVICIOS INDUSTRIALES SALVADOREÑOS, SOCIEDAD ANÓNIMA DE CAPITAL VARIABLE","p":"professional","m":"mensual","d":"2026-02-27"},{"c":"HERNANDEZ DE ROGEL, GLORIA DE JESUS","p":"professional","m":"mensual","d":"2026-02-24"},{"c":"ORANTES TURCIOS, LORENZO BLADIMIR","p":"professional","m":"mensual","d":"2026-02-17"},{"c":"MORENO, JOSE MANUEL","p":"professional","m":"mensual","d":"2026-02-09"},{"c":"SANDOVAL MARTÍNEZ, KAREN VERÓNICA","p":"professional","m":"mensual","d":"2026-02-05"},{"c":"Escobar Guerra, Eliana Mercedes","p":"professional","m":"mensual","d":"2026-02-04"},{"c":"TRANSPORTES HERNÁNDEZ, SOCIEDAD ANÓNIMA DE CAPITAL VARIABLE","p":"professional","m":"mensual","d":"2026-01-30"},{"c":"JIMÉNEZ LÓPEZ, MILDRED MARIELA","p":"professional","m":"mensual","d":"2026-01-30"},{"c":"Karla Erika Leistenschneider de Castillo","p":"professional","m":"mensual","d":"2025-09-30"},{"c":"INVERSIONES GRUPO LOS SIETE S.A DE C.V","p":"professional","m":"mensual","d":"2025-09-24"},{"c":"Amanda Sofia Sanchez Padilla","p":"professional","m":"mensual","d":"2025-07-19"},{"c":"M&M ALFARO SOCIEDAD ANONIMA DE CAPITAL VARIABLE","p":"professional","m":"mensual","d":"2025-07-17"},{"c":"Carlos Manuel Argueta Pereira","p":"professional","m":"mensual","d":"2025-07-11"},{"c":"VIDA SANA S.A. DE C.V.","p":"professional","m":"mensual","d":"2025-07-07"},{"c":"Erick Antonio Mariona Valle","p":"professional","m":"mensual","d":"2025-06-02"},{"c":"IVAN ORLANDO GUEVARA HIDALGO","p":"starter","m":"mensual","d":"2026-06-03"},{"c":"ERIK ANTONIO NAVARRETE MEJIA","p":"starter","m":"mensual","d":"2026-06-03"},{"c":"MARIA DEL CARMEN DIAZ DE LARA","p":"starter","m":"mensual","d":"2026-06-02"},{"c":"CARLOS ROBERTO ROSALES FUENTES","p":"starter","m":"mensual","d":"2026-06-02"},{"c":"EDWIN BALMORE VASQUEZ ZULETA","p":"starter","m":"mensual","d":"2026-05-29"},{"c":"ERICK ERNESTO GOMEZ ORELLANA","p":"starter","m":"mensual","d":"2026-05-29"},{"c":"TOMAS ALBERTO AMAYA TARIO","p":"starter","m":"mensual","d":"2026-05-29"},{"c":"SAUL ISAI MEMBREÑO LOPEZ","p":"starter","m":"mensual","d":"2026-05-27"},{"c":"TEOFILO RIVERA LOVOS","p":"starter","m":"mensual","d":"2026-05-26"},{"c":"ELIEZER ALEXANDER MARENCO DOMINGUEZ","p":"starter","m":"mensual","d":"2026-05-26"},{"c":"MARIA CONCHITA ESCOBAR MORALES","p":"starter","m":"mensual","d":"2026-05-26"},{"c":"MILAGRO DE LOURDES MARTINEZ DE DIAZ","p":"starter","m":"mensual","d":"2026-05-26"},{"c":"KEVIN DEREK MENDOZA MENDEZ","p":"starter","m":"mensual","d":"2026-04-09"},{"c":"MARIA OFELIA GUARDADO PEREZ DE MERINO","p":"starter","m":"mensual","d":"2026-04-09"},{"c":"MARIA ADELA ORELLANA DE RAMIREZ","p":"starter","m":"mensual","d":"2026-03-04"},{"c":"DANIEL ESAU ARGUETA AYALA","p":"starter","m":"mensual","d":"2026-03-04"},{"c":"HUGO MAMERTO HERNANDEZ ORTIZ","p":"starter","m":"mensual","d":"2026-02-25"},{"c":"IVAN VLADIMIR VELASQUEZ BLANCO","p":"starter","m":"mensual","d":"2026-02-20"},{"c":"SILVIO NAHUN AMAYA VASQUEZ","p":"starter","m":"mensual","d":"2026-02-17"},{"c":"DOMINGO ANTONIO ANDRADE URQUILLA","p":"starter","m":"mensual","d":"2026-02-14"},{"c":"CARLA TATIANA GONZALEZ ALVARADO","p":"starter","m":"mensual","d":"2026-02-12"},{"c":"RAFAEL HUMBERTO GENOVEZ RODRIGUEZ","p":"starter","m":"mensual","d":"2026-02-10"},{"c":"HUGO ARMANDO CERNA CRUZ","p":"starter","m":"mensual","d":"2026-02-10"},{"c":"MANUEL ANTONIO GARCIA","p":"starter","m":"mensual","d":"2026-02-05"},{"c":"RAQUEL MARITZA MAURICIO NAJERA","p":"starter","m":"mensual","d":"2026-01-27"},{"c":"ALMA JUDITH MONTERROZA ACUÑA","p":"starter","m":"mensual","d":"2026-01-27"},{"c":"JONATAN ALFREDO MOLINA MARTINEZ","p":"starter","m":"mensual","d":"2026-01-22"},{"c":"ASISTENCIA LEGAL-CONTABLE, S.A. DE C.V.","p":"starter","m":"mensual","d":"2026-01-21"},{"c":"Yolanda Carolina Reyes De Minero","p":"starter","m":"mensual","d":"2026-01-20"},{"c":"ARCHILA PÉREZ, BALTAZAR ARTURO","p":"starter","m":"mensual","d":"2026-01-20"},{"c":"Oscar Hernan Cárdenas Rauda","p":"starter","m":"mensual","d":"2026-01-19"},{"c":"ANDREA ISABEL PAYES DE ESCOBAR","p":"starter","m":"mensual","d":"2026-01-14"},{"c":"Javier Larreynaga Ayala","p":"starter","m":"mensual","d":"2026-01-12"},{"c":"ALCIDES ADONAY RODAS AVALOS","p":"starter","m":"mensual","d":"2026-01-08"},{"c":"BERNARDO RENE FLORES RIVAS","p":"starter","m":"mensual","d":"2026-01-08"},{"c":"RAFAEL MAURICIO RODRIGUEZ ESCOBAR","p":"starter","m":"mensual","d":"2025-12-22"},{"c":"MAURICIO ISMAEL RODRIGUEZ SANDOVAL","p":"starter","m":"mensual","d":"2025-12-22"},{"c":"JOSE ALFONSO JURADO GUEVARA","p":"starter","m":"mensual","d":"2025-12-18"},{"c":"VIOLETA AURORA TREJO MONROY","p":"starter","m":"mensual","d":"2025-12-17"},{"c":"ESTELA NOHEMY RIVERA DE TREJO","p":"starter","m":"mensual","d":"2025-12-17"},{"c":"HECTOR ALEXIS TREJO BENITEZ","p":"starter","m":"mensual","d":"2025-12-17"},{"c":"Kathia Yasmin Olmedo Ramirez","p":"starter","m":"mensual","d":"2025-12-16"},{"c":"ALFARO PARADA, RAFAEL ORLANDO","p":"starter","m":"mensual","d":"2025-12-16"},{"c":"FRAGILE ESTUDIO, S.A. DE C.V.","p":"starter","m":"mensual","d":"2025-12-16"},{"c":"MARIA HERMELINDA RIVERA DE ESTEVEZ","p":"starter","m":"mensual","d":"2025-12-15"},{"c":"Talleres Hernandez Garcia S.A. de C.V.","p":"starter","m":"mensual","d":"2025-12-11"},{"c":"MARLON ALEXANDER MEJIA MUNGUIA","p":"starter","m":"mensual","d":"2025-12-04"},{"c":"IMXC S.A DE C.V.","p":"starter","m":"mensual","d":"2025-12-03"},{"c":"GRISELDA TULA DE BARRIENTOS","p":"starter","m":"mensual","d":"2025-12-02"},{"c":"Bladimir Alexander Navarro Chamul","p":"starter","m":"mensual","d":"2025-12-02"},{"c":"Jose Mauricio Tejada Moran","p":"starter","m":"mensual","d":"2025-12-02"},{"c":"CASTILLO DE PACHECO, REYNA ISABEL","p":"starter","m":"mensual","d":"2025-12-01"},{"c":"FIGUEROA MARTÍNEZ, JOSÉ GUSTAVO","p":"starter","m":"mensual","d":"2025-11-25"},{"c":"FRETORPLAST, SOCIEDAD ANÓNIMA DE CAPITAL VARIABLE.","p":"starter","m":"mensual","d":"2025-11-24"},{"c":"BSOLUTIONSCO, S.A.S. DE C.V.","p":"starter","m":"mensual","d":"2025-11-22"},{"c":"LOS TRES ALBERTO, S.A. DE C.V.","p":"starter","m":"mensual","d":"2025-11-21"},{"c":"Lucy Maricruz Nuñez Torres","p":"starter","m":"mensual","d":"2025-11-17"},{"c":"P & C Equipos Industriales, S.A. de C.V.","p":"starter","m":"mensual","d":"2025-11-17"},{"c":"Portillo de Zetino, América Trinidad","p":"starter","m":"mensual","d":"2025-11-17"},{"c":"Jose Fredis Cartagena","p":"starter","m":"mensual","d":"2025-11-12"},{"c":"Luis Edgardo Piche Lozano","p":"starter","m":"mensual","d":"2025-11-11"},{"c":"LAURA CECILIA ORTIZ ALAS","p":"starter","m":"mensual","d":"2025-11-11"},{"c":"Agentes de Seguridad Atlacatl S.A. de C.V.","p":"starter","m":"mensual","d":"2025-11-10"},{"c":"Ena Marisol Menjivar de Zaldaña","p":"starter","m":"mensual","d":"2025-11-07"},{"c":"AREVALO DE HERNANDEZ, MIRNA ELIZABETH","p":"starter","m":"mensual","d":"2025-11-07"},{"c":"GRUPO MMM, SOCIEDAD ANONIMA DE CAPITAL VARIABLE","p":"starter","m":"mensual","d":"2025-11-06"},{"c":"Ochoa Rivera, Karla Gabriela","p":"starter","m":"mensual","d":"2025-11-06"},{"c":"GONZALEZ HERNANDEZ, DAVID SALOMON","p":"starter","m":"mensual","d":"2025-11-03"},{"c":"Walter Arnoldo Rivas","p":"starter","m":"mensual","d":"2025-11-03"},{"c":"Blanca Lilian Rodríguez Sibrian","p":"starter","m":"mensual","d":"2025-11-01"},{"c":"HERNANDEZ MARTINEZ, YESENIA GABRIELA","p":"starter","m":"mensual","d":"2025-10-30"},{"c":"DONALDO ESAU VASQUEZ","p":"starter","m":"mensual","d":"2025-10-29"},{"c":"FUENTES GARCIA, EMILIO BENJAMIN","p":"starter","m":"mensual","d":"2025-10-29"},{"c":"Roberto Elías Beltrán García","p":"starter","m":"mensual","d":"2025-10-27"},{"c":"PINEDA MORALES, JOSE ALFREDO","p":"starter","m":"mensual","d":"2025-10-24"},{"c":"Carlos Daniel Tobar Ibarra","p":"starter","m":"mensual","d":"2025-10-23"},{"c":"DANELIA ISAURA GUERRA DE VELÁSQUEZ","p":"starter","m":"mensual","d":"2025-10-16"},{"c":"HECTOR ANTONIO MEZQUITA PEÑATE","p":"starter","m":"mensual","d":"2025-10-15"},{"c":"Marvin Joel Velásquez Estrada","p":"starter","m":"mensual","d":"2025-10-13"},{"c":"ELMER ALEXANDER OCHOA RIVERA","p":"starter","m":"mensual","d":"2025-09-30"},{"c":"EDWIN ORLANDO ROJAS CORADO","p":"starter","m":"mensual","d":"2025-09-24"},{"c":"LUIS HUMBERTO RODRIGUEZ SANTOS","p":"starter","m":"mensual","d":"2025-09-23"},{"c":"ENA LILIAN ORTIZ","p":"starter","m":"mensual","d":"2025-09-22"},{"c":"Inversiones del Pacífico G.A S.A de C.V","p":"starter","m":"mensual","d":"2025-09-19"},{"c":"RAMIREZ, ANA RUTH","p":"starter","m":"mensual","d":"2025-09-16"},{"c":"SANDRA NOEMY FLORES GUADRON","p":"starter","m":"mensual","d":"2025-09-12"},{"c":"COCOA CREATIONS, S.A. DE C.V.","p":"starter","m":"mensual","d":"2025-09-12"},{"c":"INVERSIONES Y SERVICIOS LOS 4, SOCIEDAD ANONIMA DE CAPITAL VARIABLE","p":"starter","m":"mensual","d":"2025-09-11"},{"c":"Inmar Joel Villalta Vasquez","p":"starter","m":"mensual","d":"2025-09-10"},{"c":"HERNANDEZ VASQUEZ, JOSE ANGEL","p":"starter","m":"mensual","d":"2025-09-10"},{"c":"Fátima Carolina Moreno Piche","p":"starter","m":"mensual","d":"2025-09-10"},{"c":"Carlos Humberto Ernesto Rivas Molina","p":"starter","m":"mensual","d":"2025-09-09"},{"c":"KATHERINE GUADALUPE NÚÑEZ MELÉNDEZ","p":"starter","m":"mensual","d":"2025-09-08"},{"c":"Laura Marcela Rivas de Arévalo","p":"starter","m":"mensual","d":"2025-09-05"},{"c":"Sunsins Campos, Leoncio Francisco","p":"starter","m":"mensual","d":"2025-09-05"},{"c":"Ana Lizeth Caishpal de Contreras","p":"starter","m":"mensual","d":"2025-09-05"},{"c":"Héctor Enrique Hernández mejía","p":"starter","m":"mensual","d":"2025-09-05"},{"c":"Diana Pamela Moran Quintanilla","p":"starter","m":"mensual","d":"2025-09-04"},{"c":"Jairo Steven Cuellar tobar","p":"starter","m":"mensual","d":"2025-09-04"},{"c":"Roosembel Baldison Menéndez Pérez","p":"starter","m":"mensual","d":"2025-09-04"},{"c":"Molur S.A. de C.V.","p":"starter","m":"mensual","d":"2025-08-29"},{"c":"Ana María Rodríguez de Guerra","p":"starter","m":"mensual","d":"2025-08-26"},{"c":"Henry Otoniel Rodriguez Cruz","p":"starter","m":"mensual","d":"2025-08-22"},{"c":"RICARDO ADRIAN ALVAREZ SALAZAR","p":"starter","m":"mensual","d":"2025-08-19"},{"c":"Christian Omar Rodas Estrada","p":"starter","m":"mensual","d":"2025-07-28"},{"c":"LUDWIN OLIVER ROSALES VARGAS","p":"starter","m":"mensual","d":"2025-07-25"},{"c":"Constructora Silva S.A. DE C.V.","p":"starter","m":"mensual","d":"2025-07-14"},{"c":"Rafael Antonio Zelaya","p":"starter","m":"mensual","d":"2025-07-07"},{"c":"MARVIN JAVIER ORTIZ","p":"starter","m":"mensual","d":"2025-07-07"},{"c":"Juan Alberto García Quiñones","p":"starter","m":"mensual","d":"2025-07-07"},{"c":"Roberto Augusto Godoy Alemán","p":"starter","m":"mensual","d":"2025-07-07"},{"c":"Importadora y Exportadora R&R, S.A DE C.V.","p":"starter","m":"mensual","d":"2025-07-06"},{"c":"Mario Ernesto Flores Blanco","p":"starter","m":"mensual","d":"2025-07-06"},{"c":"INVERSIONES LOCALES S.A. DE C.V.","p":"starter","m":"mensual","d":"2025-07-06"},{"c":"REMBERTO ARTURO ALVAREZ CUELLAR","p":"starter","m":"mensual","d":"2025-06-22"},{"c":"RAMOS ALVARADO Y ASOCIADOS S.A. DE C.V.","p":"starter","m":"mensual","d":"2025-06-16"},{"c":"GUALPOPA S.A. DE C.V.","p":"starter","m":"mensual","d":"2025-06-16"},{"c":"Ana Cecilia Sazo de Agreda","p":"starter","m":"mensual","d":"2025-06-16"},{"c":"SERVICIOS Y REPRESENTACIONES INDUSTRIALES AGREDA, S.A. DE C.V.","p":"starter","m":"mensual","d":"2025-06-16"},{"c":"IDI SERVICES S.A. DE C.V.","p":"starter","m":"mensual","d":"2025-06-16"},{"c":"RICALF S.A. DE C.V.","p":"starter","m":"mensual","d":"2025-06-16"},{"c":"AYG SERVICIOS SOCIEDAD POR ACCIONES SIMPLIFICADA","p":"starter","m":"mensual","d":"2025-06-16"},{"c":"Javier Francisco Roque Trujillo","p":"starter","m":"mensual","d":"2025-06-16"},{"c":"OBRAS EQUIPOS Y MATERIALES, S.A. DE C.V.","p":"starter","m":"mensual","d":"2025-06-16"},{"c":"Roberto Armando Vega Esquivel","p":"starter","m":"mensual","d":"2025-06-04"},{"c":"VITASAL S.A. DE C.V.","p":"starter","m":"mensual","d":"2025-05-31"},{"c":"Laura Fabiola de Guadalupe moreno de Cristales","p":"starter","m":"mensual","d":"2025-05-30"},{"c":"Oscar Arnulfo Mena Arias","p":"starter","m":"mensual","d":"2025-05-30"},{"c":"Marvin Fernando Morán Landaverde","p":"starter","m":"mensual","d":"2025-05-30"},{"c":"GRUPO SADCO S.A. DE C.V.","p":"starter","m":"mensual","d":"2025-05-30"},{"c":"GALEAS BERRIOS, FELIPE","p":"starter","m":"mensual","d":"2025-10-27"},{"c":"FAJARDO ASENCIO, CRISTA BELL","p":"starter","m":"mensual","d":"2026-06-05"},{"c":"MIGUEL ALFONSO PRIETO HERNÁNDEZ","p":"starter","m":"mensual","d":"2026-06-04"},{"c":"Hugo Aristides Ángulo Rogel","p":"starter","m":"mensual","d":"2026-06-01"},{"c":"Héctor Manuel Velásquez Guzman","p":"starter","m":"mensual","d":"2026-05-31"},{"c":"BENITEZ, RAFAEL ERNESTO","p":"starter","m":"mensual","d":"2026-05-30"},{"c":"Flor Maria Hurtado Constanza","p":"starter","m":"mensual","d":"2026-05-29"},{"c":"JAVIER ARMANDO CERNA CASTILLO","p":"starter","m":"mensual","d":"2026-05-29"},{"c":"SALVADOR ANTONIO LOPEZ YAN","p":"starter","m":"mensual","d":"2026-05-29"},{"c":"GUZMAN RODRIGUEZ, LUIS BALTAZAR","p":"starter","m":"mensual","d":"2026-05-29"},{"c":"Castro Melo, Elena del Carmen","p":"starter","m":"mensual","d":"2026-05-29"},{"c":"García Cortez, José Miguel","p":"starter","m":"mensual","d":"2026-05-29"},{"c":"MEDINA CUELLAR, JOSE ALBERTO","p":"starter","m":"mensual","d":"2026-05-27"},{"c":"VARGAS DE LOPEZ, YENIA OLINDA","p":"starter","m":"mensual","d":"2026-05-27"},{"c":"GALLARDO SALAZAR, JUAN PABLO","p":"starter","m":"mensual","d":"2026-05-27"},{"c":"FLOR DE MARIA HERNANDEZ DE RODAS","p":"starter","m":"mensual","d":"2026-05-27"},{"c":"OSCAR ARMANDO GENOVEZ RODRIGUEZ","p":"starter","m":"mensual","d":"2026-05-27"},{"c":"FRANCISCA ELIZABETH MARTINEZ PALENCIA","p":"starter","m":"mensual","d":"2026-05-27"},{"c":"VINDEL BARRAZA DIEGO ENRIQUE","p":"starter","m":"mensual","d":"2026-05-26"},{"c":"ROSALES LOPEZ, OSCAR MANUEL","p":"starter","m":"mensual","d":"2026-05-25"},{"c":"Jaime Ignacio Araujo Ramirez","p":"starter","m":"mensual","d":"2026-05-25"},{"c":"HERNANDEZ VENTURA, MARIO EDUARDO","p":"starter","m":"mensual","d":"2026-05-23"},{"c":"NEXAI MEDIA, SOCIEDAD POR ACCIONES SIMPLIFICADA DE CAPITAL VARIABLE","p":"starter","m":"mensual","d":"2026-05-23"},{"c":"CASTRO BARRAZA, MARCO TULIO","p":"starter","m":"mensual","d":"2026-05-22"},{"c":"CORNEJO AYALA MARIA TERESA","p":"starter","m":"mensual","d":"2026-05-19"},{"c":"CALLES DE RAMIREZ, SARA","p":"starter","m":"mensual","d":"2026-05-18"},{"c":"MARCIANO ZUNIGA, KARLA MARIA","p":"starter","m":"mensual","d":"2026-05-17"},{"c":"GARCIA ESTRADA, ISAIAS","p":"starter","m":"mensual","d":"2026-05-12"},{"c":"MARISELA GENOVEZ","p":"starter","m":"mensual","d":"2026-05-12"},{"c":"RAFAEL ERNESTO GENOVEZ","p":"starter","m":"mensual","d":"2026-05-12"},{"c":"PEDRO ARMANDO ROSALES MARROQUIN","p":"starter","m":"mensual","d":"2026-05-12"},{"c":"PABLO NERIO MARTINEZ","p":"starter","m":"mensual","d":"2026-05-08"},{"c":"Jorge Alberto Amaya Hernández","p":"starter","m":"mensual","d":"2026-05-01"},{"c":"CECILIA ALEJANDRA MARTINEZ PEREZ","p":"starter","m":"mensual","d":"2026-04-30"},{"c":"Maria Susana Cerritos Nolasco","p":"starter","m":"mensual","d":"2026-04-29"},{"c":"OSCAR RAFAEL COLOCHO BARCENES","p":"starter","m":"mensual","d":"2026-04-25"},{"c":"GRUPO INLOSA, SOCIEDAD POR ACCIONES SIMPLIFICADA DE CAPITAL VARIABLE","p":"starter","m":"mensual","d":"2026-03-24"},{"c":"LARA LARA, CIRO GREGORIO","p":"starter","m":"mensual","d":"2026-03-11"},{"c":"GAMEZ DE LARA, NATHALY ARABELLA","p":"starter","m":"mensual","d":"2026-03-11"},{"c":"COMPETITION'S CAR AUDIO S.A.S DE C.V","p":"starter","m":"mensual","d":"2026-03-03"},{"c":"PEÑATE RUIZ, GIOVANNI SALVADOR","p":"starter","m":"mensual","d":"2026-02-23"},{"c":"TURCIOS VELASQUEZ, HENRY MILTON","p":"starter","m":"mensual","d":"2026-02-20"},{"c":"FRANKLIN OSMEL ROMERO SERMEÑO","p":"starter","m":"mensual","d":"2026-02-12"},{"c":"HERNANDEZ MARTINEZ, HENRY ANTONIO","p":"starter","m":"mensual","d":"2026-02-11"},{"c":"LINARES PERDOMO, LEONEL ANTONY","p":"starter","m":"mensual","d":"2026-02-07"},{"c":"SANDOVAL, RAFAEL ANTONIO","p":"starter","m":"mensual","d":"2026-02-05"},{"c":"REYES NOYOLA, JOSE REYNALDO","p":"starter","m":"mensual","d":"2026-02-05"},{"c":"VYO SOCIEDAD ANONIMA DE CAPITAL VARIABLE","p":"starter","m":"mensual","d":"2026-01-30"},{"c":"CESAR ANTONIO HERRERA PORTILLO","p":"starter","m":"mensual","d":"2026-01-30"},{"c":"PÉREZ TORRES, MARIA FRANCISCA","p":"starter","m":"mensual","d":"2026-01-21"},{"c":"Milton Antonio Alegría Cardoza","p":"starter","m":"mensual","d":"2025-11-27"},{"c":"Saul Jeremias Pineda Renderos","p":"starter","m":"mensual","d":"2025-11-01"},{"c":"SANDRA YANIRA QUEZADA DE COLORADO","p":"starter","m":"mensual","d":"2025-10-15"},{"c":"Roberto Alexander Cardona Valladares","p":"starter","m":"mensual","d":"2025-10-02"},{"c":"Carlos Roberto Jordan Luna","p":"starter","m":"mensual","d":"2025-09-29"},{"c":"CARLOS AUGUSTO RIVERA CUELLAR","p":"starter","m":"mensual","d":"2025-09-22"},{"c":"GyG Negocios S.A de C.V","p":"starter","m":"mensual","d":"2025-09-17"},{"c":"MEDIAWAVE, SAS DE CV","p":"starter","m":"mensual","d":"2025-09-16"},{"c":"TALLER PINTACARS JIREH","p":"starter","m":"mensual","d":"2025-08-29"},{"c":"Lubricacion Maxima, S.A. de C.V.","p":"starter","m":"mensual","d":"2025-08-27"},{"c":"EDGAR ERNESTO MOLINA RODAS","p":"starter","m":"mensual","d":"2025-07-23"},{"c":"José David Quintero Gustave","p":"starter","m":"mensual","d":"2025-06-16"},{"c":"Rolando Meléndez Funes","p":"starter","m":"mensual","d":"2025-06-11"},{"c":"MANUEL DE JESUS ASENCIO FAJARDO","p":"starter","m":"mensual","d":"2025-06-09"},{"c":"Lilian Verónica García de Bermúdez","p":"starter","m":"mensual","d":"2025-06-02"},{"c":"JOSE RICARDO BERMUDEZ IGLESIAS","p":"starter","m":"mensual","d":"2025-06-02"},{"c":"ASADHI S.A. DE C.V.","p":"starter","m":"mensual","d":"2025-05-30"},{"c":"BRYAN ALEXANDER FLORES ARAUJO","p":"starter","m":"mensual","d":"2025-05-30"},{"c":"SARA PATRICIA CASTILLO DE FLORES","p":"starter","m":"mensual","d":"2025-05-30"}];
+function seedBookV3(){
+  if(state.config.seededBookV3)return;
+  // Los 8 listados por plan son la cartera completa y autoritativa.
+  // Quitamos imports previos de cartera (legacy de sale.order y corridas anteriores) para no duplicar.
+  state.sales=state.sales.filter(s=>!s.legacy && s.seed!=='bookv3');
+  // Las metas salen de los registros reales: cero agregados base.
+  state.config.baseClients=0;
+  state.config.baseRecurring=0;
+  state.config.annualPayments=0;
+  const have=new Set(state.sales.map(s=>normName(s.client)));
+  SEED_BOOK_V3.forEach(b=>{
+    if(have.has(normName(b.c)))return; // dedupe (otros lotes y duplicados dentro de los archivos)
+    have.add(normName(b.c));
+    state.sales.push({id:uid(),client:b.c,plan:b.p,mode:b.m||'mensual',start:b.d||null,seed:'bookv3',campaignId:null,createdAt:Date.now()});
+  });
+  state.config.seededBookV3=true;
+  save();
+}
+
+/* ---- Libro ANUAL real (sale.order, "Anualmente"): 89 suscripciones anuales = $12,048.18/año ---- */
+/* Formato: {c:nombre, p:planKey, cm:monto mensual real (=total anual/12)} */
+const SEED_ANNUAL=/*__SEED_ANNUAL__*/[{"c":"ZAVALA ALFARO, RAMON","p":"basicoAnual","cm":5.0},{"c":"MEDINA CUELLAR, JOSE ALBERTO","p":"starterAnual","cm":5.0},{"c":"NENEOS, SOCIEDAD ANONIMA DE CAPITAL VARIABLE NENEOS, S.A DE C.V","p":"basicoAnual","cm":5.0},{"c":"IGUAZU S.A DE C.V","p":"basicoAnual","cm":5.0},{"c":"CASTILLO MACHADO FREDI ARNOLDO","p":"basicoAnual","cm":5.0},{"c":"MARTINEZ RIVAS, JOSE FERNANDO","p":"basicoAnual","cm":5.0},{"c":"MARTINEZ RIVAS, DANIEL ANTONIO","p":"basicoAnual","cm":5.0},{"c":"GONZALEZ CORDOVA LUIS ALBERTO","p":"basicoAnual","cm":5.0},{"c":"GONZALEZ CORDOVA, DENNYS EDWARD","p":"basicoAnual","cm":5.0},{"c":"ESCOBAR HERRERA, JOSE MAURICIO","p":"basicoAnual","cm":5.0},{"c":"LINARES, GABRIELA YAMILLETH","p":"basicoAnual","cm":5.0},{"c":"HEIDI GUADALUPE OROZCO VILLA","p":"basicoAnual","cm":5.0},{"c":"JAIME SALVADOR CALDERON RIVERA","p":"starterAnual","cm":9.4892},{"c":"ERICK FRANCISCO RUANO FUENTES","p":"basicoAnual","cm":5.0},{"c":"PINEDA ZOMETA, JAIME GUILLERMO","p":"basicoAnual","cm":5.0},{"c":"Lizeth Virginia Vargas de Hernández","p":"basicoAnual","cm":3.75},{"c":"CRISTIAN IVAN HERNANDEZ MOLINA","p":"starterAnual","cm":9.4892},{"c":"GRUPO DOV, SOCIEDAD ANONIMA DE CAPITAL VARIABLE","p":"basicoAnual","cm":5.0},{"c":"Inmar Joel Villalta Vasquez","p":"starterAnual","cm":9.4892},{"c":"ALVARENGA ZETINO, JORGE ALEXANDER","p":"basicoAnual","cm":5.0},{"c":"ROMERO GUADRON, OSCAR MOUSELY","p":"basicoAnual","cm":5.0},{"c":"CARLOS AUGUSTO RIVERA CUELLAR","p":"starterAnual","cm":9.4892},{"c":"MARTÍNEZ VENTURA, NESTOR DE JESUS","p":"basicoAnual","cm":5.0},{"c":"MOLINA DE SERNA, LILIAN NOEMY","p":"basicoAnual","cm":5.0},{"c":"Hector Alejandro Retana Chinchilla","p":"starterAnual","cm":5.0},{"c":"Carolina Ivette Alfaro de Augspurg","p":"starterAnual","cm":9.4892},{"c":"ALFARO PARADA, RAFAEL ORLANDO","p":"starterAnual","cm":9.4892},{"c":"GRUPO GUEVARA S.A. DE C.V.","p":"deluxe","cm":140.0},{"c":"MIRNA ELIZABET GUTIERREZ MEJIA","p":"professional","cm":34.99},{"c":"ARGUETA ACEVEDO, KARLA MARIA","p":"basicoAnual","cm":5.0},{"c":"JIMÉNEZ LÓPEZ, MILDRED MARIELA","p":"professional","cm":18.99},{"c":"QUINTANILLA MORENO, DOUGLAS ANTONIO","p":"basicoAnual","cm":5.0},{"c":"FONDO DE TITULARIZACION DE INMUEBLES HENCORP VALORES COMPLEJO EPIC CERO UNO","p":"professionalIncrize","cm":30.0},{"c":"COSTA BEBER DE VASQUEZ, IZABEL","p":"professionalIncrize","cm":20.0},{"c":"KARLA ELIZABETH LEMUS ZETINO","p":"professional","cm":18.99},{"c":"ARTIGA LUNA, JUAN JOSÉ","p":"basicoAnual","cm":5.0},{"c":"MENJÍVAR RODRÍGUEZ, IRVING JOSUE","p":"basicoAnual","cm":5.0},{"c":"María Elena Ramos de Aragón","p":"basicoAnual","cm":5.0},{"c":"FRAGILE ESTUDIO, S.A. DE C.V.","p":"starterAnual","cm":9.4892},{"c":"Edgar Ernesto Molina Rodas","p":"starterAnual","cm":9.4892},{"c":"Noé Ernesto Martínez Navas","p":"basicoAnual","cm":5.0},{"c":"Edwin Osmin Romero Portillo","p":"basicoAnual","cm":5.0},{"c":"RICARDO ARMANDO PEÑATE GUERRA","p":"basicoAnual","cm":5.0},{"c":"María Alicia Romero de Melara","p":"basicoAnual","cm":5.0},{"c":"Carmen Aida Saravia de Vides","p":"basicoAnual","cm":5.0},{"c":"Jerónima Elizabeth Peñate Sanchez","p":"basicoAnual","cm":5.0},{"c":"BORJAS MANCIA, WILBER AMILCAR","p":"basicoAnual","cm":5.0},{"c":"LAZO ROMERO OSCAR ANTONIO","p":"basicoAnual","cm":5.0},{"c":"CHILIN TORRES, JUAN RICARDO","p":"basicoAnual","cm":5.0},{"c":"JULIO ERNESTO GARCIA COLOCHO","p":"basicoAnual","cm":5.0},{"c":"Bernarda Victoria Espinoza de Segovia","p":"basicoAnual","cm":5.0},{"c":"ADUANERA CERRITOS, S.A. DE C.V.","p":"advanced","cm":28.4908},{"c":"GARCIA UMANZOR, MARTIN","p":"professionalIncrize","cm":20.0},{"c":"EDWIN JOSUÉ MARROQUÍN CARRANZA","p":"basicoAnual","cm":5.0},{"c":"SOLUCIONES ELECTRICAS Y CONSTRUCCION S.A DE C.V","p":"basicoAnual","cm":5.0},{"c":"JOSE RAUL ALFARO HERNANDEZ","p":"basicoAnual","cm":5.0},{"c":"Milk factory, S.A de C.V","p":"basicoAnual","cm":5.0},{"c":"Carmen Elena Zepeda de Romero","p":"basicoAnual","cm":5.0},{"c":"Allan Humberto Escapini","p":"basicoAnual","cm":5.0},{"c":"G+H CONSULTORES, S.A. DE C.V.","p":"basicoAnual","cm":5.0},{"c":"HERNANDEZ GONZALEZ, JAIME ARTURO","p":"basicoAnual","cm":5.0},{"c":"CRC INGENIEROS SOCIEDAD ANONIMA DE CAPITAL VARIABLE","p":"basicoAnual","cm":5.0},{"c":"CARDOZA MELENDEZ, HECTOR WILFREDO","p":"basicoAnual","cm":5.0},{"c":"Carlos Humberto Nolasco Arroyo","p":"basicoAnual","cm":5.0},{"c":"Luis Gustavo Flores Torres","p":"basicoAnual","cm":5.0},{"c":"HECTOR ARMANDO CARDOZA FRANCO","p":"basicoAnual","cm":5.0},{"c":"COBERSAL SERVICIOS, S.A. DE C.V.","p":"professionalIncrize","cm":20.0},{"c":"EL PANITA, S.A. DE C.V.","p":"professionalIncrize","cm":20.0},{"c":"MATASOL AYALA, JOSE HECTOR HUGO","p":"professionalIncrize","cm":20.0},{"c":"CLIMA INDUSTRIAL S.A DE C.V.","p":"professionalIncrize","cm":20.0},{"c":"Villanueva García, Andrés Orlando","p":"professionalIncrize","cm":20.0},{"c":"Bautista Ramírez, Miguel Ángel","p":"professionalIncrize","cm":20.0},{"c":"Renderos de Bautista, Miriam Lorena","p":"professionalIncrize","cm":20.0},{"c":"ANA INES SANCHEZ DE HUEZO","p":"professional","cm":18.99},{"c":"HERNANDEZ VASQUEZ, JOSE ANGEL","p":"starterAnual","cm":9.4905},{"c":"TALLER PINTACARS JIREH","p":"starterAnual","cm":9.99},{"c":"Lubricacion Maxima, S.A. de C.V.","p":"starterAnual","cm":9.4905},{"c":"Miriam Beatriz Bautista Renderos","p":"professionalIncrize","cm":20.0},{"c":"INCREZE ACCOUNTING SA DE CV","p":"professionalIncrize","cm":20.0},{"c":"FRANCISCO BENEKE LIMA","p":"professionalIncrize","cm":20.0},{"c":"INJASIM, S.A. DE C.V.","p":"professionalIncrize","cm":20.0},{"c":"PRODUCTOS Y SERVICIOS RAMOS, S.A. DE C.V.","p":"professionalIncrize","cm":20.0},{"c":"Marvin Fernando Morán Landaverde","p":"starterAnual","cm":9.99},{"c":"Rolando Meléndez Funes","p":"starterAnual","cm":9.99},{"c":"Oftalmologica, S. A de C. V.","p":"professional","cm":19.99},{"c":"MARVIN JAVIER ORTIZ","p":"starterAnual","cm":9.99},{"c":"GUALPOPA S.A. DE C.V.","p":"starterAnual","cm":9.99},{"c":"Importadora y Exportadora R&R, S.A DE C.V.","p":"starterAnual","cm":9.99},{"c":"AYG SERVICIOS SOCIEDAD POR ACCIONES SIMPLIFICADA","p":"starterAnual","cm":9.99}];
+function seedAnnualBookV1(){
+  if(state.config.seededAnnualV1)return;
+  // Export anual autoritativo. La mayoría de estos clientes ya estaban en la cartera v3 marcados
+  // como MENSUAL (los listados por plan no distinguen frecuencia), pero en realidad pagan ANUAL:
+  // los reclasificamos. Los que no existan, se agregan.
+  state.config.annualPayments=0; // el anual sale de los registros reales
+  SEED_ANNUAL.forEach(b=>{
+    const ex=state.sales.find(s=>!s.churned&&normName(s.client)===normName(b.c));
+    if(ex){ ex.plan=b.p; ex.mode='anual'; ex.customMonthly=b.cm; delete ex.customImpl; ex.seed='annual1'; }
+    else{ state.sales.push({id:uid(),client:b.c,plan:b.p,mode:'anual',start:null,seed:'annual1',customMonthly:b.cm,campaignId:null,createdAt:Date.now()}); }
+  });
+  state.config.seededAnnualV1=true;
+  save();
+}
+
+/* ---- Canal ALIANZAS: clientes del comercial Rene Gonzalez (138, columna Comercial del CRM) ---- */
+const SEED_RENE=/*__SEED_RENE__*/["JAIME SALVADOR CALDERON RIVERA","Catherine Michelle Minero Reyes","Margarita Minero","Noé Ernesto Martínez Navas","José Ernesto Martínez Argueta","Hans Stuart Valle Romero","EVELYN ISABEL AMAYA DE RAMÍREZ","FRANCISCO RIVERA AGUILAR","CLAUDIA LILIANA MELENDEZ DE HERNANDEZ","ARIGATO, S.A. DE C.V.","Alaska’s Ice S.A. de C.V.","Jorge Américo Portillo Orellana","GLENDA TATIANA CARDONA DE MORATAYA","JOSE XAM TAMUP","LEIDI ADELI GOMEZ DE GUEVARA","Corporacion Mundo Maya S.A. de C.V.","Walter Carlos Cerón Gutierrez","PACIFIC NORTHWEST INVESTMENTS, S.A. DE C.V.","GRUPO GOMEZ VIDES, S.A. DE C.V.","Jeremías Cruz Rivas","Clínicas Metabólicas S.A. de C.V.","Clínicas Contreras Hernández S.A. de C.V.","Mirella Guadalupe González de Segovia","Grupo M.C. S.A. DE C.V.","VIDENTAL S.A. DE C.V.","Grupo Davsa, S.A. de C.V.","UNION DE PERSONAS ADRICA","JOVITA ALVARADO & ABOGADOS ASOCIADOS S.A. DE C.V.","ASESORÍA TÉCNICA DE POLIGRAFÍA INTERNACIONAL EL SALVADOR, S.A. DE C.V.","Marto Xam Grave","JAIME EDUARDO GARCIA ORANTES","SARA GUIROLA ERROA","FERNANDO JAVIER FERNANDEZ AYALA","RICARDO DAVID GONZALEZ MARQUEZ","YANIRA ROXINY FUENTES MARQUEZ","CARLOS ALBERTO MIRON CEA","LINA MARIA MACHADO DE GARCIA","RONALD JAIR RIVERA PORTILLO","ANGEL LIZANDRO DIAZ BONILLA","KARLA YANIRA AYALA MORENO","JORGE ERNESTO POLANCO","OSCAR ANIBAL LOPEZ MARTINEZ","CRISTIAN ERNESTO MELENDEZ GOMEZ","MARIO MAURICIO MELENDEZ GOMEZ","NELSON EDGARDO FRANCO LOPEZ","GABRIELA MABEL URRUTIA GARCIA","RAUL OSWALDO GOMEZ MELENDEZ","SELVIN ALEXY ORELLANA FUENTES","FRANCISCO JAVIER QUINTANILLA MUNGUIA","PABLO ADOLFO MURGAS ESCOBAR","ORTEGA CRUZ, JOSE ELIAS","JOSE RAUL GALLARDO NAJERA","MARTA GLORIA AGUIRRE DE RIVAS","KARLA ELIZABETH LEMUS ZETINO","KATIA MARIA URRUTIA DE SERPAS","JOSE ISIDRO CHAVEZ QUINTANILLA","ALMA GUADALUPE HERRERA DE SOMOZA","MARIO EDUARDO HERNÁNDEZ MONTALVO","SILVIA MARGARITA RAMIREZ PARADA","PLANET FITNESS GYM S.A. DE C.V.","KELVIN ALEXANDER SERPAS GOMEZ","ROBERTO JOSE CHICAS MEDRANO","MIGUEL ANGEL RIVERA MARQUEZ","HILDA MARIA DEL CID SANCHEZ","JOSE RICARDO URRUTIA GARCIA","BLANCA ELIZABETH QUINTANILLA MARTINEZ","SANDRA LORENA ROMERO DE GARCIA","Sandra Estela Ortiz Romero","Miguel Ángel Sánchez","Carmen Melgar de Abarca","Peletería Los Chantas S.A. de C.V.","Ricardo Hércules Paulino","Carlos Ernesto Méndez","TRS LOGISTICA SA DE CV","INFINITY HAIR & MAKEUP S.A. DE C.V.","CONSTRUCTORA BETON, S.A. DE C.V.","Doris Argentina Carranza Alvarenga","JOSEPH ARTURO RIVERA MARQUEZ","IVAN ORLANDO GUEVARA HIDALGO","ERIK ANTONIO NAVARRETE MEJIA","MARIA DEL CARMEN DIAZ DE LARA","CARLOS ROBERTO ROSALES FUENTES","EDWIN BALMORE VASQUEZ ZULETA","ERICK ERNESTO GOMEZ ORELLANA","TOMAS ALBERTO AMAYA TARIO","SAUL ISAI MEMBREÑO LOPEZ","TEOFILO RIVERA LOVOS","ELIEZER ALEXANDER MARENCO DOMINGUEZ","MARIA CONCHITA ESCOBAR MORALES","MILAGRO DE LOURDES MARTINEZ DE DIAZ","KEVIN DEREK MENDOZA MENDEZ","MARIA OFELIA GUARDADO PEREZ DE MERINO","MARIA ADELA ORELLANA DE RAMIREZ","DANIEL ESAU ARGUETA AYALA","HUGO MAMERTO HERNANDEZ ORTIZ","IVAN VLADIMIR VELASQUEZ BLANCO","SILVIO NAHUN AMAYA VASQUEZ","DOMINGO ANTONIO ANDRADE URQUILLA","CARLA TATIANA GONZALEZ ALVARADO","RAFAEL HUMBERTO GENOVEZ RODRIGUEZ","HUGO ARMANDO CERNA CRUZ","MANUEL ANTONIO GARCIA","RAQUEL MARITZA MAURICIO NAJERA","ALMA JUDITH MONTERROZA ACUÑA","JONATAN ALFREDO MOLINA MARTINEZ","ANDREA ISABEL PAYES DE ESCOBAR","ALCIDES ADONAY RODAS AVALOS","BERNARDO RENE FLORES RIVAS","RAFAEL MAURICIO RODRIGUEZ ESCOBAR","MAURICIO ISMAEL RODRIGUEZ SANDOVAL","JOSE ALFONSO JURADO GUEVARA","VIOLETA AURORA TREJO MONROY","ESTELA NOHEMY RIVERA DE TREJO","HECTOR ALEXIS TREJO BENITEZ","MARIA HERMELINDA RIVERA DE ESTEVEZ","Talleres Hernandez Garcia S.A. de C.V.","MARLON ALEXANDER MEJIA MUNGUIA","IMXC S.A DE C.V.","GRISELDA TULA DE BARRIENTOS","Bladimir Alexander Navarro Chamul","Jose Mauricio Tejada Moran","BSOLUTIONSCO, S.A.S. DE C.V.","LOS TRES ALBERTO, S.A. DE C.V.","Lucy Maricruz Nuñez Torres","P & C Equipos Industriales, S.A. de C.V.","Portillo de Zetino, América Trinidad","Luis Edgardo Piche Lozano","LAURA CECILIA ORTIZ ALAS","Marvin Joel Velásquez Estrada","Fátima Carolina Moreno Piche","Carlos Humberto Ernesto Rivas Molina","Ana María Rodríguez de Guerra","Constructora Silva S.A. DE C.V.","Roberto Armando Vega Esquivel","VITASAL S.A. DE C.V.","Laura Fabiola de Guadalupe moreno de Cristales","Oscar Arnulfo Mena Arias","Marvin Fernando Morán Landaverde"];
+function seedComercialV1(){
+  if(state.config.seededComercialV1)return;
+  const set=new Set(SEED_RENE.map(normName));
+  state.sales.forEach(s=>{ if(set.has(normName(s.client))){ s.comercial='Rene Gonzalez'; s.channel='Alianzas'; } });
+  state.config.seededComercialV1=true;
+  save();
+}
 function loadLocal(){try{const r=localStorage.getItem(STORE_KEY);if(!r)return structuredClone(defaultState);return normalize(JSON.parse(r));}catch(e){return structuredClone(defaultState);}}
 let state=loadLocal();
 function snapshot(){const m=new Date().toISOString().slice(0,7);const v={m,clients:totalClients(),mrr:currentMRR()};const e=state.history.find(h=>h.m===m);if(e)Object.assign(e,v);else state.history.push(v);}
@@ -751,22 +853,23 @@ const isSoon=t=>t.status!=='Finalizada'&&t.due&&t.due>=todayISO()&&daysBetween(t
 /* ===================== NEGOCIO ===================== */
 const activeSales=()=>state.sales.filter(s=>!s.churned);
 const totalClients=()=>state.config.baseClients+activeSales().length;
-function salesMRR(mature=true){return activeSales().reduce((sum,s)=>{if(s.mode==='anual')return sum;const p=PLANS[s.plan];if(!p)return sum;if(mature&&monthsSince(s.start)<RECURRING_START_MONTH)return sum;return sum+p.monthly;},0);}
+function salesMRR(mature=true){return activeSales().reduce((sum,s)=>{if(s.mode==='anual')return sum;if(mature&&!s.legacy&&monthsSince(s.start)<RECURRING_START_MONTH)return sum;return sum+saleMonthly(s);},0);}
 const currentMRR=()=>state.config.baseRecurring+salesMRR(true);
 const potentialMRR=()=>state.config.baseRecurring+salesMRR(false);
-const implCollected=()=>state.sales.reduce((s,v)=>s+(PLANS[v.plan]?.impl||0),0);
-const annualCollected=()=>state.config.annualPayments+activeSales().filter(s=>s.mode==='anual').reduce((s,v)=>s+(PLANS[v.plan]?.monthly||0)*12,0);
+const implCollected=()=>state.sales.reduce((s,v)=>s+saleImpl(v),0);
+const annualCollected=()=>state.config.annualPayments+activeSales().filter(s=>s.mode==='anual').reduce((s,v)=>s+saleMonthly(v)*12,0);
 const churnedCount=()=>state.sales.filter(s=>s.churned).length;
-const lostMRR=()=>state.sales.filter(s=>s.churned&&s.mode==='mensual').reduce((s,v)=>s+(PLANS[v.plan]?.monthly||0),0);
+const lostMRR=()=>state.sales.filter(s=>s.churned&&s.mode==='mensual').reduce((s,v)=>s+saleMonthly(v),0);
 
 /* ===================== NAV ===================== */
 const VIEWS={
   inicio:{title:'Inicio',action:null},
   tareas:{title:'Tareas',sub:'Registra, prioriza y mide tu tiempo.',action:{label:'Nueva tarea',fn:()=>openTask()}},
-  projects:{title:'Proyectos',sub:'Fases, entregables, horas, involucrados y reuniones.',action:{label:'Nuevo proyecto',fn:()=>openProject()}},
   pipeline:{title:'Pipeline de ventas',sub:'Prospectos en camino hacia el cierre.',action:{label:'Nuevo prospecto',fn:()=>openProspect()}},
   campaigns:{title:'Campañas',sub:'Inversión en anuncios, CAC y rentabilidad.',action:{label:'Nueva campaña',fn:()=>openCampaign()}},
   ventas:{title:'Ventas',sub:'Cada venta suma a tus metas.',action:{label:'Nueva venta',fn:()=>openSale()}},
+  planes:{title:'Planes',sub:'Clientes, MRR e implementaciones por plan.',action:null},
+  alianzas:{title:'Alianzas',sub:'Clientes de Rene Gonzalez por mes.',action:null},
   calendario:{title:'Calendario',sub:'Inicios y fechas estimadas.',action:null},
   metas:{title:'Metas y Proyección',sub:'Avance, proyección y comisiones.',action:null},
   config:{title:'Ajustes y Datos',sub:'Configura tu punto de partida y respaldos.',action:null},
@@ -782,7 +885,7 @@ function go(view){
   if(cfg.action){act.classList.remove('hide');act.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>'+cfg.action.label;act.onclick=cfg.action.fn;}
   else{act.classList.add('hide');act.onclick=null;}
   window.scrollTo({top:0});
-  ({inicio:renderInicio,tareas:renderTasks,projects:renderProjects,pipeline:renderPipeline,campaigns:renderCampaigns,ventas:renderSales,calendario:renderCalendar,metas:renderMetas,config:fillConfig}[view])();
+  ({inicio:renderInicio,tareas:renderTasks,pipeline:renderPipeline,campaigns:renderCampaigns,ventas:renderSales,planes:renderPlanes,alianzas:renderAlianzas,calendario:renderCalendar,metas:renderMetas,config:fillConfig}[view])();
 }
 document.addEventListener('click',e=>{
   const nav=e.target.closest('[data-nav] [data-view]');if(nav){go(nav.dataset.view);return;}
@@ -1094,101 +1197,41 @@ function renderCampaigns(){
   }).join('');
 }
 
-/* ===================== PROYECTOS ===================== */
-const PHASES=['Planeación','Configuración','Pruebas','Capacitación','Implementación','Cerrado'];
-const ACT_TYPES=['Configuración','Reunión','Capacitación','Desarrollo','Soporte','Documentación','Análisis','Otro'];
-const MEET_TYPES=['Reunión','Seguimiento','Llamada','Demo'];
-const findProject=id=>state.projects.find(p=>p.id===id);
-function projectHours(p){const actH=(p.activities||[]).reduce((a,x)=>a+(+x.hours||0),0);const taskH=state.tasks.filter(t=>t.project===p.name).reduce((a,t)=>a+taskMs(t),0)/3600000;return actH+taskH;}
-function projectProgress(p){const d=p.deliverables||[];if(!d.length)return 0;return Math.round(d.filter(x=>x.done).length/d.length*100);}
-let curProjectId=null;
-function renderProjects(){
-  curProjectId=null;$('proj-list-wrap').style.display='block';$('proj-detail-wrap').style.display='none';
-  const ps=state.projects;
-  $('pj-total').textContent=ps.length;
-  $('pj-active').textContent=ps.filter(p=>p.phase!=='Cerrado').length;
-  $('pj-hours').textContent=ps.reduce((a,p)=>a+projectHours(p),0).toFixed(1)+'h';
-  $('pj-avg').textContent=(ps.length?Math.round(ps.reduce((a,p)=>a+projectProgress(p),0)/ps.length):0)+'%';
-  $('proj-empty').style.display=ps.length?'none':'block';
-  $('proj-grid').innerHTML=ps.slice().sort((a,b)=>(b.createdAt||0)-(a.createdAt||0)).map(p=>{
-    const prog=projectProgress(p),done=p.phase==='Cerrado';
-    return `<div class="card proj-card" onclick="openProjectDetail('${p.id}')">
-      <div class="pc-top"><div class="pc-name">${esc(p.name)}</div><span class="badge phase ${done?'done':''}">${p.phase}</span></div>
-      ${p.desc?`<div class="pc-desc">${esc(p.desc)}</div>`:''}
-      <div class="bar"><i style="width:${prog}%"></i></div>
-      <div class="pc-meta"><span>${prog}% avance</span><span>${projectHours(p).toFixed(1)} h</span><span>${(p.members||[]).length} involucrados</span>${p.start?`<span>Inicio ${fmtDate(p.start)}</span>`:''}</div>
-    </div>`;
-  }).join('');
+/* ===================== SERVICIOS ESPECIALES ===================== */
+const findService=id=>state.services.find(s=>s.id===id);
+const serviceCommission=s=>(+s.amount||0)*((+s.commissionPct||0)/100);
+function renderServices(){
+  const list=state.services.slice().sort((a,b)=>(b.date||'').localeCompare(a.date||'')||(b.createdAt||0)-(a.createdAt||0));
+  $('servicios-empty').style.display=list.length?'none':'block';
+  $('tbody-servicios').innerHTML=list.map(s=>`<tr>
+    <td class="cellwrap" data-label="Cliente"><span class="cellmain">${esc(s.client)}</span></td>
+    <td data-label="Servicio"><span class="tag">${esc(s.type||'Servicio')}</span></td>
+    <td data-label="Valor" class="num">${fmtUSD(s.amount)}</td>
+    <td data-label="Comisión" class="num">${fmtUSD(serviceCommission(s))} <span class="muted-3">(${+s.commissionPct||0}%)</span></td>
+    <td data-label="Fecha" class="num muted-3">${fmtDate(s.date)}</td>
+    <td class="t-actions-cell" data-label="Acciones"><div class="t-actions"><button class="btn sm ghost icon" onclick="openService('${s.id}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4z"/></svg></button><button class="btn sm danger icon" onclick="delService('${s.id}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg></button></div></td>
+  </tr>`).join('');
 }
-function openProject(id){
-  $('pj-phase').innerHTML=PHASES.map(f=>`<option>${f}</option>`).join('');
-  if(id){const p=findProject(id);$('project-modal-title').textContent='Editar proyecto';$('pj-id').value=p.id;$('pj-name').value=p.name;$('pj-desc').value=p.desc||'';$('pj-start').value=p.start||'';$('pj-phase').value=p.phase;}
-  else{$('project-modal-title').textContent='Nuevo proyecto';$('pj-id').value='';$('pj-name').value='';$('pj-desc').value='';$('pj-start').value=todayISO();$('pj-phase').value=PHASES[0];}
-  openModal('modal-project','pj-name');
+function servicePreview(){const a=+$('sv-amount').value||0,pct=+$('sv-pct').value||0;$('sv-preview').innerHTML=a?`Valor del servicio: <b>${fmtUSD(a)}</b><br>Comisión del vendedor (${pct}%): <b>${fmtUSD(a*pct/100)}</b>`:'';}
+function openService(id){
+  if(id){const s=findService(id);$('service-modal-title').textContent='Editar servicio';$('sv-id').value=s.id;$('sv-client').value=s.client;$('sv-type').value=s.type||'';$('sv-amount').value=s.amount;$('sv-pct').value=s.commissionPct;$('sv-date').value=s.date||todayISO();}
+  else{$('service-modal-title').textContent='Nuevo servicio';$('sv-id').value='';$('sv-client').value='';$('sv-type').value='Capacitación Presencial';$('sv-amount').value='';$('sv-pct').value=50;$('sv-date').value=todayISO();}
+  servicePreview();openModal('modal-service','sv-client');
 }
-$('pj-save').onclick=()=>{const name=$('pj-name').value.trim();if(!name){$('pj-name').focus();$('pj-name').style.borderColor='var(--danger)';return;}
-  const id=$('pj-id').value,data={name,desc:$('pj-desc').value.trim(),start:$('pj-start').value,phase:$('pj-phase').value};
-  if(id)Object.assign(findProject(id),data);else state.projects.push({id:uid(),...data,members:[],deliverables:[],activities:[],meetings:[],createdAt:Date.now()});
-  save();closeModal('modal-project');if(curProjectId)renderProjectDetail();else renderProjects();
-};
-$('pj-name').addEventListener('input',()=>$('pj-name').style.borderColor='');
-function delProject(id){if(!confirm('¿Eliminar este proyecto y todo su contenido?'))return;state.projects=state.projects.filter(p=>p.id!==id);save();renderProjects();}
-function openProjectDetail(id){curProjectId=id;$('proj-list-wrap').style.display='none';$('proj-detail-wrap').style.display='block';renderProjectDetail();window.scrollTo({top:0});}
-function changeProjectPhase(v){const p=findProject(curProjectId);if(!p)return;p.phase=v;save();const b=document.querySelector('#proj-detail-wrap .badge.phase');}
-function renderProjectDetail(){
-  const p=findProject(curProjectId);if(!p){renderProjects();return;}
-  const prog=projectProgress(p);
-  const acts=(p.activities||[]).slice().sort((a,b)=>(b.date||'').localeCompare(a.date||''));
-  const meets=(p.meetings||[]).slice().sort((a,b)=>(a.date||'').localeCompare(b.date||''));
-  const T=todayISO();
-  $('proj-detail-wrap').innerHTML=`
-   <button class="btn ghost sm" onclick="renderProjects()" style="margin-bottom:16px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="15 18 9 12 15 6"/></svg>Volver a proyectos</button>
-   <div class="card" style="margin-bottom:16px">
-     <div class="detail-head">
-       <div style="min-width:0"><div class="dh-name">${esc(p.name)}</div>${p.desc?`<div class="muted-3" style="margin-top:4px;font-size:14px">${esc(p.desc)}</div>`:''}
-         <div class="dh-meta"><span>Fase: <select onchange="changeProjectPhase(this.value)">${PHASES.map(f=>`<option ${f===p.phase?'selected':''}>${f}</option>`).join('')}</select></span>${p.start?`<span>Inicio: ${fmtDate(p.start)}</span>`:''}<span><b>${projectHours(p).toFixed(1)} h</b> invertidas</span></div>
-       </div>
-       <div style="display:flex;gap:8px"><button class="btn ghost sm" onclick="openProject('${p.id}')">Editar</button><button class="btn danger sm" onclick="delProject('${p.id}')">Eliminar</button></div>
-     </div>
-     <div class="muted" style="font-size:13px;margin-bottom:6px">Avance por entregables: <b>${prog}%</b></div>
-     <div class="bar"><i style="width:${prog}%"></i></div>
-   </div>
-   <div class="dsec">
-     <h3>Entregables <span class="cnt">${(p.deliverables||[]).filter(d=>d.done).length}/${(p.deliverables||[]).length} completados</span></h3>
-     ${(p.deliverables||[]).map(d=>`<div class="deliv"><input type="checkbox" ${d.done?'checked':''} onchange="toggleDeliv('${d.id}')"><span class="dl-t ${d.done?'done':''}">${esc(d.title)}</span><button class="btn danger sm icon" onclick="delDeliv('${d.id}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg></button></div>`).join('')||'<div class="muted-3" style="font-size:13px">Sin entregables aún. Agrégalos para medir el avance.</div>'}
-     <div class="addform"><div><input id="d-deliv" placeholder="Nuevo entregable (ej. Configurar facturación electrónica)" onkeydown="if(event.key==='Enter')addDeliv()"></div><button class="btn sm" onclick="addDeliv()">Agregar</button></div>
-   </div>
-   <div class="dsec">
-     <h3>Involucrados y roles <span class="cnt">${(p.members||[]).length}</span></h3>
-     <div>${(p.members||[]).map(m=>`<span class="member"><b>${esc(m.name)}</b><span class="mrole">· ${esc(m.role||'—')}</span><span class="x" onclick="delMember('${m.id}')">×</span></span>`).join('')||'<span class="muted-3" style="font-size:13px">Sin involucrados aún.</span>'}</div>
-     <div class="addform"><div><input id="m-name" placeholder="Nombre"></div><div><input id="m-role" placeholder="Rol (ej. Sponsor, Contacto TI)"></div><button class="btn sm" onclick="addMember()">Agregar</button></div>
-   </div>
-   <div class="dsec">
-     <h3>Actividades y horas <span class="cnt">${(p.activities||[]).reduce((a,x)=>a+(+x.hours||0),0).toFixed(1)} h</span></h3>
-     ${acts.length?`<div class="tablewrap"><table class="responsive"><thead><tr><th>Fecha</th><th>Tipo</th><th>Actividad</th><th>Horas</th><th></th></tr></thead><tbody>${acts.map(a=>`<tr><td data-label="Fecha" class="num muted-3">${fmtDate(a.date)}</td><td data-label="Tipo"><span class="tag">${esc(a.type)}</span></td><td data-label="Actividad" class="cellwrap">${esc(a.desc||'—')}</td><td data-label="Horas" class="num">${(+a.hours||0).toFixed(1)} h</td><td class="t-actions-cell"><button class="btn danger sm icon" onclick="delActivity('${a.id}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg></button></td></tr>`).join('')}</tbody></table></div>`:'<div class="muted-3" style="font-size:13px">Sin actividades registradas.</div>'}
-     <div class="addform"><div style="flex:0 0 auto"><input type="date" id="a-date" value="${T}" style="min-width:148px"></div><div style="flex:0 0 auto"><select id="a-type">${ACT_TYPES.map(t=>`<option>${t}</option>`).join('')}</select></div><div><input id="a-desc" placeholder="¿Qué actividad realizaste?"></div><div style="flex:0 0 86px"><input type="number" step="0.25" min="0" id="a-hours" placeholder="Horas"></div><button class="btn sm" onclick="addActivity()">Agregar</button></div>
-   </div>
-   <div class="dsec">
-     <h3>Reuniones y seguimientos <span class="cnt">${(p.meetings||[]).length}</span></h3>
-     ${meets.length?meets.map(m=>`<div class="deliv"><input type="checkbox" ${m.done?'checked':''} onchange="toggleMeeting('${m.id}')"><span class="dl-t ${m.done?'done':''}"><b>${fmtDate(m.date)}${m.time?' · '+m.time:''}</b> · <span class="tag">${esc(m.type)}</span> ${esc(m.title||'')}</span><button class="btn danger sm icon" onclick="delMeeting('${m.id}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg></button></div>`).join(''):'<div class="muted-3" style="font-size:13px">Sin reuniones programadas. Aparecerán también en tu Calendario.</div>'}
-     <div class="addform"><div style="flex:0 0 auto"><input type="date" id="me-date" value="${T}" style="min-width:148px"></div><div style="flex:0 0 108px"><input type="time" id="me-time"></div><div style="flex:0 0 auto"><select id="me-type">${MEET_TYPES.map(t=>`<option>${t}</option>`).join('')}</select></div><div><input id="me-title" placeholder="Asunto de la reunión"></div><button class="btn sm" onclick="addMeeting()">Programar</button></div>
-   </div>`;
-}
-function pCur(){return findProject(curProjectId);}
-function addDeliv(){const p=pCur();const v=$('d-deliv').value.trim();if(!v)return;(p.deliverables=p.deliverables||[]).push({id:uid(),title:v,done:false});save();renderProjectDetail();}
-function toggleDeliv(id){const p=pCur();const d=p.deliverables.find(x=>x.id===id);if(d){d.done=!d.done;save();renderProjectDetail();}}
-function delDeliv(id){const p=pCur();p.deliverables=p.deliverables.filter(x=>x.id!==id);save();renderProjectDetail();}
-function addMember(){const p=pCur();const n=$('m-name').value.trim();if(!n)return;(p.members=p.members||[]).push({id:uid(),name:n,role:$('m-role').value.trim()});save();renderProjectDetail();}
-function delMember(id){const p=pCur();p.members=p.members.filter(x=>x.id!==id);save();renderProjectDetail();}
-function addActivity(){const p=pCur();const desc=$('a-desc').value.trim();const hours=+$('a-hours').value||0;if(!desc&&!hours){return;}(p.activities=p.activities||[]).push({id:uid(),date:$('a-date').value||todayISO(),type:$('a-type').value,desc,hours});save();renderProjectDetail();}
-function delActivity(id){const p=pCur();p.activities=p.activities.filter(x=>x.id!==id);save();renderProjectDetail();}
-function addMeeting(){const p=pCur();const title=$('me-title').value.trim();const date=$('me-date').value;if(!date){alert('Pon al menos la fecha de la reunión.');return;}(p.meetings=p.meetings||[]).push({id:uid(),date,time:$('me-time').value,type:$('me-type').value,title,done:false});save();renderProjectDetail();}
-function toggleMeeting(id){const p=pCur();const m=p.meetings.find(x=>x.id===id);if(m){m.done=!m.done;save();renderProjectDetail();}}
-function delMeeting(id){const p=pCur();p.meetings=p.meetings.filter(x=>x.id!==id);save();renderProjectDetail();}
+$('sv-save').onclick=()=>{const client=$('sv-client').value.trim();if(!client){$('sv-client').focus();$('sv-client').style.borderColor='var(--danger)';return;}
+  const id=$('sv-id').value,data={client,type:$('sv-type').value.trim()||'Servicio',amount:+$('sv-amount').value||0,commissionPct:+$('sv-pct').value||0,date:$('sv-date').value||todayISO()};
+  if(id)Object.assign(findService(id),data);else state.services.push({id:uid(),...data,createdAt:Date.now()});
+  save();closeModal('modal-service');renderServices();};
+$('sv-client').addEventListener('input',()=>$('sv-client').style.borderColor='');
+$('sv-amount').addEventListener('input',servicePreview);$('sv-pct').addEventListener('input',servicePreview);
+$('btn-new-service').onclick=()=>openService();
+function delService(id){if(!confirm('¿Eliminar este servicio?'))return;state.services=state.services.filter(s=>s.id!==id);save();renderServices();}
 
 /* ===================== VENTAS ===================== */
-function fillPlanSelect(){$('s-plan').innerHTML=Object.entries(PLANS).map(([k,p])=>`<option value="${k}">${p.label} — ${fmtUSD(p.impl)} + ${fmtUSD(p.monthly)}/mes</option>`).join('');}
-function salePreview(){const p=PLANS[$('s-plan').value],mode=$('s-mode').value;if(!p){$('s-preview').innerHTML='';return;}
+function fillPlanSelect(){$('s-plan').innerHTML=Object.entries(PLANS).filter(([k,p])=>!p.special).map(([k,p])=>`<option value="${k}">${p.annualOnly?`${p.label} — ${fmtUSD(p.impl)} + ${fmtUSD(p.monthly*12)}/año`:`${p.label} — ${fmtUSD(p.impl)} + ${fmtUSD(p.monthly)}/mes`}</option>`).join('');}
+function salePreview(){const p=PLANS[$('s-plan').value];if(!p){$('s-preview').innerHTML='';return;}
+  const modeSel=$('s-mode');if(p.annualOnly){modeSel.value='anual';modeSel.disabled=true;}else{modeSel.disabled=false;}
+  const mode=modeSel.value;
   $('s-preview').innerHTML=mode==='anual'?`<strong>${p.label}</strong> · Anual<br>Implementación: <b>${fmtUSD(p.impl)}</b> (única vez)<br>Año adelantado: <b>${fmtUSD(p.monthly*12)}</b><br><span class="muted-3">Cuenta en pagos anuales, no en MRR.</span>`:`<strong>${p.label}</strong> · Mensual<br>Implementación: <b>${fmtUSD(p.impl)}</b> (única vez)<br>Mensualidad: <b>${fmtUSD(p.monthly)}</b> desde el 3er mes`;}
 function renderSales(){
   $('v-count').textContent=activeSales().length;
@@ -1197,31 +1240,108 @@ function renderSales(){
   $('v-mrr').textContent=fmtUSD(salesMRR(true));$('v-mrr-pot').textContent=fmtUSD(salesMRR(false));
   $('ventas-empty').style.display=state.sales.length?'none':'block';
   $('tbody-ventas').innerHTML=state.sales.slice().sort((a,b)=>(a.churned?1:0)-(b.churned?1:0)||(b.createdAt||0)-(a.createdAt||0)).map(s=>{
-    const p=PLANS[s.plan]||{label:s.plan,impl:0,monthly:0},m=monthsSince(s.start);
-    let estado=s.churned?'<span class="badge b-overdue">Dada de baja</span>':(s.mode==='anual'?'<span class="badge st-finalizada">Anual pagado</span>':(m>=RECURRING_START_MONTH?`<span class="badge st-finalizada">Activa (mes ${m})</span>`:`<span class="badge st-curso">Madura en ${RECURRING_START_MONTH-m} mes(es)</span>`));
+    const p=PLANS[s.plan]||{label:s.plan,impl:0,monthly:0},m=monthsSince(s.start),mon=saleMonthly(s),imp=saleImpl(s);
+    let estado=s.churned?'<span class="badge b-overdue">Dada de baja</span>':(s.legacy?'<span class="badge st-finalizada">Activa</span>':(s.mode==='anual'?'<span class="badge st-finalizada">Anual pagado</span>':(m>=RECURRING_START_MONTH?`<span class="badge st-finalizada">Activa (mes ${m})</span>`:`<span class="badge st-curso">Madura en ${RECURRING_START_MONTH-m} mes(es)</span>`)));
     const act=s.churned?`<button class="btn sm ghost" onclick="reactivateSale('${s.id}')">Reactivar</button>`:`<button class="btn sm ghost" onclick="churnSale('${s.id}')">Baja</button><button class="btn sm ghost icon" onclick="openSale('${s.id}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4z"/></svg></button>`;
     return `<tr class="${s.churned?'churned':''}">
       <td class="cellwrap" data-label="Cliente"><span class="cellmain">${esc(s.client)}</span></td>
       <td data-label="Plan"><span class="tag">${p.label}</span></td>
-      <td data-label="Implementación" class="num">${fmtUSD(p.impl)}</td>
-      <td data-label="Mensual" class="num">${s.mode==='anual'?fmtUSD(p.monthly*12)+'/año':fmtUSD(p.monthly)+'/mes'}</td>
-      <td data-label="Inicio" class="num muted-3">${fmtDate(s.start)}</td>
+      <td data-label="Implementación" class="num">${fmtUSD(imp)}</td>
+      <td data-label="Mensual" class="num">${s.mode==='anual'?fmtUSD(mon*12)+'/año':fmtUSD(mon)+'/mes'}</td>
+      <td data-label="Inicio" class="num muted-3">${s.legacy?'<span class="muted-3">Cliente existente</span>':fmtDate(s.start)}</td>
       <td data-label="Recurrencia">${estado}</td>
       <td class="t-actions-cell" data-label="Acciones"><div class="t-actions">${act}<button class="btn sm danger icon" onclick="delSale('${s.id}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg></button></div></td>
     </tr>`;
   }).join('');
+  renderServices();
 }
 const findSale=id=>state.sales.find(s=>s.id===id);
 function openSale(id){fillPlanSelect();if(id){const s=findSale(id);$('sale-modal-title').textContent='Editar venta';$('s-id').value=s.id;$('s-client').value=s.client;$('s-plan').value=s.plan;$('s-start').value=s.start||todayISO();$('s-mode').value=s.mode||'mensual';$('s-campaign').innerHTML=campaignOptions(s.campaignId);}else{$('sale-modal-title').textContent='Nueva venta';$('s-id').value='';$('s-client').value='';$('s-plan').value='starter';$('s-start').value=todayISO();$('s-mode').value='mensual';$('s-campaign').innerHTML=campaignOptions('');}salePreview();openModal('modal-sale','s-client');}
 $('s-save').onclick=()=>{const client=$('s-client').value.trim();if(!client){$('s-client').focus();$('s-client').style.borderColor='var(--danger)';return;}
   const id=$('s-id').value,data={client,plan:$('s-plan').value,start:$('s-start').value||todayISO(),mode:$('s-mode').value,campaignId:$('s-campaign').value||null};
   if(id)Object.assign(findSale(id),data);else state.sales.push({id:uid(),...data,createdAt:Date.now()});
-  save();closeModal('modal-sale');renderSales();};
+  save();closeModal('modal-sale');refreshSalesViews();};
 $('s-client').addEventListener('input',()=>$('s-client').style.borderColor='');
 $('s-plan').addEventListener('change',salePreview);$('s-mode').addEventListener('change',salePreview);
-function delSale(id){if(!confirm('¿Eliminar esta venta?'))return;state.sales=state.sales.filter(s=>s.id!==id);save();renderSales();}
-function churnSale(id){const s=findSale(id);if(!s)return;if(!confirm('¿Marcar como dada de baja? Dejará de contar en clientes y MRR.'))return;s.churned=true;s.churnDate=todayISO();save();renderSales();}
-function reactivateSale(id){const s=findSale(id);if(!s)return;s.churned=false;delete s.churnDate;save();renderSales();}
+function delSale(id){if(!confirm('¿Eliminar esta venta?'))return;state.sales=state.sales.filter(s=>s.id!==id);save();refreshSalesViews();}
+function churnSale(id){const s=findSale(id);if(!s)return;if(!confirm('¿Marcar como dada de baja? Dejará de contar en clientes y MRR.'))return;s.churned=true;s.churnDate=todayISO();save();refreshSalesViews();}
+function reactivateSale(id){const s=findSale(id);if(!s)return;s.churned=false;delete s.churnDate;save();refreshSalesViews();}
+/* re-render de las vistas que dependen de ventas (Ventas y Planes) */
+function refreshSalesViews(){if($('view-ventas').classList.contains('active'))renderSales();if($('view-planes').classList.contains('active')){if(curPlanKey)renderPlanDetail();else renderPlanes();}}
+
+/* ===================== PLANES ===================== */
+let curPlanKey=null;
+const planSales=key=>activeSales().filter(s=>s.plan===key);
+function planStats(key){
+  const list=planSales(key),p=PLANS[key]||{label:key};
+  const mrr=list.filter(s=>s.mode!=='anual').reduce((a,s)=>a+saleMonthly(s),0);
+  const annual=list.filter(s=>s.mode==='anual').reduce((a,s)=>a+saleMonthly(s)*12,0);
+  const impl=list.reduce((a,s)=>a+saleImpl(s),0);
+  return {list,p,mrr,annual,impl,count:list.length};
+}
+function renderPlanes(){
+  curPlanKey=null;$('planes-list-wrap').style.display='block';$('planes-detail-wrap').style.display='none';
+  const n=activeSales().length,mrr=salesMRR(false);
+  $('pl-clients').textContent=n.toLocaleString('en-US');
+  $('pl-mrr').textContent=fmtUSD(mrr);
+  $('pl-impl').textContent=fmtUSD(implCollected());
+  $('pl-arpu').textContent=fmtUSD(n?mrr/n:0);
+  const keys=Object.keys(PLANS).filter(k=>planSales(k).length>0);
+  $('planes-grid').innerHTML=keys.length?keys.map(k=>{
+    const st=planStats(k);
+    return `<div class="card proj-card" onclick="openPlanDetail('${k}')">
+      <div class="pc-top"><div class="pc-name">${esc(st.p.label)}</div><span class="badge st-finalizada plain">${st.count} cliente${st.count===1?'':'s'}</span></div>
+      <div class="pc-meta" style="margin-top:12px;font-size:13px">
+        <span>MRR<br><b style="color:var(--txt-1);font-size:15px">${fmtUSD(st.mrr)}<span class="muted-3" style="font-size:11px">/mes</span></b></span>
+        <span>Implementación<br><b style="color:var(--brand-3);font-size:15px">${fmtUSD(st.impl)}</b></span>
+        ${st.annual?`<span>Anual<br><b style="color:var(--txt-1);font-size:15px">${fmtUSD(st.annual)}<span class="muted-3" style="font-size:11px">/año</span></b></span>`:''}
+      </div>
+    </div>`;
+  }).join(''):'<div class="empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg><p>Aún no hay clientes por plan</p><span>Registra ventas o importa tu cartera.</span></div>';
+}
+function openPlanDetail(key){curPlanKey=key;$('planes-list-wrap').style.display='none';$('planes-detail-wrap').style.display='block';renderPlanDetail();window.scrollTo({top:0});}
+function renderPlanDetail(){
+  const st=planStats(curPlanKey);if(!st.count){renderPlanes();return;}
+  const rows=st.list.slice().sort((a,b)=>normName(a.client).localeCompare(normName(b.client))).map(s=>{
+    const mon=saleMonthly(s),imp=saleImpl(s);
+    const edit=s.plan==='especial'?'':`<button class="btn sm ghost icon" onclick="openSale('${s.id}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4z"/></svg></button>`;
+    return `<tr>
+      <td class="cellwrap" data-label="Cliente"><span class="cellmain">${esc(s.client)}</span></td>
+      <td data-label="Mensual" class="num">${s.mode==='anual'?fmtUSD(mon*12)+'/año':fmtUSD(mon)+'/mes'}</td>
+      <td data-label="Implementación" class="num">${fmtUSD(imp)}</td>
+      <td data-label="Estado" class="num muted-3">${s.legacy?'Cliente existente':(s.mode==='anual'?'Anual':fmtDate(s.start))}</td>
+      <td class="t-actions-cell" data-label="Acciones"><div class="t-actions">${edit}<button class="btn sm ghost" onclick="churnSale('${s.id}')">Baja</button><button class="btn sm danger icon" onclick="delSale('${s.id}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg></button></div></td>
+    </tr>`;
+  }).join('');
+  $('planes-detail-wrap').innerHTML=`
+    <button class="btn ghost sm" onclick="renderPlanes()" style="margin-bottom:16px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="15 18 9 12 15 6"/></svg>Volver a planes</button>
+    <div class="card" style="margin-bottom:16px"><div class="detail-head"><div style="min-width:0">
+      <div class="dh-name">${esc(st.p.label)}</div>
+      <div class="dh-meta"><span><b>${st.count}</b> cliente${st.count===1?'':'s'}</span><span>MRR <b>${fmtUSD(st.mrr)}/mes</b></span><span>Implementación <b>${fmtUSD(st.impl)}</b></span>${st.annual?`<span>Anual <b>${fmtUSD(st.annual)}/año</b></span>`:''}</div>
+    </div></div></div>
+    <div class="card pad-lg"><div class="tablewrap"><table class="responsive"><thead><tr><th>Cliente</th><th>Mensual</th><th>Implementación</th><th>Estado</th><th class="right">Acciones</th></tr></thead><tbody>${rows}</tbody></table></div></div>`;
+}
+
+/* ===================== ALIANZAS (Rene Gonzalez) ===================== */
+const fmtMonth=ym=>{if(!ym||ym==='Sin fecha')return 'Sin fecha';const [y,m]=ym.split('-');return new Date(+y,+m-1,1).toLocaleDateString('es-SV',{month:'short',year:'numeric'});};
+function renderAlianzas(){
+  const list=activeSales().filter(s=>s.comercial==='Rene Gonzalez');
+  const M=curMonth();
+  $('al-count').textContent=list.length;
+  $('al-mes').textContent=list.filter(s=>(s.start||'').slice(0,7)===M).length;
+  $('al-mrr').textContent=fmtUSD(list.filter(s=>s.mode!=='anual').reduce((a,s)=>a+saleMonthly(s),0));
+  $('al-anual').textContent=fmtUSD(list.filter(s=>s.mode==='anual').reduce((a,s)=>a+saleMonthly(s)*12,0));
+  const byMonth={};
+  list.forEach(s=>{const k=(s.start||'').slice(0,7)||'Sin fecha';(byMonth[k]=byMonth[k]||[]).push(s);});
+  const keys=Object.keys(byMonth).sort((a,b)=>a==='Sin fecha'?1:b==='Sin fecha'?-1:a.localeCompare(b));
+  if(charts.alianzas)charts.alianzas.destroy();
+  charts.alianzas=new Chart($('chartAlianzas'),{type:'bar',data:{labels:keys.map(fmtMonth),datasets:[{label:'Clientes',data:keys.map(k=>byMonth[k].length),backgroundColor:'#7c4dff',borderRadius:8}]},options:{maintainAspectRatio:false,scales:{x:{ticks:{color:CTXT},grid:{display:false}},y:{ticks:{color:CTXT,precision:0},grid:{color:CGRID}}},plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.parsed.y+' clientes'}}}}});
+  $('alianzas-meses').innerHTML=keys.slice().reverse().map(k=>{
+    const arr=byMonth[k].slice().sort((a,b)=>normName(a.client).localeCompare(normName(b.client)));
+    return `<div class="card" style="margin-bottom:12px"><div class="section-head"><h2 style="font-size:16px;text-transform:capitalize">${fmtMonth(k)}</h2><span class="badge st-finalizada plain">${arr.length} cliente${arr.length===1?'':'s'}</span></div>
+      <div class="tablewrap"><table class="responsive"><thead><tr><th>Cliente</th><th>Plan</th><th>Monto</th></tr></thead><tbody>${arr.map(s=>{const p=PLANS[s.plan]||{label:s.plan};const mon=saleMonthly(s);return `<tr><td class="cellwrap" data-label="Cliente"><span class="cellmain">${esc(s.client)}</span></td><td data-label="Plan"><span class="tag">${p.label}</span></td><td data-label="Monto" class="num">${s.mode==='anual'?fmtUSD(mon*12)+'/año':fmtUSD(mon)+'/mes'}</td></tr>`;}).join('')}</tbody></table></div></div>`;
+  }).join('');
+}
 
 /* ===================== CALENDARIO ===================== */
 let calDate=new Date();
@@ -1235,7 +1355,7 @@ function renderCalendar(){
   const ev={},add=(d,h)=>{if(!d)return;(ev[d]=ev[d]||[]).push(h);};
   state.tasks.forEach(t=>{add(t.start,`<div class="ev task">▶ ${esc(t.title)}</div>`);add(t.due,`<div class="ev due">◆ ${esc(t.title)}</div>`);});
   state.sales.forEach(s=>{if(!s.churned)add(s.start,`<div class="ev sale">$ ${esc(s.client)}</div>`);});
-  state.projects.forEach(pr=>(pr.meetings||[]).forEach(m=>add(m.date,`<div class="ev meet" title="${esc(pr.name)}: ${esc(m.type)} ${esc(m.title||'')}">◇ ${esc(m.title||m.type)}</div>`)));
+  state.services.forEach(sv=>add(sv.date,`<div class="ev meet" title="${esc(sv.client)}">◇ ${esc(sv.type||'Servicio')}</div>`));
   let c='';for(let i=0;i<startDow;i++)c+='<div class="cell out"></div>';
   for(let d=1;d<=days;d++){const iso=`${y}-${String(mo+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;c+=`<div class="cell ${iso===tStr?'today':''}"><div class="d">${d}</div>${(ev[iso]||[]).slice(0,3).join('')}${(ev[iso]||[]).length>3?`<div class="muted-3" style="font-size:10px">+${ev[iso].length-3}</div>`:''}</div>`;}
   $('cal-cells').innerHTML=c;
@@ -1246,7 +1366,7 @@ function velocity(){ // clientes y MRR ganados en últimos 90 días → por mes
   const cut=addDaysISO(todayISO(),-90);
   const recent=activeSales().filter(s=>s.start&&s.start>=cut);
   const cliV=recent.length/3;
-  const mrrV=recent.filter(s=>s.mode==='mensual').reduce((a,s)=>a+(PLANS[s.plan]?.monthly||0),0)/3;
+  const mrrV=recent.filter(s=>s.mode==='mensual').reduce((a,s)=>a+saleMonthly(s),0)/3;
   return {cliV,mrrV,n:recent.length};
 }
 function renderMetas(){
@@ -1285,11 +1405,6 @@ function renderMetas(){
   const counts=Object.keys(PLANS).map(k=>activeSales().filter(s=>s.plan===k).length);
   if(charts.planes)charts.planes.destroy();
   charts.planes=new Chart($('chartPlanes'),{type:'bar',data:{labels:Object.values(PLANS).map(p=>p.label),datasets:[{label:'Ventas',data:counts,backgroundColor:'#7c4dff',borderRadius:8}]},options:{maintainAspectRatio:false,scales:{x:{ticks:{color:CTXT},grid:{display:false}},y:{ticks:{color:CTXT,precision:0},grid:{color:CGRID}}},plugins:{legend:{display:false}}}});
-  const byProj={};state.tasks.forEach(t=>{const k=t.project||'Sin proyecto';byProj[k]=(byProj[k]||0)+taskMs(t);});
-  const keys=Object.keys(byProj).filter(k=>byProj[k]>0);
-  $('horas-empty').style.display=keys.length?'none':'block';
-  if(charts.horas)charts.horas.destroy();
-  if(keys.length)charts.horas=new Chart($('chartHoras'),{type:'bar',data:{labels:keys,datasets:[{label:'Horas',data:keys.map(k=>+(byProj[k]/3600000).toFixed(2)),backgroundColor:'#DFD2FF',borderRadius:8}]},options:{maintainAspectRatio:false,indexAxis:'y',scales:{x:{ticks:{color:CTXT},grid:{color:CGRID}},y:{ticks:{color:CTXT},grid:{display:false}}},plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.parsed.x+' h'}}}}});
 
   renderComision();
 }
@@ -1299,15 +1414,20 @@ function renderComision(){
   const monthSales=activeSales().filter(s=>(s.start||'').slice(0,7)===m);
   const n=monthSales.length,tier=commissionTier(n);
   let gross=0;
-  monthSales.forEach(s=>{const p=PLANS[s.plan];if(!p)return;if(s.mode==='anual'){gross+=p.impl*tier+(p.monthly*12)*0.02;}else{gross+=(p.impl+p.monthly)*tier;}});
-  const ret=gross*0.10,net=gross-ret;
+  monthSales.forEach(s=>{const imp=saleImpl(s),mon=saleMonthly(s);if(s.mode==='anual'){gross+=imp*tier+(mon*12)*0.02;}else{gross+=(imp+mon)*tier;}});
+  const monthServices=state.services.filter(s=>(s.date||'').slice(0,7)===m);
+  const svcComm=monthServices.reduce((a,s)=>a+serviceCommission(s),0);
+  const grossTotal=gross+svcComm;
+  const ret=grossTotal*0.10,net=grossTotal-ret;
   const meta=state.config.metaMes||24,bono=n>=meta?(state.config.bono||0):0;
   const total=(state.config.salaryBase||0)+net+bono;
   $('com-mes').textContent=new Date().toLocaleDateString('es-SV',{month:'long',year:'numeric'});
   $('comision').innerHTML=`
     <div class="comprow"><span>Clientes cerrados este mes</span><span class="cv">${n} ${n>=meta?'<span class="badge st-finalizada plain" style="margin-left:6px">meta ✓</span>':`<span class="muted-3">(meta ${meta})</span>`}</span></div>
     <div class="comprow"><span>Escalón aplicado</span><span class="cv">${(tier*100).toFixed(0)}%</span></div>
-    <div class="comprow"><span>Comisión bruta</span><span class="cv">${fmtUSD(gross)}</span></div>
+    <div class="comprow"><span>Comisión por planes</span><span class="cv">${fmtUSD(gross)}</span></div>
+    <div class="comprow"><span>Comisión servicios especiales${monthServices.length?` (${monthServices.length})`:''}</span><span class="cv">${fmtUSD(svcComm)}</span></div>
+    <div class="comprow"><span>Comisión bruta total</span><span class="cv">${fmtUSD(grossTotal)}</span></div>
     <div class="comprow"><span>Retención de renta (10%)</span><span class="cv" style="color:var(--danger)">− ${fmtUSD(ret)}</span></div>
     <div class="comprow"><span>Comisión neta</span><span class="cv">${fmtUSD(net)}</span></div>
     <div class="comprow"><span>Salario base</span><span class="cv">${fmtUSD(state.config.salaryBase||0)}</span></div>
@@ -1321,7 +1441,7 @@ $('cfg-save').onclick=()=>{const c=state.config;c.baseClients=+$('c-baseClients'
 $('cfg-save2').onclick=()=>{const c=state.config;c.salaryBase=+$('c-salary').value||0;c.bono=+$('c-bono').value||0;c.metaMes=+$('c-metaMes').value||24;save();alert('Comisiones actualizadas.');go('metas');};
 $('cfg-export').onclick=()=>{const b=new Blob([JSON.stringify(state,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='dashboard-odoo-factura-'+todayISO()+'.json';a.click();state.config.lastBackup=todayISO();save();renderBackupBanner();};
 $('cfg-import-btn').onclick=()=>$('importer').click();
-$('importer').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const d=JSON.parse(r.result);state={...structuredClone(defaultState),...d,config:{...defaultState.config,...(d.config||{})}};['tasks','sales','prospects','campaigns','projects','history'].forEach(k=>{if(!Array.isArray(state[k]))state[k]=[];});save();go('inicio');}catch(err){alert('Archivo inválido.');}};r.readAsText(f);};
+$('importer').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const d=JSON.parse(r.result);state={...structuredClone(defaultState),...d,config:{...defaultState.config,...(d.config||{})}};['tasks','sales','services','prospects','campaigns','projects','history'].forEach(k=>{if(!Array.isArray(state[k]))state[k]=[];});save();go('inicio');}catch(err){alert('Archivo inválido.');}};r.readAsText(f);};
 $('cfg-csv-ventas').onclick=()=>{const rows=[['cliente','plan','modalidad','fecha','baja']].concat(state.sales.map(s=>[s.client,s.plan,s.mode,s.start,s.churned?'si':'no']));const csv=rows.map(r=>r.map(x=>`"${(x??'').toString().replace(/"/g,'""')}"`).join(',')).join('\n');const b=new Blob([csv],{type:'text/csv'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='ventas-'+todayISO()+'.csv';a.click();};
 $('cfg-print').onclick=()=>{const v=$('view-metas');renderMetas();document.querySelectorAll('.view').forEach(x=>x.classList.remove('printing'));v.classList.add('printing');setTimeout(()=>{window.print();v.classList.remove('printing');},200);};
 $('csv-template').onclick=e=>{e.preventDefault();const csv='cliente,plan,modalidad,fecha\nEjemplo SA,professional,mensual,2026-01-15\nOtra Empresa,starter,anual,2026-02-01';const b=new Blob([csv],{type:'text/csv'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='plantilla-clientes.csv';a.click();};
@@ -1388,7 +1508,7 @@ function traducirAuth(m){if(/invalid login/i.test(m))return 'Correo o contraseñ
 async function afterLogin(session){userId=session.user.id;hideGate();state=await loadCloud();$('foot-status').textContent='Conectado: '+session.user.email;$('auth-logout').style.display='block';initApp();}
 $('auth-logout').onclick=async()=>{if(!confirm('¿Cerrar sesión?'))return;await supa.auth.signOut();location.reload();};
 
-function initApp(){fillPlanSelect();updateBadges();renderBackupBanner();go('inicio');document.body.classList.remove('booting');}
+function initApp(){seedOdooBatch1();seedBookV3();seedAnnualBookV1();seedComercialV1();fillPlanSelect();updateBadges();renderBackupBanner();go('inicio');document.body.classList.remove('booting');}
 
 async function boot(){
   if(initSupabase()){
