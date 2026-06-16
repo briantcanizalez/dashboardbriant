@@ -198,6 +198,26 @@ td.num{font-variant-numeric:tabular-nums;white-space:nowrap}
 .seg button{border:none;background:transparent;color:var(--txt-2);font-size:13px;font-weight:600;padding:7px 14px;border-radius:8px;cursor:pointer;transition:.15s;display:inline-flex;align-items:center;gap:6px}
 .seg button svg{width:15px;height:15px;stroke-width:2}
 .seg button.active{background:var(--brand);color:#fff}
+.searchbar{display:flex;align-items:center;gap:10px;background:var(--surface-1);border:1px solid var(--border);border-radius:12px;padding:11px 15px;margin-bottom:16px}
+.searchbar svg{width:18px;height:18px;stroke-width:2;color:var(--txt-3);flex:0 0 auto}
+.searchbar input{flex:1;border:none;background:transparent;color:var(--txt-1);font-size:15px;outline:none;min-width:0}
+.searchbar input::placeholder{color:var(--txt-3)}
+.searchbar .hint{flex:0 0 auto}
+details.modgrp{background:var(--surface-1);border:1px solid var(--border);border-radius:14px;margin-bottom:12px;overflow:hidden}
+details.modgrp>summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:15px 18px;font-family:'Space Grotesk';font-weight:700;font-size:17px}
+details.modgrp[open]>summary{border-bottom:1px solid var(--border)}
+.modbody{padding:12px 14px 14px}
+details.plangrp{border:1px solid var(--border);border-radius:10px;margin-top:10px;background:var(--surface-2)}
+details.plangrp:first-child{margin-top:0}
+details.plangrp>summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 14px;font-weight:600;font-size:14px}
+details.plangrp[open]>summary{border-bottom:1px solid var(--border)}
+details.plangrp .tablewrap{padding:4px 12px 10px}
+summary::-webkit-details-marker{display:none}
+.grp-name{display:flex;align-items:center;gap:8px}
+.grp-name .cnt{font-size:11px;font-weight:700;background:rgba(124,77,255,.15);color:var(--brand-3);padding:2px 8px;border-radius:99px}
+.grp-meta{font-size:12px;color:var(--txt-3);font-weight:600;text-align:right;flex:0 0 auto}
+summary .grp-name::before{content:'▸';color:var(--txt-3);font-size:10px}
+details[open]>summary .grp-name::before{content:'▾'}
 
 /* Kanban */
 .board{display:grid;grid-template-columns:repeat(var(--cols,3),1fr);gap:14px;align-items:start}
@@ -412,7 +432,7 @@ canvas{max-width:100%}
       <button data-view="campaigns"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 11l18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg><span>Campañas</span></button>
       <button data-view="ventas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="2" x2="12" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg><span>Ventas</span></button>
       <button data-view="planes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg><span>Planes</span></button>
-      <button data-view="alianzas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span>Alianzas</span></button>
+      <button data-view="canales"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span>Canales</span></button>
       <button data-view="calendario"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="4" width="18" height="18" rx="2.5"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span>Calendario</span></button>
       <button data-view="metas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/></svg><span>Metas y Proyección</span></button>
     </nav>
@@ -535,31 +555,32 @@ canvas{max-width:100%}
         </div>
       </section>
 
-      <!-- ====== PLANES ====== -->
+      <!-- ====== PLANES (buscador + arbol Modalidad>Plan>Clientes) ====== -->
       <section class="view" id="view-planes">
-        <div id="planes-list-wrap">
-          <div class="grid kpis" style="margin-bottom:18px">
-            <div class="card kpi"><div class="khead"><span class="klabel">Clientes en cartera</span></div><div class="kval tnum" id="pl-clients">0</div><div class="kmeta">suscripciones activas</div></div>
-            <div class="card kpi"><div class="khead"><span class="klabel">MRR total</span></div><div class="kval tnum" id="pl-mrr">$0</div><div class="kmeta">recurrente contratado/mes</div></div>
-            <div class="card kpi"><div class="khead"><span class="klabel">Implementaciones</span></div><div class="kval lav tnum" id="pl-impl">$0</div><div class="kmeta">pago único acumulado</div></div>
-            <div class="card kpi"><div class="khead"><span class="klabel">Ticket promedio</span></div><div class="kval tnum" id="pl-arpu">$0</div><div class="kmeta">MRR por cliente</div></div>
-          </div>
-          <p class="subt" style="margin-bottom:14px">Toca un plan para ver los clientes que pertenecen a él, su MRR y lo que generó en implementaciones.</p>
-          <div id="planes-grid" class="proj-grid"></div>
+        <div class="grid kpis" style="margin-bottom:16px">
+          <div class="card kpi"><div class="khead"><span class="klabel">Clientes en cartera</span></div><div class="kval tnum" id="pl-clients">0</div><div class="kmeta">suscripciones activas</div></div>
+          <div class="card kpi"><div class="khead"><span class="klabel">MRR total</span></div><div class="kval tnum" id="pl-mrr">$0</div><div class="kmeta">recurrente contratado/mes</div></div>
+          <div class="card kpi"><div class="khead"><span class="klabel">Implementaciones</span></div><div class="kval lav tnum" id="pl-impl">$0</div><div class="kmeta">pago único acumulado</div></div>
+          <div class="card kpi"><div class="khead"><span class="klabel">Ticket promedio</span></div><div class="kval tnum" id="pl-arpu">$0</div><div class="kmeta">MRR por cliente</div></div>
         </div>
-        <div id="planes-detail-wrap" style="display:none"></div>
+        <div class="searchbar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input id="planes-search" type="search" placeholder="Buscar cliente por nombre…" oninput="renderPlanesTree()"><span class="hint" id="planes-search-meta"></span></div>
+        <div id="planes-tree"></div>
       </section>
 
-      <!-- ====== ALIANZAS ====== -->
-      <section class="view" id="view-alianzas">
-        <div class="grid kpis" style="margin-bottom:16px">
-          <div class="card kpi"><div class="khead"><span class="klabel">Clientes de Rene</span></div><div class="kval tnum" id="al-count">0</div><div class="kmeta">canal Alianzas</div></div>
-          <div class="card kpi"><div class="khead"><span class="klabel">Este mes</span></div><div class="kval tnum" id="al-mes">0</div><div class="kmeta" id="al-mes-meta">clientes nuevos</div></div>
-          <div class="card kpi"><div class="khead"><span class="klabel">MRR aportado</span></div><div class="kval tnum" id="al-mrr">$0</div><div class="kmeta">recurrente mensual</div></div>
-          <div class="card kpi"><div class="khead"><span class="klabel">Anual aportado</span></div><div class="kval lav tnum" id="al-anual">$0</div><div class="kmeta">prepago/año</div></div>
+      <!-- ====== CANALES (Digital=Briant / Alianzas=Rene) ====== -->
+      <section class="view" id="view-canales">
+        <div class="seg" id="canal-seg" style="margin-bottom:16px">
+          <button class="active" data-canal="Briant Canizalez">Canal Digital · Briant</button>
+          <button data-canal="Rene Gonzalez">Alianzas · Rene</button>
         </div>
-        <div class="card" style="margin-bottom:16px"><div class="section-head"><h2>Clientes por mes</h2><span class="hint">Rene Gonzalez · por fecha de alta</span></div><div class="chart-box"><canvas id="chartAlianzas"></canvas></div></div>
-        <div id="alianzas-meses"></div>
+        <div class="grid kpis" style="margin-bottom:16px">
+          <div class="card kpi"><div class="khead"><span class="klabel" id="cn-label">Clientes</span></div><div class="kval tnum" id="cn-count">0</div><div class="kmeta" id="cn-canal">canal</div></div>
+          <div class="card kpi"><div class="khead"><span class="klabel">Este mes</span></div><div class="kval tnum" id="cn-mes">0</div><div class="kmeta">clientes nuevos</div></div>
+          <div class="card kpi"><div class="khead"><span class="klabel">MRR aportado</span></div><div class="kval tnum" id="cn-mrr">$0</div><div class="kmeta">recurrente mensual</div></div>
+          <div class="card kpi"><div class="khead"><span class="klabel">Anual aportado</span></div><div class="kval lav tnum" id="cn-anual">$0</div><div class="kmeta">prepago/año</div></div>
+        </div>
+        <div class="card" style="margin-bottom:16px"><div class="section-head"><h2>Clientes por mes</h2><span class="hint" id="cn-hint">por fecha de alta</span></div><div class="chart-box"><canvas id="chartCanal"></canvas></div></div>
+        <div id="canal-meses"></div>
       </section>
 
       <!-- ====== CALENDARIO ====== -->
@@ -642,7 +663,7 @@ canvas{max-width:100%}
     <button data-view="tareas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>Tareas</button>
     <button data-view="ventas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="2" x2="12" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>Ventas</button>
     <button data-view="planes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>Planes</button>
-    <button data-view="alianzas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Alianzas</button>
+    <button data-view="canales"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Canales</button>
     <button data-view="pipeline"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M22 3H2l8 9.46V19l4 2v-8.54z"/></svg>Pipeline</button>
     <button data-view="metas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/></svg>Metas</button>
   </nav>
@@ -881,7 +902,7 @@ const VIEWS={
   campaigns:{title:'Campañas',sub:'Inversión en anuncios, CAC y rentabilidad.',action:{label:'Nueva campaña',fn:()=>openCampaign()}},
   ventas:{title:'Ventas',sub:'Cada venta suma a tus metas.',action:{label:'Nueva venta',fn:()=>openSale()}},
   planes:{title:'Planes',sub:'Clientes, MRR e implementaciones por plan.',action:null},
-  alianzas:{title:'Alianzas',sub:'Clientes de Rene Gonzalez por mes.',action:null},
+  canales:{title:'Canales',sub:'Clientes por comercial y por mes.',action:null},
   calendario:{title:'Calendario',sub:'Inicios y fechas estimadas.',action:null},
   metas:{title:'Metas y Proyección',sub:'Avance, proyección y comisiones.',action:null},
   config:{title:'Ajustes y Datos',sub:'Configura tu punto de partida y respaldos.',action:null},
@@ -897,7 +918,7 @@ function go(view){
   if(cfg.action){act.classList.remove('hide');act.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>'+cfg.action.label;act.onclick=cfg.action.fn;}
   else{act.classList.add('hide');act.onclick=null;}
   window.scrollTo({top:0});
-  ({inicio:renderInicio,tareas:renderTasks,pipeline:renderPipeline,campaigns:renderCampaigns,ventas:renderSales,planes:renderPlanes,alianzas:renderAlianzas,calendario:renderCalendar,metas:renderMetas,config:fillConfig}[view])();
+  ({inicio:renderInicio,tareas:renderTasks,pipeline:renderPipeline,campaigns:renderCampaigns,ventas:renderSales,planes:renderPlanes,canales:renderCanales,calendario:renderCalendar,metas:renderMetas,config:fillConfig}[view])();
 }
 document.addEventListener('click',e=>{
   const nav=e.target.closest('[data-nav] [data-view]');if(nav){go(nav.dataset.view);return;}
@@ -1279,81 +1300,71 @@ function delSale(id){if(!confirm('¿Eliminar esta venta?'))return;state.sales=st
 function churnSale(id){const s=findSale(id);if(!s)return;if(!confirm('¿Marcar como dada de baja? Dejará de contar en clientes y MRR.'))return;s.churned=true;s.churnDate=todayISO();save();refreshSalesViews();}
 function reactivateSale(id){const s=findSale(id);if(!s)return;s.churned=false;delete s.churnDate;save();refreshSalesViews();}
 /* re-render de las vistas que dependen de ventas (Ventas y Planes) */
-function refreshSalesViews(){if($('view-ventas').classList.contains('active'))renderSales();if($('view-planes').classList.contains('active')){if(curPlanKey)renderPlanDetail();else renderPlanes();}}
+function refreshSalesViews(){if($('view-ventas').classList.contains('active'))renderSales();if($('view-planes').classList.contains('active'))renderPlanes();if($('view-canales').classList.contains('active'))renderCanales();}
 
-/* ===================== PLANES ===================== */
-let curPlanKey=null;
-const planSales=key=>activeSales().filter(s=>s.plan===key);
-function planStats(key){
-  const list=planSales(key),p=PLANS[key]||{label:key};
-  const mrr=list.filter(s=>s.mode!=='anual').reduce((a,s)=>a+saleMonthly(s),0);
-  const annual=list.filter(s=>s.mode==='anual').reduce((a,s)=>a+saleMonthly(s)*12,0);
-  const impl=list.reduce((a,s)=>a+saleImpl(s),0);
-  return {list,p,mrr,annual,impl,count:list.length};
-}
+/* ===================== PLANES (buscador + arbol Modalidad>Plan>Cliente) ===================== */
+const editBtn=id=>`<button class="btn sm ghost icon" onclick="openSale('${id}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4z"/></svg></button>`;
 function renderPlanes(){
-  curPlanKey=null;$('planes-list-wrap').style.display='block';$('planes-detail-wrap').style.display='none';
   const n=activeSales().length,mrr=salesMRR(false);
   $('pl-clients').textContent=n.toLocaleString('en-US');
   $('pl-mrr').textContent=fmtUSD(mrr);
   $('pl-impl').textContent=fmtUSD(implCollected());
   $('pl-arpu').textContent=fmtUSD(n?mrr/n:0);
-  const keys=Object.keys(PLANS).filter(k=>planSales(k).length>0);
-  $('planes-grid').innerHTML=keys.length?keys.map(k=>{
-    const st=planStats(k);
-    return `<div class="card proj-card" onclick="openPlanDetail('${k}')">
-      <div class="pc-top"><div class="pc-name">${esc(st.p.label)}</div><span class="badge st-finalizada plain">${st.count} cliente${st.count===1?'':'s'}</span></div>
-      <div class="pc-meta" style="margin-top:12px;font-size:13px">
-        <span>MRR<br><b style="color:var(--txt-1);font-size:15px">${fmtUSD(st.mrr)}<span class="muted-3" style="font-size:11px">/mes</span></b></span>
-        <span>Implementación<br><b style="color:var(--brand-3);font-size:15px">${fmtUSD(st.impl)}</b></span>
-        ${st.annual?`<span>Anual<br><b style="color:var(--txt-1);font-size:15px">${fmtUSD(st.annual)}<span class="muted-3" style="font-size:11px">/año</span></b></span>`:''}
-      </div>
-    </div>`;
-  }).join(''):'<div class="empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg><p>Aún no hay clientes por plan</p><span>Registra ventas o importa tu cartera.</span></div>';
+  renderPlanesTree();
 }
-function openPlanDetail(key){curPlanKey=key;$('planes-list-wrap').style.display='none';$('planes-detail-wrap').style.display='block';renderPlanDetail();window.scrollTo({top:0});}
-function renderPlanDetail(){
-  const st=planStats(curPlanKey);if(!st.count){renderPlanes();return;}
-  const rows=st.list.slice().sort((a,b)=>normName(a.client).localeCompare(normName(b.client))).map(s=>{
-    const mon=saleMonthly(s),imp=saleImpl(s);
-    const edit=s.plan==='especial'?'':`<button class="btn sm ghost icon" onclick="openSale('${s.id}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4z"/></svg></button>`;
-    return `<tr>
-      <td class="cellwrap" data-label="Cliente"><span class="cellmain">${esc(s.client)}</span></td>
-      <td data-label="Mensual" class="num">${s.mode==='anual'?fmtUSD(mon*12)+'/año':fmtUSD(mon)+'/mes'}</td>
-      <td data-label="Implementación" class="num">${fmtUSD(imp)}</td>
-      <td data-label="Estado" class="num muted-3">${s.legacy?'Cliente existente':(s.mode==='anual'?'Anual':fmtDate(s.start))}</td>
-      <td class="t-actions-cell" data-label="Acciones"><div class="t-actions">${edit}<button class="btn sm ghost" onclick="churnSale('${s.id}')">Baja</button><button class="btn sm danger icon" onclick="delSale('${s.id}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg></button></div></td>
-    </tr>`;
-  }).join('');
-  $('planes-detail-wrap').innerHTML=`
-    <button class="btn ghost sm" onclick="renderPlanes()" style="margin-bottom:16px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="15 18 9 12 15 6"/></svg>Volver a planes</button>
-    <div class="card" style="margin-bottom:16px"><div class="detail-head"><div style="min-width:0">
-      <div class="dh-name">${esc(st.p.label)}</div>
-      <div class="dh-meta"><span><b>${st.count}</b> cliente${st.count===1?'':'s'}</span><span>MRR <b>${fmtUSD(st.mrr)}/mes</b></span><span>Implementación <b>${fmtUSD(st.impl)}</b></span>${st.annual?`<span>Anual <b>${fmtUSD(st.annual)}/año</b></span>`:''}</div>
-    </div></div></div>
-    <div class="card pad-lg"><div class="tablewrap"><table class="responsive"><thead><tr><th>Cliente</th><th>Mensual</th><th>Implementación</th><th>Estado</th><th class="right">Acciones</th></tr></thead><tbody>${rows}</tbody></table></div></div>`;
+function renderPlanesTree(){
+  const q=normName($('planes-search').value||'');
+  const base=activeSales();
+  const list=q?base.filter(s=>normName(s.client).includes(q)):base;
+  $('planes-search-meta').textContent=q?`${list.length} coincidencia${list.length===1?'':'s'}`:'';
+  const MODS=[['mensual','Mensual'],['anual','Anual']];
+  let html='';
+  MODS.forEach(([mode,label])=>{
+    const inMode=list.filter(s=>s.mode===mode);
+    if(!inMode.length)return;
+    const planKeys=Object.keys(PLANS).filter(k=>inMode.some(s=>s.plan===k));
+    const total=inMode.reduce((a,s)=>a+saleMonthly(s)*(mode==='anual'?12:1),0);
+    html+=`<details class="modgrp" ${q?'open':''}><summary><span class="grp-name">${label}</span><span class="grp-meta">${inMode.length} cliente${inMode.length===1?'':'s'} &middot; ${fmtUSD(total)}${mode==='anual'?'/año':'/mes'}</span></summary><div class="modbody">`;
+    planKeys.forEach(k=>{
+      const arr=inMode.filter(s=>s.plan===k).sort((a,b)=>normName(a.client).localeCompare(normName(b.client)));
+      const p=PLANS[k]||{label:k};
+      const amt=arr.reduce((a,s)=>a+saleMonthly(s)*(mode==='anual'?12:1),0);
+      const impl=arr.reduce((a,s)=>a+saleImpl(s),0);
+      html+=`<details class="plangrp" ${q?'open':''}><summary><span class="grp-name">${esc(p.label)} <span class="cnt">${arr.length}</span></span><span class="grp-meta">${fmtUSD(amt)}${mode==='anual'?'/año':'/mes'} &middot; impl ${fmtUSD(impl)}</span></summary>`+
+        `<div class="tablewrap"><table class="responsive"><thead><tr><th>Cliente</th><th>Monto</th><th>Comercial</th><th class="right"></th></tr></thead><tbody>`+arr.map(s=>{const mon=saleMonthly(s);return `<tr><td class="cellwrap" data-label="Cliente"><span class="cellmain">${esc(s.client)}</span></td><td data-label="Monto" class="num">${mode==='anual'?fmtUSD(mon*12)+'/año':fmtUSD(mon)+'/mes'}</td><td data-label="Comercial" class="muted-3">${esc(s.comercial||'—')}</td><td class="t-actions-cell">${editBtn(s.id)}</td></tr>`;}).join('')+`</tbody></table></div></details>`;
+    });
+    html+=`</div></details>`;
+  });
+  $('planes-tree').innerHTML=html||'<div class="empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><p>Sin clientes que coincidan</p><span>Prueba con otro nombre.</span></div>';
 }
 
-/* ===================== ALIANZAS (Rene Gonzalez) ===================== */
+/* ===================== CANALES (Digital=Briant / Alianzas=Rene) ===================== */
 const fmtMonth=ym=>{if(!ym||ym==='Sin fecha')return 'Sin fecha';const [y,m]=ym.split('-');return new Date(+y,+m-1,1).toLocaleDateString('es-SV',{month:'short',year:'numeric'});};
-function renderAlianzas(){
-  const list=activeSales().filter(s=>s.comercial==='Rene Gonzalez');
+let curCanal='Briant Canizalez';
+function renderCanales(){
+  document.querySelectorAll('#canal-seg button').forEach(b=>b.classList.toggle('active',b.dataset.canal===curCanal));
+  const isB=curCanal==='Briant Canizalez';
+  const list=activeSales().filter(s=>isB?(!s.comercial||s.comercial==='Briant Canizalez'):s.comercial===curCanal);
   const M=curMonth();
-  $('al-count').textContent=list.length;
-  $('al-mes').textContent=list.filter(s=>(s.start||'').slice(0,7)===M).length;
-  $('al-mrr').textContent=fmtUSD(list.filter(s=>s.mode!=='anual').reduce((a,s)=>a+saleMonthly(s),0));
-  $('al-anual').textContent=fmtUSD(list.filter(s=>s.mode==='anual').reduce((a,s)=>a+saleMonthly(s)*12,0));
+  $('cn-label').textContent=isB?'Clientes de Briant':'Clientes de Rene';
+  $('cn-canal').textContent=isB?'Canal Digital':'canal Alianzas';
+  $('cn-hint').textContent=(isB?'Briant Canizalez':'Rene Gonzalez')+' · por fecha de alta';
+  $('cn-count').textContent=list.length;
+  $('cn-mes').textContent=list.filter(s=>(s.start||'').slice(0,7)===M).length;
+  $('cn-mrr').textContent=fmtUSD(list.filter(s=>s.mode!=='anual').reduce((a,s)=>a+saleMonthly(s),0));
+  $('cn-anual').textContent=fmtUSD(list.filter(s=>s.mode==='anual').reduce((a,s)=>a+saleMonthly(s)*12,0));
   const byMonth={};
   list.forEach(s=>{const k=(s.start||'').slice(0,7)||'Sin fecha';(byMonth[k]=byMonth[k]||[]).push(s);});
   const keys=Object.keys(byMonth).sort((a,b)=>a==='Sin fecha'?1:b==='Sin fecha'?-1:a.localeCompare(b));
-  if(charts.alianzas)charts.alianzas.destroy();
-  charts.alianzas=new Chart($('chartAlianzas'),{type:'bar',data:{labels:keys.map(fmtMonth),datasets:[{label:'Clientes',data:keys.map(k=>byMonth[k].length),backgroundColor:'#7c4dff',borderRadius:8}]},options:{maintainAspectRatio:false,scales:{x:{ticks:{color:CTXT},grid:{display:false}},y:{ticks:{color:CTXT,precision:0},grid:{color:CGRID}}},plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.parsed.y+' clientes'}}}}});
-  $('alianzas-meses').innerHTML=keys.slice().reverse().map(k=>{
+  if(charts.canal)charts.canal.destroy();
+  charts.canal=new Chart($('chartCanal'),{type:'bar',data:{labels:keys.map(fmtMonth),datasets:[{label:'Clientes',data:keys.map(k=>byMonth[k].length),backgroundColor:'#7c4dff',borderRadius:8}]},options:{maintainAspectRatio:false,scales:{x:{ticks:{color:CTXT},grid:{display:false}},y:{ticks:{color:CTXT,precision:0},grid:{color:CGRID}}},plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.parsed.y+' clientes'}}}}});
+  $('canal-meses').innerHTML=keys.slice().reverse().map(k=>{
     const arr=byMonth[k].slice().sort((a,b)=>normName(a.client).localeCompare(normName(b.client)));
-    return `<div class="card" style="margin-bottom:12px"><div class="section-head"><h2 style="font-size:16px;text-transform:capitalize">${fmtMonth(k)}</h2><span class="badge st-finalizada plain">${arr.length} cliente${arr.length===1?'':'s'}</span></div>
-      <div class="tablewrap"><table class="responsive"><thead><tr><th>Cliente</th><th>Plan</th><th>Monto</th></tr></thead><tbody>${arr.map(s=>{const p=PLANS[s.plan]||{label:s.plan};const mon=saleMonthly(s);return `<tr><td class="cellwrap" data-label="Cliente"><span class="cellmain">${esc(s.client)}</span></td><td data-label="Plan"><span class="tag">${p.label}</span></td><td data-label="Monto" class="num">${s.mode==='anual'?fmtUSD(mon*12)+'/año':fmtUSD(mon)+'/mes'}</td></tr>`;}).join('')}</tbody></table></div></div>`;
+    return `<div class="card" style="margin-bottom:12px"><div class="section-head"><h2 style="font-size:16px;text-transform:capitalize">${fmtMonth(k)}</h2><span class="badge st-finalizada plain">${arr.length} cliente${arr.length===1?'':'s'}</span></div>`+
+      `<div class="tablewrap"><table class="responsive"><thead><tr><th>Cliente</th><th>Plan</th><th>Monto</th></tr></thead><tbody>`+arr.map(s=>{const p=PLANS[s.plan]||{label:s.plan};const mon=saleMonthly(s);return `<tr><td class="cellwrap" data-label="Cliente"><span class="cellmain">${esc(s.client)}</span></td><td data-label="Plan"><span class="tag">${p.label}</span></td><td data-label="Monto" class="num">${s.mode==='anual'?fmtUSD(mon*12)+'/año':fmtUSD(mon)+'/mes'}</td></tr>`;}).join('')+`</tbody></table></div></div>`;
   }).join('');
 }
+document.querySelectorAll('#canal-seg button').forEach(b=>b.onclick=()=>{curCanal=b.dataset.canal;renderCanales();});
 
 /* ===================== CALENDARIO ===================== */
 let calDate=new Date();
