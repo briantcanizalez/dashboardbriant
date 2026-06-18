@@ -551,7 +551,7 @@ canvas{max-width:100%}
       <section class="view" id="view-ventas">
         <div class="grid kpis" style="margin-bottom:16px">
           <div class="card kpi" onclick="showList('ventas-count')"><div class="khead"><span class="klabel">Ventas activas</span></div><div class="kval tnum" id="v-count">0</div><div class="kmeta" id="v-count-meta">en este dashboard</div></div>
-          <div class="card kpi" onclick="showList('ventas-impl')"><div class="khead"><span class="klabel">Implementación cobrada</span></div><div class="kval lav tnum" id="v-impl">$0</div><div class="kmeta">pago único por cliente</div></div>
+          <div class="card kpi" onclick="showList('ventas-impl')"><div class="khead"><span class="klabel">Implementación cobrada</span></div><div class="kval lav tnum" id="v-impl">$0</div><div class="kmeta">cobrado histórico (incl. bajas)</div></div>
           <div class="card kpi" onclick="showList('ventas-mrr')"><div class="khead"><span class="klabel">MRR de estas ventas</span></div><div class="kval tnum" id="v-mrr">$0</div><div class="kmeta">activo desde el 3er mes</div></div>
           <div class="card kpi" onclick="showList('ventas-mrrpot')"><div class="khead"><span class="klabel">MRR potencial</span></div><div class="kval tnum" id="v-mrr-pot">$0</div><div class="kmeta">cuando todas maduren</div></div>
         </div>
@@ -573,7 +573,7 @@ canvas{max-width:100%}
         <div class="grid kpis" style="margin-bottom:16px">
           <div class="card kpi"><div class="khead"><span class="klabel">Clientes en cartera</span></div><div class="kval tnum" id="pl-clients">0</div><div class="kmeta">suscripciones activas</div></div>
           <div class="card kpi"><div class="khead"><span class="klabel">MRR total</span></div><div class="kval tnum" id="pl-mrr">$0</div><div class="kmeta">recurrente contratado/mes</div></div>
-          <div class="card kpi"><div class="khead"><span class="klabel">Implementaciones</span></div><div class="kval lav tnum" id="pl-impl">$0</div><div class="kmeta">pago único acumulado</div></div>
+          <div class="card kpi"><div class="khead"><span class="klabel">Implementaciones</span></div><div class="kval lav tnum" id="pl-impl">$0</div><div class="kmeta">cobrado histórico (incl. bajas)</div></div>
           <div class="card kpi"><div class="khead"><span class="klabel">Ticket promedio</span></div><div class="kval tnum" id="pl-arpu">$0</div><div class="kmeta">MRR por cliente</div></div>
         </div>
         <div class="searchbar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input id="planes-search" type="search" placeholder="Buscar cliente por nombre…" oninput="renderPlanesTree()"><span class="hint" id="planes-search-meta"></span></div>
@@ -1079,7 +1079,7 @@ const totalClients=()=>state.config.baseClients+activeSales().length;
 function salesMRR(mature=true){return activeSales().reduce((sum,s)=>{if(s.mode==='anual')return sum;if(mature&&!s.legacy&&monthsSince(s.start)<RECURRING_START_MONTH)return sum;return sum+saleMonthly(s);},0);}
 const currentMRR=()=>state.config.baseRecurring+salesMRR(true);
 const potentialMRR=()=>state.config.baseRecurring+salesMRR(false);
-const implCollected=()=>activeSales().reduce((s,v)=>s+saleImpl(v),0);
+const implCollected=()=>state.sales.reduce((s,v)=>s+saleImpl(v),0); // histórico cobrado (incluye bajas; la impl se cobra al cierre)
 const annualCollected=()=>state.config.annualPayments+activeSales().filter(s=>s.mode==='anual').reduce((s,v)=>s+saleMonthly(v)*12,0);
 const churnedCount=()=>state.sales.filter(s=>s.churned).length;
 const lostMRR=()=>state.sales.filter(s=>s.churned&&s.mode==='mensual').reduce((s,v)=>s+saleMonthly(v),0);
@@ -1664,23 +1664,24 @@ function renderMetas(){
 }
 function implByMonth(){
   const o={};
-  state.sales.forEach(s=>{const k=(s.start||'').slice(0,7);if(!k)return;const im=saleImpl(s);if(!im)return;
+  state.sales.forEach(s=>{const k=(s.start||'').slice(0,7)||'Sin fecha';const im=saleImpl(s);if(!im)return;
     const r=o[k]||(o[k]={briant:0,rene:0,otros:0,total:0});const c=s.comercial;
     if(c==='Rene Gonzalez')r.rene+=im;else if(!c||c==='Briant Canizalez')r.briant+=im;else r.otros+=im;
     r.total+=im;});
   return o;
 }
+const _implSort=(a,b)=>a==='Sin fecha'?1:b==='Sin fecha'?-1:b.localeCompare(a);
 function renderImplMes(){
-  const o=implByMonth(),keys=Object.keys(o).sort().reverse();
+  const o=implByMonth(),keys=Object.keys(o).sort(_implSort);
   let tB=0,tR=0,tO=0,tT=0;
   let rows=keys.map(k=>{const r=o[k];tB+=r.briant;tR+=r.rene;tO+=r.otros;tT+=r.total;
     return `<tr style="cursor:pointer" onclick="implMesList('${k}')"><td data-label="Mes" style="text-transform:capitalize">${fmtMonth(k)}</td><td data-label="Briant" class="num">${fmtUSD(r.briant)}</td><td data-label="René" class="num">${fmtUSD(r.rene)}</td><td data-label="Otros" class="num muted-3">${fmtUSD(r.otros)}</td><td data-label="Total" class="num">${fmtUSD(r.total)}</td></tr>`;}).join('');
   rows+=`<tr style="font-weight:700"><td>TOTAL</td><td class="num">${fmtUSD(tB)}</td><td class="num">${fmtUSD(tR)}</td><td class="num muted-3">${fmtUSD(tO)}</td><td class="num">${fmtUSD(tT)}</td></tr>`;
   $('impl-mes-body').innerHTML=keys.length?rows:'<tr><td colspan="5" class="muted-3" style="padding:14px;text-align:center">Sin implementaciones registradas.</td></tr>';
 }
-function implMesList(k){const list=state.sales.filter(s=>(s.start||'').slice(0,7)===k&&saleImpl(s)>0);openClientList('Implementaciones · '+fmtMonth(k),list.length+' clientes (incluye bajas)',list);}
+function implMesList(k){const list=state.sales.filter(s=>(((s.start||'').slice(0,7))||'Sin fecha')===k&&saleImpl(s)>0);openClientList('Implementaciones · '+fmtMonth(k),list.length+' clientes (incluye bajas)',list);}
 function renderComisionRene(){
-  const o=implByMonth(),keys=Object.keys(o).sort().reverse();
+  const o=implByMonth(),keys=Object.keys(o).sort(_implSort);
   let total=0;keys.forEach(k=>total+=o[k].rene);
   const renta=total*0.10,neto=total-renta;
   const detalle=keys.filter(k=>o[k].rene>0).map(k=>`<div class="comprow"><span style="text-transform:capitalize">${fmtMonth(k)}</span><span class="cv">${fmtUSD(o[k].rene)} <span class="muted-3">→</span> <b class="green" style="color:var(--ok)">${fmtUSD(o[k].rene*0.9)}</b></span></div>`).join('');
@@ -1794,7 +1795,7 @@ function showList(key){
     'inicio-clientes':['Clientes activos','toda la cartera',A],
     'inicio-mrr':['Recurrencia mensual','mensuales que ya facturan',A.filter(s=>s.mode!=='anual'&&_mat(s))],
     'ventas-count':['Ventas activas','toda la cartera',A],
-    'ventas-impl':['Implementación cobrada','clientes con implementación',A.filter(s=>saleImpl(s)>0)],
+    'ventas-impl':['Implementación cobrada (histórico)','incluye bajas',state.sales.filter(s=>saleImpl(s)>0)],
     'ventas-mrr':['MRR de estas ventas','mensuales ya facturando',A.filter(s=>s.mode!=='anual'&&_mat(s))],
     'ventas-mrrpot':['MRR potencial','todos los mensuales',A.filter(s=>s.mode!=='anual')],
     'metas-cli':['Clientes','toda la cartera',A],
