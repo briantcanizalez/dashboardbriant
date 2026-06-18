@@ -633,6 +633,12 @@ canvas{max-width:100%}
           <p class="subt">Estimación basada en tus ventas con fecha de inicio en el mes actual. Ajusta salario base y bono en Ajustes.</p>
           <div id="comision"></div>
         </div>
+
+        <div class="card" style="margin-top:16px">
+          <div class="section-head"><h2>Implementaciones cobradas por mes</h2><span class="hint">por comercial · pago único al cierre</span></div>
+          <p class="subt">René (freelancer) cobra el <b>total de implementaciones − 10% de renta</b>, sin sueldo base. Toca un mes para ver los clientes.</p>
+          <div class="tablewrap"><table class="responsive"><thead><tr><th>Mes</th><th class="num">Briant</th><th class="num">René</th><th class="num">Otros</th><th class="num">Total</th><th class="num">Pago René (−10%)</th></tr></thead><tbody id="impl-mes-body"></tbody></table></div>
+        </div>
       </section>
 
       <!-- ====== AJUSTES Y DATOS ====== -->
@@ -1648,7 +1654,25 @@ function renderMetas(){
   charts.planes=new Chart($('chartPlanes'),{type:'bar',data:{labels:Object.values(PLANS).map(p=>p.label),datasets:[{label:'Ventas',data:counts,backgroundColor:'#7c4dff',borderRadius:8}]},options:{maintainAspectRatio:false,onClick:()=>go('planes'),scales:{x:{ticks:{color:CTXT},grid:{display:false}},y:{ticks:{color:CTXT,precision:0},grid:{color:CGRID}}},plugins:{legend:{display:false}}}});
 
   renderComision();
+  renderImplMes();
 }
+function implByMonth(){
+  const o={};
+  activeSales().forEach(s=>{const k=(s.start||'').slice(0,7);if(!k)return;const im=saleImpl(s);if(!im)return;
+    const r=o[k]||(o[k]={briant:0,rene:0,otros:0,total:0});const c=s.comercial;
+    if(c==='Rene Gonzalez')r.rene+=im;else if(!c||c==='Briant Canizalez')r.briant+=im;else r.otros+=im;
+    r.total+=im;});
+  return o;
+}
+function renderImplMes(){
+  const o=implByMonth(),keys=Object.keys(o).sort().reverse();
+  let tB=0,tR=0,tO=0,tT=0;
+  let rows=keys.map(k=>{const r=o[k];tB+=r.briant;tR+=r.rene;tO+=r.otros;tT+=r.total;
+    return `<tr style="cursor:pointer" onclick="implMesList('${k}')"><td data-label="Mes" style="text-transform:capitalize">${fmtMonth(k)}</td><td data-label="Briant" class="num">${fmtUSD(r.briant)}</td><td data-label="René" class="num">${fmtUSD(r.rene)}</td><td data-label="Otros" class="num muted-3">${fmtUSD(r.otros)}</td><td data-label="Total" class="num">${fmtUSD(r.total)}</td><td data-label="Pago René" class="num green">${fmtUSD(r.rene*0.9)}</td></tr>`;}).join('');
+  rows+=`<tr style="font-weight:700"><td>TOTAL</td><td class="num">${fmtUSD(tB)}</td><td class="num">${fmtUSD(tR)}</td><td class="num muted-3">${fmtUSD(tO)}</td><td class="num">${fmtUSD(tT)}</td><td class="num green">${fmtUSD(tR*0.9)}</td></tr>`;
+  $('impl-mes-body').innerHTML=keys.length?rows:'<tr><td colspan="6" class="muted-3" style="padding:14px;text-align:center">Sin implementaciones registradas.</td></tr>';
+}
+function implMesList(k){const list=activeSales().filter(s=>(s.start||'').slice(0,7)===k&&saleImpl(s)>0);openClientList('Implementaciones · '+fmtMonth(k),list.length+' clientes',list);}
 function commissionTier(n){return n>=16?0.30:(n>=11?0.25:0.20);}
 function renderComision(){
   const m=curMonth();
