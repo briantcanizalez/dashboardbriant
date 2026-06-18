@@ -342,6 +342,13 @@ canvas{max-width:100%}
 .metric .ml{font-size:10.5px;color:var(--txt-3);font-weight:700;text-transform:uppercase;letter-spacing:.04em}
 .metric .mv{font-family:'Space Grotesk';font-weight:700;font-size:17px;margin-top:5px;font-variant-numeric:tabular-nums}
 .metric .mv.red{color:var(--danger)} .metric .mv.green{color:var(--ok)} .metric .mv.lav{color:var(--lavanda)}
+.metric.clk{cursor:pointer;transition:border-color .15s,transform .15s}
+.metric.clk:hover{border-color:var(--brand-3);transform:translateY(-2px)}
+.cmp-funnel{display:flex;flex-wrap:wrap;gap:8px;margin:4px 0 2px}
+.cmp-stage{display:inline-flex;align-items:center;gap:6px;background:var(--bg);border:1px solid var(--border);border-radius:99px;padding:5px 11px;font-size:12px;color:var(--txt-2);cursor:pointer;transition:border-color .15s}
+.cmp-stage:hover{border-color:var(--brand-3)}
+.cmp-stage i{width:8px;height:8px;border-radius:99px;display:inline-block}
+.cmp-stage b{color:var(--txt-1);font-variant-numeric:tabular-nums}
 .verdict{display:inline-flex;align-items:center;gap:6px;padding:6px 13px;border-radius:99px;font-size:12.5px;font-weight:700;white-space:nowrap}
 .v-ok{background:var(--ok-bg);color:#6ee7b7} .v-bad{background:var(--danger-bg);color:#fca5a5} .v-na{background:var(--surface-2);color:var(--txt-2)}
 .campaign{margin-bottom:14px}
@@ -532,8 +539,8 @@ canvas{max-width:100%}
       <section class="view" id="view-campaigns">
         <div class="grid kpis" style="margin-bottom:16px">
           <div class="card kpi"><div class="khead"><span class="klabel">Inversión total</span><span class="kchip red"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="2" x2="12" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span></div><div class="kval red tnum" id="cm-spend">$0</div><div class="kmeta" id="cm-spend-meta">en anuncios</div></div>
-          <div class="card kpi"><div class="khead"><span class="klabel">Leads captados</span><span class="kchip blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></span></div><div class="kval tnum" id="cm-leads">0</div><div class="kmeta" id="cm-cpl">$0 por lead</div></div>
-          <div class="card kpi"><div class="khead"><span class="klabel">CAC promedio</span><span class="kchip amber"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg></span></div><div class="kval tnum" id="cm-cac">$0</div><div class="kmeta" id="cm-clients">0 clientes cerrados</div></div>
+          <div class="card kpi" onclick="allCampaignLeadsList()"><div class="khead"><span class="klabel">Leads captados</span><span class="kchip blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></span></div><div class="kval tnum" id="cm-leads">0</div><div class="kmeta" id="cm-cpl">$0 por lead</div></div>
+          <div class="card kpi" onclick="allCampaignClientsList()"><div class="khead"><span class="klabel">CAC promedio</span><span class="kchip amber"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg></span></div><div class="kval tnum" id="cm-cac">$0</div><div class="kmeta" id="cm-clients">0 clientes cerrados</div></div>
           <div class="card kpi"><div class="khead"><span class="klabel">ROI global</span><span class="kchip green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M23 6l-9.5 9.5-5-5L1 18"/><path d="M17 6h6v6"/></svg></span></div><div class="kval green tnum" id="cm-roi">—</div><div class="kmeta" id="cm-rev">ingresos vs inversión</div></div>
         </div>
         <div class="section-head"><h2 style="font-size:17px">Tus campañas</h2><button class="btn sm" id="btn-new-campaign"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Nueva campaña</button></div>
@@ -728,7 +735,8 @@ canvas{max-width:100%}
   <div class="field"><label>Objetivo</label><input id="cp-objective" placeholder="Ej. Generar conversaciones de WhatsApp" /></div>
   <div class="row c2"><div class="field"><label>Presupuesto diario (USD) <span class="req">*</span></label><input type="number" step="0.01" id="cp-budget" placeholder="Ej. 15.00" /></div><div class="field"><label>Plataforma</label><select id="cp-platform"><option>Meta Ads</option><option>Google Ads</option><option>TikTok Ads</option><option>Otra</option></select></div></div>
   <div class="row c2"><div class="field"><label>Fecha de inicio</label><input type="date" id="cp-start" /></div><div class="field"><label>Fecha de fin (opcional)</label><input type="date" id="cp-end" /></div></div>
-  <p class="helper">Si no pones fecha de fin, la inversión total se calcula hasta hoy. Asocia prospectos a esta campaña para ver CAC y rentabilidad en tiempo real.</p>
+  <div class="field"><label>Gasto real total (USD) — opcional</label><input type="number" step="0.01" min="0" id="cp-spent" placeholder="Ej. 587.43 (lo que Meta te cobró)" /><p class="helper">Ponlo con el gasto REAL de Meta (suele diferir del presupuesto×días). Si lo dejas vacío, se calcula presupuesto diario × días. Este monto se reparte entre todos los leads para el costo por conversación.</p></div>
+  <p class="helper">Asocia prospectos a esta campaña para ver CAC y rentabilidad en tiempo real.</p>
   <div class="actions"><button class="btn ghost" data-close="modal-campaign">Cancelar</button><button class="btn" id="cp-save">Guardar campaña</button></div>
 </div></div>
 
@@ -1280,7 +1288,13 @@ function setProspectStage(p,stage){const was=p.stage;p.stage=stage;p.updatedAt=D
 const findCampaign=id=>state.campaigns.find(c=>c.id===id);
 const campaignName=id=>findCampaign(id)?.name||'—';
 function campaignDays(c){const end=c.end||todayISO();const d=daysBetween(c.start,end)+1;return Math.max(1,d);}
-function campaignSpend(c){return (c.budget||0)*campaignDays(c);}
+function campaignSpend(c){return (c.spent!=null&&c.spent!=='')?(+c.spent||0):((c.budget||0)*campaignDays(c));}
+const campaignProspects=c=>state.prospects.filter(p=>p.campaignId===c.id);
+function cmpLeadsList(id){const c=findCampaign(id);if(c)openProspectList('Leads · '+c.name,campaignProspects(c).length+' conversaciones',campaignProspects(c));}
+function cmpClientsList(id){const c=findCampaign(id);if(c)openClientList('Clientes ganados · '+c.name,'cierres de la campaña',campaignSales(c));}
+function cmpStageList(id,stage){const c=findCampaign(id);if(c)openProspectList(stage+' · '+c.name,'',campaignProspects(c).filter(p=>p.stage===stage));}
+function allCampaignLeadsList(){openProspectList('Leads de campañas','prospectos con campaña',state.prospects.filter(p=>p.campaignId));}
+function allCampaignClientsList(){openClientList('Clientes de campañas','cierres atribuidos a campañas',state.sales.filter(s=>s.campaignId));}
 function campaignLeads(c){return state.prospects.filter(p=>p.campaignId===c.id).length;}
 function campaignWon(c){return state.prospects.filter(p=>p.campaignId===c.id&&p.stage==='Ganada').length;}
 function campaignSales(c){return state.sales.filter(s=>s.campaignId===c.id);}
@@ -1290,14 +1304,15 @@ function campaignMetrics(c){
   return {spend,leads,clients,rev,cpl:leads?spend/leads:0,cac:clients?spend/clients:0,roi:spend?((rev-spend)/spend*100):0,days:campaignDays(c)};
 }
 function openCampaign(id){
-  if(id){const c=findCampaign(id);$('campaign-modal-title').textContent='Editar campaña';$('cp-id').value=c.id;$('cp-name').value=c.name;$('cp-objective').value=c.objective||'';$('cp-budget').value=c.budget;$('cp-platform').value=c.platform||'Meta Ads';$('cp-start').value=c.start||todayISO();$('cp-end').value=c.end||'';}
-  else{$('campaign-modal-title').textContent='Nueva campaña';$('cp-id').value='';$('cp-name').value='';$('cp-objective').value='';$('cp-budget').value='';$('cp-platform').value='Meta Ads';$('cp-start').value=todayISO();$('cp-end').value='';}
+  if(id){const c=findCampaign(id);$('campaign-modal-title').textContent='Editar campaña';$('cp-id').value=c.id;$('cp-name').value=c.name;$('cp-objective').value=c.objective||'';$('cp-budget').value=c.budget;$('cp-platform').value=c.platform||'Meta Ads';$('cp-start').value=c.start||todayISO();$('cp-end').value=c.end||'';$('cp-spent').value=(c.spent!=null?c.spent:'');}
+  else{$('campaign-modal-title').textContent='Nueva campaña';$('cp-id').value='';$('cp-name').value='';$('cp-objective').value='';$('cp-budget').value='';$('cp-platform').value='Meta Ads';$('cp-start').value=todayISO();$('cp-end').value='';$('cp-spent').value='';}
   openModal('modal-campaign','cp-name');
 }
 $('cp-save').onclick=()=>{
   const name=$('cp-name').value.trim();if(!name){$('cp-name').focus();$('cp-name').style.borderColor='var(--danger)';return;}
   const budget=+$('cp-budget').value||0;if(budget<=0){$('cp-budget').focus();$('cp-budget').style.borderColor='var(--danger)';return;}
-  const id=$('cp-id').value,data={name,objective:$('cp-objective').value.trim(),budget,platform:$('cp-platform').value,start:$('cp-start').value||todayISO(),end:$('cp-end').value||null};
+  const spentRaw=$('cp-spent').value.trim();
+  const id=$('cp-id').value,data={name,objective:$('cp-objective').value.trim(),budget,platform:$('cp-platform').value,start:$('cp-start').value||todayISO(),end:$('cp-end').value||null,spent:spentRaw===''?null:(+spentRaw||0)};
   if(id)Object.assign(findCampaign(id),data);else state.campaigns.push({id:uid(),...data,createdAt:Date.now()});
   save();closeModal('modal-campaign');renderCampaigns();
 };
@@ -1334,17 +1349,18 @@ function renderCampaigns(){
         </div>
       </div>
       <div class="mgrid">
-        <div class="metric"><div class="ml">Inversión total</div><div class="mv red">${fmtUSD(m.spend)}</div></div>
-        <div class="metric"><div class="ml">Leads</div><div class="mv">${m.leads}</div></div>
+        <div class="metric"><div class="ml">Inversión total ${(c.spent!=null&&c.spent!=='')?'<span class="tag" style="background:rgba(124,77,255,.18);color:var(--brand-3);font-size:9px;padding:1px 6px">real Meta</span>':'<span class="muted-3" style="font-size:9px">estimada</span>'}</div><div class="mv red">${fmtUSD(m.spend)}</div></div>
+        <div class="metric clk" onclick="cmpLeadsList('${c.id}')"><div class="ml">Leads ›</div><div class="mv">${m.leads}</div></div>
         <div class="metric"><div class="ml">Costo / lead</div><div class="mv">${fmtUSD(m.cpl)}</div></div>
-        <div class="metric"><div class="ml">Clientes</div><div class="mv">${m.clients}</div></div>
+        <div class="metric clk" onclick="cmpClientsList('${c.id}')"><div class="ml">Clientes ›</div><div class="mv">${m.clients}</div></div>
         <div class="metric"><div class="ml">CAC</div><div class="mv lav">${m.clients?fmtUSD(m.cac):'—'}</div></div>
-        <div class="metric"><div class="ml">Ingresos (12m)</div><div class="mv green">${fmtUSD(m.rev)}</div></div>
+        <div class="metric clk" onclick="cmpClientsList('${c.id}')"><div class="ml">Ingresos (12m) ›</div><div class="mv green">${fmtUSD(m.rev)}</div></div>
         <div class="metric"><div class="ml">ROI</div><div class="mv ${m.rev>=m.spend?'green':'red'}">${m.spend?m.roi.toFixed(0)+'%':'—'}</div></div>
         <div class="metric"><div class="ml">Conversión</div><div class="mv">${m.leads?Math.round(m.clients/m.leads*100)+'%':'—'}</div></div>
       </div>
+      ${(()=>{const pros=campaignProspects(c);if(!pros.length)return '';return `<div class="cmp-funnel">${STAGES.filter(s=>pros.some(p=>p.stage===s.k)).map(s=>{const n=pros.filter(p=>p.stage===s.k).length;return `<span class="cmp-stage" onclick="cmpStageList('${c.id}','${s.k}')"><i class="dotc" style="background:${s.c}"></i>${s.k} <b>${n}</b></span>`;}).join('')}</div>`;})()}
       <div class="roibar"><i style="width:${roiPct}%;background:${m.rev>=m.spend?'linear-gradient(90deg,#10b981,#34d399)':'linear-gradient(90deg,#ef4444,#f87171)'}"></i></div>
-      <div class="cmeta" style="margin-top:8px"><span>Recupero de inversión: ${m.rev>=m.spend?'✅ logrado':`faltan ${fmtUSD(m.spend-m.rev)}`}</span></div>
+      <div class="cmeta" style="margin-top:8px"><span>Recupero de inversión: ${m.rev>=m.spend?'✅ logrado':`faltan ${fmtUSD(m.spend-m.rev)}`}</span><span class="muted-3">Toca Leads/Clientes/Ingresos para ver el detalle</span></div>
     </div>`;
   }).join('');
 }
