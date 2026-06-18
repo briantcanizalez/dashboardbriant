@@ -774,7 +774,7 @@ const STAGE_RANK={Lead:0,MQL:1,SQL:2,Oportunidad:3,Ganada:4,Perdida:-1};
 const STAGEMAP={Prospecto:'Lead',Demo:'MQL','Negociación':'Oportunidad'}; // migración de etapas viejas
 const MEDIOS=['WhatsApp','Facebook','Reunión','Visita','Llamada'];
 const ORIGENES=['Pauta','Referido','Alianza Contable','Contacto personal'];
-const defaultState={tasks:[],sales:[],services:[],prospects:[],campaigns:[],projects:[],history:[],config:{baseClients:494,goalClients:1000,baseRecurring:7151.23,goalRecurring:25000,annualPayments:11988.18,mrrMesMeta:1000,salaryBase:0,bono:0,metaMes:24,lastBackup:null,seededOdooBatch1:false,seededBookV3:false,seededAnnualV1:false,seededComercialV1:false,seededComercialV2:false,seededProspectsV1:false,seededProspectsV2:false,seededClosesV1:false,seededWonV1:false,seededOriginV1:false,seededCampaignLinkV1:false,seededRestoreAireV1:false,seededCampaignDaysV1:false,seededChurnV1:false}};
+const defaultState={tasks:[],sales:[],services:[],prospects:[],campaigns:[],projects:[],history:[],config:{baseClients:494,goalClients:1000,baseRecurring:7151.23,goalRecurring:25000,annualPayments:11988.18,mrrMesMeta:1000,salaryBase:0,bono:0,metaMes:24,lastBackup:null,seededOdooBatch1:false,seededBookV3:false,seededAnnualV1:false,seededComercialV1:false,seededComercialV2:false,seededProspectsV1:false,seededProspectsV2:false,seededClosesV1:false,seededWonV1:false,seededOriginV1:false,seededCampaignLinkV1:false,seededRestoreAireV1:false,seededCampaignDaysV1:false,seededChurnV1:false,seededOriginV2:false}};
 function normalize(d){const s={...structuredClone(defaultState),...d,config:{...defaultState.config,...(d.config||{})}};['tasks','sales','services','prospects','campaigns','projects','history'].forEach(k=>{if(!Array.isArray(s[k]))s[k]=[];});
   s.prospects.forEach(p=>{if(STAGEMAP[p.stage])p.stage=STAGEMAP[p.stage];if(!p.bant)p.bant={b:false,a:false,n:false,t:false};});
   return s;}
@@ -992,6 +992,21 @@ function seedChurnV1(){
     state.sales.push({id:uid(),client:x.c,plan:x.p,mode:'mensual',start:x.d,customMonthly:x.cm,comercial:x.com,churned:true,churnDate:x.d,seed:'churn1',campaignId:null,createdAt:Date.now()});
   });
   state.config.seededChurnV1=true;
+  save();
+}
+
+/* ---- Corrección de origen/campaña según export oficial de junio (columna Campaña) ---- */
+function seedOriginV2(){
+  if(state.config.seededOriginV2)return;
+  const camp=state.campaigns.find(c=>/cierre.*julio.*2026/i.test(c.name||''))||state.campaigns[state.campaigns.length-1];
+  const cid=camp?camp.id:null;
+  const fix=(name,saleOrigen,link)=>{
+    state.sales.forEach(s=>{if(normName(s.client)===normName(name)){s.origen=saleOrigen;s.campaignId=link?cid:null;}});
+    state.prospects.forEach(p=>{if(normName(p.client)===normName(name)){p.origen=link?'Pauta':'Referido';p.campaignId=link?cid:null;}});
+  };
+  ['ALVANEZ, GERMAN SALVADOR','AIRESEVEN, SOCIEDAD ANONIMA DE CAPITAL VARIABLE','CANIZALES AMAYA, VANESSA NOEMI','DETERMINACION PERSISTENCIA & LEGADO BUSINESS GROUP'].forEach(n=>fix(n,'Campaña',true));
+  ['ZAVALA ALFARO, RAMON','Diaz Vegas, Samuel David','MIGUEL ALFONSO PRIETO HERNÁNDEZ','Hugo Aristides Ángulo Rogel'].forEach(n=>fix(n,'Referido',false));
+  state.config.seededOriginV2=true;
   save();
 }
 function loadLocal(){try{const r=localStorage.getItem(STORE_KEY);if(!r)return structuredClone(defaultState);return normalize(JSON.parse(r));}catch(e){return structuredClone(defaultState);}}
@@ -1778,7 +1793,7 @@ function traducirAuth(m){if(/invalid login/i.test(m))return 'Correo o contraseñ
 async function afterLogin(session){userId=session.user.id;hideGate();state=await loadCloud();$('foot-status').textContent='Conectado: '+session.user.email;$('auth-logout').style.display='block';initApp();}
 $('auth-logout').onclick=async()=>{if(!confirm('¿Cerrar sesión?'))return;await supa.auth.signOut();location.reload();};
 
-function initApp(){seedOdooBatch1();seedBookV3();seedAnnualBookV1();seedComercialV1();seedComercialV2();seedProspectsV1();seedProspectsV2();seedClosesV1();seedWonV1();seedOriginV1();seedCampaignLinkV1();seedRestoreAireV1();seedCampaignDaysV1();seedChurnV1();fillPlanSelect();updateBadges();renderBackupBanner();go('inicio');document.body.classList.remove('booting');}
+function initApp(){seedOdooBatch1();seedBookV3();seedAnnualBookV1();seedComercialV1();seedComercialV2();seedProspectsV1();seedProspectsV2();seedClosesV1();seedWonV1();seedOriginV1();seedCampaignLinkV1();seedRestoreAireV1();seedCampaignDaysV1();seedChurnV1();seedOriginV2();fillPlanSelect();updateBadges();renderBackupBanner();go('inicio');document.body.classList.remove('booting');}
 
 async function boot(){
   if(initSupabase()){
