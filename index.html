@@ -1309,9 +1309,10 @@ function campaignLeads(c){return state.prospects.filter(p=>p.campaignId===c.id).
 function campaignWon(c){return state.prospects.filter(p=>p.campaignId===c.id&&p.stage==='Ganada').length;}
 function campaignSales(c){return state.sales.filter(s=>s.campaignId===c.id);}
 function campaignRevenue(c){return campaignSales(c).reduce((sum,s)=>{const p=PLANS[s.plan];if(!p)return sum;return sum+p.impl+p.monthly*12;},0);} // valor a 12 meses (impl + ARR)
+function campaignImpl(c){return campaignSales(c).reduce((a,s)=>a+saleImpl(s),0);}
 function campaignMetrics(c){
-  const spend=campaignSpend(c),leads=campaignLeads(c),clients=campaignSales(c).length,rev=campaignRevenue(c);
-  return {spend,leads,clients,rev,cpl:leads?spend/leads:0,cac:clients?spend/clients:0,roi:spend?((rev-spend)/spend*100):0,days:campaignDays(c)};
+  const spend=campaignSpend(c),leads=campaignLeads(c),clients=campaignSales(c).length,rev=campaignRevenue(c),impl=campaignImpl(c);
+  return {spend,leads,clients,rev,impl,cpl:leads?spend/leads:0,cac:clients?spend/clients:0,roi:spend?((rev-spend)/spend*100):0,days:campaignDays(c)};
 }
 function openCampaign(id){
   if(id){const c=findCampaign(id);$('campaign-modal-title').textContent='Editar campaña';$('cp-id').value=c.id;$('cp-name').value=c.name;$('cp-objective').value=c.objective||'';$('cp-budget').value=c.budget;$('cp-platform').value=c.platform||'Meta Ads';$('cp-start').value=c.start||todayISO();$('cp-end').value=c.end||'';$('cp-days').value=(c.plannedDays!=null?c.plannedDays:'');$('cp-spent').value=(c.spent!=null?c.spent:'');}
@@ -1365,6 +1366,7 @@ function renderCampaigns(){
         <div class="metric"><div class="ml">Costo / lead</div><div class="mv">${fmtUSD(m.cpl)}</div></div>
         <div class="metric clk" onclick="cmpClientsList('${c.id}')"><div class="ml">Clientes ›</div><div class="mv">${m.clients}</div></div>
         <div class="metric"><div class="ml">CAC</div><div class="mv lav">${m.clients?fmtUSD(m.cac):'—'}</div></div>
+        <div class="metric clk" onclick="cmpClientsList('${c.id}')"><div class="ml">Implementación ›</div><div class="mv lav">${fmtUSD(m.impl)}</div></div>
         <div class="metric clk" onclick="cmpClientsList('${c.id}')"><div class="ml">Ingresos (12m) ›</div><div class="mv green">${fmtUSD(m.rev)}</div></div>
         <div class="metric"><div class="ml">ROI</div><div class="mv ${m.rev>=m.spend?'green':'red'}">${m.spend?m.roi.toFixed(0)+'%':'—'}</div></div>
         <div class="metric"><div class="ml">Conversión</div><div class="mv">${m.leads?Math.round(m.clients/m.leads*100)+'%':'—'}</div></div>
