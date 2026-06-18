@@ -636,7 +636,7 @@ canvas{max-width:100%}
 
         <div class="card" style="margin-top:16px">
           <div class="section-head"><h2>Implementaciones cobradas por mes</h2><span class="hint">por comercial · pago único al cierre</span></div>
-          <p class="subt">René (freelancer) cobra el <b>total de implementaciones − 10% de renta</b>, sin sueldo base. Toca un mes para ver los clientes.</p>
+          <p class="subt">René (freelancer) cobra el <b>total de implementaciones − 10% de renta</b>, sin sueldo base. Incluye bajas (la implementación se cobró al cierre). Toca un mes para ver los clientes.</p>
           <div class="tablewrap"><table class="responsive"><thead><tr><th>Mes</th><th class="num">Briant</th><th class="num">René</th><th class="num">Otros</th><th class="num">Total</th><th class="num">Pago René (−10%)</th></tr></thead><tbody id="impl-mes-body"></tbody></table></div>
         </div>
       </section>
@@ -1658,7 +1658,7 @@ function renderMetas(){
 }
 function implByMonth(){
   const o={};
-  activeSales().forEach(s=>{const k=(s.start||'').slice(0,7);if(!k)return;const im=saleImpl(s);if(!im)return;
+  state.sales.forEach(s=>{const k=(s.start||'').slice(0,7);if(!k)return;const im=saleImpl(s);if(!im)return;
     const r=o[k]||(o[k]={briant:0,rene:0,otros:0,total:0});const c=s.comercial;
     if(c==='Rene Gonzalez')r.rene+=im;else if(!c||c==='Briant Canizalez')r.briant+=im;else r.otros+=im;
     r.total+=im;});
@@ -1672,7 +1672,7 @@ function renderImplMes(){
   rows+=`<tr style="font-weight:700"><td>TOTAL</td><td class="num">${fmtUSD(tB)}</td><td class="num">${fmtUSD(tR)}</td><td class="num muted-3">${fmtUSD(tO)}</td><td class="num">${fmtUSD(tT)}</td><td class="num green">${fmtUSD(tR*0.9)}</td></tr>`;
   $('impl-mes-body').innerHTML=keys.length?rows:'<tr><td colspan="6" class="muted-3" style="padding:14px;text-align:center">Sin implementaciones registradas.</td></tr>';
 }
-function implMesList(k){const list=activeSales().filter(s=>(s.start||'').slice(0,7)===k&&saleImpl(s)>0);openClientList('Implementaciones · '+fmtMonth(k),list.length+' clientes',list);}
+function implMesList(k){const list=state.sales.filter(s=>(s.start||'').slice(0,7)===k&&saleImpl(s)>0);openClientList('Implementaciones · '+fmtMonth(k),list.length+' clientes (incluye bajas)',list);}
 function commissionTier(n){return n>=16?0.30:(n>=11?0.25:0.20);}
 function renderComision(){
   const m=curMonth();
