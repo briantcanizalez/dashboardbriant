@@ -774,7 +774,7 @@ const STAGE_RANK={Lead:0,MQL:1,SQL:2,Oportunidad:3,Ganada:4,Perdida:-1};
 const STAGEMAP={Prospecto:'Lead',Demo:'MQL','Negociación':'Oportunidad'}; // migración de etapas viejas
 const MEDIOS=['WhatsApp','Facebook','Reunión','Visita','Llamada'];
 const ORIGENES=['Pauta','Referido','Alianza Contable','Contacto personal'];
-const defaultState={tasks:[],sales:[],services:[],prospects:[],campaigns:[],projects:[],history:[],config:{baseClients:494,goalClients:1000,baseRecurring:7151.23,goalRecurring:25000,annualPayments:11988.18,mrrMesMeta:1000,salaryBase:0,bono:0,metaMes:24,lastBackup:null,seededOdooBatch1:false,seededBookV3:false,seededAnnualV1:false,seededComercialV1:false,seededComercialV2:false,seededProspectsV1:false,seededProspectsV2:false,seededClosesV1:false,seededWonV1:false,seededOriginV1:false,seededCampaignLinkV1:false,seededRestoreAireV1:false,seededCampaignDaysV1:false}};
+const defaultState={tasks:[],sales:[],services:[],prospects:[],campaigns:[],projects:[],history:[],config:{baseClients:494,goalClients:1000,baseRecurring:7151.23,goalRecurring:25000,annualPayments:11988.18,mrrMesMeta:1000,salaryBase:0,bono:0,metaMes:24,lastBackup:null,seededOdooBatch1:false,seededBookV3:false,seededAnnualV1:false,seededComercialV1:false,seededComercialV2:false,seededProspectsV1:false,seededProspectsV2:false,seededClosesV1:false,seededWonV1:false,seededOriginV1:false,seededCampaignLinkV1:false,seededRestoreAireV1:false,seededCampaignDaysV1:false,seededChurnV1:false}};
 function normalize(d){const s={...structuredClone(defaultState),...d,config:{...defaultState.config,...(d.config||{})}};['tasks','sales','services','prospects','campaigns','projects','history'].forEach(k=>{if(!Array.isArray(s[k]))s[k]=[];});
   s.prospects.forEach(p=>{if(STAGEMAP[p.stage])p.stage=STAGEMAP[p.stage];if(!p.bant)p.bant={b:false,a:false,n:false,t:false};});
   return s;}
@@ -955,6 +955,45 @@ function seedCampaignDaysV1(){
   state.config.seededCampaignDaysV1=true;
   save();
 }
+
+/* ---- Bajas / churn (oportunidades Perdidas) ---- */
+const SEED_CHURN_ADD=[
+  {c:'CASTRO, ELIZABETH DEL CARMEN',com:'Briant Canizalez',p:'starter',cm:9.99,d:'2025-11-04'},
+  {c:'SUPER DOLLAR, SOCIEDAD ANÓNIMA DE CAPITAL VARIABLE',com:'Briant Canizalez',p:'especial',cm:79.99,d:'2025-10-23'},
+  {c:'ROMERO ESPERANZA, JOSUÉ MEDARDO',com:'Briant Canizalez',p:'advanced',cm:29.99,d:'2025-09-17'},
+  {c:'Peluquería y otros servicios S.A. DE C.V.',com:'Briant Canizalez',p:'starter',cm:9.99,d:'2025-06-16'},
+  {c:'Salome Eugenio Blanco Morales',com:'Briant Canizalez',p:'starter',cm:9.99,d:'2025-06-16'},
+  {c:'Jaime Raúl Guadron Guevara',com:'Briant Canizalez',p:'starter',cm:9.99,d:'2025-06-16'},
+  {c:'SORAYA JAZMIN AGUIRRE',com:'Briant Canizalez',p:'starter',cm:9.99,d:'2025-06-16'},
+  {c:'JAIME ERNESTO LOPEZ IZAGUIRRE',com:'Briant Canizalez',p:'starter',cm:9.99,d:'2025-06-16'},
+  {c:'JOSUE DAVID HENRIQUEZ',com:'Briant Canizalez',p:'starter',cm:9.99,d:'2025-06-16'},
+  {c:'BALSAMO CAFE SOCIEDAD ANÓNIMA DE CAPITAL VARIABLE',com:'Briant Canizalez',p:'deluxe',cm:49.99,d:'2026-03-05'},
+  {c:'Susana Carolina Castellanos lopez',com:'Briant Canizalez',p:'starter',cm:9.99,d:'2026-05-19'},
+  {c:'ONIS LISSETH GUTIERREZ DE RIVERA',com:'Rene Gonzalez',p:'professional',cm:19.99,d:'2026-02-18'},
+  {c:'OSCAR ALEXANDER VARGAS LOVO',com:'Rene Gonzalez',p:'advanced',cm:29.99,d:'2025-12-17'},
+  {c:'HENRY BLADIMIR FUENTES GUEVARA',com:'Rene Gonzalez',p:'advanced',cm:29.99,d:'2025-12-15'},
+  {c:'SANTOS RODOLFO FUENTES GUEVARA',com:'Rene Gonzalez',p:'advanced',cm:29.99,d:'2025-12-15'},
+  {c:'CLAUDIA EUGENIA MELÉNDEZ HERNÁNDEZ',com:'Rene Gonzalez',p:'advanced',cm:29.99,d:'2025-11-18'},
+  {c:'René Edgardo Escobar Rodríguez',com:'Rene Gonzalez',p:'deluxe',cm:49.99,d:'2025-10-02'},
+  {c:'Roberto Armando Avelar Alvarado',com:'Rene Gonzalez',p:'basicoMensual',cm:5,d:'2025-07-02'},
+  {c:'SANCHEZ AREVALO SA DE CV',com:'Rene Gonzalez',p:'advanced',cm:29.99,d:'2025-06-10'},
+  {c:'ERAZO LOZANO SOCIEDAD ANONIMA DE CAPITAL VARIABLE',com:'Rene Gonzalez',p:'starter',cm:0.833,d:'2025-05-30'},
+  {c:'DORA ELIZABETH REYES PINEDA',com:'Rene Gonzalez',p:'advanced',cm:29.99,d:'2025-12-17'},
+  {c:'SULMA ROXANA REYES PINEDA',com:'Rene Gonzalez',p:'advanced',cm:29.99,d:'2025-12-15'},
+];
+function seedChurnV1(){
+  if(state.config.seededChurnV1)return;
+  // FAJARDO ya existe como venta activa: se da de baja pero sigue contando para la comisión del mes
+  const f=state.sales.find(s=>normName(s.client)===normName('FAJARDO ASENCIO, CRISTA BELL')&&!s.churned);
+  if(f){f.churned=true;f.churnDate='2026-06-05';}
+  const have=new Set(state.sales.filter(s=>s.seed==='churn1').map(s=>normName(s.client)));
+  SEED_CHURN_ADD.forEach(x=>{
+    if(have.has(normName(x.c)))return;
+    state.sales.push({id:uid(),client:x.c,plan:x.p,mode:'mensual',start:x.d,customMonthly:x.cm,comercial:x.com,churned:true,churnDate:x.d,seed:'churn1',campaignId:null,createdAt:Date.now()});
+  });
+  state.config.seededChurnV1=true;
+  save();
+}
 function loadLocal(){try{const r=localStorage.getItem(STORE_KEY);if(!r)return structuredClone(defaultState);return normalize(JSON.parse(r));}catch(e){return structuredClone(defaultState);}}
 let state=loadLocal();
 function snapshot(){const m=new Date().toISOString().slice(0,7);const v={m,clients:totalClients(),mrr:currentMRR()};const e=state.history.find(h=>h.m===m);if(e)Object.assign(e,v);else state.history.push(v);}
@@ -1002,10 +1041,12 @@ const totalClients=()=>state.config.baseClients+activeSales().length;
 function salesMRR(mature=true){return activeSales().reduce((sum,s)=>{if(s.mode==='anual')return sum;if(mature&&!s.legacy&&monthsSince(s.start)<RECURRING_START_MONTH)return sum;return sum+saleMonthly(s);},0);}
 const currentMRR=()=>state.config.baseRecurring+salesMRR(true);
 const potentialMRR=()=>state.config.baseRecurring+salesMRR(false);
-const implCollected=()=>state.sales.reduce((s,v)=>s+saleImpl(v),0);
+const implCollected=()=>activeSales().reduce((s,v)=>s+saleImpl(v),0);
 const annualCollected=()=>state.config.annualPayments+activeSales().filter(s=>s.mode==='anual').reduce((s,v)=>s+saleMonthly(v)*12,0);
 const churnedCount=()=>state.sales.filter(s=>s.churned).length;
 const lostMRR=()=>state.sales.filter(s=>s.churned&&s.mode==='mensual').reduce((s,v)=>s+saleMonthly(v),0);
+const churnRate=()=>{const a=activeSales().length,c=churnedCount();return (a+c)?c/(a+c)*100:0;};
+function churnList(){openClientList('Bajas / churn',churnedCount()+' clientes · '+churnRate().toFixed(1)+'% churn',state.sales.filter(s=>s.churned));}
 
 /* ===================== NAV ===================== */
 const VIEWS={
@@ -1557,7 +1598,7 @@ function renderMetas(){
   $('forecast').innerHTML=`
     <div class="frow"><div class="fi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div><div><div class="ft">Llegar a ${gc.toLocaleString('en-US')} clientes</div><div class="fv">${e1.v}</div></div><div class="fr"><small>faltan ${remCli.toLocaleString('en-US')}</small><small>${e1.s}</small></div></div>
     <div class="frow"><div class="fi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M23 6l-9.5 9.5-5-5L1 18"/><path d="M17 6h6v6"/></svg></div><div><div class="ft">Llegar a ${fmtUSD0(gm)} recurrentes/mes</div><div class="fv">${e2.v}</div></div><div class="fr"><small>faltan ${fmtUSD(remMrr)}</small><small>${e2.s}</small></div></div>
-    ${churnedCount()?`<div class="frow"><div class="fi" style="background:var(--danger-bg);color:var(--danger)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="23" y1="11" x2="17" y2="11"/></svg></div><div><div class="ft">Bajas registradas</div><div class="fv">${churnedCount()} clientes</div></div><div class="fr"><small>MRR perdido</small><small>${fmtUSD(lostMRR())}/mes</small></div></div>`:''}`;
+    ${churnedCount()?`<div class="frow" style="cursor:pointer" onclick="churnList()"><div class="fi" style="background:var(--danger-bg);color:var(--danger)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="23" y1="11" x2="17" y2="11"/></svg></div><div><div class="ft">Bajas / churn ›</div><div class="fv">${churnedCount()} clientes · ${(churnedCount()/((activeSales().length+churnedCount())||1)*100).toFixed(1)}% churn</div></div><div class="fr"><small>MRR perdido</small><small>${fmtUSD(lostMRR())}/mes</small></div></div>`:''}`;
 
   // trend
   const hist=state.history.slice().sort((a,b)=>a.m.localeCompare(b.m));
@@ -1586,7 +1627,8 @@ function renderComision(){
   const m=curMonth();
   // Solo cuentan a la comisión las ventas de Briant (los demás comerciales, p.ej. Rene/Alianzas, no). Las ventas sin comercial (alta manual) se asumen de Briant.
   const esBriant=s=>!s.comercial||s.comercial==='Briant Canizalez';
-  const monthSales=activeSales().filter(s=>(s.start||'').slice(0,7)===m&&esBriant(s));
+  // cuenta los cierres del mes aunque ya estén dados de baja (la comisión se gana al cerrar)
+  const monthSales=state.sales.filter(s=>(s.start||'').slice(0,7)===m&&esBriant(s));
   const n=monthSales.length,tier=commissionTier(n);
   let gross=0;
   monthSales.forEach(s=>{const imp=saleImpl(s),mon=saleMonthly(s);if(s.mode==='anual'){gross+=imp*tier+(mon*12)*0.02;}else{gross+=(imp+mon)*tier;}});
@@ -1736,7 +1778,7 @@ function traducirAuth(m){if(/invalid login/i.test(m))return 'Correo o contraseñ
 async function afterLogin(session){userId=session.user.id;hideGate();state=await loadCloud();$('foot-status').textContent='Conectado: '+session.user.email;$('auth-logout').style.display='block';initApp();}
 $('auth-logout').onclick=async()=>{if(!confirm('¿Cerrar sesión?'))return;await supa.auth.signOut();location.reload();};
 
-function initApp(){seedOdooBatch1();seedBookV3();seedAnnualBookV1();seedComercialV1();seedComercialV2();seedProspectsV1();seedProspectsV2();seedClosesV1();seedWonV1();seedOriginV1();seedCampaignLinkV1();seedRestoreAireV1();seedCampaignDaysV1();fillPlanSelect();updateBadges();renderBackupBanner();go('inicio');document.body.classList.remove('booting');}
+function initApp(){seedOdooBatch1();seedBookV3();seedAnnualBookV1();seedComercialV1();seedComercialV2();seedProspectsV1();seedProspectsV2();seedClosesV1();seedWonV1();seedOriginV1();seedCampaignLinkV1();seedRestoreAireV1();seedCampaignDaysV1();seedChurnV1();fillPlanSelect();updateBadges();renderBackupBanner();go('inicio');document.body.classList.remove('booting');}
 
 async function boot(){
   if(initSupabase()){
