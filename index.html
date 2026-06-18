@@ -1310,7 +1310,7 @@ function renderPipeline(){
   renderOrigen();
 }
 const ORIGEN_ORDER=['Campaña','Referido','Alianza Contable','Directo','Otro','Sin origen'];
-function monthSalesByOrigen(){const M=curMonth();const o={};activeSales().filter(s=>(s.start||'').slice(0,7)===M).forEach(s=>{const k=s.origen||'Sin origen';(o[k]=o[k]||[]).push(s);});return o;}
+function monthSalesByOrigen(){const M=curMonth();const o={};activeSales().filter(s=>(s.start||'').slice(0,7)===M&&(!s.comercial||s.comercial==='Briant Canizalez')).forEach(s=>{const k=s.origen||'Sin origen';(o[k]=o[k]||[]).push(s);});return o;}
 function renderOrigen(){
   const o=monthSalesByOrigen();
   const rank=x=>{const i=ORIGEN_ORDER.indexOf(x);return i<0?99:i;};
