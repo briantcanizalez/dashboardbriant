@@ -763,7 +763,7 @@ const STAGE_RANK={Lead:0,MQL:1,SQL:2,Oportunidad:3,Ganada:4,Perdida:-1};
 const STAGEMAP={Prospecto:'Lead',Demo:'MQL','Negociación':'Oportunidad'}; // migración de etapas viejas
 const MEDIOS=['WhatsApp','Facebook','Reunión','Visita','Llamada'];
 const ORIGENES=['Pauta','Referido','Alianza Contable','Contacto personal'];
-const defaultState={tasks:[],sales:[],services:[],prospects:[],campaigns:[],projects:[],history:[],config:{baseClients:494,goalClients:1000,baseRecurring:7151.23,goalRecurring:25000,annualPayments:11988.18,mrrMesMeta:1000,salaryBase:0,bono:0,metaMes:24,lastBackup:null,seededOdooBatch1:false,seededBookV3:false,seededAnnualV1:false,seededComercialV1:false,seededComercialV2:false,seededProspectsV1:false}};
+const defaultState={tasks:[],sales:[],services:[],prospects:[],campaigns:[],projects:[],history:[],config:{baseClients:494,goalClients:1000,baseRecurring:7151.23,goalRecurring:25000,annualPayments:11988.18,mrrMesMeta:1000,salaryBase:0,bono:0,metaMes:24,lastBackup:null,seededOdooBatch1:false,seededBookV3:false,seededAnnualV1:false,seededComercialV1:false,seededComercialV2:false,seededProspectsV1:false,seededProspectsV2:false}};
 function normalize(d){const s={...structuredClone(defaultState),...d,config:{...defaultState.config,...(d.config||{})}};['tasks','sales','services','prospects','campaigns','projects','history'].forEach(k=>{if(!Array.isArray(s[k]))s[k]=[];});
   s.prospects.forEach(p=>{if(STAGEMAP[p.stage])p.stage=STAGEMAP[p.stage];if(!p.bant)p.bant={b:false,a:false,n:false,t:false};});
   return s;}
@@ -867,6 +867,21 @@ function seedProspectsV1(){
     state.prospects.push({id:uid(),client:c,plan:'starter',stage:'Lead',medio:'WhatsApp',origen:'Pauta',campaignId:cid,note:'Prospecto de campaña (WhatsApp). Editar nombre/plan al calificar.',bant:{b:false,a:false,n:false,t:false},nextStep:'Dar seguimiento',nextDate:'',createdAt:Date.now(),updatedAt:Date.now()});
   });
   state.config.seededProspectsV1=true;
+  save();
+}
+
+/* ---- Prospectos de campaña — lote 2 (WhatsApp) ---- */
+const SEED_PROSPECTS_2=['DETERMINACION PERSISTENCIA & LEGADO BUSINESS GROUP','Arlette Salinas','Ferreteria Mil Herramientas','Prospecto 7999 0685','Prospecto 7627 2314','Prospecto 6187 2190','Prospecto 7287 7455','Prospecto 7511 1400','Prospecto 7533 5801','Prospecto 7083 0032','Prospecto 7681 1059','Prospecto 7606 9443'];
+function seedProspectsV2(){
+  if(state.config.seededProspectsV2)return;
+  const camp=state.campaigns[state.campaigns.length-1];const cid=camp?camp.id:null;
+  const have=new Set(state.prospects.map(p=>normName(p.client)));
+  SEED_PROSPECTS_2.forEach(c=>{
+    if(have.has(normName(c)))return;
+    have.add(normName(c));
+    state.prospects.push({id:uid(),client:c,plan:'starter',stage:'Lead',medio:'WhatsApp',origen:'Pauta',campaignId:cid,note:'Prospecto de campaña (WhatsApp). Editar nombre/plan al calificar.',bant:{b:false,a:false,n:false,t:false},nextStep:'Dar seguimiento',nextDate:'',createdAt:Date.now(),updatedAt:Date.now()});
+  });
+  state.config.seededProspectsV2=true;
   save();
 }
 function loadLocal(){try{const r=localStorage.getItem(STORE_KEY);if(!r)return structuredClone(defaultState);return normalize(JSON.parse(r));}catch(e){return structuredClone(defaultState);}}
@@ -1617,7 +1632,7 @@ function traducirAuth(m){if(/invalid login/i.test(m))return 'Correo o contraseñ
 async function afterLogin(session){userId=session.user.id;hideGate();state=await loadCloud();$('foot-status').textContent='Conectado: '+session.user.email;$('auth-logout').style.display='block';initApp();}
 $('auth-logout').onclick=async()=>{if(!confirm('¿Cerrar sesión?'))return;await supa.auth.signOut();location.reload();};
 
-function initApp(){seedOdooBatch1();seedBookV3();seedAnnualBookV1();seedComercialV1();seedComercialV2();seedProspectsV1();fillPlanSelect();updateBadges();renderBackupBanner();go('inicio');document.body.classList.remove('booting');}
+function initApp(){seedOdooBatch1();seedBookV3();seedAnnualBookV1();seedComercialV1();seedComercialV2();seedProspectsV1();seedProspectsV2();fillPlanSelect();updateBadges();renderBackupBanner();go('inicio');document.body.classList.remove('booting');}
 
 async function boot(){
   if(initSupabase()){
