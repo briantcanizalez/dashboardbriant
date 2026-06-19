@@ -649,7 +649,7 @@ canvas{max-width:100%}
         </div>
         <div class="grid kpis" style="margin-bottom:16px">
           <div class="card kpi" onclick="canalList('all')"><div class="khead"><span class="klabel" id="cn-label">Clientes</span></div><div class="kval tnum" id="cn-count">0</div><div class="kmeta" id="cn-canal">canal</div></div>
-          <div class="card kpi" onclick="canalList('mes')"><div class="khead"><span class="klabel">Este mes</span></div><div class="kval tnum" id="cn-mes">0</div><div class="kmeta">clientes nuevos</div></div>
+          <div class="card kpi" onclick="canalList('mes')"><div class="khead"><span class="klabel">Este mes</span></div><div class="kval tnum" id="cn-mes">0</div><div class="kmeta">cierres del mes</div></div>
           <div class="card kpi" onclick="canalList('mrr')"><div class="khead"><span class="klabel">MRR aportado</span></div><div class="kval tnum" id="cn-mrr">$0</div><div class="kmeta">recurrente mensual</div></div>
           <div class="card kpi" onclick="canalList('anual')"><div class="khead"><span class="klabel">Anual aportado</span></div><div class="kval lav tnum" id="cn-anual">$0</div><div class="kmeta">prepago/año</div></div>
         </div>
@@ -1721,7 +1721,9 @@ function renderCanales(){
   $('cn-canal').textContent=isB?'Canal Digital':'canal Alianzas';
   $('cn-hint').textContent=(isB?'Briant Canizalez':'Rene Gonzalez')+' · por fecha de alta';
   $('cn-count').textContent=list.length;
-  $('cn-mes').textContent=list.filter(s=>(s.start||'').slice(0,7)===M).length;
+  // "Este mes" = cierres del mes (incluye bajas; mismo criterio que el Resumen)
+  const canalPred=isB?(s=>!s.comercial||s.comercial==='Briant Canizalez'):(s=>s.comercial===curCanal);
+  $('cn-mes').textContent=state.sales.filter(s=>canalPred(s)&&(s.start||'').slice(0,7)===M).length;
   $('cn-mrr').textContent=fmtUSD(list.filter(s=>s.mode!=='anual').reduce((a,s)=>a+saleMonthly(s),0));
   $('cn-anual').textContent=fmtUSD(list.filter(s=>s.mode==='anual').reduce((a,s)=>a+saleMonthly(s)*12,0));
   const byMonth={};
@@ -1950,7 +1952,8 @@ function canalList(which){
   const base=activeSales().filter(s=>isB?(!s.comercial||s.comercial==='Briant Canizalez'):s.comercial===curCanal);
   const who=isB?'Canal Digital · Briant':'Alianzas · Rene';
   const M=curMonth();
-  if(which==='mes')openClientList(who+' · este mes',fmtMonth(M),base.filter(s=>(s.start||'').slice(0,7)===M));
+  const canalPred=isB?(s=>!s.comercial||s.comercial==='Briant Canizalez'):(s=>s.comercial===curCanal);
+  if(which==='mes')openClientList(who+' · este mes',fmtMonth(M)+' · cierres',state.sales.filter(s=>canalPred(s)&&(s.start||'').slice(0,7)===M));
   else if(which==='mrr')openClientList(who+' · MRR aportado','mensuales',base.filter(s=>s.mode!=='anual'));
   else if(which==='anual')openClientList(who+' · anual aportado','anuales (prepago)',base.filter(s=>s.mode==='anual'));
   else openClientList(who,'todos los clientes',base);
