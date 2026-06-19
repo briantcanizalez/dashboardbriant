@@ -554,6 +554,9 @@ canvas{max-width:100%}
         <div class="card">
           <div class="section-head"><h2>Clientes por plan · total</h2><span class="hint">toca un plan para ver los clientes</span></div>
           <div id="rs-planes"></div>
+          <div class="section-head" style="margin-top:20px"><h2 style="font-size:15px">Pareto · 80/20 de planes</h2><span class="hint">tu minoría vital que más aporta</span></div>
+          <div id="rs-pareto-insight" class="rs-ins"></div>
+          <div class="chart-box" style="margin-top:12px;height:300px"><canvas id="chartPareto"></canvas></div>
         </div>
       </section>
 
@@ -1637,6 +1640,21 @@ function renderResumen(){
     const an=arr.filter(s=>s.mode==='anual').reduce((a,s)=>a+saleMonthly(s)*12,0);
     return `<div class="rs-planchip" onclick="resumenPlanList('${k}')"><div class="rp-n">${esc(p.label)}</div><div class="rp-c">${arr.length}</div><div class="rp-m">${an?fmtUSD(an)+'/año':fmtUSD(mrr)+'/mes'}</div></div>`;
   }).join('')+'</div>';
+  renderPareto();
+}
+function renderPareto(){
+  const A=activeSales();
+  const rows=Object.keys(PLANS).map(k=>{const arr=A.filter(s=>s.plan===k);return {k,label:PLANS[k].label,val:arr.reduce((a,s)=>a+saleMonthly(s),0),n:arr.length};}).filter(r=>r.val>0).sort((a,b)=>b.val-a.val);
+  const total=rows.reduce((a,r)=>a+r.val,0);
+  let cum=0;rows.forEach(r=>{r.pct=total?r.val/total*100:0;cum+=r.pct;r.cum=cum;});
+  let vital=0;for(const r of rows){vital++;if(r.cum>=80)break;}
+  const vitalRows=rows.slice(0,vital),vitalVal=vitalRows.reduce((a,r)=>a+r.val,0);
+  $('rs-pareto-insight').innerHTML=rows.length?`Tu <b>minoría vital</b>: <b>${vital} de ${rows.length} planes</b> (${Math.round(vital/rows.length*100)}% del catálogo) — <b>${vitalRows.map(v=>esc(v.label)).join(', ')}</b> — concentran el <b>${Math.round(vitalRows[vitalRows.length-1].cum)}%</b> de tus ingresos recurrentes (${fmtUSD(vitalVal)} de ${fmtUSD(total)}/mes equiv.). El plan #1 (<b>${esc(rows[0].label)}</b>) solo aporta <b>${Math.round(rows[0].pct)}%</b>.`:'Sin datos.';
+  if(charts.pareto)charts.pareto.destroy();
+  charts.pareto=new Chart($('chartPareto'),{data:{labels:rows.map(r=>r.label),datasets:[
+    {type:'bar',label:'Aporte/mes equiv.',data:rows.map(r=>+r.val.toFixed(2)),backgroundColor:rows.map((r,i)=>i<vital?'#7c4dff':'#3a3a52'),borderRadius:6,yAxisID:'y',order:2},
+    {type:'line',label:'% acumulado',data:rows.map(r=>+r.cum.toFixed(1)),borderColor:'#34d399',backgroundColor:'transparent',tension:.25,pointRadius:3,pointBackgroundColor:'#34d399',yAxisID:'y1',order:1}
+  ]},options:{maintainAspectRatio:false,interaction:{intersect:false,mode:'index'},plugins:{legend:{labels:{color:CTXT,boxWidth:12}},tooltip:{callbacks:{label:c=>c.dataset.type==='line'?c.parsed.y+'% acumulado':fmtUSD(c.parsed.y)+'/mes'}}},scales:{x:{ticks:{color:CTXT,font:{size:10},maxRotation:40,minRotation:0},grid:{display:false}},y:{position:'left',ticks:{color:CTXT,callback:v=>'$'+v},grid:{color:CGRID}},y1:{position:'right',min:0,max:100,ticks:{color:'#34d399',callback:v=>v+'%'},grid:{display:false}}}}});
 }
 function resumenComList(label){const c=COM_BUCKETS.find(x=>x.label===label);if(c)openClientList('Clientes · '+c.short,'cartera activa',activeSales().filter(c.pred));}
 function resumenPlanList(k){const p=PLANS[k]||{label:k};openClientList(p.label,'clientes del plan',activeSales().filter(s=>s.plan===k));}
