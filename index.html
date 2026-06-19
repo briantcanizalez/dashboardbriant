@@ -96,6 +96,9 @@ button{font-family:inherit}
 .botnav.b6{grid-template-columns:repeat(6,1fr)}
 .botnav.b7{grid-template-columns:repeat(7,1fr)}
 .botnav.b7 button{font-size:8.5px}
+.botnav.b8{grid-template-columns:repeat(8,1fr)}
+.botnav.b8 button{font-size:8px}
+.botnav.b8 svg{width:20px;height:20px}
 .botnav button{display:flex;flex-direction:column;align-items:center;gap:4px;border:none;background:transparent;color:var(--txt-3);font-size:9.5px;font-weight:600;padding:6px 1px;border-radius:12px;cursor:pointer;min-height:52px;transition:color .15s;position:relative}
 .botnav svg{width:22px;height:22px;stroke-width:2}
 .botnav .active{color:var(--brand-3)}
@@ -349,6 +352,15 @@ canvas{max-width:100%}
 .cmp-stage:hover{border-color:var(--brand-3)}
 .cmp-stage i{width:8px;height:8px;border-radius:99px;display:inline-block}
 .cmp-stage b{color:var(--txt-1);font-variant-numeric:tabular-nums}
+.rs-insights{display:flex;flex-direction:column;gap:8px}
+.rs-ins{background:var(--surface-1);border:1px solid var(--border);border-left:3px solid var(--brand-3);border-radius:10px;padding:11px 14px;font-size:14px;color:var(--txt-2)}
+.rs-ins b{color:var(--txt-1)}
+.rs-plangrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.rs-planchip{background:var(--bg);border:1px solid var(--border);border-radius:11px;padding:12px;cursor:pointer;transition:border-color .15s,transform .15s}
+.rs-planchip:hover{border-color:var(--brand-3);transform:translateY(-2px)}
+.rs-planchip .rp-n{font-size:11.5px;color:var(--txt-3);font-weight:700}
+.rs-planchip .rp-c{font-family:'Space Grotesk';font-size:22px;font-weight:700;margin:2px 0}
+.rs-planchip .rp-m{font-size:12px;color:var(--txt-3)}
 .verdict{display:inline-flex;align-items:center;gap:6px;padding:6px 13px;border-radius:99px;font-size:12.5px;font-weight:700;white-space:nowrap}
 .v-ok{background:var(--ok-bg);color:#6ee7b7} .v-bad{background:var(--danger-bg);color:#fca5a5} .v-na{background:var(--surface-2);color:var(--txt-2)}
 .campaign{margin-bottom:14px}
@@ -439,6 +451,7 @@ canvas{max-width:100%}
     <div class="navlbl">Panel</div>
     <nav class="nav" data-nav>
       <button data-view="inicio" class="active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9.5L12 3l9 6.5"/><path d="M5 10v10h14V10"/></svg><span>Inicio</span><span class="navbadge" data-badge></span></button>
+      <button data-view="resumen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 3v18h18"/><rect x="7" y="12" width="3" height="6"/><rect x="12" y="8" width="3" height="10"/><rect x="17" y="4" width="3" height="14"/></svg><span>Resumen</span></button>
       <button data-view="tareas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><span>Tareas</span></button>
       <button data-view="pipeline"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M22 3H2l8 9.46V19l4 2v-8.54z"/></svg><span>Pipeline</span></button>
       <button data-view="campaigns"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 11l18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg><span>Campañas</span></button>
@@ -493,6 +506,33 @@ canvas{max-width:100%}
         <div class="two">
           <div class="card"><div class="section-head"><h2>Avance a 1,000 clientes</h2></div><div class="chart-box"><canvas id="chartClientes"></canvas></div></div>
           <div class="card"><div class="section-head"><h2>Avance a $25K recurrentes</h2></div><div class="chart-box"><canvas id="chartMrr"></canvas></div></div>
+        </div>
+      </section>
+
+      <!-- ====== RESUMEN EJECUTIVO ====== -->
+      <section class="view" id="view-resumen">
+        <div id="rs-insights" class="rs-insights"></div>
+        <div class="grid kpis" style="margin:16px 0">
+          <div class="card kpi" onclick="showList('inicio-clientes')"><div class="khead"><span class="klabel">Clientes activos</span></div><div class="kval tnum" id="rs-clientes">0</div><div class="kmeta" id="rs-clientes-meta">en cartera</div></div>
+          <div class="card kpi" onclick="showList('inicio-mrr')"><div class="khead"><span class="klabel">MRR activo</span></div><div class="kval tnum" id="rs-mrr">$0</div><div class="kmeta" id="rs-mrr-meta">facturando hoy</div></div>
+          <div class="card kpi" onclick="showList('ventas-impl')"><div class="khead"><span class="klabel">Implementaciones</span></div><div class="kval lav tnum" id="rs-impl">$0</div><div class="kmeta">cobrado histórico</div></div>
+          <div class="card kpi" onclick="go('canales')"><div class="khead"><span class="klabel">Cierres del mes</span></div><div class="kval tnum" id="rs-mes">0</div><div class="kmeta" id="rs-mes-meta">este mes</div></div>
+        </div>
+
+        <div class="two" style="margin-bottom:16px">
+          <div class="card">
+            <div class="section-head"><h2>Por comercial</h2><span class="hint">cartera activa · toca para ver</span></div>
+            <div class="tablewrap"><table class="responsive"><thead><tr><th>Comercial</th><th class="num">Clientes</th><th class="num">MRR</th><th class="num">Implementación</th></tr></thead><tbody id="rs-com-body"></tbody></table></div>
+          </div>
+          <div class="card">
+            <div class="section-head"><h2>Cómo va el mes</h2><span class="hint" id="rs-mes-hint"></span></div>
+            <div id="rs-month"></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="section-head"><h2>Clientes por plan</h2><span class="hint">toca un plan para ver los clientes</span></div>
+          <div id="rs-planes"></div>
         </div>
       </section>
 
@@ -682,8 +722,9 @@ canvas{max-width:100%}
   </div>
 
   <!-- BOTTOM NAV -->
-  <nav class="botnav b7" data-nav>
+  <nav class="botnav b8" data-nav>
     <button data-view="inicio" class="active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9.5L12 3l9 6.5"/><path d="M5 10v10h14V10"/></svg>Inicio<span class="navbadge" data-badge></span></button>
+    <button data-view="resumen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 3v18h18"/><rect x="7" y="12" width="3" height="6"/><rect x="12" y="8" width="3" height="10"/><rect x="17" y="4" width="3" height="14"/></svg>Resumen</button>
     <button data-view="tareas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>Tareas</button>
     <button data-view="ventas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="2" x2="12" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>Ventas</button>
     <button data-view="planes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>Planes</button>
@@ -1089,6 +1130,7 @@ function churnList(){openClientList('Bajas / churn',churnedCount()+' clientes ·
 /* ===================== NAV ===================== */
 const VIEWS={
   inicio:{title:'Inicio',action:null},
+  resumen:{title:'Resumen',sub:'Cómo va el mes y tu cartera, al grano.',action:null},
   tareas:{title:'Tareas',sub:'Registra, prioriza y mide tu tiempo.',action:{label:'Nueva tarea',fn:()=>openTask()}},
   pipeline:{title:'Pipeline de ventas',sub:'Prospectos en camino hacia el cierre.',action:{label:'Nuevo prospecto',fn:()=>openProspect()}},
   campaigns:{title:'Campañas',sub:'Inversión en anuncios, CAC y rentabilidad.',action:{label:'Nueva campaña',fn:()=>openCampaign()}},
@@ -1110,7 +1152,7 @@ function go(view){
   if(cfg.action){act.classList.remove('hide');act.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>'+cfg.action.label;act.onclick=cfg.action.fn;}
   else{act.classList.add('hide');act.onclick=null;}
   window.scrollTo({top:0});
-  ({inicio:renderInicio,tareas:renderTasks,pipeline:renderPipeline,campaigns:renderCampaigns,ventas:renderSales,planes:renderPlanes,canales:renderCanales,calendario:renderCalendar,metas:renderMetas,config:fillConfig}[view])();
+  ({inicio:renderInicio,resumen:renderResumen,tareas:renderTasks,pipeline:renderPipeline,campaigns:renderCampaigns,ventas:renderSales,planes:renderPlanes,canales:renderCanales,calendario:renderCalendar,metas:renderMetas,config:fillConfig}[view])();
 }
 document.addEventListener('click',e=>{
   const nav=e.target.closest('[data-nav] [data-view]');if(nav){go(nav.dataset.view);return;}
@@ -1528,6 +1570,61 @@ function churnSale(id){const s=findSale(id);if(!s)return;if(!confirm('¿Marcar c
 function reactivateSale(id){const s=findSale(id);if(!s)return;s.churned=false;delete s.churnDate;save();refreshSalesViews();}
 /* re-render de las vistas que dependen de ventas (Ventas y Planes) */
 function refreshSalesViews(){if($('view-ventas').classList.contains('active'))renderSales();if($('view-planes').classList.contains('active'))renderPlanes();if($('view-canales').classList.contains('active'))renderCanales();}
+
+/* ===================== RESUMEN EJECUTIVO ===================== */
+const COM_BUCKETS=[
+  {label:'Briant Canizalez',short:'Briant',pred:s=>!s.comercial||s.comercial==='Briant Canizalez'},
+  {label:'Rene Gonzalez',short:'René',pred:s=>s.comercial==='Rene Gonzalez'},
+  {label:'Otros',short:'Otros',pred:s=>s.comercial&&s.comercial!=='Briant Canizalez'&&s.comercial!=='Rene Gonzalez'},
+];
+const _pct=(a,b)=>b?Math.round(a/b*100):0;
+function renderResumen(){
+  const A=activeSales(),M=curMonth();
+  const totCli=A.length,totMRR=salesMRR(false),totImpl=implCollected();
+  const mesSales=state.sales.filter(s=>(s.start||'').slice(0,7)===M);
+  const mesMRR=mesSales.filter(s=>s.mode!=='anual').reduce((a,s)=>a+saleMonthly(s),0);
+  const mesImpl=mesSales.reduce((a,s)=>a+saleImpl(s),0);
+  const planKeys=Object.keys(PLANS).filter(k=>A.some(s=>s.plan===k));
+  const briantMRR=A.filter(s=>(!s.comercial||s.comercial==='Briant Canizalez')&&s.mode!=='anual').reduce((a,s)=>a+saleMonthly(s),0);
+  const reneMRR=A.filter(s=>s.comercial==='Rene Gonzalez'&&s.mode!=='anual').reduce((a,s)=>a+saleMonthly(s),0);
+  const topPlan=planKeys.map(k=>({k,n:A.filter(s=>s.plan===k).length})).sort((a,b)=>b.n-a.n)[0];
+  // KPIs
+  $('rs-clientes').textContent=totCli.toLocaleString('en-US');
+  $('rs-clientes-meta').textContent=`${A.filter(s=>s.mode!=='anual').length} mensuales · ${A.filter(s=>s.mode==='anual').length} anuales`;
+  $('rs-mrr').textContent=fmtUSD(salesMRR(true));$('rs-mrr-meta').textContent='contratado '+fmtUSD(totMRR);
+  $('rs-impl').textContent=fmtUSD(totImpl);
+  $('rs-mes').textContent=mesSales.length;$('rs-mes-meta').textContent=fmtMonth(M);
+  // Insights al grano
+  $('rs-insights').innerHTML=[
+    `<b>${totCli}</b> clientes activos · <b>${fmtUSD(totMRR)}</b> MRR contratado · <b>${fmtUSD(totImpl)}</b> en implementaciones (histórico)`,
+    `Briant aporta <b>${_pct(briantMRR,totMRR)}%</b> del MRR · René <b>${_pct(reneMRR,totMRR)}%</b>`,
+    topPlan?`Plan más vendido: <b>${esc(PLANS[topPlan.k].label)}</b> (${topPlan.n} clientes)`:'',
+    `Este mes (${fmtMonth(M)}): <b>${mesSales.length}</b> cierres · <b>${fmtUSD(mesMRR)}</b> MRR nuevo · <b>${fmtUSD(mesImpl)}</b> implementaciones`,
+  ].filter(Boolean).map(t=>`<div class="rs-ins">${t}</div>`).join('');
+  // Por comercial
+  $('rs-com-body').innerHTML=COM_BUCKETS.map(c=>{
+    const cli=A.filter(c.pred).length;if(!cli)return '';
+    const mrr=A.filter(s=>c.pred(s)&&s.mode!=='anual').reduce((a,s)=>a+saleMonthly(s),0);
+    const impl=state.sales.filter(c.pred).reduce((a,s)=>a+saleImpl(s),0);
+    return `<tr style="cursor:pointer" onclick="resumenComList('${c.label}')"><td data-label="Comercial"><b>${c.short}</b></td><td data-label="Clientes" class="num">${cli}</td><td data-label="MRR" class="num">${fmtUSD(mrr)}</td><td data-label="Implementación" class="num" style="color:var(--lavanda)">${fmtUSD(impl)}</td></tr>`;
+  }).join('')+`<tr style="font-weight:700"><td>Total</td><td class="num">${totCli}</td><td class="num">${fmtUSD(totMRR)}</td><td class="num">${fmtUSD(totImpl)}</td></tr>`;
+  // Como va el mes
+  const byC=COM_BUCKETS.map(c=>({short:c.short,m:mesSales.filter(c.pred)})).filter(x=>x.m.length);
+  $('rs-month').innerHTML=`
+    <div class="comprow"><span>Cierres del mes</span><span class="cv">${mesSales.length}</span></div>
+    <div class="comprow"><span>MRR nuevo del mes</span><span class="cv">${fmtUSD(mesMRR)}/mes</span></div>
+    <div class="comprow"><span>Implementaciones del mes</span><span class="cv">${fmtUSD(mesImpl)}</span></div>
+    ${byC.map(x=>`<div class="comprow"><span class="muted-3">· ${x.short}</span><span class="cv muted-3">${x.m.length} cierres · ${fmtUSD(x.m.reduce((a,s)=>a+saleImpl(s),0))} impl</span></div>`).join('')}`;
+  // Clientes por plan
+  $('rs-planes').innerHTML='<div class="rs-plangrid">'+planKeys.map(k=>{
+    const arr=A.filter(s=>s.plan===k),p=PLANS[k];
+    const mrr=arr.filter(s=>s.mode!=='anual').reduce((a,s)=>a+saleMonthly(s),0);
+    const an=arr.filter(s=>s.mode==='anual').reduce((a,s)=>a+saleMonthly(s)*12,0);
+    return `<div class="rs-planchip" onclick="resumenPlanList('${k}')"><div class="rp-n">${esc(p.label)}</div><div class="rp-c">${arr.length}</div><div class="rp-m">${an?fmtUSD(an)+'/año':fmtUSD(mrr)+'/mes'}</div></div>`;
+  }).join('')+'</div>';
+}
+function resumenComList(label){const c=COM_BUCKETS.find(x=>x.label===label);if(c)openClientList('Clientes · '+c.short,'cartera activa',activeSales().filter(c.pred));}
+function resumenPlanList(k){const p=PLANS[k]||{label:k};openClientList(p.label,'clientes del plan',activeSales().filter(s=>s.plan===k));}
 
 /* ===================== PLANES (buscador + arbol Modalidad>Plan>Cliente) ===================== */
 const editBtn=id=>`<button class="btn sm ghost icon" title="Editar" onclick="openSale('${id}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4z"/></svg></button>`;
