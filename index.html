@@ -622,7 +622,8 @@ canvas{max-width:100%}
           <div class="card kpi" onclick="showList('ventas-mrrpot')"><div class="khead"><span class="klabel">MRR potencial</span></div><div class="kval tnum" id="v-mrr-pot">$0</div><div class="kmeta">cuando todas maduren</div></div>
         </div>
         <div class="card pad-lg">
-          <div class="tablewrap"><table class="responsive"><thead><tr><th>Cliente</th><th>Plan</th><th>Implementación</th><th>Mensual</th><th>Inicio</th><th>Recurrencia</th><th class="right">Acciones</th></tr></thead><tbody id="tbody-ventas"></tbody></table></div>
+          <div class="searchbar" style="margin-bottom:12px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input id="ventas-search" type="search" placeholder="Buscar cliente…" oninput="renderSales()"><span class="hint" id="ventas-search-count"></span></div>
+          <div class="tablewrap"><table class="responsive"><thead><tr><th>Cliente</th><th>Vendedor</th><th>Plan</th><th>Implementación</th><th>Mensual</th><th>Inicio</th><th>Recurrencia</th><th class="right">Acciones</th></tr></thead><tbody id="tbody-ventas"></tbody></table></div>
           <div id="ventas-empty" class="empty" style="display:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="2" x2="12" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg><p>Aún no registras ventas</p><span>Agrega la primera con “Nueva venta”.</span></div>
         </div>
 
@@ -779,7 +780,7 @@ canvas{max-width:100%}
   <div class="field"><label>Nombre del cliente <span class="req">*</span></label><input id="s-client" placeholder="Ej. Distribuidora La Salud" /></div>
   <div class="row c2"><div class="field"><label>Plan</label><select id="s-plan"></select></div><div class="field"><label>Modalidad</label><select id="s-mode"><option value="mensual">Mensual</option><option value="anual">Anual adelantado</option></select></div></div>
   <div class="row c2"><div class="field"><label>Fecha de inicio</label><input type="date" id="s-start" /></div><div class="field"><label>Origen</label><select id="s-origen"><option value="">—</option><option>Campaña</option><option>Referido</option><option>Alianza Contable</option><option>Directo</option><option>Otro</option></select></div></div>
-  <div class="field"><label>Campaña de origen</label><select id="s-campaign"></select></div>
+  <div class="row c2"><div class="field"><label>Vendedor</label><select id="s-comercial"><option>Briant Canizalez</option><option>Rene Gonzalez</option><option>Ejecutivo de Ventas Odoo</option><option>Luis Rafael Henriquez</option><option>Otro</option></select></div><div class="field"><label>Campaña de origen</label><select id="s-campaign"></select></div></div>
   <div class="preview" id="s-preview"></div>
   <div class="actions" style="margin-top:16px"><button class="btn ghost" data-close="modal-sale">Cancelar</button><button class="btn" id="s-save">Guardar venta</button></div>
 </div></div>
@@ -1428,7 +1429,7 @@ $('pr-save').onclick=()=>{const client=$('pr-client').value.trim();if(!client){$
   save();closeModal('modal-prospect');renderPipeline();refreshSalesViews();};
 $('pr-client').addEventListener('input',()=>$('pr-client').style.borderColor='');
 function delProspect(id){if(!confirm('¿Eliminar este prospecto?'))return;state.prospects=state.prospects.filter(p=>p.id!==id);save();renderPipeline();}
-function convertProspect(id){const p=findProspect(id);if(!p)return;closeModal('modal-prospect');openSale();$('s-client').value=p.client;$('s-plan').value=p.plan;$('s-campaign').value=p.campaignId||'';salePreview();}
+function convertProspect(id){const p=findProspect(id);if(!p)return;closeModal('modal-prospect');openSale();$('s-client').value=p.client;$('s-plan').value=p.plan;$('s-comercial').value=p.comercial||'Briant Canizalez';$('s-campaign').value=p.campaignId||'';salePreview();}
 /* ---- Auto-conversión: al ganar un prospecto se crea la venta (sin duplicar) y se actualiza en vivo ---- */
 const planMode=plan=>PLANS[plan]&&PLANS[plan].annualOnly?'anual':'mensual';
 function syncWonSale(p){
@@ -1567,12 +1568,17 @@ function renderSales(){
   $('v-impl').textContent=fmtUSD(implCollected());
   $('v-mrr').textContent=fmtUSD(salesMRR(true));$('v-mrr-pot').textContent=fmtUSD(salesMRR(false));
   $('ventas-empty').style.display=state.sales.length?'none':'block';
-  $('tbody-ventas').innerHTML=state.sales.slice().sort((a,b)=>(a.churned?1:0)-(b.churned?1:0)||(b.createdAt||0)-(a.createdAt||0)).map(s=>{
+  const q=((($('ventas-search')||{}).value)||'').trim().toLowerCase();
+  let rows=state.sales.slice();
+  if(q)rows=rows.filter(s=>normName(s.client).includes(normName(q))||(s.comercial||'Briant Canizalez').toLowerCase().includes(q));
+  if($('ventas-search-count'))$('ventas-search-count').textContent=q?`${rows.length} de ${state.sales.length}`:'';
+  $('tbody-ventas').innerHTML=rows.sort((a,b)=>(a.churned?1:0)-(b.churned?1:0)||(b.createdAt||0)-(a.createdAt||0)).map(s=>{
     const p=PLANS[s.plan]||{label:s.plan,impl:0,monthly:0},m=monthsSince(s.start),mon=saleMonthly(s),imp=saleImpl(s);
     let estado=s.churned?'<span class="badge b-overdue">Dada de baja</span>':(s.legacy?'<span class="badge st-finalizada">Activa</span>':(s.mode==='anual'?'<span class="badge st-finalizada">Anual pagado</span>':(m>=RECURRING_START_MONTH?`<span class="badge st-finalizada">Activa (mes ${m})</span>`:`<span class="badge st-curso">Madura en ${RECURRING_START_MONTH-m} mes(es)</span>`)));
     const act=s.churned?`<button class="btn sm ghost" onclick="reactivateSale('${s.id}')">Reactivar</button>`:`<button class="btn sm ghost" onclick="churnSale('${s.id}')">Baja</button><button class="btn sm ghost icon" onclick="openSale('${s.id}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4z"/></svg></button>`;
     return `<tr class="${s.churned?'churned':''}">
       <td class="cellwrap" data-label="Cliente"><span class="cellmain">${esc(s.client)}</span></td>
+      <td data-label="Vendedor" class="muted-3">${esc(s.comercial||'Briant Canizalez')}</td>
       <td data-label="Plan"><span class="tag">${p.label}</span></td>
       <td data-label="Implementación" class="num">${fmtUSD(imp)}</td>
       <td data-label="Mensual" class="num">${s.mode==='anual'?fmtUSD(mon*12)+'/año':fmtUSD(mon)+'/mes'}</td>
@@ -1584,9 +1590,9 @@ function renderSales(){
   renderServices();
 }
 const findSale=id=>state.sales.find(s=>s.id===id);
-function openSale(id){fillPlanSelect();if(id){const s=findSale(id);$('sale-modal-title').textContent='Editar venta';$('s-id').value=s.id;$('s-client').value=s.client;$('s-plan').value=s.plan;$('s-start').value=s.start||todayISO();$('s-mode').value=s.mode||'mensual';$('s-origen').value=s.origen||'';$('s-campaign').innerHTML=campaignOptions(s.campaignId);}else{$('sale-modal-title').textContent='Nueva venta';$('s-id').value='';$('s-client').value='';$('s-plan').value='starter';$('s-start').value=todayISO();$('s-mode').value='mensual';$('s-origen').value='';$('s-campaign').innerHTML=campaignOptions('');}salePreview();openModal('modal-sale','s-client');}
+function openSale(id){fillPlanSelect();if(id){const s=findSale(id);$('sale-modal-title').textContent='Editar venta';$('s-id').value=s.id;$('s-client').value=s.client;$('s-plan').value=s.plan;$('s-start').value=s.start||todayISO();$('s-mode').value=s.mode||'mensual';$('s-origen').value=s.origen||'';$('s-comercial').value=s.comercial||'Briant Canizalez';$('s-campaign').innerHTML=campaignOptions(s.campaignId);}else{$('sale-modal-title').textContent='Nueva venta';$('s-id').value='';$('s-client').value='';$('s-plan').value='starter';$('s-start').value=todayISO();$('s-mode').value='mensual';$('s-origen').value='';$('s-comercial').value='Briant Canizalez';$('s-campaign').innerHTML=campaignOptions('');}salePreview();openModal('modal-sale','s-client');}
 $('s-save').onclick=()=>{const client=$('s-client').value.trim();if(!client){$('s-client').focus();$('s-client').style.borderColor='var(--danger)';return;}
-  const id=$('s-id').value,data={client,plan:$('s-plan').value,start:$('s-start').value||todayISO(),mode:$('s-mode').value,origen:$('s-origen').value||'',campaignId:$('s-campaign').value||null};
+  const id=$('s-id').value,data={client,plan:$('s-plan').value,start:$('s-start').value||todayISO(),mode:$('s-mode').value,origen:$('s-origen').value||'',comercial:$('s-comercial').value||'Briant Canizalez',campaignId:$('s-campaign').value||null};
   if(id)Object.assign(findSale(id),data);else state.sales.push({id:uid(),...data,createdAt:Date.now()});
   save();closeModal('modal-sale');refreshSalesViews();};
 $('s-client').addEventListener('input',()=>$('s-client').style.borderColor='');
