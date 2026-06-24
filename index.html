@@ -1843,10 +1843,12 @@ function renderMetas(){
 }
 function implByMonth(){
   const o={};
-  state.sales.forEach(s=>{const k=(s.start||'').slice(0,7)||'Sin fecha';const im=saleImpl(s);if(!im)return;
-    const r=o[k]||(o[k]={briant:0,rene:0,otros:0,total:0});const c=s.comercial;
-    if(c==='Rene Gonzalez')r.rene+=im;else if(!c||c==='Briant Canizalez')r.briant+=im;else r.otros+=im;
-    r.total+=im;});
+  const add=(k,c,v)=>{if(!v)return;const r=o[k]||(o[k]={briant:0,rene:0,otros:0,total:0});
+    if(c==='Rene Gonzalez')r.rene+=v;else if(!c||c==='Briant Canizalez')r.briant+=v;else r.otros+=v;
+    r.total+=v;};
+  state.sales.forEach(s=>add((s.start||'').slice(0,7)||'Sin fecha',s.comercial,saleImpl(s)));
+  // Servicios especiales (capacitaciones): cuentan como implementación cobrada del mes
+  state.services.forEach(s=>add((s.date||'').slice(0,7)||'Sin fecha',s.comercial,+s.amount||0));
   return o;
 }
 const _implSort=(a,b)=>a==='Sin fecha'?1:b==='Sin fecha'?-1:b.localeCompare(a);
@@ -1858,7 +1860,12 @@ function renderImplMes(){
   rows+=`<tr style="font-weight:700"><td>TOTAL</td><td class="num">${fmtUSD(tB)}</td><td class="num">${fmtUSD(tR)}</td><td class="num muted-3">${fmtUSD(tO)}</td><td class="num">${fmtUSD(tT)}</td></tr>`;
   $('impl-mes-body').innerHTML=keys.length?rows:'<tr><td colspan="5" class="muted-3" style="padding:14px;text-align:center">Sin implementaciones registradas.</td></tr>';
 }
-function implMesList(k){const list=state.sales.filter(s=>(((s.start||'').slice(0,7))||'Sin fecha')===k&&saleImpl(s)>0);openClientList('Implementaciones · '+fmtMonth(k),list.length+' clientes (incluye bajas)',list);}
+function implMesList(k){
+  const list=state.sales.filter(s=>(((s.start||'').slice(0,7))||'Sin fecha')===k&&saleImpl(s)>0);
+  const svc=state.services.filter(s=>(((s.date||'').slice(0,7))||'Sin fecha')===k&&(+s.amount||0)>0)
+    .map(s=>({client:s.client,plan:s.type||'Servicio',customMonthly:+s.amount||0,start:s.date,comercial:s.comercial}));
+  openClientList('Implementaciones · '+fmtMonth(k),(list.length+svc.length)+' clientes (incluye bajas y servicios)',list.concat(svc));
+}
 function renderComisionRene(){
   const m=curMonth(),o=implByMonth();
   const total=(o[m]&&o[m].rene)||0;
