@@ -703,7 +703,7 @@ canvas{max-width:100%}
 
         <div class="card" style="margin-top:16px">
           <div class="section-head"><h2>Comisión de Briant · mes actual</h2><span class="hint" id="com-mes"></span></div>
-          <p class="subt">Escalón sobre ventas con inicio en el mes actual + servicios especiales − 10% renta. Ajusta salario base y bono en Ajustes.</p>
+          <p class="subt">Escalón sobre ventas con inicio en el mes actual + servicios especiales − 10% renta. Solo comisiones (sin salario base). Ajusta el bono en Ajustes.</p>
           <div id="comision"></div>
         </div>
 
@@ -1884,7 +1884,7 @@ function renderComision(){
   const grossTotal=gross+svcComm;
   const ret=grossTotal*0.10,net=grossTotal-ret;
   const meta=state.config.metaMes||24,bono=n>=meta?(state.config.bono||0):0;
-  const total=(state.config.salaryBase||0)+net+bono;
+  const total=net+bono;
   $('com-mes').textContent=new Date().toLocaleDateString('es-SV',{month:'long',year:'numeric'});
   $('comision').innerHTML=`
     <div class="comprow"><span>Clientes cerrados este mes</span><span class="cv">${n} ${n>=meta?'<span class="badge st-finalizada plain" style="margin-left:6px">meta ✓</span>':`<span class="muted-3">(meta ${meta})</span>`}</span></div>
@@ -1894,7 +1894,6 @@ function renderComision(){
     <div class="comprow"><span>Comisión bruta total</span><span class="cv">${fmtUSD(grossTotal)}</span></div>
     <div class="comprow"><span>Retención de renta (10%)</span><span class="cv" style="color:var(--danger)">− ${fmtUSD(ret)}</span></div>
     <div class="comprow"><span>Comisión neta</span><span class="cv">${fmtUSD(net)}</span></div>
-    <div class="comprow"><span>Salario base</span><span class="cv">${fmtUSD(state.config.salaryBase||0)}</span></div>
     <div class="comprow"><span>Bono por meta</span><span class="cv">${fmtUSD(bono)}</span></div>
     <div class="comprow total"><span>Total estimado a recibir</span><span class="cv">${fmtUSD(total)}</span></div>`;
 }
