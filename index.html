@@ -856,6 +856,9 @@ const ORIGENES=['Pauta','Referido','Alianza Contable','Contacto personal'];
 const defaultState={tasks:[],sales:[],services:[],prospects:[],campaigns:[],projects:[],history:[],config:{baseClients:494,goalClients:1000,baseRecurring:7151.23,goalRecurring:25000,annualPayments:11988.18,mrrMesMeta:1000,salaryBase:0,bono:0,metaMes:24,lastBackup:null,seededOdooBatch1:false,seededBookV3:false,seededAnnualV1:false,seededComercialV1:false,seededComercialV2:false,seededProspectsV1:false,seededProspectsV2:false,seededClosesV1:false,seededWonV1:false,seededOriginV1:false,seededCampaignLinkV1:false,seededRestoreAireV1:false,seededCampaignDaysV1:false,seededChurnV1:false,seededOriginV2:false,seededRestoreDetV1:false}};
 function normalize(d){const s={...structuredClone(defaultState),...d,config:{...defaultState.config,...(d.config||{})}};['tasks','sales','services','prospects','campaigns','projects','history'].forEach(k=>{if(!Array.isArray(s[k]))s[k]=[];});
   s.prospects.forEach(p=>{if(STAGEMAP[p.stage])p.stage=STAGEMAP[p.stage];if(!p.bant)p.bant={b:false,a:false,n:false,t:false};});
+  // Limpieza: ventas auto-creadas desde un prospecto Ganada cuyo prospecto ya no existe (huérfanas)
+  const _pids=new Set(s.prospects.map(p=>p.id));
+  s.sales=s.sales.filter(x=>!(x.seed==='won'&&x.prospectId&&!_pids.has(x.prospectId)));
   return s;}
 
 /* ---- Carga inicial: ventas y servicios desde el CRM (una sola vez) ---- */
@@ -1428,7 +1431,7 @@ $('pr-save').onclick=()=>{const client=$('pr-client').value.trim();if(!client){$
   else{const np={id:uid(),...data,createdAt:Date.now(),updatedAt:Date.now()};state.prospects.push(np);if(data.stage==='Ganada')syncWonSale(np);}
   save();closeModal('modal-prospect');renderPipeline();refreshSalesViews();};
 $('pr-client').addEventListener('input',()=>$('pr-client').style.borderColor='');
-function delProspect(id){if(!confirm('¿Eliminar este prospecto?'))return;state.prospects=state.prospects.filter(p=>p.id!==id);save();renderPipeline();}
+function delProspect(id){const p=findProspect(id);const tieneVenta=p&&state.sales.some(s=>s.seed==='won'&&s.prospectId===id);if(!confirm(tieneVenta?'¿Eliminar este prospecto? También se quitará la venta que generó al pasar a Ganada.':'¿Eliminar este prospecto?'))return;if(p)unsyncWonSale(p);state.prospects=state.prospects.filter(p=>p.id!==id);save();renderPipeline();refreshSalesViews();}
 function convertProspect(id){const p=findProspect(id);if(!p)return;closeModal('modal-prospect');openSale();$('s-client').value=p.client;$('s-plan').value=p.plan;$('s-comercial').value=p.comercial||'Briant Canizalez';$('s-campaign').value=p.campaignId||'';salePreview();}
 /* ---- Auto-conversión: al ganar un prospecto se crea la venta (sin duplicar) y se actualiza en vivo ---- */
 const planMode=plan=>PLANS[plan]&&PLANS[plan].annualOnly?'anual':'mensual';
