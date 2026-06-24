@@ -801,7 +801,7 @@ canvas{max-width:100%}
   </div>
   <div class="row c2"><div class="field"><label>Próximo paso</label><input id="pr-next" placeholder="Ej. Enviar cotización"></div><div class="field"><label>Fecha del próximo paso</label><input type="date" id="pr-nextdate"></div></div>
   <div class="row c2"><div class="field"><label>Medio de contacto</label><select id="pr-medio"></select></div><div class="field"><label>Origen</label><select id="pr-origen"></select></div></div>
-  <div class="field"><label>Campaña (si vino de pauta)</label><select id="pr-campaign"></select></div>
+  <div class="row c2"><div class="field"><label>Vendedor</label><select id="pr-comercial"><option>Briant Canizalez</option><option>Rene Gonzalez</option><option>Ejecutivo de Ventas Odoo</option><option>Luis Rafael Henriquez</option><option>Otro</option></select></div><div class="field"><label>Campaña (si vino de pauta)</label><select id="pr-campaign"></select></div></div>
   <div class="field"><label>Notas / contexto</label><textarea id="pr-note" rows="2" placeholder="Cómo llegó, objeciones, próximos pasos…"></textarea></div>
   <div class="actions"><button class="btn ghost" data-close="modal-prospect">Cancelar</button><button class="btn" id="pr-save">Guardar prospecto</button></div>
 </div></div>
@@ -1418,12 +1418,12 @@ function openProspect(id){
   $('pr-medio').innerHTML='<option value="">—</option>'+MEDIOS.map(m=>`<option>${m}</option>`).join('');
   $('pr-origen').innerHTML='<option value="">—</option>'+ORIGENES.map(o=>`<option>${o}</option>`).join('');
   const setBant=b=>{$('pr-b').checked=!!(b&&b.b);$('pr-a').checked=!!(b&&b.a);$('pr-n').checked=!!(b&&b.n);$('pr-t').checked=!!(b&&b.t);};
-  if(id){const p=findProspect(id);$('prospect-modal-title').textContent='Editar prospecto';$('pr-id').value=p.id;$('pr-client').value=p.client;$('pr-plan').value=p.plan;$('pr-stage').value=p.stage;setBant(p.bant);$('pr-next').value=p.nextStep||'';$('pr-nextdate').value=p.nextDate||'';$('pr-medio').value=p.medio||'';$('pr-origen').value=p.origen||'';$('pr-campaign').innerHTML=campaignOptions(p.campaignId);$('pr-note').value=p.note||'';}
-  else{$('prospect-modal-title').textContent='Nuevo prospecto';$('pr-id').value='';$('pr-client').value='';$('pr-plan').value='starter';$('pr-stage').value='Lead';setBant(null);$('pr-next').value='';$('pr-nextdate').value='';$('pr-medio').value='';$('pr-origen').value='';$('pr-campaign').innerHTML=campaignOptions('');$('pr-note').value='';}
+  if(id){const p=findProspect(id);$('prospect-modal-title').textContent='Editar prospecto';$('pr-id').value=p.id;$('pr-client').value=p.client;$('pr-plan').value=p.plan;$('pr-stage').value=p.stage;setBant(p.bant);$('pr-next').value=p.nextStep||'';$('pr-nextdate').value=p.nextDate||'';$('pr-medio').value=p.medio||'';$('pr-origen').value=p.origen||'';$('pr-comercial').value=p.comercial||'Briant Canizalez';$('pr-campaign').innerHTML=campaignOptions(p.campaignId);$('pr-note').value=p.note||'';}
+  else{$('prospect-modal-title').textContent='Nuevo prospecto';$('pr-id').value='';$('pr-client').value='';$('pr-plan').value='starter';$('pr-stage').value='Lead';setBant(null);$('pr-next').value='';$('pr-nextdate').value='';$('pr-medio').value='';$('pr-origen').value='';$('pr-comercial').value='Briant Canizalez';$('pr-campaign').innerHTML=campaignOptions('');$('pr-note').value='';}
   openModal('modal-prospect','pr-client');
 }
 $('pr-save').onclick=()=>{const client=$('pr-client').value.trim();if(!client){$('pr-client').focus();$('pr-client').style.borderColor='var(--danger)';return;}
-  const id=$('pr-id').value,data={client,plan:$('pr-plan').value,stage:$('pr-stage').value,medio:$('pr-medio').value,origen:$('pr-origen').value,campaignId:$('pr-campaign').value||null,note:$('pr-note').value.trim(),bant:{b:$('pr-b').checked,a:$('pr-a').checked,n:$('pr-n').checked,t:$('pr-t').checked},nextStep:$('pr-next').value.trim(),nextDate:$('pr-nextdate').value};
+  const id=$('pr-id').value,data={client,plan:$('pr-plan').value,stage:$('pr-stage').value,medio:$('pr-medio').value,origen:$('pr-origen').value,comercial:$('pr-comercial').value||'Briant Canizalez',campaignId:$('pr-campaign').value||null,note:$('pr-note').value.trim(),bant:{b:$('pr-b').checked,a:$('pr-a').checked,n:$('pr-n').checked,t:$('pr-t').checked},nextStep:$('pr-next').value.trim(),nextDate:$('pr-nextdate').value};
   if(id){const p=findProspect(id);const was=p.stage;Object.assign(p,data,{updatedAt:Date.now()});if(data.stage==='Ganada'&&was!=='Ganada')syncWonSale(p);else if(data.stage!=='Ganada'&&was==='Ganada')unsyncWonSale(p);}
   else{const np={id:uid(),...data,createdAt:Date.now(),updatedAt:Date.now()};state.prospects.push(np);if(data.stage==='Ganada')syncWonSale(np);}
   save();closeModal('modal-prospect');renderPipeline();refreshSalesViews();};
