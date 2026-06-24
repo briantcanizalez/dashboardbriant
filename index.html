@@ -827,7 +827,7 @@ canvas{max-width:100%}
   <div class="field"><label>Nombre del cliente <span class="req">*</span></label><input id="sv-client" placeholder="Ej. Distribuidora La Salud" /></div>
   <div class="field"><label>Servicio</label><input id="sv-type" list="svtypes" placeholder="Ej. Capacitación Presencial" /><datalist id="svtypes"><option value="Capacitación Presencial"></option><option value="Capacitación Virtual"></option><option value="Configuración especial"></option><option value="Soporte adicional"></option></datalist></div>
   <div class="row c2"><div class="field"><label>Valor del servicio (USD)</label><input type="number" step="0.01" min="0" id="sv-amount" placeholder="Ej. 80.00" /></div><div class="field"><label>Comisión del vendedor (%)</label><input type="number" step="1" min="0" max="100" id="sv-pct" placeholder="50" /></div></div>
-  <div class="field"><label>Fecha</label><input type="date" id="sv-date" /></div>
+  <div class="row c2"><div class="field"><label>Fecha</label><input type="date" id="sv-date" /></div><div class="field"><label>Vendedor</label><select id="sv-comercial"><option>Briant Canizalez</option><option>Rene Gonzalez</option><option>Ejecutivo de Ventas Odoo</option><option>Luis Rafael Henriquez</option><option>Otro</option></select></div></div>
   <div class="preview" id="sv-preview"></div>
   <div class="actions" style="margin-top:16px"><button class="btn ghost" data-close="modal-service">Cancelar</button><button class="btn" id="sv-save">Guardar servicio</button></div>
 </div></div>
@@ -1546,12 +1546,12 @@ function renderServices(){
 }
 function servicePreview(){const a=+$('sv-amount').value||0,pct=+$('sv-pct').value||0;$('sv-preview').innerHTML=a?`Valor del servicio: <b>${fmtUSD(a)}</b><br>Comisión del vendedor (${pct}%): <b>${fmtUSD(a*pct/100)}</b>`:'';}
 function openService(id){
-  if(id){const s=findService(id);$('service-modal-title').textContent='Editar servicio';$('sv-id').value=s.id;$('sv-client').value=s.client;$('sv-type').value=s.type||'';$('sv-amount').value=s.amount;$('sv-pct').value=s.commissionPct;$('sv-date').value=s.date||todayISO();}
-  else{$('service-modal-title').textContent='Nuevo servicio';$('sv-id').value='';$('sv-client').value='';$('sv-type').value='Capacitación Presencial';$('sv-amount').value='';$('sv-pct').value=50;$('sv-date').value=todayISO();}
+  if(id){const s=findService(id);$('service-modal-title').textContent='Editar servicio';$('sv-id').value=s.id;$('sv-client').value=s.client;$('sv-type').value=s.type||'';$('sv-amount').value=s.amount;$('sv-pct').value=s.commissionPct;$('sv-date').value=s.date||todayISO();$('sv-comercial').value=s.comercial||'Briant Canizalez';}
+  else{$('service-modal-title').textContent='Nuevo servicio';$('sv-id').value='';$('sv-client').value='';$('sv-type').value='Capacitación Presencial';$('sv-amount').value='';$('sv-pct').value=50;$('sv-date').value=todayISO();$('sv-comercial').value='Briant Canizalez';}
   servicePreview();openModal('modal-service','sv-client');
 }
 $('sv-save').onclick=()=>{const client=$('sv-client').value.trim();if(!client){$('sv-client').focus();$('sv-client').style.borderColor='var(--danger)';return;}
-  const id=$('sv-id').value,data={client,type:$('sv-type').value.trim()||'Servicio',amount:+$('sv-amount').value||0,commissionPct:+$('sv-pct').value||0,date:$('sv-date').value||todayISO()};
+  const id=$('sv-id').value,data={client,type:$('sv-type').value.trim()||'Servicio',amount:+$('sv-amount').value||0,commissionPct:+$('sv-pct').value||0,date:$('sv-date').value||todayISO(),comercial:$('sv-comercial').value||'Briant Canizalez'};
   if(id)Object.assign(findService(id),data);else state.services.push({id:uid(),...data,createdAt:Date.now()});
   save();closeModal('modal-service');renderServices();};
 $('sv-client').addEventListener('input',()=>$('sv-client').style.borderColor='');
@@ -1679,13 +1679,18 @@ function renderResumenMonthBlock(){
   $('rs-month-card').classList.toggle('rs-iscur',sel===cur);
   $('rs-month-title').textContent='¿Cómo va '+(sel===cur?'el mes':fmtMonth(sel))+'?';
   const ms=state.sales.filter(s=>(s.start||'').slice(0,7)===sel);
+  const msSvc=state.services.filter(s=>(s.date||'').slice(0,7)===sel);
   const coms=COM_BUCKETS.filter(c=>c.label!=='Otros');
   const blocks=coms.map(c=>{
     const arr=ms.filter(c.pred);
+    const svc=msSvc.filter(c.pred);
+    const svcImpl=svc.reduce((a,s)=>a+(+s.amount||0),0);
     const mrr=arr.filter(s=>s.mode!=='anual').reduce((a,s)=>a+saleMonthly(s),0);
-    const impl=arr.reduce((a,s)=>a+saleImpl(s),0);
+    const impl=arr.reduce((a,s)=>a+saleImpl(s),0)+svcImpl;
     const byPlan={};arr.forEach(s=>{byPlan[s.plan]=(byPlan[s.plan]||0)+1;});
-    const planes=Object.keys(byPlan).map(k=>`<span class="rcb-plan">${byPlan[k]} ${esc(PLANS[k]?.label||k)}</span>`).join('')||'<span class="muted-3" style="font-size:12px">sin ventas este mes</span>';
+    const chips=Object.keys(byPlan).map(k=>`<span class="rcb-plan">${byPlan[k]} ${esc(PLANS[k]?.label||k)}</span>`);
+    if(svc.length)chips.push(`<span class="rcb-plan" title="Servicios/capacitaciones (incluidos en implementación)">+${svc.length} servicio(s) · ${fmtUSD(svcImpl)}</span>`);
+    const planes=chips.join('')||'<span class="muted-3" style="font-size:12px">sin ventas este mes</span>';
     return `<div class="rs-comblock" onclick="rsMonthComList('${c.label}','${sel}')">
       <div class="rcb-name">${c.short}</div>
       <div class="rcb-stats"><div><b>${arr.length}</b><small>ventas</small></div><div><b>${fmtUSD(mrr)}</b><small>MRR/mes</small></div><div><b style="color:var(--lavanda)">${fmtUSD(impl)}</b><small>implementación</small></div></div>
@@ -1694,7 +1699,7 @@ function renderResumenMonthBlock(){
   }).join('');
   const tN=ms.filter(s=>coms.some(c=>c.pred(s))).length;
   const tMRR=ms.filter(s=>s.mode!=='anual'&&coms.some(c=>c.pred(s))).reduce((a,s)=>a+saleMonthly(s),0);
-  const tImpl=ms.filter(s=>coms.some(c=>c.pred(s))).reduce((a,s)=>a+saleImpl(s),0);
+  const tImpl=ms.filter(s=>coms.some(c=>c.pred(s))).reduce((a,s)=>a+saleImpl(s),0)+msSvc.filter(s=>coms.some(c=>c.pred(s))).reduce((a,s)=>a+(+s.amount||0),0);
   $('rs-month').innerHTML=`<div class="rs-comgrid">${blocks}</div>
     <div class="rs-monthtotal"><span>Total ${fmtMonth(sel)} · Briant + René</span><span><b>${tN}</b> ventas · <b>${fmtUSD(tMRR)}</b>/mes MRR · <b style="color:var(--lavanda)">${fmtUSD(tImpl)}</b> implementaciones</span></div>`;
 }
