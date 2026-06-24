@@ -708,7 +708,8 @@ canvas{max-width:100%}
         </div>
 
         <div class="card" style="margin-top:16px">
-          <div class="section-head"><h2>Comisión de René · Alianzas</h2><span class="hint">100% de implementaciones − 10% renta · sin sueldo base</span></div>
+          <div class="section-head"><h2>Comisión de René · mes actual</h2><span class="hint" id="com-mes-rene"></span></div>
+          <p class="subt">100% de las implementaciones generadas en el mes actual − 10% renta · sin sueldo base.</p>
           <div id="comision-rene"></div>
         </div>
       </section>
@@ -1859,15 +1860,14 @@ function renderImplMes(){
 }
 function implMesList(k){const list=state.sales.filter(s=>(((s.start||'').slice(0,7))||'Sin fecha')===k&&saleImpl(s)>0);openClientList('Implementaciones · '+fmtMonth(k),list.length+' clientes (incluye bajas)',list);}
 function renderComisionRene(){
-  const o=implByMonth(),keys=Object.keys(o).sort(_implSort);
-  let total=0;keys.forEach(k=>total+=o[k].rene);
+  const m=curMonth(),o=implByMonth();
+  const total=(o[m]&&o[m].rene)||0;
   const renta=total*0.10,neto=total-renta;
-  const detalle=keys.filter(k=>o[k].rene>0).map(k=>`<div class="comprow"><span style="text-transform:capitalize">${fmtMonth(k)}</span><span class="cv">${fmtUSD(o[k].rene)} <span class="muted-3">→</span> <b class="green" style="color:var(--ok)">${fmtUSD(o[k].rene*0.9)}</b></span></div>`).join('');
+  const elMes=$('com-mes-rene');if(elMes)elMes.textContent=new Date().toLocaleDateString('es-SV',{month:'long',year:'numeric'});
   $('comision-rene').innerHTML=`
-    <div class="comprow"><span>Implementaciones generadas (100%)</span><span class="cv">${fmtUSD(total)}</span></div>
+    <div class="comprow"><span>Implementaciones del mes (100%)</span><span class="cv">${fmtUSD(total)}</span></div>
     <div class="comprow"><span>Retención de renta (10%)</span><span class="cv" style="color:var(--danger)">− ${fmtUSD(renta)}</span></div>
-    <div class="comprow total"><span>Pago neto a René</span><span class="cv">${fmtUSD(neto)}</span></div>
-    ${detalle?`<div class="subt" style="margin:14px 0 6px">Por mes (implementación → pago neto):</div>${detalle}`:''}`;
+    <div class="comprow total"><span>Pago neto a René</span><span class="cv">${fmtUSD(neto)}</span></div>`;
 }
 function commissionTier(n){return n>=16?0.30:(n>=11?0.25:0.20);}
 function renderComision(){
