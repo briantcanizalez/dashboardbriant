@@ -1879,7 +1879,7 @@ function renderComision(){
   const n=monthSales.length,tier=commissionTier(n);
   let gross=0;
   monthSales.forEach(s=>{const imp=saleImpl(s),mon=saleMonthly(s);if(s.mode==='anual'){gross+=imp*tier+(mon*12)*0.02;}else{gross+=(imp+mon)*tier;}});
-  const monthServices=state.services.filter(s=>(s.date||'').slice(0,7)===m);
+  const monthServices=state.services.filter(s=>(s.date||'').slice(0,7)===m&&esBriant(s));
   const svcComm=monthServices.reduce((a,s)=>a+serviceCommission(s),0);
   const grossTotal=gross+svcComm;
   const ret=grossTotal*0.10,net=grossTotal-ret;
