@@ -1601,7 +1601,7 @@ function delSale(id){if(!confirm('¿Eliminar esta venta?'))return;state.sales=st
 function churnSale(id){const s=findSale(id);if(!s)return;if(!confirm('¿Marcar como dada de baja? Dejará de contar en clientes y MRR.'))return;s.churned=true;s.churnDate=todayISO();save();refreshSalesViews();}
 function reactivateSale(id){const s=findSale(id);if(!s)return;s.churned=false;delete s.churnDate;save();refreshSalesViews();}
 /* re-render de las vistas que dependen de ventas (Ventas y Planes) */
-function refreshSalesViews(){if($('view-ventas').classList.contains('active'))renderSales();if($('view-planes').classList.contains('active'))renderPlanes();if($('view-canales').classList.contains('active'))renderCanales();}
+function refreshSalesViews(){if($('view-ventas').classList.contains('active'))renderSales();if($('view-planes').classList.contains('active'))renderPlanes();if($('view-canales').classList.contains('active'))renderCanales();if($('view-resumen').classList.contains('active'))renderResumen();if($('view-inicio').classList.contains('active'))renderInicio();if($('view-metas').classList.contains('active'))renderMetas();}
 
 /* ===================== RESUMEN EJECUTIVO ===================== */
 const COM_BUCKETS=[
