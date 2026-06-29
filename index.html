@@ -382,6 +382,19 @@ canvas{max-width:100%}
 .rcb-plan{font-size:11.5px;background:var(--surface-2);border:1px solid var(--border);border-radius:99px;padding:3px 9px;color:var(--txt-2)}
 .rs-monthtotal{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-top:14px;padding-top:14px;border-top:2px solid var(--border);font-weight:600}
 .rs-monthtotal b{color:var(--txt-1)}
+/* Comparativa vs mes anterior */
+.rs-cmpgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+@media(max-width:620px){.rs-cmpgrid{grid-template-columns:1fr}}
+.rs-cmp{background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:14px}
+.rs-cmp .cl{font-size:10.5px;color:var(--txt-3);font-weight:600;text-transform:uppercase;letter-spacing:.03em}
+.rs-cmp .cv{font-family:'Space Grotesk';font-size:24px;font-weight:700;font-variant-numeric:tabular-nums;margin:6px 0 9px}
+.rs-cmp .cprev{font-size:11.5px;color:var(--txt-3);margin-top:9px}
+.rs-delta{display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:700;padding:3px 10px;border-radius:99px}
+.rs-delta.up{background:var(--ok-bg);color:var(--ok)}
+.rs-delta.down{background:var(--danger-bg);color:var(--danger)}
+.rs-delta.flat{background:var(--surface-2);color:var(--txt-3)}
+.rs-cmp-verdict{margin-top:16px;padding-top:14px;border-top:2px solid var(--border);font-size:14px;color:var(--txt-2)}
+.rs-cmp-verdict b{color:var(--txt-1)}
 .verdict{display:inline-flex;align-items:center;gap:6px;padding:6px 13px;border-radius:99px;font-size:12.5px;font-weight:700;white-space:nowrap}
 .v-ok{background:var(--ok-bg);color:#6ee7b7} .v-bad{background:var(--danger-bg);color:#fca5a5} .v-na{background:var(--surface-2);color:var(--txt-2)}
 .campaign{margin-bottom:14px}
@@ -539,9 +552,15 @@ canvas{max-width:100%}
           <div id="rs-month"></div>
         </div>
 
+        <!-- COMPARATIVA VS MES ANTERIOR (dinámica con el selector de arriba) -->
+        <div class="card" id="rs-cmp-card" style="margin-bottom:20px;display:none">
+          <div class="section-head"><h2 id="rs-cmp-title">Comparado con el mes anterior</h2><span class="hint">ventas · MRR · implementación</span></div>
+          <div class="rs-cmpgrid" id="rs-cmp-grid"></div>
+          <div class="rs-cmp-verdict" id="rs-cmp-verdict"></div>
+        </div>
+
         <!-- HISTÓRICO / ACUMULADO -->
         <div class="section-head" style="margin:4px 0 12px"><h2 style="font-size:16px;color:var(--txt-3)">Histórico · acumulado (toda la cartera)</h2></div>
-        <div id="rs-insights" class="rs-insights" style="margin-bottom:16px"></div>
         <div class="grid kpis" style="margin-bottom:16px">
           <div class="card kpi" onclick="showList('inicio-clientes')"><div class="khead"><span class="klabel">Clientes activos</span></div><div class="kval tnum" id="rs-clientes">0</div><div class="kmeta" id="rs-clientes-meta">en cartera</div></div>
           <div class="card kpi" onclick="showList('inicio-mrr')"><div class="khead"><span class="klabel">MRR activo</span></div><div class="kval tnum" id="rs-mrr">$0</div><div class="kmeta" id="rs-mrr-meta">facturando hoy</div></div>
@@ -1629,13 +1648,6 @@ function renderResumen(){
   $('rs-clientes-meta').textContent=`${A.filter(s=>s.mode!=='anual').length} mensuales · ${A.filter(s=>s.mode==='anual').length} anuales`;
   $('rs-mrr').textContent=fmtUSD(salesMRR(true));$('rs-mrr-meta').textContent='contratado '+fmtUSD(totMRR);
   $('rs-impl').textContent=fmtUSD(totImpl);
-  // Insights al grano
-  $('rs-insights').innerHTML=[
-    `<b>${totCli}</b> clientes activos · <b>${fmtUSD(totMRR)}</b> MRR contratado · <b>${fmtUSD(totImpl)}</b> en implementaciones (histórico)`,
-    `Briant aporta <b>${_pct(briantMRR,totMRR)}%</b> del MRR · René <b>${_pct(reneMRR,totMRR)}%</b>`,
-    topPlan?`Plan más vendido: <b>${esc(PLANS[topPlan.k].label)}</b> (${topPlan.n} clientes)`:'',
-    `Este mes (${fmtMonth(M)}): <b>${mesSales.length}</b> cierres · <b>${fmtUSD(mesMRR)}</b> MRR nuevo · <b>${fmtUSD(mesImpl)}</b> implementaciones`,
-  ].filter(Boolean).map(t=>`<div class="rs-ins">${t}</div>`).join('');
   // Por comercial
   $('rs-com-body').innerHTML=COM_BUCKETS.map(c=>{
     const cli=A.filter(c.pred).length;if(!cli)return '';
@@ -1703,6 +1715,53 @@ function renderResumenMonthBlock(){
   const tImpl=ms.filter(s=>coms.some(c=>c.pred(s))).reduce((a,s)=>a+saleImpl(s),0)+msSvc.filter(s=>coms.some(c=>c.pred(s))).reduce((a,s)=>a+(+s.amount||0),0);
   $('rs-month').innerHTML=`<div class="rs-comgrid">${blocks}</div>
     <div class="rs-monthtotal"><span>Total ${fmtMonth(sel)} · Briant + René</span><span><b>${tN}</b> ventas · <b>${fmtUSD(tMRR)}</b>/mes MRR · <b style="color:var(--lavanda)">${fmtUSD(tImpl)}</b> implementaciones</span></div>`;
+  renderResumenCompare(sel);
+}
+/* ---- Comparativa del mes seleccionado vs el mes anterior (totales Briant + René) ---- */
+function _prevMonth(m){let[y,mo]=m.split('-').map(Number);mo--;if(mo<1){mo=12;y--;}return y+'-'+String(mo).padStart(2,'0');}
+function _monthTotals(mo){
+  const coms=COM_BUCKETS.filter(c=>c.label!=='Otros');
+  const sl=state.sales.filter(s=>(s.start||'').slice(0,7)===mo&&coms.some(c=>c.pred(s)));
+  const sv=state.services.filter(s=>(s.date||'').slice(0,7)===mo&&coms.some(c=>c.pred(s)));
+  return {
+    n:sl.length,
+    mrr:sl.filter(s=>s.mode!=='anual').reduce((a,s)=>a+saleMonthly(s),0),
+    impl:sl.reduce((a,s)=>a+saleImpl(s),0)+sv.reduce((a,s)=>a+(+s.amount||0),0)
+  };
+}
+function renderResumenCompare(sel){
+  const card=$('rs-cmp-card'); if(!card) return;
+  const cur=curMonth(), prev=_prevMonth(sel);
+  const a=_monthTotals(sel), b=_monthTotals(prev);
+  if((b.n+b.mrr+b.impl)<=0){ card.style.display='none'; return; } // sin mes anterior con datos
+  card.style.display='';
+  $('rs-cmp-title').textContent='Comparado con '+fmtMonth(prev)+(sel===cur?' · mes en curso':'');
+  const metric=(label,c,p,money)=>{
+    const f = money ? fmtUSD : (x=>x.toLocaleString('en-US'));
+    const d=c-p, pct = p ? (d/p*100) : (c>0?100:0);
+    const dir = d>0?'up':d<0?'down':'flat';
+    const arrow = d>0?'▲':d<0?'▼':'■';
+    const sign = d>0?'+':d<0?'−':'';
+    const dabs = money ? fmtUSD(Math.abs(d)) : Math.abs(d).toLocaleString('en-US');
+    return `<div class="rs-cmp">
+      <div class="cl">${label}</div>
+      <div class="cv">${f(c)}</div>
+      <span class="rs-delta ${dir}">${arrow} ${sign}${dabs}${p?` · ${sign}${Math.abs(pct).toFixed(0)}%`:''}</span>
+      <div class="cprev">${fmtMonth(prev)}: ${f(p)}</div>
+    </div>`;
+  };
+  $('rs-cmp-grid').innerHTML =
+    metric('Ventas',a.n,b.n,false) +
+    metric('MRR nuevo / mes',a.mrr,b.mrr,true) +
+    metric('Implementaciones',a.impl,b.impl,true);
+  const dn=a.n-b.n, dmrr=a.mrr-b.mrr, dimpl=a.impl-b.impl;
+  const mejor=[dn>0,dmrr>0,dimpl>0].filter(Boolean).length;
+  let verdict;
+  if(dn>0) verdict=`📈 <b>Vamos mejor</b> que ${fmtMonth(prev)}: <b>+${dn}</b> venta(s), ${dmrr>=0?`<b>+${fmtUSD(dmrr)}</b> de MRR nuevo`:`pero <b>−${fmtUSD(Math.abs(dmrr))}</b> de MRR`} y ${dimpl>=0?`<b>+${fmtUSD(dimpl)}</b>`:`<b>−${fmtUSD(Math.abs(dimpl))}</b>`} en implementaciones.`;
+  else if(dn<0) verdict=`📉 <b>Por debajo</b> de ${fmtMonth(prev)}: faltan <b>${Math.abs(dn)}</b> venta(s) para igualarlo${dmrr<0?` y <b>−${fmtUSD(Math.abs(dmrr))}</b> de MRR`:`, aunque el MRR nuevo subió <b>+${fmtUSD(dmrr)}</b>`}.`;
+  else verdict=`➖ <b>Mismas ${a.n} ventas</b> que ${fmtMonth(prev)}; el MRR nuevo ${dmrr>0?`subió <b>+${fmtUSD(dmrr)}</b>`:dmrr<0?`bajó <b>−${fmtUSD(Math.abs(dmrr))}</b>`:`quedó igual`}.`;
+  verdict += ` <span style="color:var(--txt-3)">(${mejor}/3 métricas al alza)</span>`;
+  $('rs-cmp-verdict').innerHTML=verdict;
 }
 function rsMonthComList(label,m){const c=COM_BUCKETS.find(x=>x.label===label);if(c)openClientList((c.short)+' · '+fmtMonth(m),'ventas del mes',state.sales.filter(s=>(s.start||'').slice(0,7)===m&&c.pred(s)));}
 
