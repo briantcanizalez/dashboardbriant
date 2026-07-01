@@ -1394,7 +1394,7 @@ function bindDnD(cardSel,colSel,onDrop){
 /* ===================== PIPELINE ===================== */
 $('btn-new-campaign').onclick=()=>openCampaign();
 function campIsActive(id){const c=state.campaigns.find(x=>x.id===id);return !c||c.active!==false;}
-function prospectInActive(p){return !p.campaignId||campIsActive(p.campaignId);}
+function prospectInActive(p){return !!p.campaignId&&campIsActive(p.campaignId);}
 function renderPipeline(){
   const all=state.prospects.filter(prospectInActive);
   const cnt=stg=>all.filter(p=>p.stage===stg).length;
