@@ -1393,8 +1393,10 @@ function bindDnD(cardSel,colSel,onDrop){
 
 /* ===================== PIPELINE ===================== */
 $('btn-new-campaign').onclick=()=>openCampaign();
+function campIsActive(id){const c=state.campaigns.find(x=>x.id===id);return !c||c.active!==false;}
+function prospectInActive(p){return !p.campaignId||campIsActive(p.campaignId);}
 function renderPipeline(){
-  const all=state.prospects;
+  const all=state.prospects.filter(prospectInActive);
   const cnt=stg=>all.filter(p=>p.stage===stg).length;
   // OCUPACIÓN real por etapa (cuántos hay AHORA en cada una), no acumulado
   const nLead=cnt('Lead'),nMQL=cnt('MQL'),nSQL=cnt('SQL'),nOpp=cnt('Oportunidad'),nWin=cnt('Ganada'),lost=cnt('Perdida');
@@ -1412,7 +1414,7 @@ function renderPipeline(){
   if(charts.funnel)charts.funnel.destroy();
   charts.funnel=new Chart($('chartFunnel'),{type:'bar',data:{labels:fLabels,datasets:[{label:'Volumen',data:fData,backgroundColor:fColors,borderRadius:8}]},options:{indexAxis:'y',maintainAspectRatio:false,animation:{duration:500},plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.parsed.x+' prospecto(s)'+(total?` · ${Math.round(c.parsed.x/total*100)}% del total`:'')}}},scales:{x:{grid:{color:CGRID},ticks:{color:CTXT,precision:0}},y:{grid:{display:false},ticks:{color:CTXT,font:{weight:'600'}}}}}});
   $('pipe-board').innerHTML=STAGES.map(stg=>{
-    const items=state.prospects.filter(p=>p.stage===stg.k);
+    const items=all.filter(p=>p.stage===stg.k);
     return `<div class="col" data-stage="${stg.k}"><div class="col-h"><span><i class="dotc" style="background:${stg.c}"></i>${stg.k}</span><span class="cnt">${items.length}</span></div>${items.map(p=>`
       <div class="kcard" data-id="${p.id}" draggable="true">
         <div class="kc-t">${esc(p.client)}</div>
@@ -2031,7 +2033,7 @@ function renderListModal(){
   }
 }
 function pipeList(which){
-  const all=state.prospects;
+  const all=state.prospects.filter(prospectInActive);
   const open=all.filter(p=>p.stage!=='Ganada'&&p.stage!=='Perdida');
   if(which==='value')openProspectList('Valor potencial','prospectos abiertos · MRR estimado',open);
   else if(which==='won')openProspectList('Ganadas','prospectos cerrados ganados',all.filter(p=>p.stage==='Ganada'));
