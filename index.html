@@ -1254,11 +1254,12 @@ function renderInicio(){
 function renderPulso(){
   $('pulso-fecha').textContent=new Date().toLocaleDateString('es-SV',{day:'numeric',month:'long'});
   const T=todayISO(),M=curMonth();
-  const leadsHoy=state.prospects.filter(p=>p.createdAt&&new Date(p.createdAt).toISOString().slice(0,10)===T).length;
-  const enPipe=state.prospects.filter(p=>STAGE_RANK[p.stage]>=0&&STAGE_RANK[p.stage]<4).length;
+  const actP=state.prospects.filter(prospectInActive);
+  const leadsHoy=actP.filter(p=>p.createdAt&&new Date(p.createdAt).toISOString().slice(0,10)===T).length;
+  const enPipe=actP.filter(p=>STAGE_RANK[p.stage]>=0&&STAGE_RANK[p.stage]<4).length;
   const cierresMes=activeSales().filter(s=>(s.start||'').slice(0,7)===M).length;
   const mrrMes=activeSales().filter(s=>(s.start||'').slice(0,7)===M&&s.mode==='mensual').reduce((a,s)=>a+(PLANS[s.plan]?.monthly||0),0);
-  const vencidos=state.prospects.filter(p=>STAGE_RANK[p.stage]>=0&&STAGE_RANK[p.stage]<4&&p.nextDate&&p.nextDate<T).length;
+  const vencidos=actP.filter(p=>STAGE_RANK[p.stage]>=0&&STAGE_RANK[p.stage]<4&&p.nextDate&&p.nextDate<T).length;
   const meta=state.config.mrrMesMeta||0;
   $('pulso').innerHTML=`
     <div class="pz"><div class="pl">Leads nuevos hoy</div><div class="pv">${leadsHoy}</div></div>
