@@ -325,6 +325,12 @@ canvas{max-width:100%}
 .bchk b{color:var(--brand-3)}
 @media(max-width:520px){.bant{grid-template-columns:1fr}}
 .conv-strip{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:16px}
+.pipe-search-wrap{position:relative;display:flex;align-items:center;margin-bottom:14px;max-width:420px}
+.pipe-search-wrap svg{width:16px;height:16px;position:absolute;left:12px;color:#8a8a9a;pointer-events:none}
+#pipe-search{width:100%;padding:10px 12px 10px 36px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.12);color:#fff;font-size:13px;outline:none}
+#pipe-search::placeholder{color:#8a8a9a}
+#pipe-search:focus{border-color:#7c4dff}
+#pipe-search-cnt{position:absolute;right:12px;font-size:11px;color:#8a8a9a}
 .conv-chip{background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:11px 14px;flex:1;min-width:118px}
 .conv-chip .cc-v{font-family:'Space Grotesk';font-weight:700;font-size:21px;font-variant-numeric:tabular-nums}
 .conv-chip .cc-l{font-size:10.5px;color:var(--txt-3);font-weight:700;text-transform:uppercase;letter-spacing:.04em;margin-top:3px}
@@ -618,7 +624,10 @@ canvas{max-width:100%}
           <div class="conv-strip" id="conv-strip" style="margin-top:18px;margin-bottom:0"></div>
         </div>
         <div class="card" style="margin-bottom:16px"><div class="section-head"><h2>Cierres por origen · este mes</h2><span class="hint">de dónde vienen tus ventas del mes</span></div><div class="conv-strip" id="origen-strip" style="margin:0"></div></div>
-        <div class="card pad-lg"><div class="board" id="pipe-board" style="--cols:6"></div></div>
+        <div class="card pad-lg">
+          <div class="pipe-search-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.3-4.3"/></svg><input id="pipe-search" type="search" autocomplete="off" placeholder="Buscar prospecto por nombre o número…" oninput="pipeSearch()" /><span id="pipe-search-cnt"></span></div>
+          <div class="board" id="pipe-board" style="--cols:6"></div>
+        </div>
       </section>
 
       <!-- ====== CAMPAÑAS ====== -->
@@ -1416,7 +1425,7 @@ function renderPipeline(){
   charts.funnel=new Chart($('chartFunnel'),{type:'bar',data:{labels:fLabels,datasets:[{label:'Volumen',data:fData,backgroundColor:fColors,borderRadius:8}]},options:{indexAxis:'y',maintainAspectRatio:false,animation:{duration:500},plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.parsed.x+' prospecto(s)'+(total?` · ${Math.round(c.parsed.x/total*100)}% del total`:'')}}},scales:{x:{grid:{color:CGRID},ticks:{color:CTXT,precision:0}},y:{grid:{display:false},ticks:{color:CTXT,font:{weight:'600'}}}}}});
   $('pipe-board').innerHTML=STAGES.map(stg=>{
     const items=all.filter(p=>p.stage===stg.k);
-    return `<div class="col" data-stage="${stg.k}"><div class="col-h"><span><i class="dotc" style="background:${stg.c}"></i>${stg.k}</span><span class="cnt">${items.length}</span></div>${items.map(p=>`
+    return `<div class="col" data-stage="${stg.k}"><div class="col-h"><span><i class="dotc" style="background:${stg.c}"></i>${stg.k}</span><span class="cnt" data-total="${items.length}">${items.length}</span></div>${items.map(p=>`
       <div class="kcard" data-id="${p.id}" draggable="true">
         <div class="kc-t">${esc(p.client)}</div>
         <div class="kc-m"><span class="tag">${PLANS[p.plan]?.label||'—'}</span><span class="muted-3" style="font-size:12px">${fmtUSD(PLANS[p.plan]?.monthly||0)}/mes</span>${(()=>{const bs=p.bant?['b','a','n','t'].filter(k=>p.bant[k]).length:0;return `<span class="bant-pill ${bs>=3?'ok':''}">BANT ${bs}/4</span>`;})()}</div>
@@ -1426,7 +1435,22 @@ function renderPipeline(){
       </div>`).join('')||'<div class="muted-3" style="font-size:12px;padding:8px 4px">—</div>'}</div>`;
   }).join('');
   bindDnD('#pipe-board .kcard','#pipe-board .col',(id,stage)=>{const p=findProspect(id);if(p){setProspectStage(p,stage);save();renderPipeline();refreshSalesViews();}});
+  pipeSearch();
   renderOrigen();
+}
+function pipeSearch(){
+  var el=document.getElementById('pipe-search');var q=(el?el.value:'').trim().toLowerCase();var shown=0;
+  document.querySelectorAll('#pipe-board .col').forEach(function(col){
+    var vis=0;
+    col.querySelectorAll('.kcard').forEach(function(card){
+      var m=!q||card.textContent.toLowerCase().indexOf(q)>=0;
+      card.style.display=m?'':'none';if(m)vis++;
+    });
+    var cnt=col.querySelector('.cnt');
+    if(cnt)cnt.textContent=q?vis:(cnt.dataset.total||cnt.textContent);
+    shown+=vis;
+  });
+  var c=document.getElementById('pipe-search-cnt');if(c)c.textContent=q?(shown+' resultado(s)'):'';
 }
 const ORIGEN_ORDER=['Campaña','Referido','Alianza Contable','Directo','Otro','Sin origen'];
 function monthSalesByOrigen(){const M=curMonth();const o={};activeSales().filter(s=>(s.start||'').slice(0,7)===M&&(!s.comercial||s.comercial==='Briant Canizalez')).forEach(s=>{const k=s.origen||'Sin origen';(o[k]=o[k]||[]).push(s);});return o;}
