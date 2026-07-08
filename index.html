@@ -875,7 +875,7 @@ const PLANS={starter:{label:'Starter',impl:30,monthly:9.99},basicoMensual:{label
 /* monto mensual e implementación de una venta; si trae customMonthly/customImpl (anuales con monto real, especiales) se respeta, si no usa el del plan */
 const saleMonthly=s=>s.customMonthly!=null?(+s.customMonthly||0):(PLANS[s.plan]?.monthly||0);
 const saleImpl=s=>s.customImpl!=null?(+s.customImpl||0):(PLANS[s.plan]?.impl||0);
-const RECURRING_START_MONTH=3;
+const RECURRING_START_MONTH=0; // 0 = toda venta mensual factura desde el dia 1 (politica: la promo no descuenta recurrencia)
 const STORE_KEY='odoo_factura_dashboard_v1';
 const STAGES=[{k:'Lead',c:'#7b7b92'},{k:'MQL',c:'#60a5fa'},{k:'SQL',c:'#9a73ff'},{k:'Oportunidad',c:'#fbbf24'},{k:'Ganada',c:'#34d399'},{k:'Perdida',c:'#f87171'}];
 const FUNNEL=['Lead','MQL','SQL','Oportunidad','Ganada']; // orden acumulativo (Ganada = Cierre)
