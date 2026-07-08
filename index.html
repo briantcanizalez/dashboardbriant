@@ -732,7 +732,7 @@ canvas{max-width:100%}
 
         <div class="card" style="margin-top:16px">
           <div class="section-head"><h2>Comisión de Briant · mes actual</h2><span class="hint" id="com-mes"></span></div>
-          <p class="subt">Escalón sobre ventas con inicio en el mes actual + servicios especiales − 10% renta. Solo comisiones (sin salario base). Ajusta el bono en Ajustes.</p>
+          <p class="subt">Escalón sobre la implementación de cada cierre del mes (promo 3m gratis: la mensualidad no comisiona) + 2% del valor anual en planes anuales + servicios especiales − 10% renta. Solo comisiones (sin salario base). Ajusta el bono en Ajustes.</p>
           <div id="comision"></div>
         </div>
 
@@ -1978,7 +1978,8 @@ function renderComision(){
   const monthSales=state.sales.filter(s=>(s.start||'').slice(0,7)===m&&esBriant(s));
   const n=monthSales.length,tier=commissionTier(n);
   let gross=0;
-  monthSales.forEach(s=>{const imp=saleImpl(s),mon=saleMonthly(s);if(s.mode==='anual'){gross+=imp*tier+(mon*12)*0.02;}else{gross+=(imp+mon)*tier;}});
+  // Base de comisión = SOLO implementación (promo 3m gratis: el 1er mes no se cobra, no comisiona). Anual: impl×escalón + 2% del valor anual.
+  monthSales.forEach(s=>{const imp=saleImpl(s),mon=saleMonthly(s);if(s.mode==='anual'){gross+=imp*tier+(mon*12)*0.02;}else{gross+=imp*tier;}});
   const monthServices=state.services.filter(s=>(s.date||'').slice(0,7)===m&&esBriant(s));
   const svcComm=monthServices.reduce((a,s)=>a+serviceCommission(s),0);
   const grossTotal=gross+svcComm;
