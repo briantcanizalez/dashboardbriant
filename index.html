@@ -198,6 +198,8 @@ td.num{font-variant-numeric:tabular-nums;white-space:nowrap}
 .badge.plain::before{display:none}
 .tag{background:rgba(223,210,255,.1);color:var(--lavanda);padding:4px 10px;border-radius:8px;font-size:12px;font-weight:600;display:inline-block}
 .tag.rec{background:var(--info-bg);color:#93c5fd}
+.pl-new{display:inline-block;margin-left:6px;background:var(--ok-bg);color:var(--ok);border-radius:7px;padding:3px 8px;font-size:10.5px;font-weight:800;letter-spacing:.4px;text-transform:uppercase;vertical-align:middle}
+.tag.old{background:var(--warn-bg);color:var(--warn)}
 .timer{font-family:'Space Grotesk';font-weight:700;font-variant-numeric:tabular-nums;font-size:14.5px}
 .timer.live{color:var(--brand-3)}
 .timer.live::after{content:"";display:inline-block;width:7px;height:7px;border-radius:99px;background:var(--brand-3);margin-left:7px;vertical-align:middle;animation:pulse 1.4s infinite}
@@ -658,7 +660,7 @@ canvas{max-width:100%}
 
         <div class="card pad-lg" style="margin-top:16px">
           <div class="section-head"><h2 style="font-size:17px">Servicios especiales</h2><button class="btn sm" id="btn-new-service"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Nuevo servicio</button></div>
-          <p class="subt">Servicios fuera de los planes (ej. capacitación presencial). No suman al MRR ni al conteo de clientes; generan comisión propia.</p>
+          <p class="subt">Servicios fuera de los planes. No suman al MRR ni al conteo de clientes; generan comisión propia. <b>Tarifa vigente:</b> Carga de productos/clientes/proveedores <b>$50</b> · Capacitación virtual <b>$50/hora</b> · Capacitación presencial <b>$100</b>.</p>
           <div class="tablewrap"><table class="responsive"><thead><tr><th>Cliente</th><th>Servicio</th><th>Valor</th><th>Comisión</th><th>Fecha</th><th class="right">Acciones</th></tr></thead><tbody id="tbody-servicios"></tbody></table></div>
           <div id="servicios-empty" class="empty" style="display:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><p>Aún no registras servicios</p><span>Agrega el primero con “Nuevo servicio”.</span></div>
         </div>
@@ -811,6 +813,7 @@ canvas{max-width:100%}
   <div class="row c2"><div class="field"><label>Plan</label><select id="s-plan"></select></div><div class="field"><label>Modalidad</label><select id="s-mode"><option value="mensual">Mensual</option><option value="anual">Anual adelantado</option></select></div></div>
   <div class="row c2"><div class="field"><label>Fecha de inicio</label><input type="date" id="s-start" /></div><div class="field"><label>Origen</label><select id="s-origen"><option value="">—</option><option>Campaña</option><option>Referido</option><option>Alianza Contable</option><option>Directo</option><option>Otro</option></select></div></div>
   <div class="row c2"><div class="field"><label>Vendedor</label><select id="s-comercial"><option>Briant Canizalez</option><option>Rene Gonzalez</option><option>Ejecutivo de Ventas Odoo</option><option>Luis Rafael Henriquez</option><option>Otro</option></select></div><div class="field"><label>Campaña de origen</label><select id="s-campaign"></select></div></div>
+  <div class="field"><label>Lista de precios</label><select id="s-pricebook"><option value="">Automático por fecha (recomendado)</option><option value="v2026-08">Precios nuevos (Ago-2026)</option><option value="legacy">Precios anteriores</option></select><span class="muted-3" style="font-size:12px">Por defecto: ventas desde el 1-Ago usan precios nuevos; antes, los anteriores. Cámbialo si vendiste en julio a precio nuevo.</span></div>
   <div class="preview" id="s-preview"></div>
   <div class="actions" style="margin-top:16px"><button class="btn ghost" data-close="modal-sale">Cancelar</button><button class="btn" id="s-save">Guardar venta</button></div>
 </div></div>
@@ -856,7 +859,7 @@ canvas{max-width:100%}
   <div class="modal-head"><div><h3 id="service-modal-title">Nuevo servicio</h3><p>Servicios fuera de los planes (ej. capacitación).</p></div><button class="iconbtn" data-close="modal-service" aria-label="Cerrar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
   <input type="hidden" id="sv-id" />
   <div class="field"><label>Nombre del cliente <span class="req">*</span></label><input id="sv-client" placeholder="Ej. Distribuidora La Salud" /></div>
-  <div class="field"><label>Servicio</label><input id="sv-type" list="svtypes" placeholder="Ej. Capacitación Presencial" /><datalist id="svtypes"><option value="Capacitación Presencial"></option><option value="Capacitación Virtual"></option><option value="Configuración especial"></option><option value="Soporte adicional"></option></datalist></div>
+  <div class="field"><label>Servicio</label><input id="sv-type" list="svtypes" placeholder="Ej. Capacitación Presencial" /><datalist id="svtypes"><option value="Carga de productos, clientes o proveedores"></option><option value="Capacitación Virtual (por hora)"></option><option value="Capacitación Presencial"></option><option value="Configuración especial"></option><option value="Soporte adicional"></option></datalist><span class="muted-3" style="font-size:12px">Al elegir un servicio de la lista se autocompleta la tarifa (editable).</span></div>
   <div class="row c2"><div class="field"><label>Valor del servicio (USD)</label><input type="number" step="0.01" min="0" id="sv-amount" placeholder="Ej. 80.00" /></div><div class="field"><label>Comisión del vendedor (%)</label><input type="number" step="1" min="0" max="100" id="sv-pct" placeholder="50" /></div></div>
   <div class="row c2"><div class="field"><label>Fecha</label><input type="date" id="sv-date" /></div><div class="field"><label>Vendedor</label><select id="sv-comercial"><option>Briant Canizalez</option><option>Rene Gonzalez</option><option>Ejecutivo de Ventas Odoo</option><option>Luis Rafael Henriquez</option><option>Otro</option></select></div></div>
   <div class="preview" id="sv-preview"></div>
@@ -872,10 +875,25 @@ canvas{max-width:100%}
 
 <script>
 /* ===================== DATOS ===================== */
-const PLANS={starter:{label:'Starter',impl:30,monthly:9.99},basicoMensual:{label:'Plan Básico Mensual',impl:30,monthly:5},professional:{label:'Professional',impl:40,monthly:19.99},advanced:{label:'Advanced',impl:50,monthly:29.99},deluxe:{label:'Deluxe',impl:60,monthly:49.99},enterprise:{label:'Enterprise',impl:100,monthly:100},basicoAnual:{label:'Básico Anual',impl:30,monthly:5,annualOnly:true},starterAnual:{label:'Starter Anual',impl:30,monthly:9.99,annualOnly:true},professionalIncrize:{label:'Professional Incrize',impl:0,monthly:20,annualOnly:true},especial:{label:'Caso especial',impl:0,monthly:0,special:true}};
-/* monto mensual e implementación de una venta; si trae customMonthly/customImpl (anuales con monto real, especiales) se respeta, si no usa el del plan */
-const saleMonthly=s=>s.customMonthly!=null?(+s.customMonthly||0):(PLANS[s.plan]?.monthly||0);
-const saleImpl=s=>s.customImpl!=null?(+s.customImpl||0):(PLANS[s.plan]?.impl||0);
+const PRICE_CUTOVER='2026-08-01'; // los precios nuevos aplican a ventas con fecha de inicio >= a esta fecha
+/* PLANS = LIBRO DE PRECIOS VIGENTE (nuevos, desde 2026-08-01). Es el precio de lista que se muestra en selectores y referencias. */
+const PLANS={starter:{label:'Starter',impl:40,monthly:14.99},basicoMensual:{label:'Plan Básico Mensual',impl:30,monthly:5},professional:{label:'Professional',impl:50,monthly:24.99},advanced:{label:'Advanced',impl:60,monthly:34.99},deluxe:{label:'Deluxe',impl:70,monthly:59.99},enterprise:{label:'Enterprise',impl:100,monthly:150},basicoAnual:{label:'Básico Anual',impl:30,monthly:5,annualOnly:true},starterAnual:{label:'Starter Anual',impl:30,monthly:9.99,annualOnly:true},professionalIncrize:{label:'Professional Incrize',impl:0,monthly:20,annualOnly:true},especial:{label:'Caso especial',impl:0,monthly:0,special:true}};
+/* PRECIOS ANTERIORES (vigentes hasta 2026-07-31). Solo los planes cuyo precio cambió; el resto usa el vigente. Preserva el MRR/implementación histórico sin recalcular hacia atrás. */
+const LEGACY_PLAN_PRICES={starter:{impl:30,monthly:9.99},professional:{impl:40,monthly:19.99},advanced:{impl:50,monthly:29.99},deluxe:{impl:60,monthly:49.99},enterprise:{impl:100,monthly:100}};
+/* libro de precios que aplica a una venta: manual (s.priceBook) o automático por fecha de inicio */
+function saleBook(s){if(s&&s.priceBook==='v2026-08')return 'new';if(s&&s.priceBook==='legacy')return 'old';const d=(s&&s.start)||'';return (d&&d>=PRICE_CUTOVER)?'new':'old';}
+/* precio de un plan según el libro (new=vigente, old=anterior si el plan cambió) */
+function planPricing(planKey,book){const cur=PLANS[planKey]||{impl:0,monthly:0};if(book==='old'&&LEGACY_PLAN_PRICES[planKey])return {...cur,...LEGACY_PLAN_PRICES[planKey]};return cur;}
+/* ¿la venta usa la lista nueva y el plan efectivamente cambió de precio? → muestra badge "Nuevo" */
+const saleIsNewPrice=s=>saleBook(s)==='new';
+const showsNewBadge=s=>saleBook(s)==='new'&&!!LEGACY_PLAN_PRICES[s.plan];
+/* etiqueta del plan + badge "Nuevo" cuando corresponde (p. ej. "Starter" + Nuevo = el nuevo Starter) */
+function planTag(s){const p=PLANS[s.plan]||{label:s.plan};return `<span class="tag">${esc(p.label)}</span>${showsNewBadge(s)?'<span class="pl-new">Nuevo</span>':''}`;}
+/* Tarifa de servicios especiales (vigente desde 2026-08-01) */
+const SERVICE_PRICES={'Carga de productos, clientes o proveedores':50,'Capacitación Virtual (por hora)':50,'Capacitación Presencial':100};
+/* monto mensual e implementación de una venta; customMonthly/customImpl (monto real fijado: anuales, descuentos, especiales) manda; si no, precio de lista del libro que aplica por fecha */
+const saleMonthly=s=>s.customMonthly!=null?(+s.customMonthly||0):(planPricing(s.plan,saleBook(s)).monthly||0);
+const saleImpl=s=>s.customImpl!=null?(+s.customImpl||0):(planPricing(s.plan,saleBook(s)).impl||0);
 const RECURRING_START_MONTH=0; // 0 = toda venta mensual factura desde el dia 1 (politica: la promo no descuenta recurrencia)
 const STORE_KEY='odoo_factura_dashboard_v1';
 const STAGES=[{k:'Basura',c:'#8a6d5a'},{k:'Lead',c:'#7b7b92'},{k:'MQL',c:'#60a5fa'},{k:'SQL',c:'#9a73ff'},{k:'Oportunidad',c:'#fbbf24'},{k:'Ganada',c:'#34d399'},{k:'Perdida',c:'#f87171'}];
@@ -1269,7 +1287,7 @@ function renderPulso(){
   const leadsHoy=actP.filter(p=>p.createdAt&&new Date(p.createdAt).toISOString().slice(0,10)===T).length;
   const enPipe=actP.filter(p=>STAGE_RANK[p.stage]>=0&&STAGE_RANK[p.stage]<4).length;
   const cierresMes=activeSales().filter(s=>(s.start||'').slice(0,7)===M).length;
-  const mrrMes=activeSales().filter(s=>(s.start||'').slice(0,7)===M&&s.mode==='mensual').reduce((a,s)=>a+(PLANS[s.plan]?.monthly||0),0);
+  const mrrMes=activeSales().filter(s=>(s.start||'').slice(0,7)===M&&s.mode==='mensual').reduce((a,s)=>a+saleMonthly(s),0);
   const vencidos=actP.filter(p=>STAGE_RANK[p.stage]>=0&&STAGE_RANK[p.stage]<4&&p.nextDate&&p.nextDate<T).length;
   const meta=state.config.mrrMesMeta||0;
   $('pulso').innerHTML=`
@@ -1516,7 +1534,7 @@ function allCampaignClientsList(){openClientList('Clientes de campañas','cierre
 function campaignLeads(c){return state.prospects.filter(p=>p.campaignId===c.id).length;}
 function campaignWon(c){return state.prospects.filter(p=>p.campaignId===c.id&&p.stage==='Ganada').length;}
 function campaignSales(c){return state.sales.filter(s=>s.campaignId===c.id);}
-function campaignRevenue(c){return campaignSales(c).reduce((sum,s)=>{const p=PLANS[s.plan];if(!p)return sum;return sum+p.impl+p.monthly*12;},0);} // valor a 12 meses (impl + ARR)
+function campaignRevenue(c){return campaignSales(c).reduce((sum,s)=>sum+saleImpl(s)+saleMonthly(s)*12,0);} // valor a 12 meses (impl + ARR), según el libro de precios de cada venta
 function campaignImpl(c){return campaignSales(c).reduce((a,s)=>a+saleImpl(s),0);}
 function campaignMetrics(c){
   const spend=campaignSpend(c),leads=campaignLeads(c),clients=campaignSales(c).length,rev=campaignRevenue(c),impl=campaignImpl(c);
@@ -1616,7 +1634,7 @@ function renderServices(){
 function servicePreview(){const a=+$('sv-amount').value||0,pct=+$('sv-pct').value||0;$('sv-preview').innerHTML=a?`Valor del servicio: <b>${fmtUSD(a)}</b><br>Comisión del vendedor (${pct}%): <b>${fmtUSD(a*pct/100)}</b>`:'';}
 function openService(id){
   if(id){const s=findService(id);$('service-modal-title').textContent='Editar servicio';$('sv-id').value=s.id;$('sv-client').value=s.client;$('sv-type').value=s.type||'';$('sv-amount').value=s.amount;$('sv-pct').value=s.commissionPct;$('sv-date').value=s.date||todayISO();$('sv-comercial').value=s.comercial||'Briant Canizalez';}
-  else{$('service-modal-title').textContent='Nuevo servicio';$('sv-id').value='';$('sv-client').value='';$('sv-type').value='Capacitación Presencial';$('sv-amount').value='';$('sv-pct').value=50;$('sv-date').value=todayISO();$('sv-comercial').value='Briant Canizalez';}
+  else{$('service-modal-title').textContent='Nuevo servicio';$('sv-id').value='';$('sv-client').value='';$('sv-type').value='Capacitación Presencial';$('sv-amount').value=SERVICE_PRICES['Capacitación Presencial'];$('sv-pct').value=50;$('sv-date').value=todayISO();$('sv-comercial').value='Briant Canizalez';}
   servicePreview();openModal('modal-service','sv-client');
 }
 $('sv-save').onclick=()=>{const client=$('sv-client').value.trim();if(!client){$('sv-client').focus();$('sv-client').style.borderColor='var(--danger)';return;}
@@ -1625,15 +1643,25 @@ $('sv-save').onclick=()=>{const client=$('sv-client').value.trim();if(!client){$
   save();closeModal('modal-service');renderServices();};
 $('sv-client').addEventListener('input',()=>$('sv-client').style.borderColor='');
 $('sv-amount').addEventListener('input',servicePreview);$('sv-pct').addEventListener('input',servicePreview);
+/* autocompletar la tarifa al elegir un servicio de la lista (solo si el monto está vacío, no pisa ediciones manuales) */
+$('sv-type').addEventListener('input',()=>{const v=$('sv-type').value.trim();if(SERVICE_PRICES[v]!=null&&!(+$('sv-amount').value>0)){$('sv-amount').value=SERVICE_PRICES[v];servicePreview();}});
 $('btn-new-service').onclick=()=>openService();
 function delService(id){if(!confirm('¿Eliminar este servicio?'))return;state.services=state.services.filter(s=>s.id!==id);save();renderServices();}
 
 /* ===================== VENTAS ===================== */
 function fillPlanSelect(){$('s-plan').innerHTML=Object.entries(PLANS).filter(([k,p])=>!p.special).map(([k,p])=>`<option value="${k}">${p.annualOnly?`${p.label} — ${fmtUSD(p.impl)} + ${fmtUSD(p.monthly*12)}/año`:`${p.label} — ${fmtUSD(p.impl)} + ${fmtUSD(p.monthly)}/mes`}</option>`).join('');}
-function salePreview(){const p=PLANS[$('s-plan').value];if(!p){$('s-preview').innerHTML='';return;}
-  const modeSel=$('s-mode');if(p.annualOnly){modeSel.value='anual';modeSel.disabled=true;}else{modeSel.disabled=false;}
+function salePreview(){const key=$('s-plan').value,base=PLANS[key];if(!base){$('s-preview').innerHTML='';return;}
+  const modeSel=$('s-mode');if(base.annualOnly){modeSel.value='anual';modeSel.disabled=true;}else{modeSel.disabled=false;}
   const mode=modeSel.value;
-  $('s-preview').innerHTML=mode==='anual'?`<strong>${p.label}</strong> · Anual<br>Implementación: <b>${fmtUSD(p.impl)}</b> (única vez)<br>Año adelantado: <b>${fmtUSD(p.monthly*12)}</b><br><span class="muted-3">Cuenta en pagos anuales, no en MRR.</span>`:`<strong>${p.label}</strong> · Mensual<br>Implementación: <b>${fmtUSD(p.impl)}</b> (única vez)<br>Mensualidad: <b>${fmtUSD(p.monthly)}</b> desde el 3er mes`;}
+  const pb=($('s-pricebook')||{}).value||'';
+  const book=saleBook({plan:key,start:$('s-start').value||todayISO(),priceBook:pb||undefined});
+  const p=planPricing(key,book);
+  const cambio=!!LEGACY_PLAN_PRICES[key];
+  const label=`<strong>${base.label}</strong>${(book==='new'&&cambio)?' <span class="pl-new">Nuevo</span>':''}`;
+  const libro=cambio?`<br><span class="muted-3">Lista aplicada: </span>${book==='new'?'<span class="pl-new" style="margin-left:0">Precios Ago-2026</span>':'<span class="tag old">Precios anteriores</span>'}`:'';
+  $('s-preview').innerHTML=(mode==='anual'
+    ?`${label} · Anual<br>Implementación: <b>${fmtUSD(p.impl)}</b> (única vez)<br>Año adelantado: <b>${fmtUSD(p.monthly*12)}</b><br><span class="muted-3">Cuenta en pagos anuales, no en MRR.</span>`
+    :`${label} · Mensual<br>Implementación: <b>${fmtUSD(p.impl)}</b> (única vez)<br>Mensualidad: <b>${fmtUSD(p.monthly)}</b> desde el 3er mes`)+libro;}
 function renderSales(){
   $('v-count').textContent=activeSales().length;
   $('v-count-meta').textContent=churnedCount()?`${churnedCount()} dadas de baja`:'en este dashboard';
@@ -1651,7 +1679,7 @@ function renderSales(){
     return `<tr class="${s.churned?'churned':''}">
       <td class="cellwrap" data-label="Cliente"><span class="cellmain">${esc(s.client)}</span></td>
       <td data-label="Vendedor" class="muted-3">${esc(s.comercial||'Briant Canizalez')}</td>
-      <td data-label="Plan"><span class="tag">${p.label}</span></td>
+      <td data-label="Plan">${planTag(s)}</td>
       <td data-label="Implementación" class="num">${fmtUSD(imp)}</td>
       <td data-label="Mensual" class="num">${s.mode==='anual'?fmtUSD(mon*12)+'/año':fmtUSD(mon)+'/mes'}</td>
       <td data-label="Inicio" class="num muted-3">${s.legacy?'<span class="muted-3">Cliente existente</span>':fmtDate(s.start)}</td>
@@ -1662,13 +1690,14 @@ function renderSales(){
   renderServices();
 }
 const findSale=id=>state.sales.find(s=>s.id===id);
-function openSale(id){fillPlanSelect();if(id){const s=findSale(id);$('sale-modal-title').textContent='Editar venta';$('s-id').value=s.id;$('s-client').value=s.client;$('s-plan').value=s.plan;$('s-start').value=s.start||todayISO();$('s-mode').value=s.mode||'mensual';$('s-origen').value=s.origen||'';$('s-comercial').value=s.comercial||'Briant Canizalez';$('s-campaign').innerHTML=campaignOptions(s.campaignId);}else{$('sale-modal-title').textContent='Nueva venta';$('s-id').value='';$('s-client').value='';$('s-plan').value='starter';$('s-start').value=todayISO();$('s-mode').value='mensual';$('s-origen').value='';$('s-comercial').value='Briant Canizalez';$('s-campaign').innerHTML=campaignOptions('');}salePreview();openModal('modal-sale','s-client');}
+function openSale(id){fillPlanSelect();if(id){const s=findSale(id);$('sale-modal-title').textContent='Editar venta';$('s-id').value=s.id;$('s-client').value=s.client;$('s-plan').value=s.plan;$('s-start').value=s.start||todayISO();$('s-mode').value=s.mode||'mensual';$('s-origen').value=s.origen||'';$('s-comercial').value=s.comercial||'Briant Canizalez';$('s-campaign').innerHTML=campaignOptions(s.campaignId);$('s-pricebook').value=s.priceBook||'';}else{$('sale-modal-title').textContent='Nueva venta';$('s-id').value='';$('s-client').value='';$('s-plan').value='starter';$('s-start').value=todayISO();$('s-mode').value='mensual';$('s-origen').value='';$('s-comercial').value='Briant Canizalez';$('s-campaign').innerHTML=campaignOptions('');$('s-pricebook').value='';}salePreview();openModal('modal-sale','s-client');}
 $('s-save').onclick=()=>{const client=$('s-client').value.trim();if(!client){$('s-client').focus();$('s-client').style.borderColor='var(--danger)';return;}
-  const id=$('s-id').value,data={client,plan:$('s-plan').value,start:$('s-start').value||todayISO(),mode:$('s-mode').value,origen:$('s-origen').value||'',comercial:$('s-comercial').value||'Briant Canizalez',campaignId:$('s-campaign').value||null};
-  if(id)Object.assign(findSale(id),data);else state.sales.push({id:uid(),...data,createdAt:Date.now()});
+  const id=$('s-id').value,pb=$('s-pricebook').value,data={client,plan:$('s-plan').value,start:$('s-start').value||todayISO(),mode:$('s-mode').value,origen:$('s-origen').value||'',comercial:$('s-comercial').value||'Briant Canizalez',campaignId:$('s-campaign').value||null};
+  if(pb)data.priceBook=pb;
+  if(id){const sObj=findSale(id);Object.assign(sObj,data);if(!pb)delete sObj.priceBook;}else state.sales.push({id:uid(),...data,createdAt:Date.now()});
   save();closeModal('modal-sale');refreshSalesViews();};
 $('s-client').addEventListener('input',()=>$('s-client').style.borderColor='');
-$('s-plan').addEventListener('change',salePreview);$('s-mode').addEventListener('change',salePreview);
+$('s-plan').addEventListener('change',salePreview);$('s-mode').addEventListener('change',salePreview);$('s-start').addEventListener('change',salePreview);$('s-pricebook').addEventListener('change',salePreview);
 function delSale(id){if(!confirm('¿Eliminar esta venta?'))return;state.sales=state.sales.filter(s=>s.id!==id);save();refreshSalesViews();}
 function churnSale(id){const s=findSale(id);if(!s)return;if(!confirm('¿Marcar como dada de baja? Dejará de contar en clientes y MRR.'))return;s.churned=true;s.churnDate=todayISO();save();refreshSalesViews();}
 function reactivateSale(id){const s=findSale(id);if(!s)return;s.churned=false;delete s.churnDate;save();refreshSalesViews();}
@@ -1877,7 +1906,7 @@ function renderCanales(){
   $('canal-meses').innerHTML=keys.slice().reverse().map(k=>{
     const arr=byMonth[k].slice().sort((a,b)=>normName(a.client).localeCompare(normName(b.client)));
     return `<div class="card" style="margin-bottom:12px"><div class="section-head"><h2 style="font-size:16px;text-transform:capitalize">${fmtMonth(k)}</h2><span class="badge st-finalizada plain">${arr.length} cliente${arr.length===1?'':'s'}</span></div>`+
-      `<div class="tablewrap"><table class="responsive"><thead><tr><th>Cliente</th><th>Plan</th><th>Monto</th></tr></thead><tbody>`+arr.map(s=>{const p=PLANS[s.plan]||{label:s.plan};const mon=saleMonthly(s);return `<tr><td class="cellwrap" data-label="Cliente"><span class="cellmain">${esc(s.client)}</span></td><td data-label="Plan"><span class="tag">${p.label}</span></td><td data-label="Monto" class="num">${s.mode==='anual'?fmtUSD(mon*12)+'/año':fmtUSD(mon)+'/mes'}</td></tr>`;}).join('')+`</tbody></table></div></div>`;
+      `<div class="tablewrap"><table class="responsive"><thead><tr><th>Cliente</th><th>Plan</th><th>Monto</th></tr></thead><tbody>`+arr.map(s=>{const p=PLANS[s.plan]||{label:s.plan};const mon=saleMonthly(s);return `<tr><td class="cellwrap" data-label="Cliente"><span class="cellmain">${esc(s.client)}</span></td><td data-label="Plan">${planTag(s)}</td><td data-label="Monto" class="num">${s.mode==='anual'?fmtUSD(mon*12)+'/año':fmtUSD(mon)+'/mes'}</td></tr>`;}).join('')+`</tbody></table></div></div>`;
   }).join('');
 }
 document.querySelectorAll('#canal-seg button').forEach(b=>b.onclick=()=>{curCanal=b.dataset.canal;renderCanales();});
@@ -2070,7 +2099,7 @@ function renderListModal(){
     $('list-tbody').innerHTML=arr.map(p=>{const pl=PLANS[p.plan]||{label:p.plan||'—'};return `<tr style="cursor:pointer" onclick="closeModal('modal-list');openProspect('${p.id}')"><td class="cellwrap" data-label="Prospecto"><span class="cellmain">${esc(p.client)}</span></td><td data-label="Plan est."><span class="tag">${esc(pl.label)}</span></td><td data-label="Etapa">${stageBadge(p.stage)}</td><td data-label="Próximo paso" class="muted-3">${esc(p.nextStep||'—')}</td></tr>`;}).join('')||_emptyRow(4);
   }else{
     $('list-thead').innerHTML='<tr><th>Cliente</th><th>Plan</th><th>Monto</th><th>Alta</th></tr>';
-    $('list-tbody').innerHTML=arr.map(s=>{const p=PLANS[s.plan]||{label:s.plan};const mon=saleMonthly(s);return `<tr><td class="cellwrap" data-label="Cliente"><span class="cellmain">${esc(s.client)}</span></td><td data-label="Plan"><span class="tag">${esc(p.label)}</span></td><td data-label="Monto" class="num">${s.mode==='anual'?fmtUSD(mon*12)+'/año':fmtUSD(mon)+'/mes'}</td><td data-label="Alta" class="num muted-3">${s.start?fmtDate(s.start):'—'}</td></tr>`;}).join('')||_emptyRow(4);
+    $('list-tbody').innerHTML=arr.map(s=>{const p=PLANS[s.plan]||{label:s.plan};const mon=saleMonthly(s);return `<tr><td class="cellwrap" data-label="Cliente"><span class="cellmain">${esc(s.client)}</span></td><td data-label="Plan">${planTag(s)}</td><td data-label="Monto" class="num">${s.mode==='anual'?fmtUSD(mon*12)+'/año':fmtUSD(mon)+'/mes'}</td><td data-label="Alta" class="num muted-3">${s.start?fmtDate(s.start):'—'}</td></tr>`;}).join('')||_emptyRow(4);
   }
 }
 function pipeList(which){
