@@ -903,7 +903,7 @@ const STAGEMAP={Prospecto:'Lead',Demo:'MQL','Negociación':'Oportunidad'}; // mi
 const MOTIVOS_BASURA=['Click por error','Confusión de tema','Solo consultaba precio','Fuera de zona / país','Rubro no aplica','Datos falsos / spam','Ya es cliente','Otro'];
 const MEDIOS=['WhatsApp','Facebook','Reunión','Visita','Llamada'];
 const ORIGENES=['Pauta','Referido','Alianza Contable','Contacto personal'];
-const defaultState={tasks:[],sales:[],services:[],prospects:[],campaigns:[],projects:[],history:[],config:{baseClients:494,goalClients:1000,baseRecurring:7151.23,goalRecurring:25000,annualPayments:11988.18,mrrMesMeta:1000,salaryBase:0,bono:0,metaMes:24,lastBackup:null,seededOdooBatch1:false,seededBookV3:false,seededAnnualV1:false,seededComercialV1:false,seededComercialV2:false,seededProspectsV1:false,seededProspectsV2:false,seededClosesV1:false,seededWonV1:false,seededOriginV1:false,seededCampaignLinkV1:false,seededRestoreAireV1:false,seededCampaignDaysV1:false,seededChurnV1:false,seededOriginV2:false,seededRestoreDetV1:false,seededFixBautistaV1:false,seededJulyBriantV1:false}};
+const defaultState={tasks:[],sales:[],services:[],prospects:[],campaigns:[],projects:[],history:[],config:{baseClients:494,goalClients:1000,baseRecurring:7151.23,goalRecurring:25000,annualPayments:11988.18,mrrMesMeta:1000,salaryBase:0,bono:0,metaMes:24,lastBackup:null,seededOdooBatch1:false,seededBookV3:false,seededAnnualV1:false,seededComercialV1:false,seededComercialV2:false,seededProspectsV1:false,seededProspectsV2:false,seededClosesV1:false,seededWonV1:false,seededOriginV1:false,seededCampaignLinkV1:false,seededRestoreAireV1:false,seededCampaignDaysV1:false,seededChurnV1:false,seededOriginV2:false,seededRestoreDetV1:false,seededFixBautistaV1:false,seededJulyBriantV1:false,seededJulyBriantV2:false}};
 function normalize(d){const s={...structuredClone(defaultState),...d,config:{...defaultState.config,...(d.config||{})}};['tasks','sales','services','prospects','campaigns','projects','history'].forEach(k=>{if(!Array.isArray(s[k]))s[k]=[];});
   s.prospects.forEach(p=>{if(STAGEMAP[p.stage])p.stage=STAGEMAP[p.stage];if(!p.bant)p.bant={b:false,a:false,n:false,t:false};});
   // Limpieza: ventas auto-creadas desde un prospecto Ganada cuyo prospecto ya no existe (huérfanas)
@@ -2221,7 +2221,31 @@ function seedJulyBriantV1(){
   state.config.seededJulyBriantV1=true;
   save();
 }
-function initApp(){seedOdooBatch1();seedBookV3();seedAnnualBookV1();seedComercialV1();seedComercialV2();seedProspectsV1();seedProspectsV2();seedClosesV1();seedWonV1();seedOriginV1();seedCampaignLinkV1();seedRestoreAireV1();seedCampaignDaysV1();seedChurnV1();seedOriginV2();seedRestoreDetV1();seedFixBautistaV1();seedJulyBriantV1();fillPlanSelect();updateBadges();renderBackupBanner();go('inicio');document.body.classList.remove('booting');}
+/* ---- Reconciliación: deja julio 2026 de Briant EXACTAMENTE en las 19 del Excel (elimina duplicados/sobrantes cargados con otra grafía y reinserta la lista canónica limpia). ---- */
+function seedJulyBriantV2(){
+  if(state.config.seededJulyBriantV2)return;
+  const canon=new Set(SEED_JULY_BRIANT.map(x=>normName(x.c)));
+  const isBriant=s=>!s.comercial||normName(s.comercial)===normName('Briant Canizalez');
+  // quitar toda venta de Briant que sea de julio 2026 o que tenga un nombre de la lista canónica
+  state.sales=state.sales.filter(s=>{
+    const july=(s.start||'').slice(0,7)==='2026-07';
+    if(isBriant(s)&&(july||canon.has(normName(s.client))))return false;
+    return true;
+  });
+  // reinsertar la lista canónica (una sola vez cada uno, con su libro de precios)
+  const camp=state.campaigns.find(c=>/cierre.*julio.*2026/i.test(c.name||''));
+  SEED_JULY_BRIANT.forEach(x=>{
+    const mode=x.mode||'mensual';
+    const s={id:uid(),client:x.c,plan:x.p,mode,comercial:'Briant Canizalez',start:x.d,origen:'Campaña',seed:'julyBriant2',createdAt:Date.now()};
+    if(x.book)s.priceBook=x.book;
+    if(mode==='anual')s.customMonthly=x.cm;
+    if(camp)s.campaignId=camp.id;
+    state.sales.push(s);
+  });
+  state.config.seededJulyBriantV2=true;
+  save();
+}
+function initApp(){seedOdooBatch1();seedBookV3();seedAnnualBookV1();seedComercialV1();seedComercialV2();seedProspectsV1();seedProspectsV2();seedClosesV1();seedWonV1();seedOriginV1();seedCampaignLinkV1();seedRestoreAireV1();seedCampaignDaysV1();seedChurnV1();seedOriginV2();seedRestoreDetV1();seedFixBautistaV1();seedJulyBriantV1();seedJulyBriantV2();fillPlanSelect();updateBadges();renderBackupBanner();go('inicio');document.body.classList.remove('booting');}
 
 async function boot(){
   if(initSupabase()){
