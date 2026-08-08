@@ -200,6 +200,16 @@ td.num{font-variant-numeric:tabular-nums;white-space:nowrap}
 .tag.rec{background:var(--info-bg);color:#93c5fd}
 .pl-new{display:inline-block;margin-left:6px;background:var(--ok-bg);color:var(--ok);border-radius:7px;padding:3px 8px;font-size:10.5px;font-weight:800;letter-spacing:.4px;text-transform:uppercase;vertical-align:middle}
 .tag.old{background:var(--warn-bg);color:var(--warn)}
+.pb-compare{margin-top:10px;border-top:1px solid var(--border);padding-top:9px;display:flex;flex-direction:column;gap:5px}
+.pbc-row{font-size:12.5px;color:var(--txt-3);display:flex;align-items:center;gap:8px;opacity:.5}
+.pbc-row.on{opacity:1;color:var(--txt)}
+.pbc-tag{flex-shrink:0;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.4px;border-radius:6px;padding:2px 7px}
+.pbc-tag.old{background:var(--warn-bg);color:var(--warn)}
+.pbc-tag.new{background:var(--ok-bg);color:var(--ok)}
+.pb-apply{margin-top:3px;font-size:13px;font-weight:700;display:flex;align-items:center;gap:7px}
+.pb-apply::before{content:"";width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.pb-apply.new{color:var(--ok)} .pb-apply.new::before{background:var(--ok)}
+.pb-apply.old{color:var(--warn)} .pb-apply.old::before{background:var(--warn)}
 .timer{font-family:'Space Grotesk';font-weight:700;font-variant-numeric:tabular-nums;font-size:14.5px}
 .timer.live{color:var(--brand-3)}
 .timer.live::after{content:"";display:inline-block;width:7px;height:7px;border-radius:99px;background:var(--brand-3);margin-left:7px;vertical-align:middle;animation:pulse 1.4s infinite}
@@ -1657,11 +1667,23 @@ function salePreview(){const key=$('s-plan').value,base=PLANS[key];if(!base){$('
   const book=saleBook({plan:key,start:$('s-start').value||todayISO(),priceBook:pb||undefined});
   const p=planPricing(key,book);
   const cambio=!!LEGACY_PLAN_PRICES[key];
-  const label=`<strong>${base.label}</strong>${(book==='new'&&cambio)?' <span class="pl-new">Nuevo</span>':''}`;
-  const libro=cambio?`<br><span class="muted-3">Lista aplicada: </span>${book==='new'?'<span class="pl-new" style="margin-left:0">Precios Ago-2026</span>':'<span class="tag old">Precios anteriores</span>'}`:'';
+  const esNuevo=book==='new';
+  const label=`<strong>${base.label}</strong>${(esNuevo&&cambio)?' <span class="pl-new">Nuevo</span>':''}`;
+  // comparación anterior vs nuevo + aviso de cuál se aplica (solo para planes que cambiaron de precio)
+  let comp='';
+  if(cambio){
+    const o=planPricing(key,'old'),n=planPricing(key,'new');
+    const par=x=>mode==='anual'?`${fmtUSD(x.impl)} + ${fmtUSD(x.monthly*12)}/año`:`${fmtUSD(x.impl)} impl + ${fmtUSD(x.monthly)}/mes`;
+    const modo=pb===''?'automático por la fecha de inicio':'elegido manualmente';
+    comp=`<div class="pb-compare">`
+      +`<div class="pbc-row ${esNuevo?'':'on'}"><span class="pbc-tag old">Anterior</span> ${par(o)}</div>`
+      +`<div class="pbc-row ${esNuevo?'on':''}"><span class="pbc-tag new">Nuevo · Ago-2026</span> ${par(n)}</div>`
+      +`<div class="pb-apply ${esNuevo?'new':'old'}">Aplicando ${esNuevo?'PRECIO NUEVO':'PRECIO ANTERIOR'} <span class="muted-3" style="font-weight:500">(${modo})</span></div>`
+      +`</div>`;
+  }
   $('s-preview').innerHTML=(mode==='anual'
     ?`${label} · Anual<br>Implementación: <b>${fmtUSD(p.impl)}</b> (única vez)<br>Año adelantado: <b>${fmtUSD(p.monthly*12)}</b><br><span class="muted-3">Cuenta en pagos anuales, no en MRR.</span>`
-    :`${label} · Mensual<br>Implementación: <b>${fmtUSD(p.impl)}</b> (única vez)<br>Mensualidad: <b>${fmtUSD(p.monthly)}</b> desde el 3er mes`)+libro;}
+    :`${label} · Mensual<br>Implementación: <b>${fmtUSD(p.impl)}</b> (única vez)<br>Mensualidad: <b>${fmtUSD(p.monthly)}</b> desde el 3er mes`)+comp;}
 function renderSales(){
   $('v-count').textContent=activeSales().length;
   $('v-count-meta').textContent=churnedCount()?`${churnedCount()} dadas de baja`:'en este dashboard';
