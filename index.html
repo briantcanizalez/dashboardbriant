@@ -821,9 +821,9 @@ canvas{max-width:100%}
   <input type="hidden" id="s-id" />
   <div class="field"><label>Nombre del cliente <span class="req">*</span></label><input id="s-client" placeholder="Ej. Distribuidora La Salud" /></div>
   <div class="row c2"><div class="field"><label>Plan</label><select id="s-plan"></select></div><div class="field"><label>Modalidad</label><select id="s-mode"><option value="mensual">Mensual</option><option value="anual">Anual adelantado</option></select></div></div>
+  <div class="field"><label>Lista de precios <span class="muted-3" style="font-weight:500">— ¿precio nuevo o anterior?</span></label><select id="s-pricebook"><option value="">Automático por fecha (hoy = precio NUEVO)</option><option value="v2026-08">Precio NUEVO (Ago-2026)</option><option value="legacy">Precio ANTERIOR (cliente a precio viejo)</option></select><span class="muted-3" style="font-size:12px">Si el cliente compró al precio viejo, elige <b>Precio ANTERIOR</b>. Abajo verás cuál se está aplicando.</span></div>
   <div class="row c2"><div class="field"><label>Fecha de inicio</label><input type="date" id="s-start" /></div><div class="field"><label>Origen</label><select id="s-origen"><option value="">—</option><option>Campaña</option><option>Referido</option><option>Alianza Contable</option><option>Directo</option><option>Otro</option></select></div></div>
   <div class="row c2"><div class="field"><label>Vendedor</label><select id="s-comercial"><option>Briant Canizalez</option><option>Rene Gonzalez</option><option>Ejecutivo de Ventas Odoo</option><option>Luis Rafael Henriquez</option><option>Otro</option></select></div><div class="field"><label>Campaña de origen</label><select id="s-campaign"></select></div></div>
-  <div class="field"><label>Lista de precios</label><select id="s-pricebook"><option value="">Automático por fecha (recomendado)</option><option value="v2026-08">Precios nuevos (Ago-2026)</option><option value="legacy">Precios anteriores</option></select><span class="muted-3" style="font-size:12px">Por defecto: ventas desde el 1-Ago usan precios nuevos; antes, los anteriores. Cámbialo si vendiste en julio a precio nuevo.</span></div>
   <div class="preview" id="s-preview"></div>
   <div class="actions" style="margin-top:16px"><button class="btn ghost" data-close="modal-sale">Cancelar</button><button class="btn" id="s-save">Guardar venta</button></div>
 </div></div>
@@ -913,7 +913,7 @@ const STAGEMAP={Prospecto:'Lead',Demo:'MQL','Negociación':'Oportunidad'}; // mi
 const MOTIVOS_BASURA=['Click por error','Confusión de tema','Solo consultaba precio','Fuera de zona / país','Rubro no aplica','Datos falsos / spam','Ya es cliente','Otro'];
 const MEDIOS=['WhatsApp','Facebook','Reunión','Visita','Llamada'];
 const ORIGENES=['Pauta','Referido','Alianza Contable','Contacto personal'];
-const defaultState={tasks:[],sales:[],services:[],prospects:[],campaigns:[],projects:[],history:[],config:{baseClients:494,goalClients:1000,baseRecurring:7151.23,goalRecurring:25000,annualPayments:11988.18,mrrMesMeta:1000,salaryBase:0,bono:0,metaMes:24,lastBackup:null,seededOdooBatch1:false,seededBookV3:false,seededAnnualV1:false,seededComercialV1:false,seededComercialV2:false,seededProspectsV1:false,seededProspectsV2:false,seededClosesV1:false,seededWonV1:false,seededOriginV1:false,seededCampaignLinkV1:false,seededRestoreAireV1:false,seededCampaignDaysV1:false,seededChurnV1:false,seededOriginV2:false,seededRestoreDetV1:false,seededFixBautistaV1:false,seededJulyBriantV1:false,seededJulyBriantV2:false}};
+const defaultState={tasks:[],sales:[],services:[],prospects:[],campaigns:[],projects:[],history:[],config:{baseClients:494,goalClients:1000,baseRecurring:7151.23,goalRecurring:25000,annualPayments:11988.18,mrrMesMeta:1000,salaryBase:0,bono:0,metaMes:24,lastBackup:null,seededOdooBatch1:false,seededBookV3:false,seededAnnualV1:false,seededComercialV1:false,seededComercialV2:false,seededProspectsV1:false,seededProspectsV2:false,seededClosesV1:false,seededWonV1:false,seededOriginV1:false,seededCampaignLinkV1:false,seededRestoreAireV1:false,seededCampaignDaysV1:false,seededChurnV1:false,seededOriginV2:false,seededRestoreDetV1:false,seededFixBautistaV1:false,seededJulyBriantV1:false,seededJulyBriantV2:false,seededFixIdaliaV1:false}};
 function normalize(d){const s={...structuredClone(defaultState),...d,config:{...defaultState.config,...(d.config||{})}};['tasks','sales','services','prospects','campaigns','projects','history'].forEach(k=>{if(!Array.isArray(s[k]))s[k]=[];});
   s.prospects.forEach(p=>{if(STAGEMAP[p.stage])p.stage=STAGEMAP[p.stage];if(!p.bant)p.bant={b:false,a:false,n:false,t:false};});
   // Limpieza: ventas auto-creadas desde un prospecto Ganada cuyo prospecto ya no existe (huérfanas)
@@ -2267,7 +2267,16 @@ function seedJulyBriantV2(){
   state.config.seededJulyBriantV2=true;
   save();
 }
-function initApp(){seedOdooBatch1();seedBookV3();seedAnnualBookV1();seedComercialV1();seedComercialV2();seedProspectsV1();seedProspectsV2();seedClosesV1();seedWonV1();seedOriginV1();seedCampaignLinkV1();seedRestoreAireV1();seedCampaignDaysV1();seedChurnV1();seedOriginV2();seedRestoreDetV1();seedFixBautistaV1();seedJulyBriantV1();seedJulyBriantV2();fillPlanSelect();updateBadges();renderBackupBanner();go('inicio');document.body.classList.remove('booting');}
+/* ---- Corrección puntual: IDALIA (venta de Rene) es Starter a precio ANTERIOR. Solo corrige si ya existe (no crea duplicados). ---- */
+function seedFixIdaliaV1(){
+  if(state.config.seededFixIdaliaV1)return;
+  const key=normName('IDALIA FLORIBEL SANCHEZ DE AYALA');
+  const s=state.sales.find(v=>normName(v.client)===key)||state.sales.find(v=>/idalia/i.test(v.client||'')&&/sanchez/i.test(v.client||'')&&/ayala/i.test(v.client||''));
+  if(s){s.plan='starter';s.mode='mensual';s.priceBook='legacy';s.comercial='Rene Gonzalez';delete s.customMonthly;}
+  state.config.seededFixIdaliaV1=true;
+  save();
+}
+function initApp(){seedOdooBatch1();seedBookV3();seedAnnualBookV1();seedComercialV1();seedComercialV2();seedProspectsV1();seedProspectsV2();seedClosesV1();seedWonV1();seedOriginV1();seedCampaignLinkV1();seedRestoreAireV1();seedCampaignDaysV1();seedChurnV1();seedOriginV2();seedRestoreDetV1();seedFixBautistaV1();seedJulyBriantV1();seedJulyBriantV2();seedFixIdaliaV1();fillPlanSelect();updateBadges();renderBackupBanner();go('inicio');document.body.classList.remove('booting');}
 
 async function boot(){
   if(initSupabase()){
