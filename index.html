@@ -821,7 +821,6 @@ canvas{max-width:100%}
   <input type="hidden" id="s-id" />
   <div class="field"><label>Nombre del cliente <span class="req">*</span></label><input id="s-client" placeholder="Ej. Distribuidora La Salud" /></div>
   <div class="row c2"><div class="field"><label>Plan</label><select id="s-plan"></select></div><div class="field"><label>Modalidad</label><select id="s-mode"><option value="mensual">Mensual</option><option value="anual">Anual adelantado</option></select></div></div>
-  <div class="field"><label>Lista de precios <span class="muted-3" style="font-weight:500">— ¿precio nuevo o anterior?</span></label><select id="s-pricebook"><option value="">Automático por fecha (hoy = precio NUEVO)</option><option value="v2026-08">Precio NUEVO (Ago-2026)</option><option value="legacy">Precio ANTERIOR (cliente a precio viejo)</option></select><span class="muted-3" style="font-size:12px">Si el cliente compró al precio viejo, elige <b>Precio ANTERIOR</b>. Abajo verás cuál se está aplicando.</span></div>
   <div class="row c2"><div class="field"><label>Fecha de inicio</label><input type="date" id="s-start" /></div><div class="field"><label>Origen</label><select id="s-origen"><option value="">—</option><option>Campaña</option><option>Referido</option><option>Alianza Contable</option><option>Directo</option><option>Otro</option></select></div></div>
   <div class="row c2"><div class="field"><label>Vendedor</label><select id="s-comercial"><option>Briant Canizalez</option><option>Rene Gonzalez</option><option>Ejecutivo de Ventas Odoo</option><option>Luis Rafael Henriquez</option><option>Otro</option></select></div><div class="field"><label>Campaña de origen</label><select id="s-campaign"></select></div></div>
   <div class="preview" id="s-preview"></div>
@@ -1516,7 +1515,7 @@ $('pr-save').onclick=()=>{const client=$('pr-client').value.trim();if(!client){$
   save();closeModal('modal-prospect');renderPipeline();refreshSalesViews();};
 $('pr-client').addEventListener('input',()=>$('pr-client').style.borderColor='');
 function delProspect(id){const p=findProspect(id);const tieneVenta=p&&state.sales.some(s=>s.seed==='won'&&s.prospectId===id);if(!confirm(tieneVenta?'¿Eliminar este prospecto? También se quitará la venta que generó al pasar a Ganada.':'¿Eliminar este prospecto?'))return;if(p)unsyncWonSale(p);state.prospects=state.prospects.filter(p=>p.id!==id);save();renderPipeline();refreshSalesViews();}
-function convertProspect(id){const p=findProspect(id);if(!p)return;closeModal('modal-prospect');openSale();$('s-client').value=p.client;$('s-plan').value=p.plan;$('s-comercial').value=p.comercial||'Briant Canizalez';$('s-campaign').value=p.campaignId||'';salePreview();}
+function convertProspect(id){const p=findProspect(id);if(!p)return;closeModal('modal-prospect');openSale();$('s-client').value=p.client;$('s-plan').value=planValDefault(p.plan);$('s-comercial').value=p.comercial||'Briant Canizalez';$('s-campaign').value=p.campaignId||'';salePreview();}
 /* ---- Auto-conversión: al ganar un prospecto se crea la venta (sin duplicar) y se actualiza en vivo ---- */
 const planMode=plan=>PLANS[plan]&&PLANS[plan].annualOnly?'anual':'mensual';
 function syncWonSale(p){
@@ -1659,11 +1658,24 @@ $('btn-new-service').onclick=()=>openService();
 function delService(id){if(!confirm('¿Eliminar este servicio?'))return;state.services=state.services.filter(s=>s.id!==id);save();renderServices();}
 
 /* ===================== VENTAS ===================== */
-function fillPlanSelect(){$('s-plan').innerHTML=Object.entries(PLANS).filter(([k,p])=>!p.special).map(([k,p])=>`<option value="${k}">${p.annualOnly?`${p.label} — ${fmtUSD(p.impl)} + ${fmtUSD(p.monthly*12)}/año`:`${p.label} — ${fmtUSD(p.impl)} + ${fmtUSD(p.monthly)}/mes`}</option>`).join('');}
-function salePreview(){const key=$('s-plan').value,base=PLANS[key];if(!base){$('s-preview').innerHTML='';return;}
+/* valor del selector de Plan: "plan" (planes sin cambio de precio) o "plan|new" / "plan|legacy" (planes con precio nuevo y anterior) */
+function parsePlanVal(v){const [plan,book='']=String(v||'').split('|');return {plan,book};}
+/* opción del selector que corresponde a una venta ya guardada (para editar) */
+function planValForSale(s){return LEGACY_PLAN_PRICES[s.plan]?`${s.plan}|${saleBook(s)==='old'?'legacy':'new'}`:s.plan;}
+/* opción por defecto (nueva venta / al convertir prospecto): planes con cambio → variante NUEVA */
+function planValDefault(plan){return LEGACY_PLAN_PRICES[plan]?`${plan}|new`:plan;}
+function fillPlanSelect(){
+  const opt=(val,label,x,annual)=>`<option value="${val}">${label} — ${annual?`${fmtUSD(x.impl)} + ${fmtUSD(x.monthly*12)}/año`:`${fmtUSD(x.impl)} + ${fmtUSD(x.monthly)}/mes`}</option>`;
+  $('s-plan').innerHTML=Object.entries(PLANS).filter(([k,p])=>!p.special).map(([k,p])=>{
+    // los planes que cambiaron de precio se listan dos veces: (nuevo) y (anterior)
+    if(LEGACY_PLAN_PRICES[k])return opt(`${k}|new`,`${p.label} (nuevo)`,planPricing(k,'new'),p.annualOnly)+opt(`${k}|legacy`,`${p.label} (anterior)`,planPricing(k,'old'),p.annualOnly);
+    return opt(k,p.label,p,p.annualOnly);
+  }).join('');
+}
+function salePreview(){const {plan:key,book:vbook}=parsePlanVal($('s-plan').value),base=PLANS[key];if(!base){$('s-preview').innerHTML='';return;}
   const modeSel=$('s-mode');if(base.annualOnly){modeSel.value='anual';modeSel.disabled=true;}else{modeSel.disabled=false;}
   const mode=modeSel.value;
-  const pb=($('s-pricebook')||{}).value||'';
+  const pb=vbook==='legacy'?'legacy':(vbook==='new'?'v2026-08':'');
   const book=saleBook({plan:key,start:$('s-start').value||todayISO(),priceBook:pb||undefined});
   const p=planPricing(key,book);
   const cambio=!!LEGACY_PLAN_PRICES[key];
@@ -1712,14 +1724,14 @@ function renderSales(){
   renderServices();
 }
 const findSale=id=>state.sales.find(s=>s.id===id);
-function openSale(id){fillPlanSelect();if(id){const s=findSale(id);$('sale-modal-title').textContent='Editar venta';$('s-id').value=s.id;$('s-client').value=s.client;$('s-plan').value=s.plan;$('s-start').value=s.start||todayISO();$('s-mode').value=s.mode||'mensual';$('s-origen').value=s.origen||'';$('s-comercial').value=s.comercial||'Briant Canizalez';$('s-campaign').innerHTML=campaignOptions(s.campaignId);$('s-pricebook').value=s.priceBook||'';}else{$('sale-modal-title').textContent='Nueva venta';$('s-id').value='';$('s-client').value='';$('s-plan').value='starter';$('s-start').value=todayISO();$('s-mode').value='mensual';$('s-origen').value='';$('s-comercial').value='Briant Canizalez';$('s-campaign').innerHTML=campaignOptions('');$('s-pricebook').value='';}salePreview();openModal('modal-sale','s-client');}
+function openSale(id){fillPlanSelect();if(id){const s=findSale(id);$('sale-modal-title').textContent='Editar venta';$('s-id').value=s.id;$('s-client').value=s.client;$('s-plan').value=planValForSale(s);$('s-start').value=s.start||todayISO();$('s-mode').value=s.mode||'mensual';$('s-origen').value=s.origen||'';$('s-comercial').value=s.comercial||'Briant Canizalez';$('s-campaign').innerHTML=campaignOptions(s.campaignId);}else{$('sale-modal-title').textContent='Nueva venta';$('s-id').value='';$('s-client').value='';$('s-plan').value=planValDefault('starter');$('s-start').value=todayISO();$('s-mode').value='mensual';$('s-origen').value='';$('s-comercial').value='Briant Canizalez';$('s-campaign').innerHTML=campaignOptions('');}salePreview();openModal('modal-sale','s-client');}
 $('s-save').onclick=()=>{const client=$('s-client').value.trim();if(!client){$('s-client').focus();$('s-client').style.borderColor='var(--danger)';return;}
-  const id=$('s-id').value,pb=$('s-pricebook').value,data={client,plan:$('s-plan').value,start:$('s-start').value||todayISO(),mode:$('s-mode').value,origen:$('s-origen').value||'',comercial:$('s-comercial').value||'Briant Canizalez',campaignId:$('s-campaign').value||null};
+  const id=$('s-id').value,{plan,book}=parsePlanVal($('s-plan').value),pb=book==='legacy'?'legacy':(book==='new'?'v2026-08':''),data={client,plan,start:$('s-start').value||todayISO(),mode:$('s-mode').value,origen:$('s-origen').value||'',comercial:$('s-comercial').value||'Briant Canizalez',campaignId:$('s-campaign').value||null};
   if(pb)data.priceBook=pb;
   if(id){const sObj=findSale(id);Object.assign(sObj,data);if(!pb)delete sObj.priceBook;}else state.sales.push({id:uid(),...data,createdAt:Date.now()});
   save();closeModal('modal-sale');refreshSalesViews();};
 $('s-client').addEventListener('input',()=>$('s-client').style.borderColor='');
-$('s-plan').addEventListener('change',salePreview);$('s-mode').addEventListener('change',salePreview);$('s-start').addEventListener('change',salePreview);$('s-pricebook').addEventListener('change',salePreview);
+$('s-plan').addEventListener('change',salePreview);$('s-mode').addEventListener('change',salePreview);$('s-start').addEventListener('change',salePreview);
 function delSale(id){if(!confirm('¿Eliminar esta venta?'))return;state.sales=state.sales.filter(s=>s.id!==id);save();refreshSalesViews();}
 function churnSale(id){const s=findSale(id);if(!s)return;if(!confirm('¿Marcar como dada de baja? Dejará de contar en clientes y MRR.'))return;s.churned=true;s.churnDate=todayISO();save();refreshSalesViews();}
 function reactivateSale(id){const s=findSale(id);if(!s)return;s.churned=false;delete s.churnDate;save();refreshSalesViews();}
