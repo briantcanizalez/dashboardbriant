@@ -475,6 +475,40 @@ canvas{max-width:100%}
   .kpi .kval,.section-head h2{color:#000}
   .content{max-width:100%}
 }
+/* ===== Líneas de negocio · Factura IA / Vendi / Comandi ===== */
+.line-switch{display:flex;gap:5px;background:var(--surface-2);border:1px solid var(--border);border-radius:14px;padding:5px;margin-bottom:20px;width:max-content;max-width:100%;overflow-x:auto}
+.line-switch button{border:none;background:transparent;color:var(--txt-2);font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;padding:9px 18px;border-radius:10px;cursor:pointer;transition:.15s;display:inline-flex;align-items:center;gap:8px;white-space:nowrap}
+.line-switch button .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.line-switch button[data-line="fia"] .dot{background:var(--brand-2)}
+.line-switch button[data-line="vendi"] .dot{background:#3ddc97}
+.line-switch button[data-line="comandi"] .dot{background:#FDC555}
+.line-switch button:hover{color:var(--txt)}
+.line-switch button.active{color:#fff;box-shadow:var(--sh-1)}
+.line-switch button.active .dot{background:#fff}
+.line-switch button[data-line="fia"].active{background:linear-gradient(135deg,var(--brand-2),var(--brand))}
+.line-switch button[data-line="vendi"].active{background:linear-gradient(135deg,#3a9a72,#2F7A5A)}
+.line-switch button[data-line="comandi"].active{background:linear-gradient(135deg,#8a3f66,#56243E)}
+.lhero{display:flex;align-items:flex-end;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:18px}
+.lhero h2{font-size:23px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.lhero .lsub{color:var(--txt-2);font-size:13.5px;margin-top:5px;max-width:560px}
+.lchip{display:inline-block;padding:4px 11px;border-radius:99px;font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
+.lplans{display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:12px}
+.lplan{background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:16px;position:relative;display:flex;flex-direction:column;gap:4px}
+.lplan.star{border-color:#fdc55577;box-shadow:0 0 0 1px #fdc55522}
+.lplan .lp-name{font-weight:800;font-size:14px}
+.lplan .lp-price{font-family:'Space Grotesk';font-weight:700;font-size:26px;margin:2px 0;font-variant-numeric:tabular-nums}
+.lplan .lp-price span{font-size:13px;color:var(--txt-3);font-weight:600}
+.lplan .lp-meta{font-size:12px;color:var(--txt-2);line-height:1.6}
+.lplan .lp-badge{position:absolute;top:12px;right:12px;font-size:10px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:3px 8px;border-radius:7px}
+.lms{display:grid;grid-template-columns:repeat(auto-fit,minmax(125px,1fr));gap:10px;margin-top:14px}
+.lms .ms{background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:12px 14px}
+.lms .ms.done{border-color:#10b98166}
+.lms .ms.cur{border-color:var(--brand-3)}
+.lms .ms .m1{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--txt-3)}
+.lms .ms .m2{font-family:'Space Grotesk';font-weight:700;font-size:18px;margin-top:3px;font-variant-numeric:tabular-nums}
+.lms .ms .m3{font-size:11px;margin-top:2px;color:var(--txt-3)}
+.lms .ms.done .m3{color:#10b981;font-weight:700}
+@media print{.line-switch{display:none}}
 </style>
 </head>
 <body class="booting">
@@ -514,6 +548,11 @@ canvas{max-width:100%}
       <button data-view="calendario"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="4" width="18" height="18" rx="2.5"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span>Calendario</span></button>
       <button data-view="metas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/></svg><span>Metas y Proyección</span></button>
     </nav>
+    <div class="navlbl">Líneas de negocio</div>
+    <nav class="nav" data-nav>
+      <button data-view="vendi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg><span>Vendi</span></button>
+      <button data-view="comandi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3z"/><path d="M21 15v7"/></svg><span>Comandi</span></button>
+    </nav>
     <div class="navlbl">Sistema</div>
     <nav class="nav" data-nav>
       <button data-view="config"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9c.14.31.43.54.76.66"/></svg><span>Ajustes y Datos</span></button>
@@ -539,6 +578,13 @@ canvas{max-width:100%}
     <main class="content">
       <div id="backup-banner"></div>
 
+      <!-- ====== SELECTOR DE LÍNEA DE NEGOCIO ====== -->
+      <div class="line-switch" id="line-seg" role="tablist" aria-label="Línea de negocio">
+        <button data-line="fia" class="active" onclick="go('inicio')"><span class="dot"></span>Factura IA</button>
+        <button data-line="vendi" onclick="go('vendi')"><span class="dot"></span>Vendi</button>
+        <button data-line="comandi" onclick="go('comandi')"><span class="dot"></span>Comandi</button>
+      </div>
+
       <!-- ====== INICIO ====== -->
       <section class="view active" id="view-inicio">
         <div class="grid kpis" style="margin-bottom:18px">
@@ -547,6 +593,7 @@ canvas{max-width:100%}
           <div class="card kpi" data-go="tareas"><div class="khead"><span class="klabel">Tareas en curso</span><span class="kchip amber"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg></span></div><div class="kval" id="k-tareas">0</div><div class="kmeta" id="k-tareas-meta"></div></div>
           <div class="card kpi" data-go="tareas"><div class="khead"><span class="klabel">Horas invertidas</span><span class="kchip green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></span></div><div class="kval tnum" id="k-horas">0h</div><div class="kmeta">Tiempo total registrado</div></div>
         </div>
+        <div class="card" style="margin-bottom:18px" id="fia-smb-card"></div>
         <div class="card" style="margin-bottom:18px">
           <div class="section-head"><h2>Pulso Masivo · Hoy</h2><span class="hint" id="pulso-fecha"></span></div>
           <div class="pulso" id="pulso"></div>
@@ -763,6 +810,10 @@ canvas{max-width:100%}
           <div class="row c2"><div class="field"><label>Recurrencia mensual base (USD)</label><input type="number" step="0.01" id="c-baseRecurring" /></div><div class="field"><label>Meta de recurrencia mensual (USD)</label><input type="number" step="0.01" id="c-goalRecurring" /></div></div>
           <div class="row c2"><div class="field"><label>Pagos anuales adelantados (USD)</label><input type="number" step="0.01" id="c-annual" /></div><div class="field"><label>Meta de MRR nuevo por mes (USD)</label><input type="number" step="0.01" id="c-mrrmes" /></div></div>
           <p class="helper" style="margin-bottom:16px">La implementación es pago único; la mensualidad cuenta al MRR a partir del 3er mes. La meta de MRR nuevo por mes alimenta el Pulso Masivo.</p>
+          <div class="section-head"><h2>Metas SMB por línea (dic-2026)</h2></div>
+          <div class="row c3"><div class="field"><label>Factura IA (USD/mes)</label><input type="number" step="0.01" id="c-fiaMetaSMB" /></div><div class="field"><label>Vendi (USD/mes)</label><input type="number" step="0.01" id="c-vendiMetaMRR" /></div><div class="field"><label>Comandi (USD/mes)</label><input type="number" step="0.01" id="c-comandiMetaMRR" /></div></div>
+          <div class="row c2"><div class="field"><label>Meta clientes Vendi</label><input type="number" id="c-vendiMetaCli" /></div><div class="field"><label>Meta clientes Comandi</label><input type="number" id="c-comandiMetaCli" /></div></div>
+          <p class="helper" style="margin-bottom:16px">Metas del Plan Línea SMB 2026 (14-ago): Factura IA $18,928 · Vendi $6,921 con 30 clientes · Comandi $4,582 con 18 restaurantes.</p>
           <button class="btn" id="cfg-save">Guardar ajustes</button>
         </div>
 
@@ -786,6 +837,12 @@ canvas{max-width:100%}
           <div class="field"><label>Importar clientes desde CSV</label><input type="file" id="csv-import" accept=".csv,text/csv" /><p class="helper">Columnas: <b>cliente, plan, modalidad, fecha</b>. Plan: starter/professional/advanced/deluxe/enterprise. Modalidad: mensual/anual. Fecha: AAAA-MM-DD. <a href="#" id="csv-template" style="color:var(--brand-3)">Descargar plantilla</a></p></div>
         </div>
       </section>
+
+      <!-- ====== LÍNEA VENDI ====== -->
+      <section class="view" id="view-vendi"><div id="line-wrap-vendi"></div></section>
+
+      <!-- ====== LÍNEA COMANDI ====== -->
+      <section class="view" id="view-comandi"><div id="line-wrap-comandi"></div></section>
 
     </main>
   </div>
@@ -825,6 +882,17 @@ canvas{max-width:100%}
   <div class="row c2"><div class="field"><label>Vendedor</label><select id="s-comercial"><option>Briant Canizalez</option><option>Rene Gonzalez</option><option>Ejecutivo de Ventas Odoo</option><option>Luis Rafael Henriquez</option><option>Otro</option></select></div><div class="field"><label>Campaña de origen</label><select id="s-campaign"></select></div></div>
   <div class="preview" id="s-preview"></div>
   <div class="actions" style="margin-top:16px"><button class="btn ghost" data-close="modal-sale">Cancelar</button><button class="btn" id="s-save">Guardar venta</button></div>
+</div></div>
+
+<!-- MODAL VENTA LÍNEA (Vendi / Comandi) -->
+<div class="overlay" id="modal-line-sale"><div class="modal" role="dialog" aria-modal="true">
+  <div class="modal-head"><div><h3 id="ls-title">Nueva venta</h3><p>Cada cierre avanza la meta de la línea.</p></div><button class="iconbtn" data-close="modal-line-sale" aria-label="Cerrar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+  <input type="hidden" id="ls-id" /><input type="hidden" id="ls-line" />
+  <div class="field"><label>Nombre del cliente <span class="req">*</span></label><input id="ls-client" placeholder="Ej. Boutique Karla / Pupusería La Bendición" /></div>
+  <div class="row c2"><div class="field"><label>Plan</label><select id="ls-plan"></select></div><div class="field"><label>Modalidad</label><select id="ls-mode"><option value="mensual">Mensual</option><option value="anual">Anual adelantado (10% dcto)</option></select></div></div>
+  <div class="row c2"><div class="field"><label>Fecha de inicio</label><input type="date" id="ls-start" /></div><div class="field"><label>Origen</label><select id="ls-origen"><option value="">—</option><option>Venta cruzada Factura IA</option><option>Campaña</option><option>Referido</option><option>Directo</option><option>Otro</option></select></div></div>
+  <div class="preview" id="ls-preview"></div>
+  <div class="actions" style="margin-top:16px"><button class="btn ghost" data-close="modal-line-sale">Cancelar</button><button class="btn" id="ls-save">Guardar venta</button></div>
 </div></div>
 
 <!-- MODAL PROSPECTO -->
@@ -903,6 +971,35 @@ const SERVICE_PRICES={'Carga de productos, clientes o proveedores':50,'Capacitac
 /* monto mensual e implementación de una venta; customMonthly/customImpl (monto real fijado: anuales, descuentos, especiales) manda; si no, precio de lista del libro que aplica por fecha */
 const saleMonthly=s=>s.customMonthly!=null?(+s.customMonthly||0):(planPricing(s.plan,saleBook(s)).monthly||0);
 const saleImpl=s=>s.customImpl!=null?(+s.customImpl||0):(planPricing(s.plan,saleBook(s)).impl||0);
+
+/* ===== LÍNEAS DE NEGOCIO · Vendi y Comandi (marca Stradia) ===== */
+/* Tarifario Stradia 24-ago-2026: misma lista para ambos productos. Emprende no se publica (solo canal propio). */
+const LINE_PLANS={
+  emprende:{label:'Emprende',monthly:50,impl:50,conv:500,loc:1,hidden:true},
+  crece:{label:'Crece',monthly:99,impl:99,conv:1000,loc:1},
+  profesional:{label:'Profesional',monthly:299,impl:490,conv:3000,loc:2,star:true},
+  empresarial:{label:'Empresarial',monthly:499,impl:990,conv:6000,loc:3},
+  corporativo:{label:'Corporativo',monthly:899,impl:1900,conv:10000,loc:5}
+};
+/* Metas del Plan Línea SMB 2026 (14-ago): recurrente/mes por producto y escalera sep–dic. */
+const LINES={
+  vendi:{label:'Vendi',color:'#3ddc97',grad:'linear-gradient(90deg,#2F7A5A,#3ddc97)',metaKey:'vendiMetaMRR',cliKey:'vendiMetaCli',defMRR:6921,defCli:30,
+    sub:'Agente de IA que atiende y vende por WhatsApp 24/7 · sin comisión sobre ventas',
+    milestones:[['2026-09','Sep',349],['2026-10','Oct',1642],['2026-11','Nov',3832],['2026-12','Dic',6921]],
+    mix:{emprende:1,crece:14,profesional:12,empresarial:2,corporativo:1}},
+  comandi:{label:'Comandi',color:'#FDC555',grad:'linear-gradient(90deg,#56243E,#FDC555)',metaKey:'comandiMetaMRR',cliKey:'comandiMetaCli',defMRR:4582,defCli:18,
+    sub:'Toma completos los pedidos de restaurantes con delivery propio, por WhatsApp · sin comisión por pedido',
+    milestones:[['2026-09','Sep',0],['2026-10','Oct',895],['2026-11','Nov',2289],['2026-12','Dic',4582]],
+    mix:{crece:9,profesional:6,empresarial:2,corporativo:1}}
+};
+const FIA_SMB_MILESTONES=[['2026-09','Sep',10638],['2026-10','Oct',13341],['2026-11','Nov',16195],['2026-12','Dic',18928]];
+/* Anual adelantado: 10% dcto sobre la mensualidad e implementación bonificada (regla del tarifario). */
+const lineSaleMonthly=s=>{const p=LINE_PLANS[s.plan]||{monthly:0};return s.mode==='anual'?+(p.monthly*0.9).toFixed(2):p.monthly;};
+const lineSaleImpl=s=>s.mode==='anual'?0:((LINE_PLANS[s.plan]||{impl:0}).impl);
+const lineSales=k=>(state.lineSales&&Array.isArray(state.lineSales[k]))?state.lineSales[k]:[];
+const lineActive=k=>lineSales(k).filter(s=>!s.churned);
+const lineMRR=k=>lineActive(k).reduce((a,s)=>a+lineSaleMonthly(s),0);
+const lineImplTotal=k=>lineSales(k).reduce((a,s)=>a+lineSaleImpl(s),0);
 const RECURRING_START_MONTH=0; // 0 = toda venta mensual factura desde el dia 1 (politica: la promo no descuenta recurrencia)
 const STORE_KEY='odoo_factura_dashboard_v1';
 const STAGES=[{k:'Basura',c:'#8a6d5a'},{k:'Lead',c:'#7b7b92'},{k:'MQL',c:'#60a5fa'},{k:'SQL',c:'#9a73ff'},{k:'Oportunidad',c:'#fbbf24'},{k:'Ganada',c:'#34d399'},{k:'Perdida',c:'#f87171'}];
@@ -912,8 +1009,10 @@ const STAGEMAP={Prospecto:'Lead',Demo:'MQL','Negociación':'Oportunidad'}; // mi
 const MOTIVOS_BASURA=['Click por error','Confusión de tema','Solo consultaba precio','Fuera de zona / país','Rubro no aplica','Datos falsos / spam','Ya es cliente','Otro'];
 const MEDIOS=['WhatsApp','Facebook','Reunión','Visita','Llamada'];
 const ORIGENES=['Pauta','Referido','Alianza Contable','Contacto personal'];
-const defaultState={tasks:[],sales:[],services:[],prospects:[],campaigns:[],projects:[],history:[],config:{baseClients:494,goalClients:1000,baseRecurring:7151.23,goalRecurring:25000,annualPayments:11988.18,mrrMesMeta:1000,salaryBase:0,bono:0,metaMes:24,lastBackup:null,seededOdooBatch1:false,seededBookV3:false,seededAnnualV1:false,seededComercialV1:false,seededComercialV2:false,seededProspectsV1:false,seededProspectsV2:false,seededClosesV1:false,seededWonV1:false,seededOriginV1:false,seededCampaignLinkV1:false,seededRestoreAireV1:false,seededCampaignDaysV1:false,seededChurnV1:false,seededOriginV2:false,seededRestoreDetV1:false,seededFixBautistaV1:false,seededJulyBriantV1:false,seededJulyBriantV2:false,seededFixIdaliaV1:false}};
+const defaultState={tasks:[],sales:[],services:[],prospects:[],campaigns:[],projects:[],history:[],lineSales:{vendi:[],comandi:[]},config:{baseClients:494,goalClients:1000,baseRecurring:7151.23,goalRecurring:25000,annualPayments:11988.18,mrrMesMeta:1000,salaryBase:0,bono:0,metaMes:24,fiaMetaSMB:18928,vendiMetaMRR:6921,vendiMetaCli:30,comandiMetaMRR:4582,comandiMetaCli:18,lastBackup:null,seededOdooBatch1:false,seededBookV3:false,seededAnnualV1:false,seededComercialV1:false,seededComercialV2:false,seededProspectsV1:false,seededProspectsV2:false,seededClosesV1:false,seededWonV1:false,seededOriginV1:false,seededCampaignLinkV1:false,seededRestoreAireV1:false,seededCampaignDaysV1:false,seededChurnV1:false,seededOriginV2:false,seededRestoreDetV1:false,seededFixBautistaV1:false,seededJulyBriantV1:false,seededJulyBriantV2:false,seededFixIdaliaV1:false}};
 function normalize(d){const s={...structuredClone(defaultState),...d,config:{...defaultState.config,...(d.config||{})}};['tasks','sales','services','prospects','campaigns','projects','history'].forEach(k=>{if(!Array.isArray(s[k]))s[k]=[];});
+  if(!s.lineSales||typeof s.lineSales!=='object'||Array.isArray(s.lineSales))s.lineSales={};
+  ['vendi','comandi'].forEach(k=>{if(!Array.isArray(s.lineSales[k]))s.lineSales[k]=[];});
   s.prospects.forEach(p=>{if(STAGEMAP[p.stage])p.stage=STAGEMAP[p.stage];if(!p.bant)p.bant={b:false,a:false,n:false,t:false};});
   // Limpieza: ventas auto-creadas desde un prospecto Ganada cuyo prospecto ya no existe (huérfanas)
   const _pids=new Set(s.prospects.map(p=>p.id));
@@ -1229,6 +1328,8 @@ const VIEWS={
   calendario:{title:'Calendario',sub:'Inicios y fechas estimadas.',action:null},
   metas:{title:'Metas y Proyección',sub:'Avance, proyección y comisiones.',action:null},
   config:{title:'Ajustes y Datos',sub:'Configura tu punto de partida y respaldos.',action:null},
+  vendi:{title:'Vendi',sub:'Vende por WhatsApp 24/7 · marca Stradia.',action:{label:'Nueva venta Vendi',fn:()=>openLineSale('vendi')}},
+  comandi:{title:'Comandi',sub:'Pedidos de restaurante por WhatsApp · marca Stradia.',action:{label:'Nueva venta Comandi',fn:()=>openLineSale('comandi')}},
 };
 function go(view){
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
@@ -1241,7 +1342,9 @@ function go(view){
   if(cfg.action){act.classList.remove('hide');act.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>'+cfg.action.label;act.onclick=cfg.action.fn;}
   else{act.classList.add('hide');act.onclick=null;}
   window.scrollTo({top:0});
-  ({inicio:renderInicio,resumen:renderResumen,tareas:renderTasks,pipeline:renderPipeline,campaigns:renderCampaigns,ventas:renderSales,planes:renderPlanes,canales:renderCanales,calendario:renderCalendar,metas:renderMetas,config:fillConfig}[view])();
+  const seg=$('line-seg');
+  if(seg){const ln=view==='vendi'?'vendi':(view==='comandi'?'comandi':'fia');seg.querySelectorAll('button').forEach(b=>b.classList.toggle('active',b.dataset.line===ln));}
+  ({inicio:renderInicio,resumen:renderResumen,tareas:renderTasks,pipeline:renderPipeline,campaigns:renderCampaigns,ventas:renderSales,planes:renderPlanes,canales:renderCanales,calendario:renderCalendar,metas:renderMetas,config:fillConfig,vendi:()=>renderLine('vendi'),comandi:()=>renderLine('comandi')}[view])();
 }
 document.addEventListener('click',e=>{
   const nav=e.target.closest('[data-nav] [data-view]');if(nav){go(nav.dataset.view);return;}
@@ -1287,7 +1390,24 @@ function renderInicio(){
   $('k-tareas').textContent=state.tasks.filter(t=>t.status==='En curso').length;$('k-tareas-meta').textContent=`${state.tasks.filter(t=>t.status!=='Finalizada').length} activas · ${overdue.length} vencidas`;
   $('k-horas').textContent=(state.tasks.reduce((s,t)=>s+taskMs(t),0)/3600000).toFixed(1)+'h';
   drawDoughnut('chartClientes',tc,gc,'#7c4dff','n','planes');drawDoughnut('chartMrr',mrr,gm,'#9a73ff','usd','planes');
+  renderFiaSmb();
   renderPulso();
+}
+/* ---- Meta SMB de Factura IA (Plan Línea SMB 2026) ---- */
+function msRow(list,val){
+  const curM=todayISO().slice(0,7);
+  return `<div class="lms">`+list.map(([iso,lb,amt])=>{
+    const done=amt>0&&val>=amt,cur=iso===curM;
+    return `<div class="ms ${done?'done':''} ${cur?'cur':''}"><div class="m1">${lb}${cur?' · en curso':''}</div><div class="m2">${fmtUSD0(amt)}</div><div class="m3">${done?'✓ alcanzado':(amt>0?Math.min(999,Math.round(val/amt*100))+'% logrado':'—')}</div></div>`;
+  }).join('')+`</div>`;
+}
+function renderFiaSmb(){
+  const card=$('fia-smb-card');if(!card)return;
+  const goal=+state.config.fiaMetaSMB||18928,mrr=currentMRR(),pct=Math.min(100,mrr/goal*100);
+  card.innerHTML=`<div class="section-head"><h2>Meta SMB · Factura IA</h2><span class="hint">Plan Línea SMB 2026 · recurrente a diciembre</span></div>
+    <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap"><span style="font-family:'Space Grotesk';font-weight:700;font-size:28px;font-variant-numeric:tabular-nums">${fmtUSD0(mrr)}</span><span class="muted-3" style="font-size:13px">de ${fmtUSD0(goal)}/mes · <b style="color:var(--brand-3)">${pct.toFixed(1)}%</b> de avance</span></div>
+    <div class="bar" style="margin-top:10px"><i style="width:${pct}%"></i></div>
+    ${msRow(FIA_SMB_MILESTONES,mrr)}`;
 }
 function renderPulso(){
   $('pulso-fecha').textContent=new Date().toLocaleDateString('es-SV',{day:'numeric',month:'long'});
@@ -1747,6 +1867,108 @@ function reactivateSale(id){const s=findSale(id);if(!s)return;s.churned=false;de
 /* re-render de las vistas que dependen de ventas (Ventas y Planes) */
 function refreshSalesViews(){if($('view-ventas').classList.contains('active'))renderSales();if($('view-planes').classList.contains('active'))renderPlanes();if($('view-canales').classList.contains('active'))renderCanales();if($('view-resumen').classList.contains('active'))renderResumen();if($('view-inicio').classList.contains('active'))renderInicio();if($('view-metas').classList.contains('active'))renderMetas();}
 
+/* ===================== LÍNEAS VENDI / COMANDI ===================== */
+function renderLine(k){
+  const L=LINES[k],act=lineActive(k),all=lineSales(k);
+  const goalMRR=+state.config[L.metaKey]||L.defMRR,goalCli=+state.config[L.cliKey]||L.defCli;
+  const n=act.length,mrr=lineMRR(k),impl=lineImplTotal(k),churned=all.length-n;
+  const pctC=Math.min(100,n/goalCli*100),pctM=Math.min(100,mrr/goalMRR*100);
+  const curM=todayISO().slice(0,7),mesCli=act.filter(s=>(s.start||'').slice(0,7)===curM).length;
+  let html=`
+  <div class="lhero">
+    <div><h2 class="font-display">${L.label} <span class="lchip" style="background:${L.color}22;color:${L.color}">Stradia</span></h2><div class="lsub">${L.sub}.</div></div>
+    <button class="btn" onclick="openLineSale('${k}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Nueva venta ${L.label}</button>
+  </div>
+  <div class="grid kpis" style="margin-bottom:18px">
+    <div class="card kpi"><div class="khead"><span class="klabel">Clientes cerrados</span></div><div class="kval tnum">${n}</div><div class="kmeta">Meta ${goalCli} a dic · faltan ${Math.max(0,goalCli-n)} · <b style="color:${L.color}">${pctC.toFixed(0)}%</b></div><div class="bar"><i style="width:${pctC}%;background:${L.grad}"></i></div></div>
+    <div class="card kpi"><div class="khead"><span class="klabel">Facturación recurrente</span></div><div class="kval tnum" style="color:${L.color}">${fmtUSD(mrr)}</div><div class="kmeta">Meta ${fmtUSD0(goalMRR)}/mes a dic · <b style="color:${L.color}">${pctM.toFixed(1)}%</b></div><div class="bar"><i style="width:${pctM}%;background:${L.grad}"></i></div></div>
+    <div class="card kpi"><div class="khead"><span class="klabel">Cierres este mes</span></div><div class="kval tnum">${mesCli}</div><div class="kmeta">${churned?churned+' baja'+(churned>1?'s':'')+' acumulada'+(churned>1?'s':''):'sin bajas'}</div></div>
+    <div class="card kpi"><div class="khead"><span class="klabel">Implementación cobrada</span></div><div class="kval lav tnum">${fmtUSD(impl)}</div><div class="kmeta">Ticket promedio ${n?fmtUSD(mrr/n):'$0.00'}/mes</div></div>
+  </div>
+  <div class="card" style="margin-bottom:16px">
+    <div class="section-head"><h2>Meta de facturación · Plan Línea SMB 2026</h2><span class="hint">recurrente/mes comprometido sep–dic</span></div>
+    <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap"><span style="font-family:'Space Grotesk';font-weight:700;font-size:28px;font-variant-numeric:tabular-nums">${fmtUSD0(mrr)}</span><span class="muted-3" style="font-size:13px">de ${fmtUSD0(goalMRR)}/mes a diciembre · <b style="color:${L.color}">${pctM.toFixed(1)}%</b> de avance</span></div>
+    <div class="bar" style="margin-top:10px"><i style="width:${pctM}%;background:${L.grad}"></i></div>
+    ${msRow(L.milestones,mrr)}
+  </div>
+  <div class="card" style="margin-bottom:16px">
+    <div class="section-head"><h2>Planes y precios</h2><span class="hint">tarifario Stradia · sin comisión ${k==='comandi'?'por pedido':'sobre ventas'}</span></div>
+    <div class="lplans">`+Object.entries(LINE_PLANS).map(([pk,p])=>{
+      const cnt=act.filter(s=>s.plan===pk).length;
+      return `<div class="lplan ${p.star?'star':''}">
+        ${p.star?`<span class="lp-badge" style="background:#fdc55522;color:#FDC555">⭐ Ancla</span>`:''}${p.hidden?`<span class="lp-badge" style="background:var(--surface-2);color:var(--txt-3)">No publicado</span>`:''}
+        <div class="lp-name">${p.label}</div>
+        <div class="lp-price">$${p.monthly}<span>/mes</span></div>
+        <div class="lp-meta">${p.conv.toLocaleString('en-US')} conversaciones/mes<br>${p.loc} ${p.loc>1?'locales':'local'} · Implementación $${p.impl}</div>
+        ${cnt?`<div class="lp-meta" style="color:${L.color};font-weight:700;margin-top:2px">${cnt} cliente${cnt>1?'s':''} activo${cnt>1?'s':''}</div>`:''}
+      </div>`;}).join('')+`</div>
+    <p class="helper" style="margin-top:12px">Excedente $0.10 por conversación adicional (el servicio nunca se corta) · Local extra $25/mes · Contrato de 1 año con garantía de 30 días · Prepago anual: 10% de descuento + implementación bonificada.</p>
+  </div>
+  <div class="card" style="margin-bottom:16px">
+    <div class="section-head"><h2>Cartera meta a diciembre</h2><span class="hint">mezcla del plan SMB vs cerrada</span></div>
+    <div class="tablewrap"><table class="responsive"><thead><tr><th>Plan</th><th class="num">Meta</th><th class="num">Cerrados</th><th class="num">Faltan</th></tr></thead><tbody>`+
+    Object.entries(L.mix).map(([pk,m])=>{const c=act.filter(s=>s.plan===pk).length;return `<tr><td data-label="Plan"><span class="tag">${LINE_PLANS[pk].label}</span></td><td class="num" data-label="Meta">${m}</td><td class="num" data-label="Cerrados"${c>=m?' style="color:#10b981;font-weight:700"':''}>${c}</td><td class="num" data-label="Faltan">${Math.max(0,m-c)}</td></tr>`;}).join('')+
+    `</tbody></table></div>
+  </div>`;
+  const rows=all.slice().sort((a,b)=>(a.churned?1:0)-(b.churned?1:0)||(b.start||'').localeCompare(a.start||'')).map(s=>{
+    const p=LINE_PLANS[s.plan]||{label:s.plan};
+    const actBtns=s.churned
+      ?`<button class="btn sm ghost" onclick="lineChurn('${k}','${s.id}')">Reactivar</button>`
+      :`<button class="btn sm ghost" onclick="lineChurn('${k}','${s.id}')">Baja</button><button class="btn sm ghost icon" onclick="openLineSale('${k}','${s.id}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4z"/></svg></button>`;
+    return `<tr class="${s.churned?'churned':''}">
+      <td class="cellwrap" data-label="Cliente"><span class="cellmain">${esc(s.client)}</span>${s.origen?`<span class="cellsub">${esc(s.origen)}</span>`:''}</td>
+      <td data-label="Plan"><span class="tag">${p.label}</span></td>
+      <td data-label="Modalidad" class="muted-3">${s.mode==='anual'?'Anual adelantado':'Mensual'}</td>
+      <td data-label="Mensual" class="num">${s.mode==='anual'?fmtUSD(lineSaleMonthly(s)*12)+'/año':fmtUSD(lineSaleMonthly(s))+'/mes'}</td>
+      <td data-label="Implementación" class="num">${fmtUSD(lineSaleImpl(s))}</td>
+      <td data-label="Inicio" class="num muted-3">${s.start?fmtDate(s.start):'—'}</td>
+      <td data-label="Estado">${s.churned?'<span class="badge b-overdue">Dada de baja</span>':'<span class="badge st-finalizada">Activo</span>'}</td>
+      <td class="t-actions-cell" data-label="Acciones"><div class="t-actions">${actBtns}<button class="btn sm danger icon" onclick="lineDel('${k}','${s.id}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg></button></div></td>
+    </tr>`;}).join('');
+  html+=`<div class="card pad-lg">
+    <div class="section-head"><h2>Clientes ${L.label}</h2><span class="hint">${n} activo${n===1?'':'s'}${churned?' · '+churned+' baja'+(churned>1?'s':''):''}</span></div>
+    ${rows?`<div class="tablewrap"><table class="responsive"><thead><tr><th>Cliente</th><th>Plan</th><th>Modalidad</th><th>Mensual</th><th>Implementación</th><th>Inicio</th><th>Estado</th><th class="right">Acciones</th></tr></thead><tbody>${rows}</tbody></table></div>`
+      :`<div class="empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg><p>Aún no hay clientes de ${L.label}</p><span>Registra el primero con “Nueva venta ${L.label}”.</span></div>`}
+  </div>`;
+  $('line-wrap-'+k).innerHTML=html;
+}
+function openLineSale(k,id){
+  const L=LINES[k],s=id?lineSales(k).find(x=>x.id===id):null;
+  $('ls-line').value=k;
+  $('ls-plan').innerHTML=Object.entries(LINE_PLANS).map(([pk,p])=>`<option value="${pk}">${p.label} — $${p.monthly}/mes${p.hidden?' (no publicado)':''}</option>`).join('');
+  $('ls-title').textContent=(s?'Editar venta · ':'Nueva venta · ')+L.label;
+  $('ls-id').value=s?s.id:'';
+  $('ls-client').value=s?s.client:'';
+  $('ls-plan').value=s?(LINE_PLANS[s.plan]?s.plan:'profesional'):'profesional';
+  $('ls-mode').value=s?(s.mode||'mensual'):'mensual';
+  $('ls-start').value=s?(s.start||todayISO()):todayISO();
+  $('ls-origen').value=s?(s.origen||''):'';
+  lineSalePreview();
+  openModal('modal-line-sale','ls-client');
+}
+function lineSalePreview(){
+  const p=LINE_PLANS[$('ls-plan').value];if(!p){$('ls-preview').innerHTML='';return;}
+  const anual=$('ls-mode').value==='anual',mon=anual?+(p.monthly*0.9).toFixed(2):p.monthly;
+  $('ls-preview').innerHTML=anual
+    ?`<b>${p.label} · anual adelantado:</b> ${fmtUSD(mon*12)} al año (${fmtUSD(mon)}/mes con 10% dcto) · implementación bonificada`
+    :`<b>${p.label} · mensual:</b> ${fmtUSD(mon)}/mes + implementación única de ${fmtUSD(p.impl)} · ${p.conv.toLocaleString('en-US')} conversaciones/mes`;
+}
+$('ls-plan').addEventListener('change',lineSalePreview);
+$('ls-mode').addEventListener('change',lineSalePreview);
+$('ls-client').addEventListener('input',()=>$('ls-client').style.borderColor='');
+$('ls-save').onclick=()=>{
+  const k=$('ls-line').value,client=$('ls-client').value.trim();
+  if(!LINES[k])return;
+  if(!client){$('ls-client').focus();$('ls-client').style.borderColor='var(--danger)';return;}
+  const id=$('ls-id').value;
+  const data={client,plan:$('ls-plan').value,mode:$('ls-mode').value,start:$('ls-start').value||todayISO(),origen:$('ls-origen').value||''};
+  if(id){const s=lineSales(k).find(x=>x.id===id);if(s)Object.assign(s,data);}
+  else state.lineSales[k].push({id:uid(),...data,createdAt:Date.now()});
+  save();closeModal('modal-line-sale');renderLine(k);
+};
+function lineChurn(k,id){const s=lineSales(k).find(x=>x.id===id);if(!s)return;if(!s.churned&&!confirm('¿Marcar como dada de baja? Dejará de contar en la meta de la línea.'))return;s.churned=!s.churned;if(s.churned)s.churnDate=todayISO();else delete s.churnDate;save();renderLine(k);}
+function lineDel(k,id){if(!confirm('¿Eliminar esta venta definitivamente?'))return;state.lineSales[k]=lineSales(k).filter(x=>x.id!==id);save();renderLine(k);}
+
 /* ===================== RESUMEN EJECUTIVO ===================== */
 const COM_BUCKETS=[
   {label:'Briant Canizalez',short:'Briant',pred:s=>!s.comercial||s.comercial==='Briant Canizalez'},
@@ -2087,12 +2309,12 @@ function renderComision(){
 }
 
 /* ===================== CONFIG / DATOS ===================== */
-function fillConfig(){const c=state.config;$('c-baseClients').value=c.baseClients;$('c-goalClients').value=c.goalClients;$('c-baseRecurring').value=c.baseRecurring;$('c-goalRecurring').value=c.goalRecurring;$('c-annual').value=c.annualPayments;$('c-mrrmes').value=c.mrrMesMeta;$('c-salary').value=c.salaryBase;$('c-bono').value=c.bono;$('c-metaMes').value=c.metaMes;renderBackupBanner();}
-$('cfg-save').onclick=()=>{const c=state.config;c.baseClients=+$('c-baseClients').value||0;c.goalClients=+$('c-goalClients').value||1;c.baseRecurring=+$('c-baseRecurring').value||0;c.goalRecurring=+$('c-goalRecurring').value||1;c.annualPayments=+$('c-annual').value||0;c.mrrMesMeta=+$('c-mrrmes').value||0;save();go('inicio');};
+function fillConfig(){const c=state.config;$('c-baseClients').value=c.baseClients;$('c-goalClients').value=c.goalClients;$('c-baseRecurring').value=c.baseRecurring;$('c-goalRecurring').value=c.goalRecurring;$('c-annual').value=c.annualPayments;$('c-mrrmes').value=c.mrrMesMeta;$('c-salary').value=c.salaryBase;$('c-bono').value=c.bono;$('c-metaMes').value=c.metaMes;$('c-fiaMetaSMB').value=c.fiaMetaSMB;$('c-vendiMetaMRR').value=c.vendiMetaMRR;$('c-comandiMetaMRR').value=c.comandiMetaMRR;$('c-vendiMetaCli').value=c.vendiMetaCli;$('c-comandiMetaCli').value=c.comandiMetaCli;renderBackupBanner();}
+$('cfg-save').onclick=()=>{const c=state.config;c.baseClients=+$('c-baseClients').value||0;c.goalClients=+$('c-goalClients').value||1;c.baseRecurring=+$('c-baseRecurring').value||0;c.goalRecurring=+$('c-goalRecurring').value||1;c.annualPayments=+$('c-annual').value||0;c.mrrMesMeta=+$('c-mrrmes').value||0;c.fiaMetaSMB=+$('c-fiaMetaSMB').value||18928;c.vendiMetaMRR=+$('c-vendiMetaMRR').value||6921;c.comandiMetaMRR=+$('c-comandiMetaMRR').value||4582;c.vendiMetaCli=+$('c-vendiMetaCli').value||30;c.comandiMetaCli=+$('c-comandiMetaCli').value||18;save();go('inicio');};
 $('cfg-save2').onclick=()=>{const c=state.config;c.salaryBase=+$('c-salary').value||0;c.bono=+$('c-bono').value||0;c.metaMes=+$('c-metaMes').value||24;save();alert('Comisiones actualizadas.');go('metas');};
 $('cfg-export').onclick=()=>{const b=new Blob([JSON.stringify(state,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='dashboard-odoo-factura-'+todayISO()+'.json';a.click();state.config.lastBackup=todayISO();save();renderBackupBanner();};
 $('cfg-import-btn').onclick=()=>$('importer').click();
-$('importer').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const d=JSON.parse(r.result);state={...structuredClone(defaultState),...d,config:{...defaultState.config,...(d.config||{})}};['tasks','sales','services','prospects','campaigns','projects','history'].forEach(k=>{if(!Array.isArray(state[k]))state[k]=[];});save();go('inicio');}catch(err){alert('Archivo inválido.');}};r.readAsText(f);};
+$('importer').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{state=normalize(JSON.parse(r.result));save();go('inicio');}catch(err){alert('Archivo inválido.');}};r.readAsText(f);};
 $('cfg-csv-ventas').onclick=()=>{const rows=[['cliente','plan','modalidad','fecha','baja']].concat(state.sales.map(s=>[s.client,s.plan,s.mode,s.start,s.churned?'si':'no']));const csv=rows.map(r=>r.map(x=>`"${(x??'').toString().replace(/"/g,'""')}"`).join(',')).join('\n');const b=new Blob([csv],{type:'text/csv'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='ventas-'+todayISO()+'.csv';a.click();};
 $('cfg-print').onclick=()=>{const v=$('view-metas');renderMetas();document.querySelectorAll('.view').forEach(x=>x.classList.remove('printing'));v.classList.add('printing');setTimeout(()=>{window.print();v.classList.remove('printing');},200);};
 $('csv-template').onclick=e=>{e.preventDefault();const csv='cliente,plan,modalidad,fecha\nEjemplo SA,professional,mensual,2026-01-15\nOtra Empresa,starter,anual,2026-02-01';const b=new Blob([csv],{type:'text/csv'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='plantilla-clientes.csv';a.click();};
