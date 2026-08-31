@@ -335,6 +335,10 @@ canvas{max-width:100%}
 .bchk{display:flex;align-items:center;gap:9px;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:10px 12px;cursor:pointer;font-size:13px;min-height:44px}
 .bchk input{width:18px;height:18px;accent-color:var(--brand);flex:0 0 auto}
 .bchk b{color:var(--brand-3)}
+.bchk.promo{border:1.5px dashed rgba(16,185,129,.55);background:rgba(16,185,129,.08)}
+.bchk.promo:hover{border-color:#10b981}
+.bchk.promo input{accent-color:#10b981}
+.bchk.promo b{color:#34d399}
 @media(max-width:520px){.bant{grid-template-columns:1fr}}
 .conv-strip{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:16px}
 .pipe-search-wrap{position:relative;display:flex;align-items:center;margin-bottom:14px;max-width:420px}
@@ -878,9 +882,9 @@ canvas{max-width:100%}
   <input type="hidden" id="s-id" />
   <div class="field"><label>Nombre del cliente <span class="req">*</span></label><input id="s-client" placeholder="Ej. Distribuidora La Salud" /></div>
   <div class="row c2"><div class="field"><label>Plan</label><select id="s-plan"></select></div><div class="field"><label>Modalidad</label><select id="s-mode"><option value="mensual">Mensual</option><option value="anual">Anual adelantado</option></select></div></div>
+  <div class="field"><label class="bchk promo"><input type="checkbox" id="s-implfree"><span>🎁 <b>Implementación GRATIS</b> — esta venta va con la promo (no se cobra la implementación)</span></label></div>
   <div class="row c2"><div class="field"><label>Fecha de inicio</label><input type="date" id="s-start" /></div><div class="field"><label>Origen</label><select id="s-origen"><option value="">—</option><option>Campaña</option><option>Referido</option><option>Alianza Contable</option><option>Directo</option><option>Otro</option></select></div></div>
   <div class="row c2"><div class="field"><label>Vendedor</label><select id="s-comercial"><option>Briant Canizalez</option><option>Rene Gonzalez</option><option>Ejecutivo de Ventas Odoo</option><option>Luis Rafael Henriquez</option><option>Otro</option></select></div><div class="field"><label>Campaña de origen</label><select id="s-campaign"></select></div></div>
-  <div class="field"><label class="bchk"><input type="checkbox" id="s-implfree"><span><b>Implementación gratis</b> — promo: no se cobra la implementación</span></label></div>
   <div class="preview" id="s-preview"></div>
   <div class="actions" style="margin-top:16px"><button class="btn ghost" data-close="modal-sale">Cancelar</button><button class="btn" id="s-save">Guardar venta</button></div>
 </div></div>
@@ -891,8 +895,8 @@ canvas{max-width:100%}
   <input type="hidden" id="ls-id" /><input type="hidden" id="ls-line" />
   <div class="field"><label>Nombre del cliente <span class="req">*</span></label><input id="ls-client" placeholder="Ej. Boutique Karla / Pupusería La Bendición" /></div>
   <div class="row c2"><div class="field"><label>Plan</label><select id="ls-plan"></select></div><div class="field"><label>Modalidad</label><select id="ls-mode"><option value="mensual">Mensual</option><option value="anual">Anual adelantado (10% dcto)</option></select></div></div>
+  <div class="field"><label class="bchk promo"><input type="checkbox" id="ls-free"><span>🎁 <b>Implementación GRATIS</b> — esta venta va con la promo (no se cobra la implementación)</span></label></div>
   <div class="row c2"><div class="field"><label>Fecha de inicio</label><input type="date" id="ls-start" /></div><div class="field"><label>Origen</label><select id="ls-origen"><option value="">—</option><option>Venta cruzada Factura IA</option><option>Campaña</option><option>Referido</option><option>Directo</option><option>Otro</option></select></div></div>
-  <div class="field"><label class="bchk"><input type="checkbox" id="ls-free"><span><b>Implementación gratis</b> — promo: no se cobra la implementación</span></label></div>
   <div class="preview" id="ls-preview"></div>
   <div class="actions" style="margin-top:16px"><button class="btn ghost" data-close="modal-line-sale">Cancelar</button><button class="btn" id="ls-save">Guardar venta</button></div>
 </div></div>
