@@ -50,8 +50,10 @@ Las metas provienen del **Plan Línea SMB 2026** (14-ago-2026) y están fijas en
 │   ├── ARQUITECTURA.md       ← cómo está construido (estado, sync, seeds)
 │   ├── MODELO-DE-DATOS.md    ← entidades, campos y fórmulas
 │   └── DESPLIEGUE.md         ← cómo se publica y cómo probar en local
-├── db/
-│   └── supabase-schema.sql   ← esquema de la base (ejecutar una vez en Supabase)
+├── db/                       ← montar la base desde cero
+│   ├── README.md                 ← guía paso a paso (Supabase u otro PostgreSQL)
+│   ├── supabase-schema.sql       ← esquema: tabla + políticas RLS
+│   └── restore-datos-2026-08-31.sql  ← carga todos los datos (528 clientes, 36 contadores…)
 ├── data/                     ← datasets de referencia (solo lectura)
 │   ├── metas-smb-2026.json       ← todas las metas del plan SMB
 │   ├── planes-factura-ia.json    ← libro de precios nuevo + anterior

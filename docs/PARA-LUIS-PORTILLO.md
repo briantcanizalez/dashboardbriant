@@ -61,6 +61,7 @@ Luis: este documento te explica en 10 minutos cómo está construido y operado S
 - **Modelo completo:** `docs/MODELO-DE-DATOS.md` (entidades, campos y fórmulas de MRR/ARR/comisiones).
 - **Colecciones principales:** `sales`, `prospects`, `campaigns`, `services`, `tasks`, `contadores` (red de 36 referidores con 205 clientes históricos), `lineSales.vendi/comandi`, `history`, `config`.
 - **Respaldo:** exportable a JSON desde la app (Ajustes); restaurable con un clic. Adicional al respaldo natural de Supabase.
+- **Para montarlo en tu propia base:** `db/README.md` tiene la guía paso a paso — esquema (`supabase-schema.sql`), carga de datos (`restore-datos-2026-08-31.sql`, con los 528 clientes, 175 prospectos y 36 contadores embebidos) y qué cambiar si se lleva a un PostgreSQL fuera de Supabase.
 - **Multi-usuario:** la tabla ya está aislada por usuario vía RLS. Si el equipo comercial crece, basta crear cuentas — cada quien vería su propio dashboard (hoy no hay vista consolidada de equipo; sería desarrollo nuevo).
 
 ## 6. Operación

@@ -39,8 +39,11 @@ En modo local los datos viven solo en ese navegador — ideal para probar seeds,
 
 1. **Base:** Supabase → SQL Editor → pega [`db/supabase-schema.sql`](../db/supabase-schema.sql) → Run. Crea la tabla `dashboards` con RLS.
 2. **Usuario:** Authentication → Users → *Add user* (marca **Auto Confirm User**), o desactiva *Confirm email* y crea la cuenta desde la pantalla de login.
-3. **Llaves:** Project Settings → API → copia el *Project URL* y la *anon public key* a `config.js`. *(La anon key es pública por diseño; la seguridad la dan el login y las políticas RLS.)*
-4. Push a `main` → listo.
+3. **Datos:** ejecuta [`db/restore-datos-2026-08-31.sql`](../db/restore-datos-2026-08-31.sql) cambiando el correo por el del usuario del paso 2 — carga los 528 clientes, 175 prospectos y 36 contadores. *(O entra a la app y usa Ajustes → Importar respaldo con el JSON de `backups/`.)*
+4. **Llaves:** Project Settings → API → copia el *Project URL* y la *anon public key* a `config.js`. *(La anon key es pública por diseño; la seguridad la dan el login y las políticas RLS.)*
+5. Push a `main` → listo.
+
+Guía completa, incluido cómo llevarlo a un PostgreSQL fuera de Supabase: [`db/README.md`](../db/README.md).
 
 ## Datos: respaldo y recuperación
 
