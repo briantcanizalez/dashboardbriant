@@ -94,6 +94,8 @@ Lo que el plan le pide a Tecnología (contador de conversaciones, alertas de cup
 | [ARQUITECTURA.md](ARQUITECTURA.md) | Estado, sync, seeds, catálogos, sistema de vistas |
 | [MODELO-DE-DATOS.md](MODELO-DE-DATOS.md) | Entidades, campos y todas las fórmulas |
 | [DESPLIEGUE.md](DESPLIEGUE.md) | Publicación, entorno local, setup desde cero |
+| [PORTABILIDAD.md](PORTABILIDAD.md) | **Sacarlo de Vercel/Supabase**: otro hosting, base propia, backend on-premise (con código de referencia) o sin backend |
+| [../db/README.md](../db/README.md) | Montar la base desde cero y cargar los datos |
 | [MANUAL-DE-USO.md](MANUAL-DE-USO.md) | La app desde el punto de vista del usuario |
 | [../CHANGELOG.md](../CHANGELOG.md) | Qué se construyó y cuándo |
 

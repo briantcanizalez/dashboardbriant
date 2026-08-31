@@ -77,7 +77,7 @@ El esquema es Postgres estándar salvo dos cosas propias de Supabase: la referen
 - Quitar o adaptar las políticas RLS al mecanismo de autenticación que se use.
 - En el script de datos, cambiar el `select ... from auth.users where email = ...` por el `user_id` que corresponda.
 
-La app en sí solo necesita un endpoint que acepte leer y escribir ese documento JSON.
+La app en sí solo necesita un endpoint que acepte leer y escribir ese documento JSON. La guía completa —con backend de referencia en Node + Express y el adaptador para el front— está en [../docs/PORTABILIDAD.md](../docs/PORTABILIDAD.md).
 
 ---
 

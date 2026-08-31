@@ -46,10 +46,12 @@ Las metas provienen del **Plan Línea SMB 2026** (14-ago-2026) y están fijas en
 ├── README.md             ← este archivo
 ├── CHANGELOG.md          ← historial de cambios
 ├── docs/
-│   ├── MANUAL-DE-USO.md      ← guía de usuario, vista por vista
+│   ├── MANUAL-DE-USO.md      ← guía de usuario, vista por vista + matriz de funciones
 │   ├── ARQUITECTURA.md       ← cómo está construido (estado, sync, seeds)
 │   ├── MODELO-DE-DATOS.md    ← entidades, campos y fórmulas
-│   └── DESPLIEGUE.md         ← cómo se publica y cómo probar en local
+│   ├── DESPLIEGUE.md         ← cómo se publica y cómo probar en local
+│   ├── PORTABILIDAD.md       ← llevarlo a otra infra (hosting, base o backend propios)
+│   └── PARA-LUIS-PORTILLO.md ← nota técnica para Tecnología
 ├── db/                       ← montar la base desde cero
 │   ├── README.md                 ← guía paso a paso (Supabase u otro PostgreSQL)
 │   ├── supabase-schema.sql       ← esquema: tabla + políticas RLS
@@ -60,8 +62,11 @@ Las metas provienen del **Plan Línea SMB 2026** (14-ago-2026) y están fijas en
 │   ├── tarifario-stradia.json    ← planes de Vendi y Comandi
 │   └── contadores-seed.json      ← red de contadores (36) y sus 205 clientes
 └── backups/                  ← copias de seguridad del estado (restaurables desde Ajustes)
-    ├── README.md                 ← cómo restaurar y cómo agregar respaldos en vivo
-    └── respaldo-sistema-2026-08-31.json
+    ├── README.md                 ← cómo restaurar, y el detalle de la conciliación con Odoo
+    ├── smb-erp-respaldo-2026-08-31-post-conciliacion.json   ← ⭐ respaldo de referencia
+    ├── smb-erp-respaldo-2026-08-31.json                     ← estado previo a la conciliación
+    ├── respaldo-sistema-2026-08-31.json                     ← solo lo que cargan las semillas
+    └── conciliacion-odoo-2026-08-31.xlsx                    ← reporte del cruce con Odoo
 ```
 
 ## Inicio rápido
@@ -96,6 +101,7 @@ npx serve .
 | [docs/MODELO-DE-DATOS.md](docs/MODELO-DE-DATOS.md) | Todas las entidades, campos y fórmulas de cálculo |
 | [docs/DESPLIEGUE.md](docs/DESPLIEGUE.md) | Deploy, entorno local y recuperación de datos |
 | [docs/PARA-LUIS-PORTILLO.md](docs/PARA-LUIS-PORTILLO.md) | Nota técnica para Tecnología: cómo está montado, decisiones, accesos y límites |
+| [docs/PORTABILIDAD.md](docs/PORTABILIDAD.md) | Cómo llevarlo a otra infraestructura: otro hosting, base propia, backend on-premise o sin backend |
 | [CHANGELOG.md](CHANGELOG.md) | Qué se ha construido y cuándo |
 
 ---
