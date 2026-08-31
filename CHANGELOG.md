@@ -2,6 +2,14 @@
 
 Historial de cambios del dashboard. Formato: fecha · qué cambió.
 
+## 2026-08-31 · Conciliación con Odoo
+
+Cruce de las 527 suscripciones activas del export `sale.order` contra el dashboard. Cierre: **528 clientes en ambos lados**, recurrente mensual $7,531.09 (2 centavos de diferencia por redondeo) y prepago anual $13,060.95 **exacto**.
+
+- **Migraciones `seedSyncOdooV1` a `V6`** (one-shot, cada una confirmada por Briant): Medina Cuéllar a mensual · Rosales López, Inversiones Locales, Inversiones y Servicios Los 4 y Grupo Inlosa a Básico Anual $60 · Ana Ruth Ramírez a Starter Anual $113.87 · Castro Barraza a Básico Anual (venta y cartera del contador) · **Bautista Renderos de mensual $180 a anual $180/año** · Javier Larreynaga a Básico Anual · baja de Lilián García.
+- **Respaldo de referencia** en `backups/smb-erp-respaldo-2026-08-31-post-conciliacion.json` + reporte `conciliacion-odoo-2026-08-31.xlsx`.
+- Aprendizajes registrados en `backups/README.md`: una fecha de próxima factura lejana no implica error (clientes VIP y meses pagados por adelantado); la señal real es un plan "Mensual" cuyo monto equivale a un año.
+
 ## 2026-08-31 · SMB ERP v2
 
 ### Renombre y documentación
