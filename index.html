@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#0b0b12" />
 <link rel="icon" type="image/svg+xml" href="favicon.svg" />
 <link rel="apple-touch-icon" href="favicon.svg" />
-<title>Odoo Task · Dashboard Ejecutivo</title>
+<title>SMB ERP · Grupo Consiti</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -565,8 +565,8 @@ th.ct-sort:hover{color:var(--txt)}
 <div id="auth-gate">
   <div class="auth-card">
     <div class="gc"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.2 4.2L19 6.8"/></svg></div>
-    <h2 id="auth-title">Odoo Task</h2>
-    <p class="ahint">Odoo Factura IA · Acceso privado</p>
+    <h2 id="auth-title">SMB ERP</h2>
+    <p class="ahint">Grupo Consiti · Línea SMB · Acceso privado</p>
     <div id="auth-loading">Conectando…</div>
     <div id="auth-form" style="display:none">
       <div id="auth-error"></div>
@@ -582,7 +582,7 @@ th.ct-sort:hover{color:var(--txt)}
 
   <!-- SIDEBAR -->
   <aside class="side">
-    <div class="brand"><div class="gc"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.2 4.2L19 6.8"/></svg></div><div><div class="bt">Odoo Task</div><div class="bs">Odoo Factura IA</div></div></div>
+    <div class="brand"><div class="gc"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.2 4.2L19 6.8"/></svg></div><div><div class="bt">SMB ERP</div><div class="bs">Grupo Consiti · Línea SMB</div></div></div>
     <div class="navlbl">Panel</div>
     <nav class="nav" data-nav>
       <button data-view="inicio" class="active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9.5L12 3l9 6.5"/><path d="M5 10v10h14V10"/></svg><span>Inicio</span><span class="navbadge" data-badge></span></button>
@@ -2691,7 +2691,7 @@ function renderComision(){
 function fillConfig(){const c=state.config;$('c-baseClients').value=c.baseClients;$('c-goalClients').value=c.goalClients;$('c-baseRecurring').value=c.baseRecurring;$('c-goalRecurring').value=c.goalRecurring;$('c-annual').value=c.annualPayments;$('c-mrrmes').value=c.mrrMesMeta;$('c-salary').value=c.salaryBase;$('c-bono').value=c.bono;$('c-metaMes').value=c.metaMes;$('c-fiaMetaSMB').value=c.fiaMetaSMB;$('c-vendiMetaMRR').value=c.vendiMetaMRR;$('c-comandiMetaMRR').value=c.comandiMetaMRR;$('c-vendiMetaCli').value=c.vendiMetaCli;$('c-comandiMetaCli').value=c.comandiMetaCli;renderBackupBanner();}
 $('cfg-save').onclick=()=>{const c=state.config;c.baseClients=+$('c-baseClients').value||0;c.goalClients=+$('c-goalClients').value||1;c.baseRecurring=+$('c-baseRecurring').value||0;c.goalRecurring=+$('c-goalRecurring').value||1;c.annualPayments=+$('c-annual').value||0;c.mrrMesMeta=+$('c-mrrmes').value||0;c.fiaMetaSMB=+$('c-fiaMetaSMB').value||18928;c.vendiMetaMRR=+$('c-vendiMetaMRR').value||6921;c.comandiMetaMRR=+$('c-comandiMetaMRR').value||4582;c.vendiMetaCli=+$('c-vendiMetaCli').value||30;c.comandiMetaCli=+$('c-comandiMetaCli').value||18;save();go('inicio');};
 $('cfg-save2').onclick=()=>{const c=state.config;c.salaryBase=+$('c-salary').value||0;c.bono=+$('c-bono').value||0;c.metaMes=+$('c-metaMes').value||24;save();alert('Comisiones actualizadas.');go('metas');};
-$('cfg-export').onclick=()=>{const b=new Blob([JSON.stringify(state,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='dashboard-odoo-factura-'+todayISO()+'.json';a.click();state.config.lastBackup=todayISO();save();renderBackupBanner();};
+$('cfg-export').onclick=()=>{const b=new Blob([JSON.stringify(state,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='smb-erp-respaldo-'+todayISO()+'.json';a.click();state.config.lastBackup=todayISO();save();renderBackupBanner();};
 $('cfg-import-btn').onclick=()=>$('importer').click();
 $('importer').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{state=normalize(JSON.parse(r.result));save();go('inicio');}catch(err){alert('Archivo inválido.');}};r.readAsText(f);};
 $('cfg-csv-ventas').onclick=()=>{const rows=[['cliente','plan','modalidad','fecha','baja']].concat(state.sales.map(s=>[s.client,s.plan,s.mode,s.start,s.churned?'si':'no']));const csv=rows.map(r=>r.map(x=>`"${(x??'').toString().replace(/"/g,'""')}"`).join(',')).join('\n');const b=new Blob([csv],{type:'text/csv'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='ventas-'+todayISO()+'.csv';a.click();};

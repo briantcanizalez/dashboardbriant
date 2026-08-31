@@ -1,0 +1,35 @@
+{
+  "producto": "Factura IA",
+  "marca": "Grupo Consiti",
+  "moneda": "USD",
+  "corte_precio_nuevo": "2026-08-01",
+  "regla": "Ventas con fecha de inicio >= corte usan el libro nuevo, salvo priceBook explícito ('legacy' | 'v2026-08')",
+  "libro_nuevo_v2026_08": {
+    "starter":        { "mensual": 14.99, "implementacion": 40 },
+    "basicoMensual":  { "mensual": 5,     "implementacion": 30, "label": "Plan Básico Mensual" },
+    "professional":   { "mensual": 24.99, "implementacion": 50 },
+    "advanced":       { "mensual": 34.99, "implementacion": 60 },
+    "deluxe":         { "mensual": 59.99, "implementacion": 70 },
+    "enterprise":     { "mensual": 150,   "implementacion": 100 },
+    "basicoAnual":    { "mensual": 5,     "implementacion": 30, "soloAnual": true },
+    "starterAnual":   { "mensual": 9.99,  "implementacion": 30, "soloAnual": true },
+    "professionalIncrize": { "mensual": 20, "implementacion": 0, "soloAnual": true }
+  },
+  "libro_anterior_legacy": {
+    "starter":      { "mensual": 9.99,  "implementacion": 30 },
+    "professional": { "mensual": 19.99, "implementacion": 40 },
+    "advanced":     { "mensual": 29.99, "implementacion": 50 },
+    "deluxe":       { "mensual": 49.99, "implementacion": 60 },
+    "enterprise":   { "mensual": 100,   "implementacion": 100 }
+  },
+  "servicios_especiales": {
+    "carga_productos_clientes_proveedores": 50,
+    "capacitacion_virtual_por_hora": 50,
+    "capacitacion_presencial": 100
+  },
+  "reglas": {
+    "mrr_desde_mes": 3,
+    "anual": "suma a pagos anuales, no al MRR",
+    "promo_implGratis": "implementación $0 en KPIs, campañas y comisiones"
+  }
+}

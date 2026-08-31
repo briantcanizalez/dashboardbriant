@@ -1,0 +1,22 @@
+{
+  "productos": ["Vendi", "Comandi"],
+  "marca": "Stradia",
+  "moneda": "USD",
+  "fuente": "Tarifarios Vendi/Comandi · Blueprint v1 · actualizado 24-ago-2026",
+  "nota": "Misma lista de precios para ambos productos",
+  "planes": [
+    { "clave": "emprende",    "nombre": "Emprende",    "publicado": false, "conversaciones_mes": 500,   "locales": 1, "mensual": 50,  "implementacion": 50 },
+    { "clave": "crece",       "nombre": "Crece",       "publicado": true,  "conversaciones_mes": 1000,  "locales": 1, "mensual": 99,  "implementacion": 99 },
+    { "clave": "profesional", "nombre": "Profesional", "publicado": true,  "conversaciones_mes": 3000,  "locales": 2, "mensual": 299, "implementacion": 490, "ancla": true },
+    { "clave": "empresarial", "nombre": "Empresarial", "publicado": true,  "conversaciones_mes": 6000,  "locales": 3, "mensual": 499, "implementacion": 990 },
+    { "clave": "corporativo", "nombre": "Corporativo", "publicado": true,  "conversaciones_mes": 10000, "locales": 5, "mensual": 899, "implementacion": 1900 }
+  ],
+  "reglas": {
+    "excedente_por_conversacion": 0.10,
+    "local_adicional_mes": 25,
+    "contrato": "1 año con garantía de salida a 30 días (se devuelve implementación)",
+    "prepago_anual": "10% de descuento + implementación bonificada",
+    "comision_sobre_ventas_o_pedidos": false,
+    "conversacion": "todo lo que un cliente intercambia con el agente en una ventana de 24 h"
+  }
+}

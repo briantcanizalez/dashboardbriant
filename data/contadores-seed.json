@@ -1,0 +1,1935 @@
+{
+  "fuente": "contadores-referidores-fia.vercel.app · corte 31-ago-2026 (importado al dashboard vía seedContadoresV1)",
+  "contadores": 36,
+  "clientes": 205,
+  "nota": "En plan anual, rr es el monto del año. Esta es la base histórica; las altas nuevas se vinculan por contadorId en las ventas.",
+  "red": [
+    {
+      "id": "fatima-duran",
+      "nombre": "Licda. Fátima Yolanda Durán de Rodríguez",
+      "clientes": [
+        {
+          "empresa": "Tienda Jaziel",
+          "contacto": "Ricardo Antonio Chacón Chacón",
+          "planNombre": "Básico",
+          "plan": "mensual",
+          "rr": 5,
+          "impl": 30,
+          "alta": "2025-10",
+          "nota": "Descontinuado — migrar a Starter en renovación"
+        },
+        {
+          "empresa": "Servicio Técnico JR",
+          "contacto": "José Reynaldo Reyes Noyola",
+          "planNombre": "Starter",
+          "plan": "mensual",
+          "rr": 9.99,
+          "impl": 30,
+          "alta": "2026-02"
+        },
+        {
+          "empresa": "Tienda y Lácteos Rivas",
+          "contacto": "Daniel Antonio Martínez Rivas",
+          "planNombre": "Básico",
+          "plan": "anual",
+          "rr": 60,
+          "impl": 30,
+          "alta": "2026-05",
+          "nota": "Descontinuado — migrar a Starter Anual"
+        },
+        {
+          "empresa": "Librería y Papelería Rivas",
+          "contacto": "José Fernando Martínez Rivas",
+          "planNombre": "Básico",
+          "plan": "anual",
+          "rr": 60,
+          "impl": 30,
+          "alta": "2026-05",
+          "nota": "Descontinuado — migrar a Starter Anual"
+        },
+        {
+          "empresa": "H & H Herrera Rent a Car",
+          "contacto": "José Mauricio Escobar Herrera",
+          "planNombre": "Básico",
+          "plan": "anual",
+          "rr": 60,
+          "impl": 30,
+          "alta": "2026-05",
+          "nota": "Descontinuado — migrar a Starter Anual"
+        },
+        {
+          "empresa": "ALE Rent a Car's",
+          "contacto": "Luis Alberto González Córdova",
+          "planNombre": "Básico",
+          "plan": "anual",
+          "rr": 60,
+          "impl": 30,
+          "alta": "2026-05",
+          "nota": "Descontinuado — migrar a Starter Anual"
+        },
+        {
+          "empresa": "Dennys Rent a Car",
+          "contacto": "Dennys Edward González Córdova",
+          "planNombre": "Básico",
+          "plan": "anual",
+          "rr": 60,
+          "impl": 30,
+          "alta": "2026-05",
+          "nota": "Descontinuado — migrar a Starter Anual"
+        },
+        {
+          "empresa": "Rent Cars y Tours El Salvador",
+          "contacto": "Fredi Arnoldo Castillo Machado",
+          "planNombre": "Básico",
+          "plan": "anual",
+          "rr": 60,
+          "impl": 30,
+          "alta": "2026-06",
+          "nota": "Descontinuado — migrar a Starter Anual"
+        },
+        {
+          "empresa": "Álvaro Alberto Reyes",
+          "contacto": "Álvaro Alberto Reyes",
+          "planNombre": "Básico",
+          "plan": "anual",
+          "rr": 60,
+          "impl": 30,
+          "alta": "2026-07",
+          "nota": "Descontinuado — migrar a Starter Anual"
+        },
+        {
+          "empresa": "José Rolando Escalante Leiva",
+          "contacto": "José Rolando Escalante Leiva",
+          "planNombre": "Básico",
+          "plan": "anual",
+          "rr": 60,
+          "impl": 30,
+          "alta": "2026-07",
+          "nota": "Descontinuado — migrar a Starter Anual"
+        }
+      ]
+    },
+    {
+      "id": "marisela-genoves",
+      "nombre": "Licda. Marisela Genovés",
+      "clientes": [
+        {
+          "empresa": "Importadora y Exportadora R&R, S.A. de C.V.",
+          "planNombre": "Starter",
+          "plan": "anual",
+          "rr": 113.89,
+          "impl": 30,
+          "alta": "2026-06",
+          "nota": "Anual estándar −5%"
+        },
+        {
+          "empresa": "Ena Lilian Ortiz",
+          "contacto": "Ena Lilian Ortiz",
+          "planNombre": "Starter",
+          "plan": "mensual",
+          "rr": 9.99,
+          "impl": 30,
+          "alta": "2025-09"
+        },
+        {
+          "empresa": "Luis Humberto Rodríguez Santos",
+          "contacto": "Luis Humberto Rodríguez Santos",
+          "planNombre": "Starter",
+          "plan": "mensual",
+          "rr": 9.99,
+          "impl": 30,
+          "alta": "2025-09"
+        },
+        {
+          "empresa": "Edwin Orlando Rojas Corado",
+          "contacto": "Edwin Orlando Rojas Corado",
+          "planNombre": "Starter",
+          "plan": "mensual",
+          "rr": 9.99,
+          "impl": 30,
+          "alta": "2025-09"
+        },
+        {
+          "empresa": "Rosa Delmi Vásquez de Herrarte",
+          "contacto": "Rosa Delmi Vásquez de Herrarte",
+          "planNombre": "Advanced",
+          "plan": "mensual",
+          "rr": 29.99,
+          "impl": 50,
+          "alta": "2025-09"
+        },
+        {
+          "empresa": "Mauricio Ismael Rodríguez Sandoval",
+          "contacto": "Mauricio Ismael Rodríguez Sandoval",
+          "planNombre": "Starter",
+          "plan": "mensual",
+          "rr": 9.99,
+          "impl": 30,
+          "alta": "2026-01"
+        },
+        {
+          "empresa": "Rafael Mauricio Rodríguez Escobar",
+          "contacto": "Rafael Mauricio Rodríguez Escobar",
+          "planNombre": "Starter",
+          "plan": "mensual",
+          "rr": 9.99,
+          "impl": 30,
+          "alta": "2026-01"
+        },
+        {
+          "empresa": "José Elías Ortega Cruz",
+          "contacto": "José Elías Ortega Cruz",
+          "planNombre": "Professional",
+          "plan": "mensual",
+          "rr": 19.99,
+          "impl": 40,
+          "alta": "2026-02"
+        },
+        {
+          "empresa": "Hugo Armando Cerna Cruz",
+          "contacto": "Hugo Armando Cerna Cruz",
+          "planNombre": "Starter",
+          "plan": "mensual",
+          "rr": 9.99,
+          "impl": 30,
+          "alta": "2026-02"
+        },
+        {
+          "empresa": "Rafael Humberto Genovez Rodríguez",
+          "contacto": "Rafael Humberto Genovez Rodríguez",
+          "planNombre": "Starter",
+          "plan": "mensual",
+          "rr": 9.99,
+          "impl": 30,
+          "alta": "2026-02"
+        },
+        {
+          "empresa": "Jorge Ernesto Polanco",
+          "contacto": "Jorge Ernesto Polanco",
+          "planNombre": "Professional",
+          "plan": "mensual",
+          "rr": 19.99,
+          "impl": 40,
+          "alta": "2026-03"
+        },
+        {
+          "empresa": "Marisela Guadalupe Genovez de Rodríguez",
+          "contacto": "Marisela Guadalupe Genovez de Rodríguez",
+          "planNombre": "Starter",
+          "plan": "mensual",
+          "rr": 9.99,
+          "impl": 30,
+          "alta": "2026-05"
+        },
+        {
+          "empresa": "Rafael Ernesto Genovez",
+          "contacto": "Rafael Ernesto Genovez",
+          "planNombre": "Starter",
+          "plan": "mensual",
+          "rr": 9.99,
+          "impl": 30,
+          "alta": "2026-05"
+        },
+        {
+          "empresa": "Pedro Armando Rosales Marroquín",
+          "contacto": "Pedro Armando Rosales Marroquín",
+          "planNombre": "Starter",
+          "plan": "mensual",
+          "rr": 9.99,
+          "impl": 30,
+          "alta": "2026-05"
+        },
+        {
+          "empresa": "Francisca Elizabeth Martínez Palencia",
+          "contacto": "Francisca Elizabeth Martínez Palencia",
+          "planNombre": "Starter",
+          "plan": "mensual",
+          "rr": 9.99,
+          "impl": 30,
+          "alta": "2026-05"
+        },
+        {
+          "empresa": "Raúl Mauricio García Hernández",
+          "contacto": "Raúl Mauricio García Hernández",
+          "planNombre": "Professional",
+          "plan": "mensual",
+          "rr": 19.99,
+          "impl": 40,
+          "alta": "2026-05"
+        },
+        {
+          "empresa": "Oscar Armando Genovez Rodríguez",
+          "contacto": "Oscar Armando Genovez Rodríguez",
+          "planNombre": "Starter",
+          "plan": "mensual",
+          "rr": 9.99,
+          "impl": 30,
+          "alta": "2026-05"
+        },
+        {
+          "empresa": "José Miguel García Cortez",
+          "contacto": "José Miguel García Cortez",
+          "planNombre": "Starter",
+          "plan": "mensual",
+          "rr": 9.99,
+          "impl": 30,
+          "alta": "2026-05"
+        },
+        {
+          "empresa": "Javier Armando Cerna Castillo",
+          "contacto": "Javier Armando Cerna Castillo",
+          "planNombre": "Starter",
+          "plan": "mensual",
+          "rr": 9.99,
+          "impl": 30,
+          "alta": "2026-05"
+        }
+      ]
+    },
+    {
+      "id": "roberto",
+      "nombre": "Lic. Roberto",
+      "clientes": [
+        {
+          "empresa": "Miriam Beatriz Bautista Renderos",
+          "planNombre": "Professional Increze",
+          "plan": "anual",
+          "rr": 240,
+          "impl": 0,
+          "alta": "2025-08",
+          "nota": "Canal Increze · comercial Luis Rafael Henríquez · vence 2026-08-08"
+        },
+        {
+          "empresa": "Villanueva García, Andrés Orlando",
+          "planNombre": "Professional Increze",
+          "plan": "anual",
+          "rr": 240,
+          "impl": 0,
+          "alta": "2025-09",
+          "nota": "Canal Increze · comercial Luis Rafael Henríquez · vence 2026-09-17"
+        },
+        {
+          "empresa": "Bautista Ramírez, Miguel Ángel",
+          "planNombre": "Professional Increze",
+          "plan": "anual",
+          "rr": 240,
+          "impl": 0,
+          "alta": "2025-09",
+          "nota": "Canal Increze · comercial Luis Rafael Henríquez · vence 2026-09-17"
+        },
+        {
+          "empresa": "Renderos de Bautista, Miriam Lorena",
+          "planNombre": "Professional Increze",
+          "plan": "anual",
+          "rr": 240,
+          "impl": 0,
+          "alta": "2025-09",
+          "nota": "Canal Increze · comercial Luis Rafael Henríquez · vence 2026-09-17"
+        },
+        {
+          "empresa": "CLIMA INDUSTRIAL S.A DE C.V.",
+          "planNombre": "Professional Increze",
+          "plan": "anual",
+          "rr": 240,
+          "impl": 0,
+          "alta": "2025-10",
+          "nota": "Canal Increze · comercial Luis Rafael Henríquez · vence 2026-10-15"
+        },
+        {
+          "empresa": "COBERSAL SERVICIOS, S.A. DE C.V.",
+          "planNombre": "Professional Increze",
+          "plan": "anual",
+          "rr": 240,
+          "impl": 0,
+          "alta": "2025-11",
+          "nota": "Canal Increze · comercial Luis Rafael Henríquez · vence 2026-11-19"
+        },
+        {
+          "empresa": "EL PANITA, S.A. DE C.V.",
+          "planNombre": "Professional Increze",
+          "plan": "anual",
+          "rr": 240,
+          "impl": 0,
+          "alta": "2025-11",
+          "nota": "Canal Increze · comercial Luis Rafael Henríquez · vence 2026-11-19"
+        },
+        {
+          "empresa": "MATASOL AYALA, JOSE HECTOR HUGO",
+          "planNombre": "Professional Increze",
+          "plan": "anual",
+          "rr": 240,
+          "impl": 0,
+          "alta": "2025-11",
+          "nota": "Canal Increze · comercial Luis Rafael Henríquez · vence 2026-11-19"
+        },
+        {
+          "empresa": "GARCIA UMANZOR, MARTIN",
+          "planNombre": "Professional Increze",
+          "plan": "anual",
+          "rr": 240,
+          "impl": 0,
+          "alta": "2025-11",
+          "nota": "Canal Increze · comercial Luis Rafael Henríquez · vence 2026-11-28"
+        },
+        {
+          "empresa": "FONDO DE TITULARIZACION DE INMUEBLES HENCORP VALORES COMPLEJO EPIC CERO UNO",
+          "planNombre": "Professional Increze",
+          "plan": "anual",
+          "rr": 360,
+          "impl": 0,
+          "alta": "2026-01",
+          "nota": "Canal Increze · comercial Luis Rafael Henríquez · vence 2027-02-01"
+        },
+        {
+          "empresa": "COSTA BEBER DE VASQUEZ, IZABEL",
+          "planNombre": "Professional Increze",
+          "plan": "anual",
+          "rr": 240,
+          "impl": 0,
+          "alta": "2026-01",
+          "nota": "Canal Increze · comercial Luis Rafael Henríquez · vence 2027-02-01"
+        },
+        {
+          "empresa": "INCREZE ACCOUNTING SA DE CV",
+          "planNombre": "Professional Increze",
+          "plan": "anual",
+          "rr": 240,
+          "impl": 0,
+          "alta": "2025-07",
+          "nota": "Canal Increze · comercial Luis Rafael Henríquez · vence 2027-05-10"
+        },
+        {
+          "empresa": "FRANCISCO BENEKE LIMA",
+          "planNombre": "Professional Increze",
+          "plan": "anual",
+          "rr": 240,
+          "impl": 0,
+          "alta": "2025-07",
+          "nota": "Canal Increze · comercial Luis Rafael Henríquez · vence 2027-06-08"
+        },
+        {
+          "empresa": "PRODUCTOS Y SERVICIOS RAMOS, S.A. DE C.V.",
+          "planNombre": "Professional Increze",
+          "plan": "anual",
+          "rr": 240,
+          "impl": 0,
+          "alta": "2025-07",
+          "nota": "Canal Increze · comercial Luis Rafael Henríquez · vence 2027-06-18"
+        },
+        {
+          "empresa": "INJASIM, S.A. DE C.V.",
+          "planNombre": "Professional Increze",
+          "plan": "anual",
+          "rr": 240,
+          "impl": 0,
+          "alta": "2025-07",
+          "nota": "Canal Increze · comercial Luis Rafael Henríquez · vence 2027-06-19"
+        },
+        {
+          "empresa": "BAUTISTA RENDEROS, MIGUEL ANGEL",
+          "planNombre": "Professional Increze",
+          "plan": "anual",
+          "rr": 180,
+          "impl": 0,
+          "alta": "2026-06",
+          "nota": "Canal Increze · comercial Luis Rafael Henríquez · vence 2027-06-23"
+        },
+        {
+          "empresa": "GRUPO CONSITI S.A DE C.V.",
+          "planNombre": "Starter",
+          "plan": "mensual",
+          "rr": 9.99,
+          "impl": 30,
+          "alta": "2025-09",
+          "nota": "Precio por confirmar (sin match en Excel)"
+        }
+      ]
+    },
+    {
+      "id": "miguel-lue-vides",
+      "nombre": "Miguel Ángel Marvin Lue Vides",
+      "clientes": [
+        {
+          "empresa": "Jose Mauricio Tejada Moran",
+          "planNombre": "Starter",
+          "plan": "mensual",
+          "rr": 9.99,
+          "impl": 30,
+          "alta": "2026-01",
+          "nota": "Comercial Odoo: René González"
+        },
+        {
+          "empresa": "Bladimir Alexander Navarro Chamul",
+          "planNombre": "Starter",
+          "plan": "mensual",
+          "rr": 9.99,
+          "impl": 30,
+          "alta": "2026-01",
+          "nota": "Comercial Odoo: René González"
+        },
+        {
+          "empresa": "GRISELDA TULA DE BARRIENTOS",
+          "planNombre": "Starter",
+          "plan": "mensual",
+          "rr": 9.99,
+          "impl": 30,
+          "alta": "2026-01",
+          "nota": "Comercial Odoo: René González"
+        },
+        {
+          "empresa": "Talleres Hernandez Garcia S.A. de C.V.",
+          "planNombre": "Starter",
+          "plan": "mensual",
+          "rr": 9.99,
+          "impl": 30,
+          "alta": "2026-01",
+          "nota": "Comercial Odoo: René González"
+        }
+      ]
+    },
+    {
+      "id": "marlon-mejia-munguia",
+      "nombre": "Marlon Alexander Mejía Munguía",
+      "clientes": [
+        {
+          "empresa": "GRUPO GOMEZ VIDES, S.A. DE C.V.",
+          "planNombre": "Advanced",
+          "plan": "mensual",
+          "rr": 29.99,
+          "impl": 50,
+          "alta": "2025-11",
+          "nota": "Comercial Odoo: René González"
+        },
+        {
+          "empresa": "MARLON ALEXANDER MEJIA MUNGUIA",
+          "planNombre": "Starter",
+          "plan": "mensual",
+          "rr": 9.99,
+          "impl": 30,
+          "alta": "2025-12",
+          "nota": "Comercial Odoo: René González"
+        },
+        {
+          "empresa": "PG STUDIO, SOCIEDAD POR ACCIONES SIMPLIFICADA DE CAPITAL VARIABLE",
+          "planNombre": "VIP",
+          "plan": "anual",
+          "rr": 5,
+          "impl": 0,
+          "alta": "2026-06",
+          "nota": "Plan VIP · trato especial (no tocar) · comercial Luis Rafael Henríquez · vence 2027-06-26"
+        }
+      ]
+    },
+    {
+      "id": "celia-maravilla",
+      "nombre": "Licda. Celia Maravilla",
+      "clientes": [
+        {
+          "empresa": "NELSON ARMANDO INGLES PORTILLO",
+          "planNombre": "Advanced",
+          "plan": "mensual",
+          "rr": 29.99,
+          "impl": 50,
+          "alta": "2025-09",
+          "nota": "Comercial Odoo: Briant Canizález"
+        },
+        {
+          "empresa": "Inversiones del Pacífico G.A S.A de C.V",
+          "planNombre": "Starter",
+          "plan": "mensual",
+          "rr": 9.99,
+          "impl": 30,
+          "alta": "2025-09",
+          "nota": "Comercial Odoo: Briant Canizález"
+        }
+      ]
+    },
+    {
+      "id": "veronica-eguizabal",
+      "nombre": "Licda. Verónica Eguizábal",
+      "clientes": [
+        {
+          "empresa": "REMBERTO ARTURO ALVAREZ CUELLAR",
+          "planNombre": "Starter",
+          "plan": "mensual",
+          "rr": 9.99,
+          "impl": 30,
+          "alta": "2025-07",
+          "nota": "Comercial Odoo: Briant Canizález"
+        },
+        {
+          "empresa": "SANDRA NOEMY FLORES GUADRON",
+          "planNombre": "Starter",
+          "plan": "mensual",
+          "rr": 9.99,
+          "impl": 30,
+          "alta": "2025-09",
+          "nota": "Comercial Odoo: Briant Canizález"
+        },
+        {
+          "empresa": "COCOA CREATIONS, S.A. DE C.V.",
+          "planNombre": "Starter",
+          "plan": "mensual",
+          "rr": 9.99,
+          "impl": 30,
+          "alta": "2025-09",
+          "nota": "Comercial Odoo: Briant Canizález"
+        },
+        {
+          "empresa": "ELMER ALEXANDER OCHOA RIVERA",
+          "planNombre": "Starter",
+          "plan": "mensual",
+          "rr": 9.99,
+          "impl": 30,
+          "alta": "2025-09",
+          "nota": "Comercial Odoo: Briant Canizález"
+        },
+        {
+          "empresa": "Ochoa Rivera, Karla Gabriela",
+          "planNombre": "Starter",
+          "plan": "mensual",
+          "rr": 9.99,
+          "impl": 30,
+          "alta": "2025-11",
+          "nota": "Comercial Odoo: Briant Canizález"
+        },
+        {
+          "empresa": "EGUIZABAL MATAMOROS, MANUEL ENRRIQUE",
+          "planNombre": "Professional",
+          "plan": "mensual",
+          "rr": 19.99,
+          "impl": 40,
+          "alta": "2025-11",
+          "nota": "Comercial Odoo: Briant Canizález"
+        },
+        {
+          "empresa": "IRAHETA ESCOBAR, DORIS BEATRIZ",
+          "planNombre": "Starter",
+          "plan": "mensual",
+          "rr": 9.99,
+          "impl": 30,
+          "alta": "2025-11",
+          "nota": "Comercial Odoo: Briant Canizález"
+        },
+        {
+          "empresa": "RICARDO ADRIAN ALVAREZ SALAZAR",
+          "planNombre": "Starter",
+          "plan": "mensual",
+          "rr": 9.99,
+          "impl": 30,
+          "alta": "2025-08"
+        }
+      ]
+    },
+    {
+      "id": "maria-alicia-de-romero",
+      "nombre": "Maria Alicia de Romero",
+      "clientes": [
+        {
+          "empresa": "Roosenbel Baldison Menéndez Pérez",
+          "planNombre": "Starter",
+          "plan": "mensual",
+          "rr": 9.99,
+          "impl": 30,
+          "alta": "2025-09"
+        },
+        {
+          "empresa": "Jerónima Elizabeth Peñate Sanchez",
+          "planNombre": "Básico",
+          "plan": "anual",
+          "rr": 60,
+          "impl": 30,
+          "alta": "2025-12"
+        },
+        {
+          "empresa": "RENE MAURICIO MEDINA SALAZAR",
+          "planNombre": "Básico",
+          "plan": "mensual",
+          "rr": 5,
+          "impl": 30,
+          "alta": "2025-07"
+        },
+        {
+          "empresa": "MARIA DEL CARMEN GUERRERO VALENCIA",
+          "planNombre": "Professional",
+          "plan": "mensual",
+          "rr": 19.99,
+          "impl": 40,
+          "alta": "2025-09"
+        },
+        {
+          "empresa": "OSCAR ANTONIO SAAVEDRA PLEITES",
+          "planNombre": "Professional",
+          "plan": "mensual",
+          "rr": 19.99,
+          "impl": 40,
+          "alta": "2026-01"
+        },
+        {
+          "empresa": "JOSUE ISAAC DEL CID ORELLANA",
+          "planNombre": "Professional",
+          "plan": "mensual",
+          "rr": 19.99,
+          "impl": 40,
+          "alta": "2025-09"
+        },
+        {
+          "empresa": "HECTOR ANTONIO MEZQUITA PEÑATE",
+          "planNombre": "Starter",
+          "plan": "mensual",
+          "rr": 9.99,
+          "impl": 30,
+          "alta": "2026-01"
+        },
+        {
+          "empresa": "WALTER EDUARDO LOBOS GONZALEZ",
+          "planNombre": "Professional",
+          "plan": "mensual",
+          "rr": 19.99,
+          "impl": 40,
+          "alta": "2025-11"
+        },
+        {
+          "empresa": "JOSE ALEXANDER BONILLA SALGUERO",
+          "planNombre": "Professional",
+          "plan": "mensual",
+          "rr": 19.99,
+          "impl": 40,
+          "alta": "2025-11"
+        },
+        {
+          "empresa": "JULIO ERNESTO GARCIA COLOCHO",
+          "planNombre": "Básico",
+          "plan": "anual",
+          "rr": 60,
+          "impl": 30,
+          "alta": "2025-12"
+        },
+        {
+          "empresa": "Yolanda Marcela Martínez Gutiérrez",
+          "planNombre": "Professional",
+          "plan": "mensual",
+          "rr": 19.99,
+          "impl": 40,
+          "alta": "2025-11"
+        },
+        {
+          "empresa": "WILBER AMILCAR BORJAS MANCIA",
+          "planNombre": "Básico",
+          "plan": "anual",
+          "rr": 60,
+          "impl": 30,
+          "alta": "2025-12"
+        },
+        {
+          "empresa": "CHILIN TORRES, JUAN RICARDO",
+          "planNombre": "Básico",
+          "plan": "anual",
+          "rr": 60,
+          "impl": 30,
+          "alta": "2025-12"
+        },
+        {
+          "empresa": "ALMA JUDITH MONTERROZA ACUÑA",
+          "planNombre": "Starter",
+          "plan": "mensual",
+          "rr": 9.99,
+          "impl": 30,
+          "alta": "2026-03"
+        },
+        {
+          "empresa": "JONATAN ALFREDO MOLINA MARTINEZ",
+          "planNombre": "Starter",
+          "plan": "mensual",
+          "rr": 9.99,
+          "impl": 30,
+          "alta": "2026-01"
+        },
+        {
+          "empresa": "RAQUEL MARITZA MAURICIO NAJERA",
+          "planNombre": "Starter",
+          "plan": "mensual",
+          "rr": 9.99,
+          "impl": 30,
+          "alta": "2026-01"
+        },
+        {
+          "empresa": "Karla Elizabeth Lemus Zetino",
+          "planNombre": "Professional",
+          "plan": "anual",
+          "rr": 227.88,
+          "impl": 40,
+          "alta": "2026-01"
+        },
+        {
+          "empresa": "LUCILA VILMA QUIJADA PINEDA",
+          "planNombre": "Professional",
+          "plan": "mensual",
+          "rr": 19.99,
+          "impl": 40,
+          "alta": "2026-01"
+        },
+        {
+          "empresa": "Mildred Mariela Jimenez López",
+          "planNombre": "Professional",
+          "plan": "anual",
+          "rr": 227.88,
+          "impl": 40,
+          "alta": "2026-01"
+        },
+        {
+          "empresa": "Restaurante Kailan Chino s.a.s. de c.v.",
+          "planNombre": "Deluxe",
+          "plan": "mensual",
+          "rr": 59.99,
+          "impl": 60,
+          "alta": "2026-02"
+        },
+        {
+          "empresa": "Leonel Antony Linares Perdomo",
+          "planNombre": "Starter",
+          "plan": "mensual",
+          "rr": 9.99,
+          "impl": 30,
+          "alta": "2026-02"
+        },
+        {
+          "empresa": "OSCAR RAFAEL COLOCHO BARCENES",
+          "planNombre": "Starter",
+          "plan": "mensual",
+          "rr": 9.99,
+          "impl": 30,
+          "alta": "2026-04"
+        },
+        {
+          "empresa": "NEXAI MEDIA, SOCIEDAD POR ACCIONES SIMPLIFICADA DE CAPITAL VARIABLE",
+          "planNombre": "Starter",
+          "plan": "mensual",
+          "rr": 9.99,
+          "impl": 30,
+          "alta": "2026-05"
+        },
+        {
+          "empresa": "WALTER ARMANDO RODRIGUEZ GARCIA",
+          "planNombre": "Professional",
+          "plan": "mensual",
+          "rr": 19.99,
+          "impl": 40,
+          "alta": "2026-04"
+        },
+        {
+          "empresa": "JEREMIAS MINERO CANO",
+          "planNombre": "Professional",
+          "plan": "mensual",
+          "rr": 19.99,
+          "impl": 40,
+          "alta": "2026-04"
+        },
+        {
+          "empresa": "ROBINSON MENENDEZ PEREZ",
+          "planNombre": "Advanced",
+          "plan": "mensual",
+          "rr": 29.99,
+          "impl": 50,
+          "alta": "2026-06"
+        },
+        {
+          "empresa": "CECILIA ALEJANDRA MARTINEZ PEREZ",
+          "planNombre": "Starter",
+          "plan": "mensual",
+          "rr": 9.99,
+          "impl": 30,
+          "alta": "2026-04"
+        },
+        {
+          "empresa": "ERICK FRANCISCO RUANO FUENTES",
+          "planNombre": "Básico",
+          "plan": "anual",
+          "rr": 60,
+          "impl": 30,
+          "alta": "2026-05"
+        },
+        {
+          "empresa": "MEDINA CUELLAR, JOSE ALBERTO",
+          "planNombre": "Básico",
+          "plan": "anual",
+          "rr": 60,
+          "impl": 30,
+          "alta": "2026-06"
+        },
+        {
+          "empresa": "JAIME GUILLERMO PINEDA ZOMETA",
+          "planNombre": "Básico",
+          "plan": "anual",
+          "rr": 60,
+          "impl": 30,
+          "alta": "2026-04"
+        },
+        {
+          "empresa": "MIGUEL ALFONSO PRIETO HERNÁNDEZ",
+          "planNombre": "Starter",
+          "plan": "mensual",
+          "rr": 9.99,
+          "impl": 30,
+          "alta": "2026-06"
+        },
+        {
+          "empresa": "SALVADOR ANTONIO LOPEZ YAN",
+          "planNombre": "Starter",
+          "plan": "mensual",
+          "rr": 9.99,
+          "impl": 30,
+          "alta": "2026-05"
+        },
+        {
+          "empresa": "Néstor de Jesús Martínez Ventura",
+          "planNombre": "Básico",
+          "plan": "anual",
+          "rr": 60,
+          "impl": 30,
+          "alta": "2026-02"
+        },
+        {
+          "empresa": "María Alicia Romero de Melara",
+          "planNombre": "Básico",
+          "plan": "anual",
+          "rr": 60,
+          "impl": 30,
+          "alta": "2025-12"
+        },
+        {
+          "empresa": "GABRIELA YAMILETH LINARES",
+          "planNombre": "Básico",
+          "plan": "anual",
+          "rr": 60,
+          "impl": 30,
+          "alta": "2026-05"
+        },
+        {
+          "empresa": "RAUL ERNESTO BARRIENTOS MORALES",
+          "planNombre": "Professional",
+          "plan": "mensual",
+          "rr": 19.99,
+          "impl": 40,
+          "alta": "2026-07"
+        },
+        {
+          "empresa": "JUAN ANTONIO BAÑOS CARCAMO",
+          "planNombre": "Starter",
+          "plan": "mensual",
+          "rr": 9.99,
+          "impl": 30,
+          "alta": "2026-07"
+        },
+        {
+          "empresa": "GABRIEL ALEJANDRO FLORES TORRENTO",
+          "planNombre": "Starter",
+          "plan": "mensual",
+          "rr": 9.99,
+          "impl": 30,
+          "alta": "2026-07"
+        }
+      ]
+    },
+    {
+      "id": "jose-ernesto-martinez",
+      "nombre": "JOSE ERNESTO MARTINEZ",
+      "clientes": [
+        {
+          "empresa": "Maria Hermelinda Rivera de Estevez",
+          "planNombre": "Professional",
+          "plan": "mensual",
+          "rr": 19.99,
+          "impl": 40,
+          "alta": "2026-02"
+        },
+        {
+          "empresa": "SANTOS RODOLFO FUENTES GUEVARA",
+          "planNombre": "Starter",
+          "plan": "mensual",
+          "rr": 9.99,
+          "impl": 30,
+          "nota": "Precio por confirmar (sin match en Excel)"
+        },
+        {
+          "empresa": "SANDRA LORENA ROMERO DE GARCIA",
+          "planNombre": "Professional",
+          "plan": "mensual",
+          "rr": 19.99,
+          "impl": 40,
+          "alta": "2026-02"
+        },
+        {
+          "empresa": "BLANCA ELIZABETH QUINTANILLA MARTINEZ",
+          "planNombre": "Professional",
+          "plan": "mensual",
+          "rr": 19.99,
+          "impl": 40,
+          "alta": "2026-01"
+        },
+        {
+          "empresa": "HENRY BLADIMIR FUENTES GUEVARA",
+          "planNombre": "Starter",
+          "plan": "mensual",
+          "rr": 9.99,
+          "impl": 30,
+          "nota": "Precio por confirmar (sin match en Excel)"
+        },
+        {
+          "empresa": "SULMA ROXANA REYES PINEDA",
+          "planNombre": "Starter",
+          "plan": "mensual",
+          "rr": 9.99,
+          "impl": 30,
+          "nota": "Precio por confirmar (sin match en Excel)"
+        },
+        {
+          "empresa": "LEIDI ADELI GOMEZ DE GUEVARA",
+          "planNombre": "Advanced",
+          "plan": "mensual",
+          "rr": 29.99,
+          "impl": 50,
+          "alta": "2026-01"
+        },
+        {
+          "empresa": "JOSE RICARDO URRUTIA GARCIA",
+          "planNombre": "Professional",
+          "plan": "mensual",
+          "rr": 19.99,
+          "impl": 40,
+          "alta": "2026-02"
+        },
+        {
+          "empresa": "HILDA MARIA DEL CID SANCHEZ",
+          "planNombre": "Professional",
+          "plan": "mensual",
+          "rr": 19.99,
+          "impl": 40,
+          "alta": "2026-01"
+        },
+        {
+          "empresa": "HECTOR ALEXIS TREJO BENITEZ",
+          "planNombre": "Starter",
+          "plan": "mensual",
+          "rr": 9.99,
+          "impl": 30,
+          "alta": "2026-01"
+        },
+        {
+          "empresa": "ESTELA NOHEMY RIVERA DE TREJO",
+          "planNombre": "Starter",
+          "plan": "mensual",
+          "rr": 9.99,
+          "impl": 30,
+          "alta": "2026-01"
+        },
+        {
+          "empresa": "VIOLETA AURORA TREJO MONROY",
+          "planNombre": "Starter",
+          "plan": "mensual",
+          "rr": 9.99,
+          "impl": 30,
+          "alta": "2026-01"
+        },
+        {
+          "empresa": "MIGUEL ANGEL RIVERA MARQUEZ",
+          "planNombre": "Professional",
+          "plan": "mensual",
+          "rr": 19.99,
+          "impl": 40,
+          "alta": "2026-01"
+        },
+        {
+          "empresa": "ROBERTO JOSE CHICAS MEDRANO",
+          "planNombre": "Professional",
+          "plan": "mensual",
+          "rr": 19.99,
+          "impl": 40,
+          "alta": "2026-01"
+        },
+        {
+          "empresa": "KELVIN ALEXANDER SERPAS GOMEZ",
+          "planNombre": "Professional",
+          "plan": "mensual",
+          "rr": 19.99,
+          "impl": 40,
+          "alta": "2026-01"
+        },
+        {
+          "empresa": "PLANET FITNESS GYM S.A. DE C.V.",
+          "planNombre": "Professional",
+          "plan": "mensual",
+          "rr": 19.99,
+          "impl": 40,
+          "alta": "2026-01"
+        },
+        {
+          "empresa": "JOSE ALFONSO JURADO GUEVARA",
+          "planNombre": "Starter",
+          "plan": "mensual",
+          "rr": 9.99,
+          "impl": 30,
+          "alta": "2026-01"
+        },
+        {
+          "empresa": "KATIA MARIA URRUTIA DE SERPAS",
+          "planNombre": "Professional",
+          "plan": "mensual",
+          "rr": 19.99,
+          "impl": 40,
+          "alta": "2026-01"
+        },
+        {
+          "empresa": "JOSE ISIDRO CHAVEZ QUINTANILLA",
+          "planNombre": "Professional",
+          "plan": "mensual",
+          "rr": 19.99,
+          "impl": 40,
+          "alta": "2026-01"
+        },
+        {
+          "empresa": "MARIO MAURICIO MELENDEZ GOMEZ",
+          "planNombre": "Professional",
+          "plan": "mensual",
+          "rr": 19.99,
+          "impl": 40,
+          "alta": "2026-02"
+        },
+        {
+          "empresa": "CRISTIAN ERNESTO MELENDEZ GOMEZ",
+          "planNombre": "Professional",
+          "plan": "mensual",
+          "rr": 19.99,
+          "impl": 40,
+          "alta": "2026-02"
+        },
+        {
+          "empresa": "NELSON EDGARDO FRANCO LOPEZ",
+          "planNombre": "Professional",
+          "plan": "mensual",
+          "rr": 19.99,
+          "impl": 40,
+          "alta": "2026-02"
+        },
+        {
+          "empresa": "GABRIELA MABEL URRUTIA GARCIA",
+          "planNombre": "Professional",
+          "plan": "mensual",
+          "rr": 19.99,
+          "impl": 40,
+          "alta": "2026-02"
+        },
+        {
+          "empresa": "RAUL OSWALDO GOMEZ MELENDEZ",
+          "planNombre": "Professional",
+          "plan": "mensual",
+          "rr": 19.99,
+          "impl": 40,
+          "alta": "2026-02"
+        },
+        {
+          "empresa": "SILVIO NAHUN AMAYA VASQUEZ",
+          "planNombre": "Starter",
+          "plan": "mensual",
+          "rr": 9.99,
+          "impl": 30,
+          "alta": "2026-02"
+        },
+        {
+          "empresa": "SELVIN ALEXY ORELLANA FUENTES",
+          "planNombre": "Professional",
+          "plan": "mensual",
+          "rr": 19.99,
+          "impl": 40,
+          "alta": "2026-02"
+        },
+        {
+          "empresa": "OSCAR ANIBAL LOPEZ MARTINEZ",
+          "planNombre": "Professional",
+          "plan": "mensual",
+          "rr": 19.99,
+          "impl": 40,
+          "alta": "2026-03"
+        },
+        {
+          "empresa": "LINA MARIA MACHADO DE GARCIA",
+          "planNombre": "Professional",
+          "plan": "mensual",
+          "rr": 19.99,
+          "impl": 40,
+          "alta": "2026-04"
+        },
+        {
+          "empresa": "ANGEL LIZANDRO DIAZ BONILLA",
+          "planNombre": "Professional",
+          "plan": "mensual",
+          "rr": 19.99,
+          "impl": 40,
+          "alta": "2026-04"
+        },
+        {
+          "empresa": "KARLA YANIRA AYALA MORENO",
+          "planNombre": "Professional",
+          "plan": "mensual",
+          "rr": 19.99,
+          "impl": 40,
+          "alta": "2026-04"
+        },
+        {
+          "empresa": "DANIEL ESAU ARGUETA AYALA",
+          "planNombre": "Starter",
+          "plan": "mensual",
+          "rr": 9.99,
+          "impl": 30,
+          "alta": "2026-03"
+        },
+        {
+          "empresa": "RONALD JAIR RIVERA PORTILLO",
+          "planNombre": "Professional",
+          "plan": "mensual",
+          "rr": 19.99,
+          "impl": 40,
+          "alta": "2026-04"
+        },
+        {
+          "empresa": "YANIRA ROXINY FUENTES MARQUEZ",
+          "planNombre": "Professional",
+          "plan": "mensual",
+          "rr": 19.99,
+          "impl": 40,
+          "alta": "2026-05"
+        },
+        {
+          "empresa": "MILAGRO DE LOURDES MARTINEZ DE DIAZ",
+          "planNombre": "Starter",
+          "plan": "mensual",
+          "rr": 9.99,
+          "impl": 30,
+          "alta": "2026-05"
+        },
+        {
+          "empresa": "RICARDO DAVID GONZALEZ MARQUEZ",
+          "planNombre": "Professional",
+          "plan": "mensual",
+          "rr": 19.99,
+          "impl": 40,
+          "alta": "2026-05"
+        },
+        {
+          "empresa": "MARIA CONCHITA ESCOBAR MORALES",
+          "planNombre": "Starter",
+          "plan": "mensual",
+          "rr": 9.99,
+          "impl": 30,
+          "alta": "2026-05"
+        },
+        {
+          "empresa": "ELIEZER ALEXANDER MARENCO DOMINGUEZ",
+          "planNombre": "Starter",
+          "plan": "mensual",
+          "rr": 9.99,
+          "impl": 30,
+          "alta": "2026-05"
+        },
+        {
+          "empresa": "TEOFILO RIVERA LOVOS",
+          "planNombre": "Starter",
+          "plan": "mensual",
+          "rr": 9.99,
+          "impl": 30,
+          "alta": "2026-05"
+        },
+        {
+          "empresa": "SAUL ISAI MEMBREÑO LOPEZ",
+          "planNombre": "Starter",
+          "plan": "mensual",
+          "rr": 9.99,
+          "impl": 30,
+          "alta": "2026-05"
+        },
+        {
+          "empresa": "FERNANDO JAVIER FERNANDEZ AYALA",
+          "planNombre": "Professional",
+          "plan": "mensual",
+          "rr": 19.99,
+          "impl": 40,
+          "alta": "2026-05"
+        },
+        {
+          "empresa": "TOMAS ALBERTO AMAYA TARIO",
+          "planNombre": "Starter",
+          "plan": "mensual",
+          "rr": 9.99,
+          "impl": 30,
+          "alta": "2026-05"
+        },
+        {
+          "empresa": "ERICK ERNESTO GOMEZ ORELLANA",
+          "planNombre": "Starter",
+          "plan": "mensual",
+          "rr": 9.99,
+          "impl": 30,
+          "alta": "2026-05"
+        },
+        {
+          "empresa": "JOSEPH ARTURO RIVERA MARQUEZ",
+          "planNombre": "Professional",
+          "plan": "mensual",
+          "rr": 19.99,
+          "impl": 40,
+          "alta": "2026-05"
+        },
+        {
+          "empresa": "EDWIN BALMORE VASQUEZ ZULETA",
+          "planNombre": "Starter",
+          "plan": "mensual",
+          "rr": 9.99,
+          "impl": 30,
+          "alta": "2026-05"
+        },
+        {
+          "empresa": "CARLOS ROBERTO ROSALES FUENTES",
+          "planNombre": "Starter",
+          "plan": "mensual",
+          "rr": 9.99,
+          "impl": 30,
+          "alta": "2026-06"
+        },
+        {
+          "empresa": "MARIA DEL CARMEN DIAZ DE LARA",
+          "planNombre": "Starter",
+          "plan": "mensual",
+          "rr": 9.99,
+          "impl": 30,
+          "alta": "2026-06"
+        },
+        {
+          "empresa": "IVAN ORLANDO GUEVARA HIDALGO",
+          "planNombre": "Starter",
+          "plan": "mensual",
+          "rr": 9.99,
+          "impl": 30,
+          "alta": "2026-06"
+        }
+      ]
+    },
+    {
+      "id": "carmen-elena-padilla-de-beltran",
+      "nombre": "Carmen Elena Padilla de Beltran",
+      "clientes": [
+        {
+          "empresa": "MANUEL DE JESUS ASENCIO FAJARDO",
+          "planNombre": "Starter",
+          "plan": "mensual",
+          "rr": 9.99,
+          "impl": 30,
+          "alta": "2025-07"
+        }
+      ]
+    },
+    {
+      "id": "rhina-liliana-chavarria-de-torres",
+      "nombre": "Rhina Liliana Chavarria de Torres",
+      "clientes": [
+        {
+          "empresa": "Inmar Joel Villalta Vasquez",
+          "planNombre": "Starter",
+          "plan": "anual",
+          "rr": 113.87,
+          "impl": 30,
+          "alta": "2026-02"
+        },
+        {
+          "empresa": "OSCAR ANTONIO LAZO ROMERO",
+          "planNombre": "Básico",
+          "plan": "anual",
+          "rr": 60,
+          "impl": 30,
+          "alta": "2025-12"
+        }
+      ]
+    },
+    {
+      "id": "yanira-de-alvarado",
+      "nombre": "Yanira de Alvarado",
+      "clientes": [
+        {
+          "empresa": "Ricardo Napoleón Arce Galdámez",
+          "planNombre": "Professional",
+          "plan": "mensual",
+          "rr": 19.99,
+          "impl": 40,
+          "alta": "2026-01"
+        },
+        {
+          "empresa": "Rhina del Carmen Ramos de Arce",
+          "planNombre": "Professional",
+          "plan": "mensual",
+          "rr": 19.99,
+          "impl": 40,
+          "alta": "2026-01"
+        },
+        {
+          "empresa": "RICARDO ARMANDO PEÑATE GUERRA",
+          "planNombre": "Básico",
+          "plan": "anual",
+          "rr": 60,
+          "impl": 30,
+          "alta": "2026-01"
+        },
+        {
+          "empresa": "ASISTENCIA LEGAL-CONTABLE, S.A. DE C.V.",
+          "planNombre": "Professional",
+          "plan": "mensual",
+          "rr": 19.99,
+          "impl": 40,
+          "alta": "2026-03"
+        },
+        {
+          "empresa": "María Elena Ramos de Aragón",
+          "planNombre": "Básico",
+          "plan": "anual",
+          "rr": 60,
+          "impl": 30,
+          "alta": "2026-01"
+        }
+      ]
+    },
+    {
+      "id": "miguel-antonio-reyes-macala",
+      "nombre": "Miguel Antonio Reyes Macala",
+      "clientes": [
+        {
+          "empresa": "Marvin Fernando Morán Landaverde",
+          "planNombre": "Starter",
+          "plan": "anual",
+          "rr": 113.87,
+          "impl": 30,
+          "alta": "2026-06"
+        }
+      ]
+    },
+    {
+      "id": "carlos-mario-martinez",
+      "nombre": "Carlos Mario Martinez",
+      "clientes": [
+        {
+          "empresa": "KARLA MARIA RIVAS DE REYES",
+          "planNombre": "Advanced",
+          "plan": "mensual",
+          "rr": 29.99,
+          "impl": 50,
+          "alta": "2026-02"
+        }
+      ]
+    },
+    {
+      "id": "mauricio-alexander-ramirez",
+      "nombre": "Mauricio Alexander Ramírez",
+      "clientes": [
+        {
+          "empresa": "G+H CONSULTORES S.A. DE C.V.",
+          "planNombre": "Básico",
+          "plan": "anual",
+          "rr": 60,
+          "impl": 30,
+          "alta": "2025-11"
+        }
+      ]
+    },
+    {
+      "id": "luis-adan-martinez",
+      "nombre": "Luis Adán Martínez",
+      "clientes": [
+        {
+          "empresa": "Roberto Alexander Cardona Valladares",
+          "planNombre": "Professional",
+          "plan": "mensual",
+          "rr": 19.99,
+          "impl": 40,
+          "alta": "2025-12"
+        }
+      ]
+    },
+    {
+      "id": "miguel-angel-lopez-gutierrez",
+      "nombre": "Miguel Angel López Gutièrrez",
+      "clientes": [
+        {
+          "empresa": "Laura Marcela Rivas de Arevalo",
+          "planNombre": "Starter",
+          "plan": "mensual",
+          "rr": 9.99,
+          "impl": 30,
+          "alta": "2025-09"
+        }
+      ]
+    },
+    {
+      "id": "alexis-esteban-solito-rodriguez",
+      "nombre": "Alexis Esteban Solito Rodríguez",
+      "clientes": [
+        {
+          "empresa": "Nestor Vladimir Sandoval Santiago",
+          "planNombre": "Professional",
+          "plan": "mensual",
+          "rr": 19.99,
+          "impl": 40,
+          "alta": "2026-01"
+        },
+        {
+          "empresa": "Elena del carmen Castro Melo",
+          "planNombre": "Starter",
+          "plan": "mensual",
+          "rr": 9.99,
+          "impl": 30,
+          "alta": "2026-05"
+        }
+      ]
+    },
+    {
+      "id": "nelson-chanas",
+      "nombre": "Nelson Chanas",
+      "clientes": [
+        {
+          "empresa": "MARTA GLORIA AGUIRRE DE RIVAS",
+          "planNombre": "Professional",
+          "plan": "mensual",
+          "rr": 19.99,
+          "impl": 40,
+          "alta": "2026-01"
+        }
+      ]
+    },
+    {
+      "id": "kevin-enrique-flores-gracias",
+      "nombre": "Kevin Enrique Flores Gracias",
+      "clientes": [
+        {
+          "empresa": "Pedro Antonio Peñate Castro",
+          "planNombre": "Advanced",
+          "plan": "mensual",
+          "rr": 29.99,
+          "impl": 50,
+          "alta": "2026-02"
+        },
+        {
+          "empresa": "JUAN PABLO GALLARDO SALAZAR",
+          "planNombre": "Starter",
+          "plan": "mensual",
+          "rr": 9.99,
+          "impl": 30,
+          "alta": "2026-05"
+        }
+      ]
+    },
+    {
+      "id": "rosy-ramos-de-figueroa",
+      "nombre": "Rosy Ramos de Figueroa",
+      "clientes": [
+        {
+          "empresa": "PACIFIC NORTHWEST INVESTMENTS, SA DE CV",
+          "planNombre": "Advanced",
+          "plan": "mensual",
+          "rr": 29.99,
+          "impl": 50,
+          "alta": "2026-01"
+        }
+      ]
+    },
+    {
+      "id": "karla-veronica-solis-de-romero",
+      "nombre": "Karla Veronica Solis de Romero",
+      "clientes": [
+        {
+          "empresa": "ROBERTO ELIAS BELTRAN GARCIA",
+          "planNombre": "Starter",
+          "plan": "mensual",
+          "rr": 9.99,
+          "impl": 30,
+          "alta": "2025-11"
+        }
+      ]
+    },
+    {
+      "id": "rolando-antonio-aguilar-mira",
+      "nombre": "Rolando Antonio Aguilar Mira",
+      "clientes": [
+        {
+          "empresa": "DOMINGO ANTONIO ANDRADE URQUILLA",
+          "planNombre": "Starter",
+          "plan": "mensual",
+          "rr": 9.99,
+          "impl": 30,
+          "alta": "2026-02"
+        }
+      ]
+    },
+    {
+      "id": "sandra-patricia-de-carcamo",
+      "nombre": "Sandra Patricia de Carcamo",
+      "clientes": [
+        {
+          "empresa": "BERNARDO RENE FLORES RIVAS",
+          "planNombre": "Starter",
+          "plan": "mensual",
+          "rr": 9.99,
+          "impl": 30,
+          "alta": "2026-01"
+        },
+        {
+          "empresa": "SANDRA PATRICIA MARTINEZ DE CARCAMO",
+          "planNombre": "Professional",
+          "plan": "mensual",
+          "rr": 19.99,
+          "impl": 40,
+          "alta": "2025-07"
+        },
+        {
+          "empresa": "VICTOR MANUEL CARCAMO GONZALEZ",
+          "planNombre": "Professional",
+          "plan": "mensual",
+          "rr": 19.99,
+          "impl": 40,
+          "alta": "2025-09"
+        },
+        {
+          "empresa": "Carlos Humberto Ernesto Rivas Molina",
+          "planNombre": "Starter",
+          "plan": "mensual",
+          "rr": 9.99,
+          "impl": 30,
+          "alta": "2025-10"
+        },
+        {
+          "empresa": "LUIS GUSTAVO FLORES TORRES",
+          "planNombre": "Básico",
+          "plan": "anual",
+          "rr": 60,
+          "impl": 30,
+          "alta": "2025-11"
+        },
+        {
+          "empresa": "María del Carmen Ramírez Alvarado",
+          "planNombre": "Professional",
+          "plan": "mensual",
+          "rr": 19.99,
+          "impl": 40,
+          "alta": "2025-12"
+        },
+        {
+          "empresa": "ALCIDES ADONAY RODAS AVALOS",
+          "planNombre": "Starter",
+          "plan": "mensual",
+          "rr": 9.99,
+          "impl": 30,
+          "alta": "2026-01"
+        },
+        {
+          "empresa": "MARIA OFELIA GUARDADO PEREZ DE MERINO",
+          "planNombre": "Starter",
+          "plan": "mensual",
+          "rr": 9.99,
+          "impl": 30,
+          "alta": "2026-04"
+        },
+        {
+          "empresa": "PABLO NERIO MARTINEZ",
+          "planNombre": "Starter",
+          "plan": "mensual",
+          "rr": 9.99,
+          "impl": 30,
+          "alta": "2026-05"
+        },
+        {
+          "empresa": "FLOR DE MARIA HERNANDEZ DE RODAS",
+          "planNombre": "Starter",
+          "plan": "mensual",
+          "rr": 9.99,
+          "impl": 30,
+          "alta": "2026-05"
+        },
+        {
+          "empresa": "Jorge Alberto Amaya Hernández",
+          "planNombre": "Starter",
+          "plan": "mensual",
+          "rr": 9.99,
+          "impl": 30,
+          "alta": "2026-05"
+        }
+      ]
+    },
+    {
+      "id": "oscar-hernan-cardenas-rauda",
+      "nombre": "Oscar Hernán Cárdenas Rauda",
+      "clientes": [
+        {
+          "empresa": "Oscar Hernan Cárdenas Rauda",
+          "planNombre": "Starter",
+          "plan": "mensual",
+          "rr": 9.99,
+          "impl": 30,
+          "alta": "2026-01"
+        },
+        {
+          "empresa": "Henry Otoniel Rodriguez Cruz",
+          "planNombre": "Starter",
+          "plan": "mensual",
+          "rr": 9.99,
+          "impl": 30,
+          "alta": "2025-08"
+        }
+      ]
+    },
+    {
+      "id": "laura-carolina-nunez",
+      "nombre": "Laura Carolina Núñez",
+      "clientes": [
+        {
+          "empresa": "SANDOVAL, RAFAEL ANTONIO",
+          "planNombre": "Starter",
+          "plan": "mensual",
+          "rr": 9.99,
+          "impl": 30,
+          "alta": "2026-02"
+        }
+      ]
+    },
+    {
+      "id": "german-antonio-rosales",
+      "nombre": "German Antonio Rosales",
+      "clientes": [
+        {
+          "empresa": "VYO SOCIEDAD ANONIMA DE CAPITAL VARIABLE",
+          "planNombre": "Starter",
+          "plan": "mensual",
+          "rr": 9.99,
+          "impl": 30,
+          "alta": "2026-02"
+        }
+      ]
+    },
+    {
+      "id": "eduardo-antonio-calderon-rosales",
+      "nombre": "Eduardo Antonio Calderon Rosales",
+      "clientes": [
+        {
+          "empresa": "COMPETITION'S CAR AUDIO S.A.S DE C.V",
+          "planNombre": "Starter",
+          "plan": "mensual",
+          "rr": 9.99,
+          "impl": 30,
+          "alta": "2026-03"
+        }
+      ]
+    },
+    {
+      "id": "elias-eleazar-ramirez-flores",
+      "nombre": "Elias Eleazar  Ramirez Flores",
+      "clientes": [
+        {
+          "empresa": "CRISTIAN IVAN HERNANDEZ MOLINA",
+          "planNombre": "Starter",
+          "plan": "anual",
+          "rr": 113.87,
+          "impl": 30,
+          "alta": "2026-03"
+        },
+        {
+          "empresa": "ANA INES SANCHEZ DE HUEZO",
+          "planNombre": "Professional",
+          "plan": "anual",
+          "rr": 227.88,
+          "impl": 40,
+          "alta": "2026-06"
+        },
+        {
+          "empresa": "ANA RUTH RAMIREZ",
+          "planNombre": "Starter",
+          "plan": "anual",
+          "rr": 113.87,
+          "impl": 30,
+          "alta": "2026-07"
+        },
+        {
+          "empresa": "HERNANDEZ VASQUEZ, JOSE ANGEL",
+          "planNombre": "Starter",
+          "plan": "anual",
+          "rr": 113.87,
+          "impl": 30,
+          "alta": "2026-06"
+        }
+      ]
+    },
+    {
+      "id": "yovany-erasmo-garcia-arevalo",
+      "nombre": "YOVANY ERASMO GARCIA AREVALO",
+      "clientes": [
+        {
+          "empresa": "ISAIAS GARCIA ESTRADA",
+          "planNombre": "Starter",
+          "plan": "mensual",
+          "rr": 9.99,
+          "impl": 30,
+          "alta": "2026-05"
+        },
+        {
+          "empresa": "WALTER ALEXANDER TORRES AVALOS",
+          "planNombre": "Professional",
+          "plan": "mensual",
+          "rr": 19.99,
+          "impl": 40,
+          "alta": "2026-05"
+        }
+      ]
+    },
+    {
+      "id": "luis-alexander-avalos-aguilar",
+      "nombre": "Luis Alexander Avalos Aguilar",
+      "clientes": [
+        {
+          "empresa": "MARCO TULIO CASTRO BARRAZA",
+          "planNombre": "Starter",
+          "plan": "mensual",
+          "rr": 9.99,
+          "impl": 30,
+          "alta": "2026-05"
+        }
+      ]
+    },
+    {
+      "id": "miguel-angel-ayala-cruz",
+      "nombre": "Miguel Angel Ayala Cruz",
+      "clientes": [
+        {
+          "empresa": "Jaime Salvador Calderón Rivera",
+          "planNombre": "Starter",
+          "plan": "anual",
+          "rr": 113.87,
+          "impl": 30,
+          "alta": "2026-05"
+        }
+      ]
+    },
+    {
+      "id": "estela-mejia",
+      "nombre": "Estela Mejia",
+      "clientes": [
+        {
+          "empresa": "MARIA TERESA CORNEJO AYALA",
+          "planNombre": "Starter",
+          "plan": "mensual",
+          "rr": 9.99,
+          "impl": 30,
+          "alta": "2026-05"
+        }
+      ]
+    },
+    {
+      "id": "carlos-flores",
+      "nombre": "Carlos Flores",
+      "clientes": [
+        {
+          "empresa": "PUQUIRRE DE MARTÍNEZ, ERIKA YAMILETH",
+          "planNombre": "Básico",
+          "plan": "anual",
+          "rr": 60,
+          "impl": 30,
+          "alta": "2026-06"
+        }
+      ]
+    },
+    {
+      "id": "marta-monge-de-hernandez",
+      "nombre": "Marta Monge de Hernández",
+      "clientes": [
+        {
+          "empresa": "María Verónica Ayala Arévalo",
+          "planNombre": "Básico",
+          "plan": "mensual",
+          "rr": 5,
+          "impl": 30,
+          "alta": "2025-08"
+        },
+        {
+          "empresa": "IGUAZU,S.A. DE C.V.",
+          "planNombre": "Básico",
+          "plan": "anual",
+          "rr": 60,
+          "impl": 30,
+          "alta": "2026-06"
+        },
+        {
+          "empresa": "NENEOS,S.A. DE C.V.",
+          "planNombre": "Básico",
+          "plan": "anual",
+          "rr": 60,
+          "impl": 30,
+          "alta": "2026-06"
+        },
+        {
+          "empresa": "Lubricacion Maxima, S.A. de C.V.",
+          "planNombre": "Starter",
+          "plan": "anual",
+          "rr": 113.87,
+          "impl": 30,
+          "alta": "2026-06"
+        },
+        {
+          "empresa": "Maritza Elena Roldan Vasquez",
+          "planNombre": "Básico",
+          "plan": "mensual",
+          "rr": 5,
+          "impl": 30,
+          "alta": "2025-11"
+        },
+        {
+          "empresa": "GUEVARA VASQUEZ, BEATRIZ MARIA",
+          "planNombre": "Básico",
+          "plan": "mensual",
+          "rr": 5,
+          "impl": 30,
+          "alta": "2025-11"
+        },
+        {
+          "empresa": "IRIS BEATRIZ HERNANDEZ FLORES",
+          "planNombre": "Básico",
+          "plan": "mensual",
+          "rr": 5,
+          "impl": 30,
+          "alta": "2025-11"
+        },
+        {
+          "empresa": "Bernarda Victoria Espinoza De Segovia",
+          "planNombre": "Básico",
+          "plan": "anual",
+          "rr": 60,
+          "impl": 30,
+          "alta": "2025-12"
+        }
+      ]
+    },
+    {
+      "id": "danelia-isaura-guerra-de-velasquez",
+      "nombre": "Danelia Isaura Guerra de Velásquez",
+      "clientes": [
+        {
+          "empresa": "DANELIA ISAURA GUERRA DE VELÁSQUEZ",
+          "planNombre": "Starter",
+          "plan": "mensual",
+          "rr": 9.99,
+          "impl": 30,
+          "alta": "2026-01"
+        },
+        {
+          "empresa": "CALLES DE RAMIREZ, SARA",
+          "planNombre": "Starter",
+          "plan": "mensual",
+          "rr": 9.99,
+          "impl": 30,
+          "alta": "2026-05"
+        }
+      ]
+    }
+  ]
+}

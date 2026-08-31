@@ -1,0 +1,38 @@
+{
+  "fuente": "Grupo Consiti · Plan de la Línea SMB 2026 · v3 · 14-ago-2026 (confidencial)",
+  "periodo": "2026-09 a 2026-12",
+  "compromiso_linea": {
+    "recurrente_neto_dic": 28754,
+    "recurrente_bruto_dic": 30431,
+    "facturacion_periodo": 110618,
+    "inversion_periodo": 63562,
+    "rotacion_mensual_modelada": 0.03
+  },
+  "factura_ia": {
+    "recurrente_dic": 18928,
+    "escalera_recurrente": { "2026-09": 10638, "2026-10": 13341, "2026-11": 16195, "2026-12": 18928 },
+    "altas_periodo": 332,
+    "altas_por_mes": { "2026-09": 52, "2026-10": 79, "2026-11": 96, "2026-12": 105 },
+    "altas_por_canal": { "campana_digital": 112, "red_contadores": 220 }
+  },
+  "canal_contadores": {
+    "altas_por_mes": 55,
+    "altas_periodo": 220,
+    "aporte_recurrente_dic": 4620,
+    "comision_por_alta": "un mes de servicio (~$21 al ticket post-aumento)",
+    "base_historica": { "contadores": 36, "clientes_referidos": 205 }
+  },
+  "vendi": {
+    "recurrente_dic": 6921,
+    "clientes_dic": 30,
+    "escalera_recurrente": { "2026-09": 349, "2026-10": 1642, "2026-11": 3832, "2026-12": 6921 },
+    "mezcla_meta": { "emprende": 1, "crece": 14, "profesional": 12, "empresarial": 2, "corporativo": 1 }
+  },
+  "comandi": {
+    "recurrente_dic": 4582,
+    "clientes_dic": 18,
+    "escalera_recurrente": { "2026-09": 0, "2026-10": 895, "2026-11": 2289, "2026-12": 4582 },
+    "mezcla_meta": { "crece": 9, "profesional": 6, "empresarial": 2, "corporativo": 1 },
+    "corte": "31-oct-2026 si el primer cliente no queda pagando"
+  }
+}
