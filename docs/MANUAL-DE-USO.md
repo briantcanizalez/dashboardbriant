@@ -76,7 +76,19 @@ Los datos de cada línea viven separados: las ventas de Vendi/Comandi **no** se 
 
 ### 3.9 Metas y Proyección
 - Avance a **1,000 clientes** y **$25,000 recurrentes** (metas personales, editables en Ajustes), proyección al ritmo actual, evolución mensual y composición de ingresos.
-- **Comisiones del mes** (Briant y René): escalones 1–10 → 20% · 11–15 → 25% · 16+ → 30%; base = implementación + 1ª mensualidad; anual paga 2% del año; retención 10%. *(Una venta con promo de implementación gratis solo aporta la mensualidad a la base.)*
+- **Comisiones del mes** (Briant y René). La base es **solo la implementación** — la primera mensualidad no comisiona, porque con la promo de 3 meses gratis no se cobra.
+
+  | Paso | Cómo se calcula |
+  |---|---|
+  | 1 · Escalón | Por cierres del mes: **1–10 → 20% · 11–15 → 25% · 16+ → 30%**. Se aplica solo, según el conteo |
+  | 2 · Comisión por planes | Implementación × escalón. Las ventas **anuales** suman además **2% del valor del año** |
+  | 3 · Servicios especiales | Comisionan aparte, con el % propio de cada servicio |
+  | 4 · Retención | **−10% de renta** sobre el bruto total |
+  | 5 · Bono | Se suma si alcanzaste la meta de clientes del mes (configurable en Ajustes) |
+
+  *Ejemplo:* $200 de implementaciones en el escalón del 20% → $40 de comisión bruta → −$4 de retención → **$36 netos**.
+
+  > Ojo con la promo 🎁: como la base es la implementación, una venta con **implementación gratis no genera comisión** por ese concepto.
 
 ---
 
