@@ -52,11 +52,14 @@ Las metas provienen del **Plan Línea SMB 2026** (14-ago-2026) y están fijas en
 │   └── DESPLIEGUE.md         ← cómo se publica y cómo probar en local
 ├── db/
 │   └── supabase-schema.sql   ← esquema de la base (ejecutar una vez en Supabase)
-└── data/                     ← datasets de referencia (solo lectura)
-    ├── metas-smb-2026.json       ← todas las metas del plan SMB
-    ├── planes-factura-ia.json    ← libro de precios nuevo + anterior
-    ├── tarifario-stradia.json    ← planes de Vendi y Comandi
-    └── contadores-seed.json      ← red de contadores (36) y sus 205 clientes
+├── data/                     ← datasets de referencia (solo lectura)
+│   ├── metas-smb-2026.json       ← todas las metas del plan SMB
+│   ├── planes-factura-ia.json    ← libro de precios nuevo + anterior
+│   ├── tarifario-stradia.json    ← planes de Vendi y Comandi
+│   └── contadores-seed.json      ← red de contadores (36) y sus 205 clientes
+└── backups/                  ← copias de seguridad del estado (restaurables desde Ajustes)
+    ├── README.md                 ← cómo restaurar y cómo agregar respaldos en vivo
+    └── respaldo-sistema-2026-08-31.json
 ```
 
 ## Inicio rápido
