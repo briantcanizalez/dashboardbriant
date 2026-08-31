@@ -1079,7 +1079,7 @@ const STAGEMAP={Prospecto:'Lead',Demo:'MQL','Negociación':'Oportunidad'}; // mi
 const MOTIVOS_BASURA=['Click por error','Confusión de tema','Solo consultaba precio','Fuera de zona / país','Rubro no aplica','Datos falsos / spam','Ya es cliente','Otro'];
 const MEDIOS=['WhatsApp','Facebook','Reunión','Visita','Llamada'];
 const ORIGENES=['Pauta','Referido','Alianza Contable','Contacto personal'];
-const defaultState={tasks:[],sales:[],services:[],prospects:[],campaigns:[],projects:[],history:[],contadores:[],lineSales:{vendi:[],comandi:[]},config:{baseClients:494,goalClients:1000,baseRecurring:7151.23,goalRecurring:25000,annualPayments:11988.18,mrrMesMeta:1000,salaryBase:0,bono:0,metaMes:24,fiaMetaSMB:18928,vendiMetaMRR:6921,vendiMetaCli:30,comandiMetaMRR:4582,comandiMetaCli:18,lastBackup:null,seededOdooBatch1:false,seededBookV3:false,seededAnnualV1:false,seededComercialV1:false,seededComercialV2:false,seededProspectsV1:false,seededProspectsV2:false,seededClosesV1:false,seededWonV1:false,seededOriginV1:false,seededCampaignLinkV1:false,seededRestoreAireV1:false,seededCampaignDaysV1:false,seededChurnV1:false,seededOriginV2:false,seededRestoreDetV1:false,seededFixBautistaV1:false,seededJulyBriantV1:false,seededJulyBriantV2:false,seededFixIdaliaV1:false,seededAugBriantV1:false,seededContadoresV1:false,seededSyncOdooV1:false,seededSyncOdooV2:false,seededSyncOdooV3:false,seededSyncOdooV4:false}};
+const defaultState={tasks:[],sales:[],services:[],prospects:[],campaigns:[],projects:[],history:[],contadores:[],lineSales:{vendi:[],comandi:[]},config:{baseClients:494,goalClients:1000,baseRecurring:7151.23,goalRecurring:25000,annualPayments:11988.18,mrrMesMeta:1000,salaryBase:0,bono:0,metaMes:24,fiaMetaSMB:18928,vendiMetaMRR:6921,vendiMetaCli:30,comandiMetaMRR:4582,comandiMetaCli:18,lastBackup:null,seededOdooBatch1:false,seededBookV3:false,seededAnnualV1:false,seededComercialV1:false,seededComercialV2:false,seededProspectsV1:false,seededProspectsV2:false,seededClosesV1:false,seededWonV1:false,seededOriginV1:false,seededCampaignLinkV1:false,seededRestoreAireV1:false,seededCampaignDaysV1:false,seededChurnV1:false,seededOriginV2:false,seededRestoreDetV1:false,seededFixBautistaV1:false,seededJulyBriantV1:false,seededJulyBriantV2:false,seededFixIdaliaV1:false,seededAugBriantV1:false,seededContadoresV1:false,seededSyncOdooV1:false,seededSyncOdooV2:false,seededSyncOdooV3:false,seededSyncOdooV4:false,seededSyncOdooV5:false}};
 function normalize(d){const s={...structuredClone(defaultState),...d,config:{...defaultState.config,...(d.config||{})}};['tasks','sales','services','prospects','campaigns','projects','history','contadores'].forEach(k=>{if(!Array.isArray(s[k]))s[k]=[];});
   if(!s.lineSales||typeof s.lineSales!=='object'||Array.isArray(s.lineSales))s.lineSales={};
   ['vendi','comandi'].forEach(k=>{if(!Array.isArray(s.lineSales[k]))s.lineSales[k]=[];});
@@ -2979,7 +2979,17 @@ function seedSyncOdooV4(){
   state.config.seededSyncOdooV4=true;
   save();
 }
-function initApp(){seedOdooBatch1();seedBookV3();seedAnnualBookV1();seedComercialV1();seedComercialV2();seedProspectsV1();seedProspectsV2();seedClosesV1();seedWonV1();seedOriginV1();seedCampaignLinkV1();seedRestoreAireV1();seedCampaignDaysV1();seedChurnV1();seedOriginV2();seedRestoreDetV1();seedFixBautistaV1();seedJulyBriantV1();seedJulyBriantV2();seedFixIdaliaV1();seedAugBriantV1();seedContadoresV1();seedSyncOdooV1();seedSyncOdooV2();seedSyncOdooV3();seedSyncOdooV4();fillPlanSelect();updateBadges();renderBackupBanner();go('inicio');document.body.classList.remove('booting');}
+/* ---- Conciliación con Odoo · parte 5: BAUTISTA RENDEROS, MIGUEL ANGEL estaba como
+   MENSUAL $180 (= $2,160/año). En Odoo es Anualmente $180/año (S01784, próxima factura
+   22-jun-2027). Se corrige a anual $15/mes × 12 = $180/año. ---- */
+function seedSyncOdooV5(){
+  if(state.config.seededSyncOdooV5)return;
+  const s=state.sales.find(v=>/bautista\s+renderos.*miguel|miguel\s+angel.*bautista/i.test(v.client||''));
+  if(s&&s.mode!=='anual'){s.mode='anual';s.customMonthly=15;delete s.priceBook;delete s.customImpl;}
+  state.config.seededSyncOdooV5=true;
+  save();
+}
+function initApp(){seedOdooBatch1();seedBookV3();seedAnnualBookV1();seedComercialV1();seedComercialV2();seedProspectsV1();seedProspectsV2();seedClosesV1();seedWonV1();seedOriginV1();seedCampaignLinkV1();seedRestoreAireV1();seedCampaignDaysV1();seedChurnV1();seedOriginV2();seedRestoreDetV1();seedFixBautistaV1();seedJulyBriantV1();seedJulyBriantV2();seedFixIdaliaV1();seedAugBriantV1();seedContadoresV1();seedSyncOdooV1();seedSyncOdooV2();seedSyncOdooV3();seedSyncOdooV4();seedSyncOdooV5();fillPlanSelect();updateBadges();renderBackupBanner();go('inicio');document.body.classList.remove('booting');}
 
 async function boot(){
   if(initSupabase()){
