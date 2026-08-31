@@ -90,6 +90,7 @@ npx serve .
 | [docs/ARQUITECTURA.md](docs/ARQUITECTURA.md) | Estado, sincronización, seeds/migraciones y catálogos |
 | [docs/MODELO-DE-DATOS.md](docs/MODELO-DE-DATOS.md) | Todas las entidades, campos y fórmulas de cálculo |
 | [docs/DESPLIEGUE.md](docs/DESPLIEGUE.md) | Deploy, entorno local y recuperación de datos |
+| [docs/PARA-LUIS-PORTILLO.md](docs/PARA-LUIS-PORTILLO.md) | Nota técnica para Tecnología: cómo está montado, decisiones, accesos y límites |
 | [CHANGELOG.md](CHANGELOG.md) | Qué se ha construido y cuándo |
 
 ---
