@@ -880,6 +880,7 @@ canvas{max-width:100%}
   <div class="row c2"><div class="field"><label>Plan</label><select id="s-plan"></select></div><div class="field"><label>Modalidad</label><select id="s-mode"><option value="mensual">Mensual</option><option value="anual">Anual adelantado</option></select></div></div>
   <div class="row c2"><div class="field"><label>Fecha de inicio</label><input type="date" id="s-start" /></div><div class="field"><label>Origen</label><select id="s-origen"><option value="">—</option><option>Campaña</option><option>Referido</option><option>Alianza Contable</option><option>Directo</option><option>Otro</option></select></div></div>
   <div class="row c2"><div class="field"><label>Vendedor</label><select id="s-comercial"><option>Briant Canizalez</option><option>Rene Gonzalez</option><option>Ejecutivo de Ventas Odoo</option><option>Luis Rafael Henriquez</option><option>Otro</option></select></div><div class="field"><label>Campaña de origen</label><select id="s-campaign"></select></div></div>
+  <div class="field"><label class="bchk"><input type="checkbox" id="s-implfree"><span><b>Implementación gratis</b> — promo: no se cobra la implementación</span></label></div>
   <div class="preview" id="s-preview"></div>
   <div class="actions" style="margin-top:16px"><button class="btn ghost" data-close="modal-sale">Cancelar</button><button class="btn" id="s-save">Guardar venta</button></div>
 </div></div>
@@ -891,6 +892,7 @@ canvas{max-width:100%}
   <div class="field"><label>Nombre del cliente <span class="req">*</span></label><input id="ls-client" placeholder="Ej. Boutique Karla / Pupusería La Bendición" /></div>
   <div class="row c2"><div class="field"><label>Plan</label><select id="ls-plan"></select></div><div class="field"><label>Modalidad</label><select id="ls-mode"><option value="mensual">Mensual</option><option value="anual">Anual adelantado (10% dcto)</option></select></div></div>
   <div class="row c2"><div class="field"><label>Fecha de inicio</label><input type="date" id="ls-start" /></div><div class="field"><label>Origen</label><select id="ls-origen"><option value="">—</option><option>Venta cruzada Factura IA</option><option>Campaña</option><option>Referido</option><option>Directo</option><option>Otro</option></select></div></div>
+  <div class="field"><label class="bchk"><input type="checkbox" id="ls-free"><span><b>Implementación gratis</b> — promo: no se cobra la implementación</span></label></div>
   <div class="preview" id="ls-preview"></div>
   <div class="actions" style="margin-top:16px"><button class="btn ghost" data-close="modal-line-sale">Cancelar</button><button class="btn" id="ls-save">Guardar venta</button></div>
 </div></div>
@@ -970,7 +972,7 @@ function planTag(s){const p=PLANS[s.plan]||{label:s.plan};return `<span class="t
 const SERVICE_PRICES={'Carga de productos, clientes o proveedores':50,'Capacitación Virtual (por hora)':50,'Capacitación Presencial':100};
 /* monto mensual e implementación de una venta; customMonthly/customImpl (monto real fijado: anuales, descuentos, especiales) manda; si no, precio de lista del libro que aplica por fecha */
 const saleMonthly=s=>s.customMonthly!=null?(+s.customMonthly||0):(planPricing(s.plan,saleBook(s)).monthly||0);
-const saleImpl=s=>s.customImpl!=null?(+s.customImpl||0):(planPricing(s.plan,saleBook(s)).impl||0);
+const saleImpl=s=>s.implGratis?0:(s.customImpl!=null?(+s.customImpl||0):(planPricing(s.plan,saleBook(s)).impl||0)); // implGratis = promo de implementación gratis
 
 /* ===== LÍNEAS DE NEGOCIO · Vendi y Comandi (marca Stradia) ===== */
 /* Tarifario Stradia 24-ago-2026: misma lista para ambos productos. Emprende no se publica (solo canal propio). */
@@ -995,7 +997,7 @@ const LINES={
 const FIA_SMB_MILESTONES=[['2026-09','Sep',10638],['2026-10','Oct',13341],['2026-11','Nov',16195],['2026-12','Dic',18928]];
 /* Anual adelantado: 10% dcto sobre la mensualidad e implementación bonificada (regla del tarifario). */
 const lineSaleMonthly=s=>{const p=LINE_PLANS[s.plan]||{monthly:0};return s.mode==='anual'?+(p.monthly*0.9).toFixed(2):p.monthly;};
-const lineSaleImpl=s=>s.mode==='anual'?0:((LINE_PLANS[s.plan]||{impl:0}).impl);
+const lineSaleImpl=s=>(s.implGratis||s.mode==='anual')?0:((LINE_PLANS[s.plan]||{impl:0}).impl);
 const lineSales=k=>(state.lineSales&&Array.isArray(state.lineSales[k]))?state.lineSales[k]:[];
 const lineActive=k=>lineSales(k).filter(s=>!s.churned);
 const lineMRR=k=>lineActive(k).reduce((a,s)=>a+lineSaleMonthly(s),0);
@@ -1822,9 +1824,11 @@ function salePreview(){const {plan:key,book:vbook}=parsePlanVal($('s-plan').valu
       +`<div class="pb-apply ${esNuevo?'new':'old'}">Aplicando ${esNuevo?'PRECIO NUEVO':'PRECIO ANTERIOR'} <span class="muted-3" style="font-weight:500">(${modo})</span></div>`
       +`</div>`;
   }
+  const gratis=$('s-implfree').checked;
+  const implTxt=gratis?`<s class="muted-3">${fmtUSD(p.impl)}</s> <b style="color:var(--ok,#10b981)">GRATIS</b> <span class="pl-new">Promo</span>`:`<b>${fmtUSD(p.impl)}</b> (única vez)`;
   $('s-preview').innerHTML=(mode==='anual'
-    ?`${label} · Anual<br>Implementación: <b>${fmtUSD(p.impl)}</b> (única vez)<br>Año adelantado: <b>${fmtUSD(p.monthly*12)}</b><br><span class="muted-3">Cuenta en pagos anuales, no en MRR.</span>`
-    :`${label} · Mensual<br>Implementación: <b>${fmtUSD(p.impl)}</b> (única vez)<br>Mensualidad: <b>${fmtUSD(p.monthly)}</b> desde el 3er mes`)+comp;}
+    ?`${label} · Anual<br>Implementación: ${implTxt}<br>Año adelantado: <b>${fmtUSD(p.monthly*12)}</b><br><span class="muted-3">Cuenta en pagos anuales, no en MRR.</span>`
+    :`${label} · Mensual<br>Implementación: ${implTxt}<br>Mensualidad: <b>${fmtUSD(p.monthly)}</b> desde el 3er mes`)+comp;}
 function renderSales(){
   $('v-count').textContent=activeSales().length;
   $('v-count-meta').textContent=churnedCount()?`${churnedCount()} dadas de baja`:'en este dashboard';
@@ -1843,7 +1847,7 @@ function renderSales(){
       <td class="cellwrap" data-label="Cliente"><span class="cellmain">${esc(s.client)}</span></td>
       <td data-label="Vendedor" class="muted-3">${esc(s.comercial||'Briant Canizalez')}</td>
       <td data-label="Plan">${planTag(s)}</td>
-      <td data-label="Implementación" class="num">${fmtUSD(imp)}</td>
+      <td data-label="Implementación" class="num">${fmtUSD(imp)}${s.implGratis?' <span class="pl-new">Gratis</span>':''}</td>
       <td data-label="Mensual" class="num">${s.mode==='anual'?fmtUSD(mon*12)+'/año':fmtUSD(mon)+'/mes'}</td>
       <td data-label="Inicio" class="num muted-3">${s.legacy?'<span class="muted-3">Cliente existente</span>':fmtDate(s.start)}</td>
       <td data-label="Recurrencia">${estado}</td>
@@ -1853,14 +1857,15 @@ function renderSales(){
   renderServices();
 }
 const findSale=id=>state.sales.find(s=>s.id===id);
-function openSale(id){fillPlanSelect();if(id){const s=findSale(id);$('sale-modal-title').textContent='Editar venta';$('s-id').value=s.id;$('s-client').value=s.client;$('s-plan').value=planValForSale(s);$('s-start').value=s.start||todayISO();$('s-mode').value=s.mode||'mensual';$('s-origen').value=s.origen||'';$('s-comercial').value=s.comercial||'Briant Canizalez';$('s-campaign').innerHTML=campaignOptions(s.campaignId);}else{$('sale-modal-title').textContent='Nueva venta';$('s-id').value='';$('s-client').value='';$('s-plan').value=planValDefault('starter');$('s-start').value=todayISO();$('s-mode').value='mensual';$('s-origen').value='';$('s-comercial').value='Briant Canizalez';$('s-campaign').innerHTML=campaignOptions('');}salePreview();openModal('modal-sale','s-client');}
+function openSale(id){fillPlanSelect();if(id){const s=findSale(id);$('sale-modal-title').textContent='Editar venta';$('s-id').value=s.id;$('s-client').value=s.client;$('s-plan').value=planValForSale(s);$('s-start').value=s.start||todayISO();$('s-mode').value=s.mode||'mensual';$('s-origen').value=s.origen||'';$('s-comercial').value=s.comercial||'Briant Canizalez';$('s-campaign').innerHTML=campaignOptions(s.campaignId);$('s-implfree').checked=!!s.implGratis;}else{$('sale-modal-title').textContent='Nueva venta';$('s-id').value='';$('s-client').value='';$('s-plan').value=planValDefault('starter');$('s-start').value=todayISO();$('s-mode').value='mensual';$('s-origen').value='';$('s-comercial').value='Briant Canizalez';$('s-campaign').innerHTML=campaignOptions('');$('s-implfree').checked=false;}salePreview();openModal('modal-sale','s-client');}
 $('s-save').onclick=()=>{const client=$('s-client').value.trim();if(!client){$('s-client').focus();$('s-client').style.borderColor='var(--danger)';return;}
   const id=$('s-id').value,{plan,book}=parsePlanVal($('s-plan').value),pb=book==='legacy'?'legacy':(book==='new'?'v2026-08':''),data={client,plan,start:$('s-start').value||todayISO(),mode:$('s-mode').value,origen:$('s-origen').value||'',comercial:$('s-comercial').value||'Briant Canizalez',campaignId:$('s-campaign').value||null};
   if(pb)data.priceBook=pb;
-  if(id){const sObj=findSale(id);Object.assign(sObj,data);if(!pb)delete sObj.priceBook;}else state.sales.push({id:uid(),...data,createdAt:Date.now()});
+  if($('s-implfree').checked)data.implGratis=true;
+  if(id){const sObj=findSale(id);Object.assign(sObj,data);if(!pb)delete sObj.priceBook;if(!$('s-implfree').checked)delete sObj.implGratis;}else state.sales.push({id:uid(),...data,createdAt:Date.now()});
   save();closeModal('modal-sale');refreshSalesViews();};
 $('s-client').addEventListener('input',()=>$('s-client').style.borderColor='');
-$('s-plan').addEventListener('change',salePreview);$('s-mode').addEventListener('change',salePreview);$('s-start').addEventListener('change',salePreview);
+$('s-plan').addEventListener('change',salePreview);$('s-mode').addEventListener('change',salePreview);$('s-start').addEventListener('change',salePreview);$('s-implfree').addEventListener('change',salePreview);
 function delSale(id){if(!confirm('¿Eliminar esta venta?'))return;state.sales=state.sales.filter(s=>s.id!==id);save();refreshSalesViews();}
 function churnSale(id){const s=findSale(id);if(!s)return;if(!confirm('¿Marcar como dada de baja? Dejará de contar en clientes y MRR.'))return;s.churned=true;s.churnDate=todayISO();save();refreshSalesViews();}
 function reactivateSale(id){const s=findSale(id);if(!s)return;s.churned=false;delete s.churnDate;save();refreshSalesViews();}
@@ -1920,7 +1925,7 @@ function renderLine(k){
       <td data-label="Plan"><span class="tag">${p.label}</span></td>
       <td data-label="Modalidad" class="muted-3">${s.mode==='anual'?'Anual adelantado':'Mensual'}</td>
       <td data-label="Mensual" class="num">${s.mode==='anual'?fmtUSD(lineSaleMonthly(s)*12)+'/año':fmtUSD(lineSaleMonthly(s))+'/mes'}</td>
-      <td data-label="Implementación" class="num">${fmtUSD(lineSaleImpl(s))}</td>
+      <td data-label="Implementación" class="num">${fmtUSD(lineSaleImpl(s))}${s.implGratis?' <span class="pl-new">Gratis</span>':''}</td>
       <td data-label="Inicio" class="num muted-3">${s.start?fmtDate(s.start):'—'}</td>
       <td data-label="Estado">${s.churned?'<span class="badge b-overdue">Dada de baja</span>':'<span class="badge st-finalizada">Activo</span>'}</td>
       <td class="t-actions-cell" data-label="Acciones"><div class="t-actions">${actBtns}<button class="btn sm danger icon" onclick="lineDel('${k}','${s.id}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg></button></div></td>
@@ -1943,18 +1948,21 @@ function openLineSale(k,id){
   $('ls-mode').value=s?(s.mode||'mensual'):'mensual';
   $('ls-start').value=s?(s.start||todayISO()):todayISO();
   $('ls-origen').value=s?(s.origen||''):'';
+  $('ls-free').checked=s?!!s.implGratis:false;
   lineSalePreview();
   openModal('modal-line-sale','ls-client');
 }
 function lineSalePreview(){
   const p=LINE_PLANS[$('ls-plan').value];if(!p){$('ls-preview').innerHTML='';return;}
   const anual=$('ls-mode').value==='anual',mon=anual?+(p.monthly*0.9).toFixed(2):p.monthly;
+  const gratis=$('ls-free').checked;
   $('ls-preview').innerHTML=anual
     ?`<b>${p.label} · anual adelantado:</b> ${fmtUSD(mon*12)} al año (${fmtUSD(mon)}/mes con 10% dcto) · implementación bonificada`
-    :`<b>${p.label} · mensual:</b> ${fmtUSD(mon)}/mes + implementación única de ${fmtUSD(p.impl)} · ${p.conv.toLocaleString('en-US')} conversaciones/mes`;
+    :`<b>${p.label} · mensual:</b> ${fmtUSD(mon)}/mes + implementación ${gratis?`<s class="muted-3">${fmtUSD(p.impl)}</s> <b style="color:#10b981">GRATIS</b> <span class="pl-new">Promo</span>`:`única de ${fmtUSD(p.impl)}`} · ${p.conv.toLocaleString('en-US')} conversaciones/mes`;
 }
 $('ls-plan').addEventListener('change',lineSalePreview);
 $('ls-mode').addEventListener('change',lineSalePreview);
+$('ls-free').addEventListener('change',lineSalePreview);
 $('ls-client').addEventListener('input',()=>$('ls-client').style.borderColor='');
 $('ls-save').onclick=()=>{
   const k=$('ls-line').value,client=$('ls-client').value.trim();
@@ -1962,7 +1970,8 @@ $('ls-save').onclick=()=>{
   if(!client){$('ls-client').focus();$('ls-client').style.borderColor='var(--danger)';return;}
   const id=$('ls-id').value;
   const data={client,plan:$('ls-plan').value,mode:$('ls-mode').value,start:$('ls-start').value||todayISO(),origen:$('ls-origen').value||''};
-  if(id){const s=lineSales(k).find(x=>x.id===id);if(s)Object.assign(s,data);}
+  if($('ls-free').checked)data.implGratis=true;
+  if(id){const s=lineSales(k).find(x=>x.id===id);if(s){Object.assign(s,data);if(!$('ls-free').checked)delete s.implGratis;}}
   else state.lineSales[k].push({id:uid(),...data,createdAt:Date.now()});
   save();closeModal('modal-line-sale');renderLine(k);
 };
