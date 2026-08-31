@@ -1015,6 +1015,10 @@ const LINES={
     mix:{crece:9,profesional:6,empresarial:2,corporativo:1}}
 };
 const FIA_SMB_MILESTONES=[['2026-09','Sep',10638],['2026-10','Oct',13341],['2026-11','Nov',16195],['2026-12','Dic',18928]];
+/* Palanca 2 del plan: 332 altas nuevas sep–dic (112 campaña + 220 canal de contadores) */
+const FIA_SMB_ALTAS=[['2026-09','Sep',52],['2026-10','Oct',79],['2026-11','Nov',96],['2026-12','Dic',105]];
+/* Palanca 3 del plan: canal de contadores — 55 altas/mes, 220 en el período, aporte $4,620/mes a dic, comisión ~$21 por alta */
+const CANAL_SMB={altasMes:55,altasPeriodo:220,aporteDic:4620};
 /* Anual adelantado: 10% dcto sobre la mensualidad e implementación bonificada (regla del tarifario). */
 const lineSaleMonthly=s=>{const p=LINE_PLANS[s.plan]||{monthly:0};return s.mode==='anual'?+(p.monthly*0.9).toFixed(2):p.monthly;};
 const lineSaleImpl=s=>(s.implGratis||s.mode==='anual')?0:((LINE_PLANS[s.plan]||{impl:0}).impl);
@@ -1424,13 +1428,25 @@ function msRow(list,val){
     return `<div class="ms ${done?'done':''} ${cur?'cur':''}"><div class="m1">${lb}${cur?' · en curso':''}</div><div class="m2">${fmtUSD0(amt)}</div><div class="m3">${done?'✓ alcanzado':(amt>0?Math.min(999,Math.round(val/amt*100))+'% logrado':'—')}</div></div>`;
   }).join('')+`</div>`;
 }
+const altasDelMes=m=>state.sales.filter(s=>(s.start||'').slice(0,7)===m).length; // altas = ventas registradas en el mes (incluye bajas posteriores)
 function renderFiaSmb(){
   const card=$('fia-smb-card');if(!card)return;
   const goal=+state.config.fiaMetaSMB||18928,mrr=currentMRR(),pct=Math.min(100,mrr/goal*100);
-  card.innerHTML=`<div class="section-head"><h2>Meta SMB · Factura IA</h2><span class="hint">Plan Línea SMB 2026 · recurrente a diciembre</span></div>
-    <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap"><span style="font-family:'Space Grotesk';font-weight:700;font-size:28px;font-variant-numeric:tabular-nums">${fmtUSD0(mrr)}</span><span class="muted-3" style="font-size:13px">de ${fmtUSD0(goal)}/mes · <b style="color:var(--brand-3)">${pct.toFixed(1)}%</b> de avance</span></div>
+  const curM=todayISO().slice(0,7);
+  const altasPer=state.sales.filter(s=>{const m=(s.start||'').slice(0,7);return m>='2026-09'&&m<='2026-12';}).length;
+  const pctA=Math.min(100,altasPer/332*100);
+  const altasStrip=`<div class="lms">`+FIA_SMB_ALTAS.map(([iso,lb,meta])=>{
+    const n=altasDelMes(iso),done=n>=meta,cur=iso===curM;
+    return `<div class="ms ${done?'done':''} ${cur?'cur':''}"><div class="m1">${lb}${cur?' · en curso':''}</div><div class="m2">${n} / ${meta}</div><div class="m3">${done?'✓ alcanzado':Math.min(999,Math.round(n/meta*100))+'% logrado'}</div></div>`;
+  }).join('')+`</div>`;
+  card.innerHTML=`<div class="section-head"><h2>Meta SMB · Factura IA</h2><span class="hint">Plan Línea SMB 2026 · recurrente + altas</span></div>
+    <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap"><span style="font-family:'Space Grotesk';font-weight:700;font-size:28px;font-variant-numeric:tabular-nums">${fmtUSD0(mrr)}</span><span class="muted-3" style="font-size:13px">de ${fmtUSD0(goal)}/mes a diciembre · <b style="color:var(--brand-3)">${pct.toFixed(1)}%</b> de avance</span></div>
     <div class="bar" style="margin-top:10px"><i style="width:${pct}%"></i></div>
-    ${msRow(FIA_SMB_MILESTONES,mrr)}`;
+    ${msRow(FIA_SMB_MILESTONES,mrr)}
+    <div style="border-top:1px solid var(--border);margin:18px 0 14px"></div>
+    <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap"><span style="font-family:'Space Grotesk';font-weight:700;font-size:28px;font-variant-numeric:tabular-nums">${altasPer}</span><span class="muted-3" style="font-size:13px">de <b>332 altas nuevas</b> en el período sep–dic (112 campaña + 220 contadores) · <b style="color:#10b981">${pctA.toFixed(1)}%</b></span></div>
+    <div class="bar green" style="margin-top:10px"><i style="width:${pctA}%"></i></div>
+    ${altasStrip}`;
 }
 function renderPulso(){
   $('pulso-fecha').textContent=new Date().toLocaleDateString('es-SV',{day:'numeric',month:'long'});
@@ -2038,6 +2054,17 @@ function contadorStats(c){
   const last=[...hist.map(h=>h.alta||''),...nuevos.map(s=>(s.start||'').slice(0,7))].filter(Boolean).sort().pop()||'';
   return {n,mrr,mes,comMes,last,nuevos:nuevos.length};
 }
+function canalAltasMes(m){ // altas del canal en un mes: histórico + ventas vinculadas (incluye bajas posteriores: el alta ocurrió)
+  const hist=(state.contadores||[]).reduce((a,c)=>a+((c.hist||[]).filter(h=>h.alta===m).length),0);
+  return hist+state.sales.filter(s=>s.contadorId&&(s.start||'').slice(0,7)===m).length;
+}
+function canalPeriodo(){ // altas y recurrente nuevo del canal en sep–dic 2026
+  const en=m=>m>='2026-09'&&m<='2026-12';
+  let altas=0,mrr=0;
+  (state.contadores||[]).forEach(c=>(c.hist||[]).forEach(h=>{if(en(h.alta||'')){altas++;mrr+=histMonthly(h);}}));
+  state.sales.forEach(s=>{if(s.contadorId&&en((s.start||'').slice(0,7))){altas++;mrr+=saleMonthly(s);}});
+  return {altas,mrr};
+}
 function contadorOptions(sel){return '<option value="">— Elige contador —</option>'+[...(state.contadores||[])].sort((a,b)=>a.nombre.localeCompare(b.nombre)).map(c=>`<option value="${c.id}"${c.id===sel?' selected':''}>${esc(c.nombre)}</option>`).join('');}
 function toggleContadorField(pfx){const o=$(pfx+'-origen').value,f=$(pfx+'-contador-field');if(f)f.style.display=(o==='Alianza Contable'||o==='Referido')?'':'none';}
 function renderContadores(){
@@ -2048,8 +2075,27 @@ function renderContadores(){
     <div class="card kpi"><div class="khead"><span class="klabel">Contadores en la red</span></div><div class="kval tnum">${stats.length}</div><div class="kmeta">${stats.filter(x=>x.s.n>0).length} con clientes referidos</div></div>
     <div class="card kpi"><div class="khead"><span class="klabel">Clientes referidos</span></div><div class="kval tnum">${tot.n}</div><div class="kmeta">${tot.nuevos?tot.nuevos+' vinculados desde este dashboard':'histórico + nuevos vinculados'}</div></div>
     <div class="card kpi"><div class="khead"><span class="klabel">Recurrente aportado</span></div><div class="kval lav tnum">${fmtUSD(tot.mrr)}</div><div class="kmeta">equivalente mensual (anuales ÷ 12)</div></div>
-    <div class="card kpi"><div class="khead"><span class="klabel">Altas este mes</span></div><div class="kval tnum" style="color:#10b981">${tot.mes}</div><div class="kmeta">Comisión est. del mes: ${fmtUSD(tot.com)} (1ª mensualidad)</div></div>
+    <div class="card kpi"><div class="khead"><span class="klabel">Altas este mes</span></div><div class="kval tnum" style="color:#10b981">${tot.mes} <span style="font-size:15px;color:var(--txt-3)">/ ${CANAL_SMB.altasMes}</span></div><div class="kmeta">Comisión est. del mes: ${fmtUSD(tot.com)} (1ª mensualidad)</div><div class="bar green"><i style="width:${Math.min(100,tot.mes/CANAL_SMB.altasMes*100)}%"></i></div></div>
   </div>
+  ${(()=>{
+    const curM=curMonth(),per=canalPeriodo();
+    const mesN=canalAltasMes(curM),pctMes=Math.min(100,mesN/CANAL_SMB.altasMes*100);
+    const pctPer=Math.min(100,per.altas/CANAL_SMB.altasPeriodo*100),pctMrr=Math.min(100,per.mrr/CANAL_SMB.aporteDic*100);
+    const strip=`<div class="lms">`+[['2026-09','Sep'],['2026-10','Oct'],['2026-11','Nov'],['2026-12','Dic']].map(([iso,lb])=>{
+      const n=canalAltasMes(iso),done=n>=CANAL_SMB.altasMes,cur=iso===curM;
+      return `<div class="ms ${done?'done':''} ${cur?'cur':''}"><div class="m1">${lb}${cur?' · en curso':''}</div><div class="m2">${n} / ${CANAL_SMB.altasMes}</div><div class="m3">${done?'✓ alcanzado':Math.min(999,Math.round(n/CANAL_SMB.altasMes*100))+'% logrado'}</div></div>`;
+    }).join('')+`</div>`;
+    return `<div class="card" style="margin-bottom:16px">
+    <div class="section-head"><h2>Meta SMB · Canal de contadores</h2><span class="hint">palanca 3 del Plan Línea SMB 2026</span></div>
+    <p class="subt" style="margin-bottom:14px"><b>55 altas al mes · 220 en el período sep–dic</b> (son parte de las 332 de Factura IA) · aporte de <b>$4,620/mes a diciembre</b> · comisión al contador: un mes de servicio por alta activada (~$21).</p>
+    <div class="muted-3" style="font-size:12px;margin-bottom:6px">Altas del mes en curso: <b style="color:#10b981">${mesN} de ${CANAL_SMB.altasMes}</b> · ${pctMes.toFixed(0)}%</div>
+    <div class="bar green" style="margin-bottom:14px"><i style="width:${pctMes}%"></i></div>
+    <div class="muted-3" style="font-size:12px;margin-bottom:6px">Altas del período (sep–dic): <b>${per.altas} de ${CANAL_SMB.altasPeriodo}</b> · ${pctPer.toFixed(0)}%</div>
+    <div class="bar" style="margin-bottom:14px"><i style="width:${pctPer}%"></i></div>
+    <div class="muted-3" style="font-size:12px;margin-bottom:6px">Recurrente nuevo del canal: <b>${fmtUSD(per.mrr)}</b> de ${fmtUSD0(CANAL_SMB.aporteDic)}/mes · ${pctMrr.toFixed(1)}%</div>
+    <div class="bar"><i style="width:${pctMrr}%"></i></div>
+    ${strip}
+  </div>`;})()}
   <div class="card pad-lg">
     <div class="section-head"><h2>Red de contadores</h2><span class="hint">clic en un contador para ver sus clientes</span></div>
     <div class="searchbar" style="margin-bottom:12px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input id="ct-search" type="search" placeholder="Buscar contador…" oninput="renderContadoresRows()"><span class="hint" id="ct-search-cnt"></span></div>
