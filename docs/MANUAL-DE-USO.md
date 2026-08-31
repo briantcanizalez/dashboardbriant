@@ -114,8 +114,30 @@ Cada línea tiene su vista con:
   - **Exportar ventas (CSV)** e **Imprimir reporte (PDF)**.
   - **Importar clientes desde CSV** — columnas: `cliente, plan, modalidad, fecha` (plantilla descargable).
 
-## 6. Preguntas frecuentes
+## 6. Qué se puede crear, editar y eliminar (matriz de funciones)
 
+**Todo registro del sistema se puede crear, editar y eliminar desde la interfaz.** No hay datos que solo se puedan tocar desde el código.
+
+| Registro | Crear | Editar | Eliminar | Acciones adicionales |
+|---|---|---|---|---|
+| **Tarea** | ✅ *Nueva tarea* | ✅ | ✅ | Iniciar / pausar / finalizar / reabrir cronómetro · mover en el tablero · recurrencia |
+| **Venta (Factura IA)** | ✅ *Nueva venta* | ✅ | ✅ | Dar de baja y reactivar · promo 🎁 implementación gratis · elegir libro de precios · vincular contador y campaña |
+| **Servicio especial** | ✅ *Nuevo servicio* | ✅ | ✅ | Tarifa autocompletada por tipo de servicio |
+| **Prospecto** | ✅ *Nuevo prospecto* | ✅ | ✅ | Mover de etapa (arrastrando o editando) · BANT · convertir a venta · al pasar a Ganada genera la venta |
+| **Campaña** | ✅ *Nueva campaña* | ✅ | ✅ | Activar/cerrar · ver sus leads y clientes |
+| **Contador referidor** | ✅ *Nuevo contador* | ✅ | ✅ | Al eliminarlo se desvincula de sus ventas (no las borra) |
+| **Cliente en la cartera de un contador** | ✅ botón **➕** en su fila, o *Agregar cliente a esta cartera* dentro de su lista | ✅ | ✅ | Montos autocompletados por plan y período |
+| **Venta de Vendi / Comandi** | ✅ *Nueva venta Vendi/Comandi* | ✅ | ✅ | Dar de baja y reactivar · promo 🎁 |
+| **Metas y configuración** | — | ✅ *Ajustes y Datos* | — | Metas SMB por línea, metas personales y esquema de comisiones |
+| **Todo el estado** | — | ✅ | ✅ | Exportar / importar respaldo JSON · exportar ventas CSV · importar clientes CSV |
+
+**Notas sobre la cartera de contadores:** conviven dos tipos de cliente. Los del **histórico** (importados de la red de referidores) se administran a mano con los botones ✏️ y 🗑️ de su fila. Los que llegaron como **venta del dashboard** aparecen con etiqueta **Nuevo** y se editan desde *Ventas* (botón *Ver venta →*), porque son la misma venta vinculada por `contadorId`.
+
+**Reversibilidad:** dar de baja una venta (propia o de línea) es reversible con *Reactivar*. Eliminar es permanente — por eso siempre pide confirmación. Antes de una limpieza grande, exporta un respaldo desde *Ajustes*.
+
+## 7. Preguntas frecuentes
+
+- **¿Puedo agregar o quitar cualquier registro?** Sí — ver la matriz de la sección 6. Todo módulo tiene crear, editar y eliminar.
 - **¿Dónde viven mis datos?** En tu fila de la tabla `dashboards` de Supabase (solo tu usuario puede leerla) y en espejo en el navegador. Ver [ARQUITECTURA.md](ARQUITECTURA.md).
 - **¿Por qué una venta no suma al MRR?** Porque tiene menos de 3 meses (madura) o es anual (suma a pagos anuales).
 - **¿Cómo quito la promo de una venta?** Edítala y desmarca la casilla 🎁.

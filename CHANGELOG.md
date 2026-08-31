@@ -2,6 +2,12 @@
 
 Historial de cambios del dashboard. Formato: fecha · qué cambió.
 
+## 2026-08-31 · CRUD completo en la cartera de contadores
+
+- Nuevo modal **cliente referido**: se pueden **agregar, editar y quitar** clientes en la cartera de cualquier contador (antes solo entraban por ventas vinculadas o por la semilla del código). Montos autocompletados por plan y período.
+- Botón **➕** en cada fila de la tabla de contadores y **Agregar cliente a esta cartera** dentro de su lista; los clientes que vienen de una venta del dashboard llevan a *Ventas* con **Ver venta →**.
+- Documentada la **matriz de funciones** (crear / editar / eliminar por módulo) en  §6.
+
 ## 2026-08-31 · Conciliación con Odoo
 
 Cruce de las 527 suscripciones activas del export `sale.order` contra el dashboard. Cierre: **528 clientes en ambos lados**, recurrente mensual $7,531.09 (2 centavos de diferencia por redondeo) y prepago anual $13,060.95 **exacto**.
