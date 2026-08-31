@@ -513,6 +513,50 @@ canvas{max-width:100%}
 .lms .ms .m3{font-size:11px;margin-top:2px;color:var(--txt-3)}
 .lms .ms.done .m3{color:#10b981;font-weight:700}
 @media print{.line-switch{display:none}}
+/* ===== Panel Contadores (estilo panel ejecutivo) ===== */
+.ct-hero{background:linear-gradient(135deg,rgba(82,22,231,.28),rgba(16,16,25,.9) 55%),linear-gradient(180deg,var(--surface-1),#101019);border:1px solid var(--border);border-radius:var(--r);padding:26px 24px;margin-bottom:18px;box-shadow:var(--sh-1)}
+.ct-hero .eyebrow{font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--brand-3);margin-bottom:6px}
+.ct-hero .big{font-family:'Space Grotesk';font-weight:700;font-size:clamp(34px,5vw,46px);letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.ct-hero .sub{color:var(--txt-2);font-size:13px;margin-top:6px;max-width:640px;line-height:1.6}
+.ct-hero-grid{display:flex;justify-content:space-between;gap:22px;flex-wrap:wrap;align-items:center}
+.ct-mini{display:grid;grid-template-columns:repeat(2,minmax(120px,1fr));gap:10px}
+.ct-mini .m{background:rgba(11,11,18,.55);border:1px solid var(--border);border-radius:12px;padding:12px 15px}
+.ct-mini .n{font-family:'Space Grotesk';font-weight:700;font-size:19px;font-variant-numeric:tabular-nums}
+.ct-mini .k{font-size:11px;color:var(--txt-3);font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-top:2px}
+.ct-insights{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px;margin-bottom:18px}
+.ct-ins{background:linear-gradient(180deg,var(--surface-1),#101019);border:1px solid var(--border);border-left:3px solid var(--brand-2);border-radius:14px;padding:15px 16px}
+.ct-ins.warn{border-left-color:#FDC555}
+.ct-ins.good{border-left-color:#10b981}
+.ct-ins.info{border-left-color:#60a5fa}
+.ct-ins .it{font-weight:800;font-size:13.5px;margin-bottom:5px}
+.ct-ins .id{font-size:12.5px;color:var(--txt-2);line-height:1.55}
+.ct-ins .iact{margin-top:9px;background:none;border:none;color:var(--brand-3);font-weight:700;font-size:12px;cursor:pointer;padding:0}
+.ct-ins .iact:hover{text-decoration:underline}
+.ct-two{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+@media(max-width:900px){.ct-two{grid-template-columns:1fr}}
+.ctrk{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:8px;background:var(--surface-2);color:var(--txt-2);font-weight:800;font-size:12px}
+.ctrk.top{background:linear-gradient(135deg,#FDC555,#c98f1b);color:#1a1207}
+.ct-who{display:flex;align-items:center;gap:9px;min-width:0}
+.ct-av{flex:0 0 auto;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:rgba(124,77,255,.18);color:var(--brand-3);font-weight:800;font-size:11px}
+.ct-share{display:flex;align-items:center;gap:8px;justify-content:flex-end}
+.ct-share .track{width:64px;height:6px;border-radius:99px;background:var(--surface-2);overflow:hidden;display:inline-block}
+.ct-share .track i{display:block;height:100%;background:linear-gradient(90deg,var(--brand),var(--brand-2));border-radius:99px}
+.ct-share .pc{font-size:12px;color:var(--txt-2);font-variant-numeric:tabular-nums;min-width:42px;text-align:right}
+.ct-push .pi{display:flex;gap:11px;align-items:flex-start;background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:12px 13px;margin-bottom:9px}
+.ct-push .pi .pb{flex:0 0 auto;width:26px;height:26px;border-radius:8px;display:grid;place-items:center;font-size:13px}
+.ct-push .pi.good .pb{background:rgba(16,185,129,.15)}
+.ct-push .pi.warn .pb{background:rgba(253,197,85,.15)}
+.ct-push .pi.info .pb{background:rgba(96,165,250,.15)}
+.ct-push .pt{font-weight:800;font-size:13px;display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.ct-push .ptag{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;padding:2px 7px;border-radius:6px;background:var(--surface-2);color:var(--txt-2)}
+.ct-push .pi.good .ptag{background:rgba(16,185,129,.15);color:#34d399}
+.ct-push .pi.warn .ptag{background:rgba(253,197,85,.15);color:#FDC555}
+.ct-push .pi.info .ptag{background:rgba(96,165,250,.15);color:#93c5fd}
+.ct-push .pr{font-size:12px;color:var(--txt-2);margin-top:3px;line-height:1.5}
+.ct-prize{color:#34d399;font-weight:800}
+th.ct-sort{cursor:pointer;user-select:none;white-space:nowrap}
+th.ct-sort:hover{color:var(--txt)}
+.ct-arrow{font-size:9px;margin-left:3px;color:var(--brand-3)}
 </style>
 </head>
 <body class="booting">
@@ -2067,61 +2111,212 @@ function canalPeriodo(){ // altas y recurrente nuevo del canal en sep–dic 2026
 }
 function contadorOptions(sel){return '<option value="">— Elige contador —</option>'+[...(state.contadores||[])].sort((a,b)=>a.nombre.localeCompare(b.nombre)).map(c=>`<option value="${c.id}"${c.id===sel?' selected':''}>${esc(c.nombre)}</option>`).join('');}
 function toggleContadorField(pfx){const o=$(pfx+'-origen').value,f=$(pfx+'-contador-field');if(f)f.style.display=(o==='Alianza Contable'||o==='Referido')?'':'none';}
+/* --- Cartera unificada por contador: histórico + ventas nuevas vinculadas --- */
+const ctCli=c=>[
+  ...(c.hist||[]).map(h=>({planNombre:h.planNombre||'—',plan:h.plan==='anual'?'anual':'mensual',rr:+h.rr||0,impl:+h.impl||0,alta:h.alta||'',nuevo:false})),
+  ...contadorLinkedSales(c.id).map(s=>({planNombre:(PLANS[s.plan]||{label:s.plan}).label,plan:s.mode==='anual'?'anual':'mensual',rr:s.mode==='anual'?+(saleMonthly(s)*12).toFixed(2):saleMonthly(s),impl:saleImpl(s),alta:(s.start||'').slice(0,7),nuevo:true}))
+];
+const ctMrrOf=x=>x.plan==='mensual'?x.rr:x.rr/12; // rr anual viene como monto del año
+const ctTotals=arr=>arr.reduce((t,x)=>({impl:t.impl+x.impl,mrr:t.mrr+ctMrrOf(x),arr:t.arr+ctMrrOf(x)*12}),{impl:0,mrr:0,arr:0});
+const CT_MES=['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+const ctMesLbl=ym=>{if(!ym)return '—';const [y,m]=ym.split('-');return CT_MES[+m-1]+' '+String(y).slice(2);};
+const ctShort=n=>(n||'').replace(/^(licda?\.?|lic\.?|ing\.?)\s+/i,'').trim().split(/\s+/).slice(0,2).join(' ');
+const ctInitials=n=>ctShort(n).split(/\s+/).map(w=>(w[0]||'')).join('').toUpperCase()||'?';
+const CT_PLAN_COLORS={'Básico':'#5eead4','Starter':'#7c4dff','Professional':'#9a73ff','Advanced':'#FDC555','Deluxe':'#34d399','Enterprise':'#f87171','Básico Anual':'#2dd4bf','Starter Anual':'#a78bfa','Plan Básico Mensual':'#5eead4','Professional Incrize':'#c9b6fb'};
+const ctCompact=v=>'$'+new Intl.NumberFormat('en',{notation:'compact',maximumFractionDigits:1}).format(v);
+let ctSort={key:'anio1',dir:-1};
+function ctSortBoard(k){ctSort=ctSort.key===k?{key:k,dir:-ctSort.dir}:{key:k,dir:k==='n'?1:-1};renderContadoresRows();}
+function ctScrollBoard(){const el=$('ct-board-card');if(el)el.scrollIntoView({behavior:'smooth',block:'start'});}
+/* --- Acciones sugeridas (adaptado del panel ejecutivo) --- */
+function ctInsights(ranked,anio1Total){
+  const list=[];
+  const topShare=anio1Total&&ranked[0]?ranked[0].anio1/anio1Total*100:0;
+  const basico=ranked.reduce((a,r)=>a+r.cli.filter(x=>/b[áa]sico/i.test(x.planNombre)).length,0);
+  if(basico){
+    let uplift=0;ranked.forEach(r=>r.cli.filter(x=>/b[áa]sico/i.test(x.planNombre)).forEach(x=>{uplift+=Math.max(0,(x.plan==='anual'?113.87/12:14.99)-ctMrrOf(x));}));
+    const tgt=[...ranked].sort((a,b)=>b.cli.filter(x=>/b[áa]sico/i.test(x.planNombre)).length-a.cli.filter(x=>/b[áa]sico/i.test(x.planNombre)).length)[0];
+    list.push({sev:'warn',title:'Migrar planes Básico (descontinuado)',desc:`<b>${basico}</b> clientes siguen en plan Básico. Migrarlos a Starter suma ~<b>${fmtUSD(uplift)}</b>/mes de MRR.`,action:'Abrir '+ctShort(tgt.n),fn:`contadorClientList('${tgt.id}')`});
+  }
+  const pocos=ranked.filter(r=>r.k<=1).length;
+  if(pocos)list.push({sev:'info',title:'Activar contadores de baja cartera',desc:`<b>${pocos}</b> contadores tienen 1 o 0 clientes. Un empujón a estos aliados es crecimiento rápido de la red — la meta del canal pide 55 altas/mes.`,action:'Ver desempeño',fn:'ctScrollBoard()'});
+  if(ranked[0]&&topShare>=18)list.push({sev:'warn',title:'Riesgo de concentración',desc:`<b>${ctShort(ranked[0].n)}</b> concentra el <b>${topShare.toFixed(0)}%</b> del aporte Año 1. Diversificar reduce el riesgo.`,action:'Abrir '+ctShort(ranked[0].n),fn:`contadorClientList('${ranked[0].id}')`});
+  else if(ranked[0])list.push({sev:'good',title:'Cartera diversificada',desc:`Ningún contador supera el <b>${topShare.toFixed(0)}%</b> del aporte Año 1. Buena distribución de la red.`,action:'Ver desempeño',fn:'ctScrollBoard()'});
+  if(ranked[0])list.push({sev:'good',title:'Contador destacado',desc:`<b>${ctShort(ranked[0].n)}</b> lidera con <b>${fmtUSD0(ranked[0].anio1)}</b> de aporte Año 1 y <b>${ranked[0].k}</b> clientes.`,action:'Abrir '+ctShort(ranked[0].n),fn:`contadorClientList('${ranked[0].id}')`});
+  return list;
+}
 function renderContadores(){
+  ['ctRank','ctMix','ctAltas'].forEach(k=>{if(charts[k]){charts[k].destroy();delete charts[k];}});
   const stats=(state.contadores||[]).map(c=>({c,s:contadorStats(c)}));
-  const tot=stats.reduce((a,x)=>({n:a.n+x.s.n,mrr:a.mrr+x.s.mrr,mes:a.mes+x.s.mes,com:a.com+x.s.comMes,nuevos:a.nuevos+x.s.nuevos}),{n:0,mrr:0,mes:0,com:0,nuevos:0});
+  const tot=stats.reduce((a,x)=>({n:a.n+x.s.n,mes:a.mes+x.s.mes,com:a.com+x.s.comMes,nuevos:a.nuevos+x.s.nuevos}),{n:0,mes:0,com:0,nuevos:0});
+  const ranked=(state.contadores||[]).map(c=>{const cli=ctCli(c),t=ctTotals(cli);return {id:c.id,n:c.nombre,k:cli.length,cli,...t,anio1:t.impl+t.arr};}).sort((a,b)=>b.anio1-a.anio1);
+  const all=ranked.flatMap(r=>r.cli);
+  const T=ctTotals(all),anio1Total=T.impl+T.arr;
+  const anualN=all.filter(x=>x.plan==='anual').length,pctAnual=all.length?Math.round(anualN/all.length*100):0;
+  const ticket=all.length?T.arr/all.length:0;
+  /* Meta SMB (siempre visible) */
+  const curM=curMonth(),per=canalPeriodo();
+  const mesN=canalAltasMes(curM),pctMes=Math.min(100,mesN/CANAL_SMB.altasMes*100);
+  const pctPer=Math.min(100,per.altas/CANAL_SMB.altasPeriodo*100),pctMrrMeta=Math.min(100,per.mrr/CANAL_SMB.aporteDic*100);
+  const metaStrip=`<div class="lms">`+[['2026-09','Sep'],['2026-10','Oct'],['2026-11','Nov'],['2026-12','Dic']].map(([iso,lb])=>{
+    const n=canalAltasMes(iso),done=n>=CANAL_SMB.altasMes,cur=iso===curM;
+    return `<div class="ms ${done?'done':''} ${cur?'cur':''}"><div class="m1">${lb}${cur?' · en curso':''}</div><div class="m2">${n} / ${CANAL_SMB.altasMes}</div><div class="m3">${done?'✓ alcanzado':Math.min(999,Math.round(n/CANAL_SMB.altasMes*100))+'% logrado'}</div></div>`;
+  }).join('')+`</div>`;
   $('contadores-wrap').innerHTML=`
+  <div class="ct-hero">
+    <div class="ct-hero-grid">
+      <div style="min-width:min(100%,340px)">
+        <div class="eyebrow">Valor de cartera · Año 1</div>
+        <div class="big">${fmtUSD0(anio1Total)}</div>
+        <p class="sub">Implementaciones (<b>${fmtUSD0(T.impl)}</b> únicas) + revenue recurrente anual (<b>${fmtUSD0(T.arr)}</b>), aportados por <b>${stats.length}</b> contadores y <b>${all.length}</b> clientes referidos.</p>
+      </div>
+      <div class="ct-mini">
+        <div class="m"><div class="n">${fmtUSD0(T.mrr)}</div><div class="k">MRR recurrente</div></div>
+        <div class="m"><div class="n">${fmtUSD0(T.arr)}</div><div class="k">ARR recurrente</div></div>
+        <div class="m"><div class="n">${pctAnual}%</div><div class="k">Clientes anuales</div></div>
+        <div class="m"><div class="n">${fmtUSD0(ticket)}</div><div class="k">Ticket ARR prom.</div></div>
+      </div>
+    </div>
+  </div>
   <div class="grid kpis" style="margin-bottom:18px">
-    <div class="card kpi"><div class="khead"><span class="klabel">Contadores en la red</span></div><div class="kval tnum">${stats.length}</div><div class="kmeta">${stats.filter(x=>x.s.n>0).length} con clientes referidos</div></div>
-    <div class="card kpi"><div class="khead"><span class="klabel">Clientes referidos</span></div><div class="kval tnum">${tot.n}</div><div class="kmeta">${tot.nuevos?tot.nuevos+' vinculados desde este dashboard':'histórico + nuevos vinculados'}</div></div>
-    <div class="card kpi"><div class="khead"><span class="klabel">Recurrente aportado</span></div><div class="kval lav tnum">${fmtUSD(tot.mrr)}</div><div class="kmeta">equivalente mensual (anuales ÷ 12)</div></div>
+    <div class="card kpi"><div class="khead"><span class="klabel">Contadores en la red</span></div><div class="kval tnum">${stats.length}</div><div class="kmeta">${stats.filter(x=>x.s.n>0).length} con clientes · ≈ ${(stats.length?all.length/stats.length:0).toFixed(1)} por contador</div></div>
+    <div class="card kpi"><div class="khead"><span class="klabel">Clientes referidos</span></div><div class="kval tnum">${all.length}</div><div class="kmeta">${tot.nuevos?tot.nuevos+' vinculados desde este dashboard · ':''}${pctAnual}% anuales</div><div class="bar"><i style="width:${pctAnual}%"></i></div></div>
+    <div class="card kpi"><div class="khead"><span class="klabel">Implementaciones</span></div><div class="kval lav tnum">${fmtUSD0(T.impl)}</div><div class="kmeta">ingreso único acumulado del canal</div></div>
     <div class="card kpi"><div class="khead"><span class="klabel">Altas este mes</span></div><div class="kval tnum" style="color:#10b981">${tot.mes} <span style="font-size:15px;color:var(--txt-3)">/ ${CANAL_SMB.altasMes}</span></div><div class="kmeta">Comisión est. del mes: ${fmtUSD(tot.com)} (1ª mensualidad)</div><div class="bar green"><i style="width:${Math.min(100,tot.mes/CANAL_SMB.altasMes*100)}%"></i></div></div>
   </div>
-  ${(()=>{
-    const curM=curMonth(),per=canalPeriodo();
-    const mesN=canalAltasMes(curM),pctMes=Math.min(100,mesN/CANAL_SMB.altasMes*100);
-    const pctPer=Math.min(100,per.altas/CANAL_SMB.altasPeriodo*100),pctMrr=Math.min(100,per.mrr/CANAL_SMB.aporteDic*100);
-    const strip=`<div class="lms">`+[['2026-09','Sep'],['2026-10','Oct'],['2026-11','Nov'],['2026-12','Dic']].map(([iso,lb])=>{
-      const n=canalAltasMes(iso),done=n>=CANAL_SMB.altasMes,cur=iso===curM;
-      return `<div class="ms ${done?'done':''} ${cur?'cur':''}"><div class="m1">${lb}${cur?' · en curso':''}</div><div class="m2">${n} / ${CANAL_SMB.altasMes}</div><div class="m3">${done?'✓ alcanzado':Math.min(999,Math.round(n/CANAL_SMB.altasMes*100))+'% logrado'}</div></div>`;
-    }).join('')+`</div>`;
-    return `<div class="card" style="margin-bottom:16px">
+  <div class="card" style="margin-bottom:16px">
     <div class="section-head"><h2>Meta SMB · Canal de contadores</h2><span class="hint">palanca 3 del Plan Línea SMB 2026</span></div>
     <p class="subt" style="margin-bottom:14px"><b>55 altas al mes · 220 en el período sep–dic</b> (son parte de las 332 de Factura IA) · aporte de <b>$4,620/mes a diciembre</b> · comisión al contador: un mes de servicio por alta activada (~$21).</p>
     <div class="muted-3" style="font-size:12px;margin-bottom:6px">Altas del mes en curso: <b style="color:#10b981">${mesN} de ${CANAL_SMB.altasMes}</b> · ${pctMes.toFixed(0)}%</div>
     <div class="bar green" style="margin-bottom:14px"><i style="width:${pctMes}%"></i></div>
     <div class="muted-3" style="font-size:12px;margin-bottom:6px">Altas del período (sep–dic): <b>${per.altas} de ${CANAL_SMB.altasPeriodo}</b> · ${pctPer.toFixed(0)}%</div>
     <div class="bar" style="margin-bottom:14px"><i style="width:${pctPer}%"></i></div>
-    <div class="muted-3" style="font-size:12px;margin-bottom:6px">Recurrente nuevo del canal: <b>${fmtUSD(per.mrr)}</b> de ${fmtUSD0(CANAL_SMB.aporteDic)}/mes · ${pctMrr.toFixed(1)}%</div>
-    <div class="bar"><i style="width:${pctMrr}%"></i></div>
-    ${strip}
-  </div>`;})()}
-  <div class="card pad-lg">
-    <div class="section-head"><h2>Red de contadores</h2><span class="hint">clic en un contador para ver sus clientes</span></div>
+    <div class="muted-3" style="font-size:12px;margin-bottom:6px">Recurrente nuevo del canal: <b>${fmtUSD(per.mrr)}</b> de ${fmtUSD0(CANAL_SMB.aporteDic)}/mes · ${pctMrrMeta.toFixed(1)}%</div>
+    <div class="bar"><i style="width:${pctMrrMeta}%"></i></div>
+    ${metaStrip}
+  </div>
+  <div class="section-head" style="margin-bottom:12px"><h2 style="font-size:17px">⚡ Acciones sugeridas</h2></div>
+  <div class="ct-insights">${ctInsights(ranked,anio1Total).map(i=>`
+    <div class="ct-ins ${i.sev}"><div class="it">${i.title}</div><div class="id">${i.desc}</div><button class="iact" onclick="${i.fn}">${esc(i.action)} →</button></div>`).join('')}</div>
+  <div class="ct-two">
+    <div class="card"><div class="section-head"><h2>Ranking · Aporte Año 1</h2><span class="hint">${ranked.length>12?'top 12 de '+ranked.length:ranked.length+' contadores'} · clic abre sus clientes</span></div><div class="chart-box" style="height:340px"><canvas id="chartCtRank"></canvas></div></div>
+    <div class="card"><div class="section-head"><h2>Mezcla de planes</h2><span class="hint">${all.length} clientes</span></div><div class="chart-box" style="height:340px"><canvas id="chartCtMix"></canvas></div></div>
+  </div>
+  <div class="card" style="margin-bottom:16px">
+    <div class="section-head"><h2>Crecimiento de la red · altas por mes</h2><span class="hint" id="ct-altas-note"></span></div>
+    <div class="chart-box" style="height:260px"><canvas id="chartCtAltas"></canvas></div>
+  </div>
+  <div class="card pad-lg" id="ct-board-card" style="margin-bottom:16px">
+    <div class="section-head"><h2>Desempeño por contador</h2><span class="hint">clic en la fila para ver sus clientes · encabezados ordenan</span></div>
     <div class="searchbar" style="margin-bottom:12px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input id="ct-search" type="search" placeholder="Buscar contador…" oninput="renderContadoresRows()"><span class="hint" id="ct-search-cnt"></span></div>
-    <div class="tablewrap"><table class="responsive"><thead><tr><th>#</th><th>Contador</th><th class="num">Clientes</th><th class="num">Recurrente/mes</th><th class="num">Altas mes</th><th>Última alta</th><th class="right">Acciones</th></tr></thead><tbody id="ct-tbody"></tbody></table></div>
+    <div class="tablewrap"><table class="responsive"><thead><tr>
+      <th style="width:44px">#</th>
+      <th class="ct-sort" onclick="ctSortBoard('n')">Contador${ctSort.key==='n'?`<span class="ct-arrow">${ctSort.dir===1?'▲':'▼'}</span>`:''}</th>
+      <th class="num ct-sort" onclick="ctSortBoard('k')">Clientes${ctSort.key==='k'?`<span class="ct-arrow">${ctSort.dir===1?'▲':'▼'}</span>`:''}</th>
+      <th class="num ct-sort" onclick="ctSortBoard('mrr')">MRR${ctSort.key==='mrr'?`<span class="ct-arrow">${ctSort.dir===1?'▲':'▼'}</span>`:''}</th>
+      <th class="num ct-sort" onclick="ctSortBoard('arr')">ARR${ctSort.key==='arr'?`<span class="ct-arrow">${ctSort.dir===1?'▲':'▼'}</span>`:''}</th>
+      <th class="num ct-sort" onclick="ctSortBoard('anio1')">Participación${ctSort.key==='anio1'?`<span class="ct-arrow">${ctSort.dir===1?'▲':'▼'}</span>`:''}</th>
+      <th>Última alta</th><th class="right">Acciones</th>
+    </tr></thead><tbody id="ct-tbody"></tbody></table></div>
     <div id="ct-empty" class="empty" style="display:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg><p>Aún no hay contadores</p><span>Agrega el primero con “Nuevo contador”.</span></div>
+  </div>
+  <div class="ct-two">
+    <div class="card"><div class="section-head"><h2>🏆 A quién premiar</h2><span class="hint" id="ct-reward-note"></span></div><div class="tablewrap"><table class="responsive"><thead><tr><th style="width:40px">#</th><th>Contador</th><th class="num">Clientes</th><th class="num">MRR aportado</th><th class="num">Premio sug.</th></tr></thead><tbody id="ct-reward"></tbody></table></div></div>
+    <div class="card"><div class="section-head"><h2>🚀 A quién impulsar / reactivar</h2><span class="hint">según su última alta</span></div><div class="ct-push" id="ct-push"></div></div>
   </div>`;
   renderContadoresRows();
+  /* --- Ranking (barras horizontales apiladas ARR + implementación) --- */
+  const top=ranked.slice(0,12);
+  charts.ctRank=new Chart($('chartCtRank'),{type:'bar',
+    data:{labels:top.map(r=>ctShort(r.n)),datasets:[
+      {label:'ARR (recurrente anual)',data:top.map(r=>+r.arr.toFixed(2)),backgroundColor:'#7c4dff',hoverBackgroundColor:'#9a73ff',borderRadius:5,barThickness:14},
+      {label:'Implementaciones',data:top.map(r=>+r.impl.toFixed(2)),backgroundColor:'#3a2f66',hoverBackgroundColor:'#4a3d80',borderRadius:5,barThickness:14}]},
+    options:{indexAxis:'y',maintainAspectRatio:false,
+      onClick:(e,els)=>{if(els.length)contadorClientList(top[els[0].index].id);},
+      onHover:(e,els)=>{e.native.target.style.cursor=els.length?'pointer':'default';},
+      scales:{x:{stacked:true,grid:{color:CGRID},ticks:{color:CTXT,callback:v=>ctCompact(v),font:{size:11}}},y:{stacked:true,grid:{display:false},ticks:{color:CTXT,font:{size:11,weight:600}}}},
+      plugins:{legend:{position:'bottom',labels:{color:CTXT,boxWidth:12,boxHeight:12,font:{size:11}}},tooltip:{callbacks:{label:c=>' '+c.dataset.label+': '+fmtUSD(c.parsed.x)}}}}});
+  /* --- Mezcla de planes (dona) --- */
+  const planCount={};all.forEach(x=>{const k=x.planNombre||'Personalizado';planCount[k]=(planCount[k]||0)+1;});
+  const mixLabels=Object.keys(planCount).sort((a,b)=>planCount[b]-planCount[a]);
+  charts.ctMix=new Chart($('chartCtMix'),{type:'doughnut',
+    data:{labels:mixLabels,datasets:[{data:mixLabels.map(l=>planCount[l]),backgroundColor:mixLabels.map(l=>CT_PLAN_COLORS[l]||'#6b7280'),borderColor:'#101019',borderWidth:2,hoverOffset:6}]},
+    options:{maintainAspectRatio:false,cutout:'60%',
+      plugins:{legend:{position:'right',labels:{color:CTXT,boxWidth:10,boxHeight:10,font:{size:11},padding:9}},tooltip:{callbacks:{label:c=>` ${c.label}: ${c.parsed} (${Math.round(c.parsed/all.length*100)}%)`}}}}});
+  /* --- Crecimiento: altas por mes + MRR nuevo --- */
+  const altaCount={};let sinAlta=0;
+  all.forEach(x=>{if(x.alta)altaCount[x.alta]=(altaCount[x.alta]||0)+1;else sinAlta++;});
+  const mm=Object.keys(altaCount).sort();let ejes=mm;
+  if(mm.length){ejes=[];let [y,m]=mm[0].split('-').map(Number);const [y1,m1]=mm[mm.length-1].split('-').map(Number);while(y<y1||(y===y1&&m<=m1)){ejes.push(`${y}-${String(m).padStart(2,'0')}`);if(++m>12){m=1;y++;}}}
+  const altaData=ejes.map(k=>altaCount[k]||0);
+  const altaMrr=ejes.map(k=>all.filter(x=>x.alta===k).reduce((s,x)=>s+ctMrrOf(x),0));
+  const maxIdx=altaData.indexOf(Math.max(0,...altaData));
+  const ult=altaData[altaData.length-1]||0,pen=altaData[altaData.length-2]||0;
+  $('ct-altas-note').textContent=`${all.length-sinAlta} con fecha${sinAlta?` · ${sinAlta} sin fecha`:''}${ejes.length>=2?` · ${ult>=pen?'▲':'▼'} ${Math.abs(ult-pen)} vs mes previo`:''}`;
+  charts.ctAltas=new Chart($('chartCtAltas'),{
+    data:{labels:ejes.map(ctMesLbl),datasets:[
+      {type:'bar',label:'Clientes nuevos',data:altaData,backgroundColor:ejes.map((_,i)=>i===maxIdx?'#9a73ff':'#7c4dff'),borderRadius:5,maxBarThickness:32,order:2,yAxisID:'y'},
+      {type:'line',label:'MRR nuevo',data:altaMrr.map(v=>+v.toFixed(2)),borderColor:'#34d399',backgroundColor:'#34d399',tension:.35,borderWidth:2,pointRadius:3,pointHoverRadius:5,order:1,yAxisID:'y1'}]},
+    options:{maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
+      scales:{x:{grid:{display:false},ticks:{color:CTXT,font:{size:10.5}}},
+        y:{beginAtZero:true,position:'left',grid:{color:CGRID},ticks:{color:CTXT,precision:0,font:{size:11}},title:{display:true,text:'Clientes',color:CTXT,font:{size:10}}},
+        y1:{beginAtZero:true,position:'right',grid:{display:false},ticks:{color:'#34d399',callback:v=>'$'+v,font:{size:11}},title:{display:true,text:'MRR nuevo',color:'#34d399',font:{size:10}}}},
+      plugins:{legend:{position:'bottom',labels:{color:CTXT,boxWidth:12,boxHeight:12,font:{size:11}}},tooltip:{callbacks:{label:c=>c.dataset.type==='line'?' MRR nuevo: '+fmtUSD(c.parsed.y):' '+c.parsed.y+' cliente'+(c.parsed.y===1?'':'s')}}}}});
+  /* --- Premiar (top 8 por MRR · premio = 1 mes de MRR) --- */
+  const reward=ranked.filter(r=>r.mrr>0).sort((a,b)=>b.mrr-a.mrr).slice(0,8);
+  const totalPrize=reward.reduce((s,r)=>s+r.mrr,0);
+  $('ct-reward-note').textContent=`premio = 1 mes de MRR · total ${fmtUSD(totalPrize)}`;
+  $('ct-reward').innerHTML=reward.map((r,i)=>`
+    <tr style="cursor:pointer" onclick="contadorClientList('${r.id}')">
+      <td data-label="#"><span class="ctrk ${i<3?'top':''}">${i+1}</span></td>
+      <td data-label="Contador"><div class="ct-who"><span class="ct-av">${ctInitials(r.n)}</span><span class="cellmain">${esc(ctShort(r.n))}</span></div></td>
+      <td class="num" data-label="Clientes">${r.k}</td>
+      <td class="num" data-label="MRR">${fmtUSD(r.mrr)}</td>
+      <td class="num ct-prize" data-label="Premio">${fmtUSD(r.mrr)}</td>
+    </tr>`).join('')||_emptyRow(5);
+  /* --- Impulsar / reactivar --- */
+  const refMonth=all.map(x=>x.alta).filter(Boolean).sort().pop()||null;
+  const mAgo=ym=>{if(!ym||!refMonth)return 999;const [ay,am]=ym.split('-').map(Number),[by,bm]=refMonth.split('-').map(Number);return (by-ay)*12+(bm-am);};
+  const push=[];
+  ranked.forEach(r=>{
+    if(!r.k)return;
+    const ultima=r.cli.map(x=>x.alta).filter(Boolean).sort().pop()||null;
+    if(r.k<=1)push.push({r,ultima,tag:'Activar',sev:'info',ico:'💤',score:10+r.mrr,reason:`Solo ${r.k} cliente referido — buen candidato para activarlo como referidor recurrente.`});
+    else if(mAgo(ultima)<=2)push.push({r,ultima,tag:'Con tracción',sev:'good',ico:'⚡',score:300+r.mrr,reason:`Última alta en ${ctMesLbl(ultima)} · ${r.k} clientes. Tiene momentum — refuérzalo con incentivo.`});
+    else if(mAgo(ultima)>=4)push.push({r,ultima,tag:'Dormido',sev:'warn',ico:'⏰',score:100+r.mrr,reason:`Sin altas nuevas desde ${ctMesLbl(ultima)} · ${r.k} clientes. Reactivar con seguimiento.`});
+  });
+  push.sort((a,b)=>b.score-a.score);
+  $('ct-push').innerHTML=push.length?push.slice(0,8).map(e=>`
+    <div class="pi ${e.sev}">
+      <span class="pb">${e.ico}</span>
+      <div style="min-width:0;flex:1">
+        <div class="pt">${esc(ctShort(e.r.n))}<span class="ptag">${e.tag}</span></div>
+        <div class="pr">${e.reason}</div>
+      </div>
+      <button class="btn sm ghost" onclick="contadorClientList('${e.r.id}')">Ver →</button>
+    </div>`).join(''):'<div class="empty"><p>Sin candidatos para impulsar por ahora.</p></div>';
 }
 function renderContadoresRows(){
   const q=($('ct-search')?$('ct-search').value:'').toLowerCase();
-  let stats=(state.contadores||[]).map(c=>({c,s:contadorStats(c)}));
-  stats.sort((a,b)=>b.s.n-a.s.n||a.c.nombre.localeCompare(b.c.nombre));
-  if(q)stats=stats.filter(x=>x.c.nombre.toLowerCase().includes(q));
-  if($('ct-search-cnt'))$('ct-search-cnt').textContent=q?`${stats.length} de ${(state.contadores||[]).length}`:'';
-  $('ct-tbody').innerHTML=stats.map((x,i)=>{
-    const {c,s}=x;
-    return `<tr style="cursor:pointer" onclick="contadorClientList('${c.id}')">
-      <td class="num muted-3" data-label="#">${i+1}</td>
-      <td class="cellwrap" data-label="Contador"><span class="cellmain">${esc(c.nombre)}</span>${(c.tel||c.mail)?`<span class="cellsub">${esc([c.tel,c.mail].filter(Boolean).join(' · '))}</span>`:''}</td>
-      <td class="num" data-label="Clientes"><b>${s.n}</b>${s.nuevos?` <span class="pl-new">+${s.nuevos}</span>`:''}</td>
-      <td class="num" data-label="Recurrente/mes">${fmtUSD(s.mrr)}</td>
-      <td class="num" data-label="Altas mes">${s.mes||'—'}</td>
-      <td class="num muted-3" data-label="Última alta">${s.last||'—'}</td>
-      <td class="t-actions-cell" data-label="Acciones"><div class="t-actions"><button class="btn sm ghost icon" onclick="event.stopPropagation();openContador('${c.id}')" title="Editar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4z"/></svg></button><button class="btn sm danger icon" onclick="event.stopPropagation();delContador('${c.id}')" title="Eliminar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg></button></div></td>
+  const anio1Total=(state.contadores||[]).reduce((a,c)=>{const t=ctTotals(ctCli(c));return a+t.impl+t.arr;},0);
+  let rows=(state.contadores||[]).map(c=>{const cli=ctCli(c),t=ctTotals(cli),s=contadorStats(c);return {c,cli,s,k:cli.length,...t,anio1:t.impl+t.arr,ultima:cli.map(x=>x.alta).filter(Boolean).sort().pop()||''};});
+  const rankPos={};[...rows].sort((a,b)=>b.anio1-a.anio1).forEach((r,i)=>rankPos[r.c.id]=i+1);
+  const getv={n:r=>r.c.nombre.toLowerCase(),k:r=>r.k,mrr:r=>r.mrr,arr:r=>r.arr,anio1:r=>r.anio1};
+  rows.sort((a,b)=>{const va=getv[ctSort.key](a),vb=getv[ctSort.key](b);return (va>vb?1:va<vb?-1:0)*ctSort.dir;});
+  if(q)rows=rows.filter(r=>r.c.nombre.toLowerCase().includes(q));
+  if($('ct-search-cnt'))$('ct-search-cnt').textContent=q?`${rows.length} de ${(state.contadores||[]).length}`:'';
+  $('ct-tbody').innerHTML=rows.map(r=>{
+    const pos=rankPos[r.c.id],share=anio1Total?r.anio1/anio1Total*100:0;
+    return `<tr style="cursor:pointer" onclick="contadorClientList('${r.c.id}')">
+      <td data-label="#"><span class="ctrk ${pos<=3?'top':''}">${pos}</span></td>
+      <td class="cellwrap" data-label="Contador"><div class="ct-who"><span class="ct-av">${ctInitials(r.c.nombre)}</span><span style="min-width:0"><span class="cellmain">${esc(r.c.nombre)}</span>${(r.c.tel||r.c.mail)?`<span class="cellsub">${esc([r.c.tel,r.c.mail].filter(Boolean).join(' · '))}</span>`:''}</span></div></td>
+      <td class="num" data-label="Clientes"><b>${r.k}</b>${r.s.nuevos?` <span class="pl-new">+${r.s.nuevos}</span>`:''}</td>
+      <td class="num" data-label="MRR">${fmtUSD(r.mrr)}</td>
+      <td class="num" data-label="ARR">${fmtUSD0(r.arr)}</td>
+      <td class="num" data-label="Participación"><div class="ct-share"><span class="track"><i style="width:${Math.min(100,share).toFixed(1)}%"></i></span><span class="pc">${share.toFixed(1)}%</span></div></td>
+      <td class="num muted-3" data-label="Última alta">${r.ultima?ctMesLbl(r.ultima):'—'}</td>
+      <td class="t-actions-cell" data-label="Acciones"><div class="t-actions"><button class="btn sm ghost icon" onclick="event.stopPropagation();openContador('${r.c.id}')" title="Editar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4z"/></svg></button><button class="btn sm danger icon" onclick="event.stopPropagation();delContador('${r.c.id}')" title="Eliminar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg></button></div></td>
     </tr>`;}).join('');
-  $('ct-empty').style.display=stats.length?'none':'';
+  $('ct-empty').style.display=rows.length?'none':'';
 }
 function contadorClientList(id){
   const c=findContador(id);if(!c)return;
