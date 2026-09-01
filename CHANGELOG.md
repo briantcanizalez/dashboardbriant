@@ -2,6 +2,12 @@
 
 Historial de cambios del dashboard. Formato: fecha · qué cambió.
 
+## 2026-08-31 · Correcciones de comisiones y de fechas
+
+- **El 2% de planes anuales ya no aplica al plan Básico** (confirmado por Briant). Agosto pasa de $43.60 a **$40.00 brutos / $36.00 netos**, que es el cálculo correcto: $200 de implementaciones x 20% - 10% de renta.
+- **Bug de zona horaria (UTC vs local)**: `todayISO()` y `curMonth()` usaban `toISOString()`, que es UTC. Como El Salvador es UTC-6, a partir de las **6 PM** el dashboard saltaba al dia (y al mes) siguiente: la comision del mes se veia en $0, las ventas nuevas nacian con la fecha de manana y "vencen hoy" se corria un dia. Ahora todas las fechas se calculan en hora local.
+- Documentacion de comisiones actualizada en manual, modelo de datos y arquitectura.
+
 ## 2026-08-31 · CRUD completo en la cartera de contadores
 
 - Nuevo modal **cliente referido**: se pueden **agregar, editar y quitar** clientes en la cartera de cualquier contador (antes solo entraban por ventas vinculadas o por la semilla del código). Montos autocompletados por plan y período.

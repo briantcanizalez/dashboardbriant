@@ -81,12 +81,12 @@ Los datos de cada línea viven separados: las ventas de Vendi/Comandi **no** se 
   | Paso | Cómo se calcula |
   |---|---|
   | 1 · Escalón | Por cierres del mes: **1–10 → 20% · 11–15 → 25% · 16+ → 30%**. Se aplica solo, según el conteo |
-  | 2 · Comisión por planes | Implementación × escalón. Las ventas **anuales** suman además **2% del valor del año** |
+  | 2 · Comisión por planes | Implementación × escalón. Las ventas **anuales** suman además **2% del valor del año** — *excepto el plan Básico, que no paga ese 2%* |
   | 3 · Servicios especiales | Comisionan aparte, con el % propio de cada servicio |
   | 4 · Retención | **−10% de renta** sobre el bruto total |
   | 5 · Bono | Se suma si alcanzaste la meta de clientes del mes (configurable en Ajustes) |
 
-  *Ejemplo:* $200 de implementaciones en el escalón del 20% → $40 de comisión bruta → −$4 de retención → **$36 netos**.
+  *Ejemplo (agosto 2026):* $200 de implementaciones en el escalón del 20% → $40 de comisión bruta → −$4 de retención → **$36 netos**. Los tres Básico Anual del mes no agregan el 2%.
 
   > Ojo con la promo 🎁: como la base es la implementación, una venta con **implementación gratis no genera comisión** por ese concepto.
 

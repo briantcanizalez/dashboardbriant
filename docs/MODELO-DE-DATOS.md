@@ -113,7 +113,7 @@ Mezcla meta a diciembre (cartera): Vendi = 1 Emprende · 14 Crece · 12 Profesio
 | Contadores · MRR de un cliente | mensual → `rr`; anual → `rr / 12` |
 | Contadores · ARR / Año 1 | ARR = MRR × 12 · Año 1 = implementaciones + ARR |
 | Comisión del canal | 1 mes de servicio por alta activada (~$21 al ticket post-aumento) |
-| Comisión Briant/René | base = **solo la implementación** × escalón (por # de cierres del mes: 1–10 → 20%, 11–15 → 25%, 16+ → 30%); las anuales suman además 2% del valor del año; los servicios especiales comisionan con su propio %; al bruto total se le aplica **10% de retención de renta**. La 1ª mensualidad **no** entra a la base |
+| Comisión Briant/René | base = **solo la implementación** × escalón (por # de cierres del mes: 1–10 → 20%, 11–15 → 25%, 16+ → 30%); las anuales suman además **2% del valor del año, excepto el plan Básico**; los servicios especiales comisionan con su propio %; al bruto total se le aplica **10% de retención de renta**. La 1ª mensualidad **no** entra a la base |
 | Rotación | bajas / (activas + bajas) |
 
 ---

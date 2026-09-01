@@ -840,7 +840,7 @@ th.ct-sort:hover{color:var(--txt)}
 
         <div class="card" style="margin-top:16px">
           <div class="section-head"><h2>Comisión de Briant · mes actual</h2><span class="hint" id="com-mes"></span></div>
-          <p class="subt">Escalón sobre la implementación de cada cierre del mes (promo 3m gratis: la mensualidad no comisiona) + 2% del valor anual en planes anuales + servicios especiales − 10% renta. Solo comisiones (sin salario base). Ajusta el bono en Ajustes.</p>
+          <p class="subt">Escalón sobre la implementación de cada cierre del mes (promo 3m gratis: la mensualidad no comisiona) + 2% del valor anual en planes anuales (excepto Básico) + servicios especiales − 10% renta. Solo comisiones (sin salario base). Ajusta el bono en Ajustes.</p>
           <div id="comision"></div>
         </div>
 
@@ -1345,7 +1345,7 @@ function seedRestoreDetV1(){
 }
 function loadLocal(){try{const r=localStorage.getItem(STORE_KEY);if(!r)return structuredClone(defaultState);return normalize(JSON.parse(r));}catch(e){return structuredClone(defaultState);}}
 let state=loadLocal();
-function snapshot(){const m=new Date().toISOString().slice(0,7);const v={m,clients:totalClients(),mrr:currentMRR()};const e=state.history.find(h=>h.m===m);if(e)Object.assign(e,v);else state.history.push(v);}
+function snapshot(){const m=curMonth();const v={m,clients:totalClients(),mrr:currentMRR()};const e=state.history.find(h=>h.m===m);if(e)Object.assign(e,v);else state.history.push(v);}
 function save(){snapshot();try{localStorage.setItem(STORE_KEY,JSON.stringify(state));}catch(e){}updateBadges();if(cloud)queueCloudSave();}
 
 /* ---- Supabase (nube) ---- */
@@ -1372,11 +1372,15 @@ const $=id=>document.getElementById(id);
 const fmtUSD=n=>'$'+(n||0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
 const fmtUSD0=n=>'$'+Math.round(n||0).toLocaleString('en-US');
 const fmtDate=s=>{if(!s)return '—';return new Date(s+'T00:00:00').toLocaleDateString('es-SV',{day:'2-digit',month:'short',year:'numeric'});};
-const todayISO=()=>new Date().toISOString().slice(0,10);
-const curMonth=()=>new Date().toISOString().slice(0,7);
+/* Fechas en hora LOCAL, nunca UTC: El Salvador es UTC−6, así que con toISOString()
+   a partir de las 6 PM el dashboard ya saltaba al día (y al mes) siguiente. */
+const _p2=n=>String(n).padStart(2,'0');
+const localISO=d=>d.getFullYear()+'-'+_p2(d.getMonth()+1)+'-'+_p2(d.getDate());
+const todayISO=()=>localISO(new Date());
+const curMonth=()=>todayISO().slice(0,7);
 function monthsSince(iso){if(!iso)return 0;const s=new Date(iso+'T00:00:00'),n=new Date();return (n.getFullYear()-s.getFullYear())*12+(n.getMonth()-s.getMonth());}
 function daysBetween(a,b){return Math.round((new Date(b+'T00:00:00')-new Date(a+'T00:00:00'))/86400000);}
-function addDaysISO(iso,d){const x=new Date((iso||todayISO())+'T00:00:00');x.setDate(x.getDate()+d);return x.toISOString().slice(0,10);}
+function addDaysISO(iso,d){const x=new Date((iso||todayISO())+'T00:00:00');x.setDate(x.getDate()+d);return localISO(x);}
 function addMonthsDate(months){const x=new Date();x.setMonth(x.getMonth()+Math.ceil(months));return x;}
 function fmtDur(ms){const t=Math.floor(ms/1000),h=Math.floor(t/3600),m=Math.floor((t%3600)/60),s=t%60;return String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');}
 function taskMs(t){let ms=t.accumulatedMs||0;if(t.runningSince)ms+=Date.now()-t.runningSince;return ms;}
@@ -1508,7 +1512,7 @@ function renderPulso(){
   $('pulso-fecha').textContent=new Date().toLocaleDateString('es-SV',{day:'numeric',month:'long'});
   const T=todayISO(),M=curMonth();
   const actP=state.prospects.filter(prospectInActive);
-  const leadsHoy=actP.filter(p=>p.createdAt&&new Date(p.createdAt).toISOString().slice(0,10)===T).length;
+  const leadsHoy=actP.filter(p=>p.createdAt&&localISO(new Date(p.createdAt))===T).length;
   const enPipe=actP.filter(p=>STAGE_RANK[p.stage]>=0&&STAGE_RANK[p.stage]<4).length;
   const cierresMes=activeSales().filter(s=>(s.start||'').slice(0,7)===M).length;
   const mrrMes=activeSales().filter(s=>(s.start||'').slice(0,7)===M&&s.mode==='mensual').reduce((a,s)=>a+saleMonthly(s),0);
@@ -2720,8 +2724,10 @@ function renderComision(){
   const monthSales=state.sales.filter(s=>(s.start||'').slice(0,7)===m&&esBriant(s));
   const n=monthSales.length,tier=commissionTier(n);
   let gross=0;
-  // Base de comisión = SOLO implementación (promo 3m gratis: el 1er mes no se cobra, no comisiona). Anual: impl×escalón + 2% del valor anual.
-  monthSales.forEach(s=>{const imp=saleImpl(s),mon=saleMonthly(s);if(s.mode==='anual'){gross+=imp*tier+(mon*12)*0.02;}else{gross+=imp*tier;}});
+  // Base de comisión = SOLO implementación (promo 3m gratis: el 1er mes no se cobra, no comisiona).
+  // Anual: impl×escalón + 2% del valor del año — el 2% NO aplica al plan Básico (confirmado por Briant, 31-ago-2026).
+  const pagaDosPorCiento=s=>s.mode==='anual'&&!/^basico/i.test(s.plan||'');
+  monthSales.forEach(s=>{gross+=saleImpl(s)*tier;if(pagaDosPorCiento(s))gross+=saleMonthly(s)*12*0.02;});
   const monthServices=state.services.filter(s=>(s.date||'').slice(0,7)===m&&esBriant(s));
   const svcComm=monthServices.reduce((a,s)=>a+serviceCommission(s),0);
   const grossTotal=gross+svcComm;

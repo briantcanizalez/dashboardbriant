@@ -101,7 +101,7 @@ Seeds activos (en orden de ejecución): `seedOdooBatch1`, `seedBookV3`, `seedAnn
 - `saleMonthly/saleImpl`: precio del libro correspondiente; `customMonthly/customImpl` lo sobreescriben; **`implGratis` fuerza implementación $0**.
 - MRR: solo ventas **mensuales** con ≥ `RECURRING_START_MONTH` meses (3); anuales van a `annualCollected`.
 - Líneas Stradia: `lineSaleMonthly` (anual = mensual × 0.9), `lineSaleImpl` (anual o promo → $0).
-- Comisiones (Briant/René): base = **solo la implementación** (la 1ª mensualidad no comisiona: con la promo de 3 meses gratis no se cobra); escalones 20/25/30% según cierres del mes; las ventas anuales suman además 2% del valor del año; retención de renta 10% sobre el bruto.
+- Comisiones (Briant/René): base = **solo la implementación** (la 1ª mensualidad no comisiona: con la promo de 3 meses gratis no se cobra); escalones 20/25/30% según cierres del mes; las ventas anuales suman además 2% del valor del año **salvo el plan Básico**; retención de renta 10% sobre el bruto.
 
 ## 9. Seguridad
 
