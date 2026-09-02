@@ -2,6 +2,14 @@
 
 Historial de cambios del dashboard. Formato: fecha · qué cambió.
 
+## 2026-09-02 · Tres bajas de cartera
+
+- **`seedSyncOdooV7`** (one-shot, confirmada por Briant): se dan de baja al **02-sep-2026** tres clientes mensuales sin suscripción activa, los tres de Briant, del libro anterior y sin contador referidor asociado:
+  - **ARC MULTISERVICIOS, S.A.S. de C.V.** — Professional mensual, $19.99/mes (alta 25-mar-2026).
+  - **EMPRENDEDORES EN MOVIMIENTO, S.A.S.** — Advanced mensual, $29.99/mes (alta 19-ago-2025).
+  - **Mario Ernesto Flores Blanco** — Starter mensual, $9.99/mes (alta 06-jul-2025).
+- Impacto: **−3 clientes activos** (528 → 525), **−$59.97 de MRR** y bajas acumuladas 27 → 30 (churn 4.86% → 5.41%). La implementación cobrada no cambia (se cobró al cierre). Reversible con *Reactivar* en *Ventas*.
+
 ## 2026-08-31 · Correcciones de comisiones y de fechas
 
 - **El 2% de planes anuales ya no aplica al plan Básico** (confirmado por Briant). Agosto pasa de $43.60 a **$40.00 brutos / $36.00 netos**, que es el cálculo correcto: $200 de implementaciones x 20% - 10% de renta.
