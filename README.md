@@ -1,6 +1,6 @@
 # SMB ERP · Grupo Consiti
 
-**Dashboard ejecutivo de la Línea SMB** — la herramienta de gestión comercial de Briant Canizalez para operar las tres líneas de negocio del plan SMB 2026: **Factura IA** (Grupo Consiti), **Vendi** y **Comandi** (marca Stradia).
+**Dashboard ejecutivo de la Línea SMB** — la herramienta de gestión comercial de Briant Canizalez para operar las tres líneas de negocio del plan SMB 2026: **Factura IA** (Grupo Consiti), **Vendi** y **Komandi** (marca Stradia).
 
 > 🌐 **Producción:** https://odoodash.vercel.app
 > 📦 **Repo:** https://github.com/briantcanizalez/dashboardbriant
@@ -23,7 +23,7 @@
 | **Contadores** | Panel ejecutivo de la red de 36 contadores referidores: valor de cartera Año 1, ranking, gráficas, programa de premiar/impulsar y meta del canal |
 | **Calendario** | Inicios de venta y fechas estimadas |
 | **Metas y Proyección** | Avance a 1,000 clientes / $25K MRR, forecast y comisiones (Briant y René) |
-| **Vendi / Comandi** | Líneas Stradia: tarifario, metas SMB, cartera meta a diciembre y registro de clientes |
+| **Vendi / Komandi** | Líneas Stradia: tarifario, metas SMB, cartera meta a diciembre y registro de clientes |
 | **Ajustes y Datos** | Punto de partida, metas SMB editables, comisiones, respaldos e importación CSV |
 
 ## Las tres líneas de negocio
@@ -32,7 +32,7 @@ El selector superior cambia entre líneas (los datos de cada una viven separados
 
 - **Factura IA** — facturación electrónica de Grupo Consiti. 524+ clientes. Meta SMB: **$18,928/mes y 332 altas a diciembre 2026**.
 - **Vendi** — agente de IA que vende por WhatsApp 24/7 (Stradia). Meta: **$6,921/mes y 30 clientes**.
-- **Comandi** — toma pedidos de restaurantes por WhatsApp (Stradia). Meta: **$4,582/mes y 18 restaurantes**.
+- **Komandi** — toma pedidos de restaurantes por WhatsApp (Stradia). Meta: **$4,582/mes y 18 restaurantes**.
 
 Las metas provienen del **Plan Línea SMB 2026** (14-ago-2026) y están fijas en el código (`data/metas-smb-2026.json` es la referencia); las de recurrente pueden ajustarse en *Ajustes y Datos*.
 
@@ -59,7 +59,7 @@ Las metas provienen del **Plan Línea SMB 2026** (14-ago-2026) y están fijas en
 ├── data/                     ← datasets de referencia (solo lectura)
 │   ├── metas-smb-2026.json       ← todas las metas del plan SMB
 │   ├── planes-factura-ia.json    ← libro de precios nuevo + anterior
-│   ├── tarifario-stradia.json    ← planes de Vendi y Comandi
+│   ├── tarifario-stradia.json    ← planes de Vendi y Komandi
 │   └── contadores-seed.json      ← red de contadores (36) y sus 205 clientes
 └── backups/                  ← copias de seguridad del estado (restaurables desde Ajustes)
     ├── README.md                 ← cómo restaurar, y el detalle de la conciliación con Odoo

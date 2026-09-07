@@ -9,8 +9,8 @@ Luis: este documento te explica en 10 minutos cómo está construido y operado S
 
 ## 1. Qué es (y qué NO es)
 
-- **Es** la herramienta de gestión comercial de la Línea SMB: pipeline, ventas, campañas, comisiones, la red de contadores referidores y el seguimiento de las metas del Plan SMB 2026 para **Factura IA, Vendi y Comandi**.
-- **NO es** parte del producto. No toca Odoo, ni la plataforma de Factura IA, ni los MVP de Vendi/Comandi. No comparte base de datos ni credenciales con nada de producción de Consiti. Es una capa de gestión independiente; si mañana se apaga, ningún cliente lo nota.
+- **Es** la herramienta de gestión comercial de la Línea SMB: pipeline, ventas, campañas, comisiones, la red de contadores referidores y el seguimiento de las metas del Plan SMB 2026 para **Factura IA, Vendi y Komandi**.
+- **NO es** parte del producto. No toca Odoo, ni la plataforma de Factura IA, ni los MVP de Vendi/Komandi. No comparte base de datos ni credenciales con nada de producción de Consiti. Es una capa de gestión independiente; si mañana se apaga, ningún cliente lo nota.
 - Usuario hoy: Briant (mono-usuario por diseño, aunque la base ya soporta multi-usuario — ver §5).
 
 ## 2. Topología
@@ -59,7 +59,7 @@ Luis: este documento te explica en 10 minutos cómo está construido y operado S
 ## 5. Datos
 
 - **Modelo completo:** `docs/MODELO-DE-DATOS.md` (entidades, campos y fórmulas de MRR/ARR/comisiones).
-- **Colecciones principales:** `sales`, `prospects`, `campaigns`, `services`, `tasks`, `contadores` (red de 36 referidores con 205 clientes históricos), `lineSales.vendi/comandi`, `history`, `config`.
+- **Colecciones principales:** `sales`, `prospects`, `campaigns`, `services`, `tasks`, `contadores` (red de 36 referidores con 205 clientes históricos), `lineSales.vendi/komandi`, `history`, `config`.
 - **Respaldo:** exportable a JSON desde la app (Ajustes); restaurable con un clic. Adicional al respaldo natural de Supabase.
 - **Para montarlo en tu propia base:** `db/README.md` tiene la guía paso a paso — esquema (`supabase-schema.sql`), carga de datos (`restore-datos-2026-08-31.sql`, con los 528 clientes, 175 prospectos y 36 contadores embebidos) y qué cambiar si se lleva a un PostgreSQL fuera de Supabase.
 - **Multi-usuario:** la tabla ya está aislada por usuario vía RLS. Si el equipo comercial crece, basta crear cuentas — cada quien vería su propio dashboard (hoy no hay vista consolidada de equipo; sería desarrollo nuevo).
@@ -83,9 +83,9 @@ Luis: este documento te explica en 10 minutos cómo está construido y operado S
 
 ## 8. Relación con el Plan SMB 2026
 
-El dashboard **consume** las metas del plan (14-ago-2026): $18,928 y 332 altas de Factura IA, 55 altas/mes del canal de contadores, $6,921/30 de Vendi y $4,582/18 de Comandi — fijas en código y editables las de recurrente en Ajustes. Referencia completa en `data/metas-smb-2026.json`.
+El dashboard **consume** las metas del plan (14-ago-2026): $18,928 y 332 altas de Factura IA, 55 altas/mes del canal de contadores, $6,921/30 de Vendi y $4,582/18 de Komandi — fijas en código y editables las de recurrente en Ajustes. Referencia completa en `data/metas-smb-2026.json`.
 
-Lo que el plan le pide a Tecnología (contador de conversaciones, alertas de cupo, cambio automático de plan, gestión de números de WhatsApp, reverso de garantía) es **del producto Vendi/Comandi, no de este dashboard** — aquí solo se le da seguimiento comercial.
+Lo que el plan le pide a Tecnología (contador de conversaciones, alertas de cupo, cambio automático de plan, gestión de números de WhatsApp, reverso de garantía) es **del producto Vendi/Komandi, no de este dashboard** — aquí solo se le da seguimiento comercial.
 
 ## 9. Si necesitas profundizar
 

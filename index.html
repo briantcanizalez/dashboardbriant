@@ -479,19 +479,19 @@ canvas{max-width:100%}
   .kpi .kval,.section-head h2{color:#000}
   .content{max-width:100%}
 }
-/* ===== Líneas de negocio · Factura IA / Vendi / Comandi ===== */
+/* ===== Líneas de negocio · Factura IA / Vendi / Komandi ===== */
 .line-switch{display:flex;gap:5px;background:var(--surface-2);border:1px solid var(--border);border-radius:14px;padding:5px;margin-bottom:20px;width:max-content;max-width:100%;overflow-x:auto}
 .line-switch button{border:none;background:transparent;color:var(--txt-2);font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;padding:9px 18px;border-radius:10px;cursor:pointer;transition:.15s;display:inline-flex;align-items:center;gap:8px;white-space:nowrap}
 .line-switch button .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
 .line-switch button[data-line="fia"] .dot{background:var(--brand-2)}
 .line-switch button[data-line="vendi"] .dot{background:#3ddc97}
-.line-switch button[data-line="comandi"] .dot{background:#FDC555}
+.line-switch button[data-line="komandi"] .dot{background:#FDC555}
 .line-switch button:hover{color:var(--txt)}
 .line-switch button.active{color:#fff;box-shadow:var(--sh-1)}
 .line-switch button.active .dot{background:#fff}
 .line-switch button[data-line="fia"].active{background:linear-gradient(135deg,var(--brand-2),var(--brand))}
 .line-switch button[data-line="vendi"].active{background:linear-gradient(135deg,#3a9a72,#2F7A5A)}
-.line-switch button[data-line="comandi"].active{background:linear-gradient(135deg,#8a3f66,#56243E)}
+.line-switch button[data-line="komandi"].active{background:linear-gradient(135deg,#8a3f66,#56243E)}
 .lhero{display:flex;align-items:flex-end;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:18px}
 .lhero h2{font-size:23px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
 .lhero .lsub{color:var(--txt-2);font-size:13.5px;margin-top:5px;max-width:560px}
@@ -600,7 +600,7 @@ th.ct-sort:hover{color:var(--txt)}
     <div class="navlbl">Líneas de negocio</div>
     <nav class="nav" data-nav>
       <button data-view="vendi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg><span>Vendi</span></button>
-      <button data-view="comandi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3z"/><path d="M21 15v7"/></svg><span>Comandi</span></button>
+      <button data-view="komandi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3z"/><path d="M21 15v7"/></svg><span>Komandi</span></button>
     </nav>
     <div class="navlbl">Sistema</div>
     <nav class="nav" data-nav>
@@ -631,7 +631,7 @@ th.ct-sort:hover{color:var(--txt)}
       <div class="line-switch" id="line-seg" role="tablist" aria-label="Línea de negocio">
         <button data-line="fia" class="active" onclick="go('inicio')"><span class="dot"></span>Factura IA</button>
         <button data-line="vendi" onclick="go('vendi')"><span class="dot"></span>Vendi</button>
-        <button data-line="comandi" onclick="go('comandi')"><span class="dot"></span>Comandi</button>
+        <button data-line="komandi" onclick="go('komandi')"><span class="dot"></span>Komandi</button>
       </div>
 
       <!-- ====== INICIO ====== -->
@@ -860,9 +860,9 @@ th.ct-sort:hover{color:var(--txt)}
           <div class="row c2"><div class="field"><label>Pagos anuales adelantados (USD)</label><input type="number" step="0.01" id="c-annual" /></div><div class="field"><label>Meta de MRR nuevo por mes (USD)</label><input type="number" step="0.01" id="c-mrrmes" /></div></div>
           <p class="helper" style="margin-bottom:16px">La implementación es pago único; la mensualidad cuenta al MRR a partir del 3er mes. La meta de MRR nuevo por mes alimenta el Pulso Masivo.</p>
           <div class="section-head"><h2>Metas SMB por línea (dic-2026)</h2></div>
-          <div class="row c3"><div class="field"><label>Factura IA (USD/mes)</label><input type="number" step="0.01" id="c-fiaMetaSMB" /></div><div class="field"><label>Vendi (USD/mes)</label><input type="number" step="0.01" id="c-vendiMetaMRR" /></div><div class="field"><label>Comandi (USD/mes)</label><input type="number" step="0.01" id="c-comandiMetaMRR" /></div></div>
-          <div class="row c2"><div class="field"><label>Meta clientes Vendi</label><input type="number" id="c-vendiMetaCli" /></div><div class="field"><label>Meta clientes Comandi</label><input type="number" id="c-comandiMetaCli" /></div></div>
-          <p class="helper" style="margin-bottom:16px">Metas del Plan Línea SMB 2026 (14-ago): Factura IA $18,928 · Vendi $6,921 con 30 clientes · Comandi $4,582 con 18 restaurantes.</p>
+          <div class="row c3"><div class="field"><label>Factura IA (USD/mes)</label><input type="number" step="0.01" id="c-fiaMetaSMB" /></div><div class="field"><label>Vendi (USD/mes)</label><input type="number" step="0.01" id="c-vendiMetaMRR" /></div><div class="field"><label>Komandi (USD/mes)</label><input type="number" step="0.01" id="c-komandiMetaMRR" /></div></div>
+          <div class="row c2"><div class="field"><label>Meta clientes Vendi</label><input type="number" id="c-vendiMetaCli" /></div><div class="field"><label>Meta clientes Komandi</label><input type="number" id="c-komandiMetaCli" /></div></div>
+          <p class="helper" style="margin-bottom:16px">Metas del Plan Línea SMB 2026 (14-ago): Factura IA $18,928 · Vendi $6,921 con 30 clientes · Komandi $4,582 con 18 restaurantes.</p>
           <button class="btn" id="cfg-save">Guardar ajustes</button>
         </div>
 
@@ -893,8 +893,8 @@ th.ct-sort:hover{color:var(--txt)}
       <!-- ====== LÍNEA VENDI ====== -->
       <section class="view" id="view-vendi"><div id="line-wrap-vendi"></div></section>
 
-      <!-- ====== LÍNEA COMANDI ====== -->
-      <section class="view" id="view-comandi"><div id="line-wrap-comandi"></div></section>
+      <!-- ====== LÍNEA KOMANDI ====== -->
+      <section class="view" id="view-komandi"><div id="line-wrap-komandi"></div></section>
 
     </main>
   </div>
@@ -938,7 +938,7 @@ th.ct-sort:hover{color:var(--txt)}
   <div class="actions" style="margin-top:16px"><button class="btn ghost" data-close="modal-sale">Cancelar</button><button class="btn" id="s-save">Guardar venta</button></div>
 </div></div>
 
-<!-- MODAL VENTA LÍNEA (Vendi / Comandi) -->
+<!-- MODAL VENTA LÍNEA (Vendi / Komandi) -->
 <div class="overlay" id="modal-line-sale"><div class="modal" role="dialog" aria-modal="true">
   <div class="modal-head"><div><h3 id="ls-title">Nueva venta</h3><p>Cada cierre avanza la meta de la línea.</p></div><button class="iconbtn" data-close="modal-line-sale" aria-label="Cerrar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
   <input type="hidden" id="ls-id" /><input type="hidden" id="ls-line" />
@@ -1050,7 +1050,7 @@ const SERVICE_PRICES={'Carga de productos, clientes o proveedores':50,'Capacitac
 const saleMonthly=s=>s.customMonthly!=null?(+s.customMonthly||0):(planPricing(s.plan,saleBook(s)).monthly||0);
 const saleImpl=s=>s.implGratis?0:(s.customImpl!=null?(+s.customImpl||0):(planPricing(s.plan,saleBook(s)).impl||0)); // implGratis = promo de implementación gratis
 
-/* ===== LÍNEAS DE NEGOCIO · Vendi y Comandi (marca Stradia) ===== */
+/* ===== LÍNEAS DE NEGOCIO · Vendi y Komandi (marca Stradia) ===== */
 /* Tarifario Stradia 24-ago-2026: misma lista para ambos productos. Emprende no se publica (solo canal propio). */
 const LINE_PLANS={
   emprende:{label:'Emprende',monthly:50,impl:50,conv:500,loc:1,hidden:true},
@@ -1065,7 +1065,7 @@ const LINES={
     sub:'Agente de IA que atiende y vende por WhatsApp 24/7 · sin comisión sobre ventas',
     milestones:[['2026-09','Sep',349],['2026-10','Oct',1642],['2026-11','Nov',3832],['2026-12','Dic',6921]],
     mix:{emprende:1,crece:14,profesional:12,empresarial:2,corporativo:1}},
-  comandi:{label:'Comandi',color:'#FDC555',grad:'linear-gradient(90deg,#56243E,#FDC555)',metaKey:'comandiMetaMRR',cliKey:'comandiMetaCli',defMRR:4582,defCli:18,
+  komandi:{label:'Komandi',color:'#FDC555',grad:'linear-gradient(90deg,#56243E,#FDC555)',metaKey:'komandiMetaMRR',cliKey:'komandiMetaCli',defMRR:4582,defCli:18,
     sub:'Toma completos los pedidos de restaurantes con delivery propio, por WhatsApp · sin comisión por pedido',
     milestones:[['2026-09','Sep',0],['2026-10','Oct',895],['2026-11','Nov',2289],['2026-12','Dic',4582]],
     mix:{crece:9,profesional:6,empresarial:2,corporativo:1}}
@@ -1091,10 +1091,38 @@ const STAGEMAP={Prospecto:'Lead',Demo:'MQL','Negociación':'Oportunidad'}; // mi
 const MOTIVOS_BASURA=['Click por error','Confusión de tema','Solo consultaba precio','Fuera de zona / país','Rubro no aplica','Datos falsos / spam','Ya es cliente','Otro'];
 const MEDIOS=['WhatsApp','Facebook','Reunión','Visita','Llamada'];
 const ORIGENES=['Pauta','Referido','Alianza Contable','Contacto personal'];
-const defaultState={tasks:[],sales:[],services:[],prospects:[],campaigns:[],projects:[],history:[],contadores:[],lineSales:{vendi:[],comandi:[]},config:{baseClients:494,goalClients:1000,baseRecurring:7151.23,goalRecurring:25000,annualPayments:11988.18,mrrMesMeta:1000,salaryBase:0,bono:0,metaMes:24,fiaMetaSMB:18928,vendiMetaMRR:6921,vendiMetaCli:30,comandiMetaMRR:4582,comandiMetaCli:18,lastBackup:null,seededOdooBatch1:false,seededBookV3:false,seededAnnualV1:false,seededComercialV1:false,seededComercialV2:false,seededProspectsV1:false,seededProspectsV2:false,seededClosesV1:false,seededWonV1:false,seededOriginV1:false,seededCampaignLinkV1:false,seededRestoreAireV1:false,seededCampaignDaysV1:false,seededChurnV1:false,seededOriginV2:false,seededRestoreDetV1:false,seededFixBautistaV1:false,seededJulyBriantV1:false,seededJulyBriantV2:false,seededFixIdaliaV1:false,seededAugBriantV1:false,seededContadoresV1:false,seededSyncOdooV1:false,seededSyncOdooV2:false,seededSyncOdooV3:false,seededSyncOdooV4:false,seededSyncOdooV5:false,seededSyncOdooV6:false,seededSyncOdooV7:false}};
-function normalize(d){const s={...structuredClone(defaultState),...d,config:{...defaultState.config,...(d.config||{})}};['tasks','sales','services','prospects','campaigns','projects','history','contadores'].forEach(k=>{if(!Array.isArray(s[k]))s[k]=[];});
+const defaultState={tasks:[],sales:[],services:[],prospects:[],campaigns:[],projects:[],history:[],contadores:[],lineSales:{vendi:[],komandi:[]},config:{baseClients:494,goalClients:1000,baseRecurring:7151.23,goalRecurring:25000,annualPayments:11988.18,mrrMesMeta:1000,salaryBase:0,bono:0,metaMes:24,fiaMetaSMB:18928,vendiMetaMRR:6921,vendiMetaCli:30,komandiMetaMRR:4582,komandiMetaCli:18,lastBackup:null,seededOdooBatch1:false,seededBookV3:false,seededAnnualV1:false,seededComercialV1:false,seededComercialV2:false,seededProspectsV1:false,seededProspectsV2:false,seededClosesV1:false,seededWonV1:false,seededOriginV1:false,seededCampaignLinkV1:false,seededRestoreAireV1:false,seededCampaignDaysV1:false,seededChurnV1:false,seededOriginV2:false,seededRestoreDetV1:false,seededFixBautistaV1:false,seededJulyBriantV1:false,seededJulyBriantV2:false,seededFixIdaliaV1:false,seededAugBriantV1:false,seededContadoresV1:false,seededSyncOdooV1:false,seededSyncOdooV2:false,seededSyncOdooV3:false,seededSyncOdooV4:false,seededSyncOdooV5:false,seededSyncOdooV6:false,seededSyncOdooV7:false}};
+/* Migración 07-sep-2026 · Comandi pasó a llamarse Komandi (con K).
+   Los estados guardados antes de esa fecha traen la clave vieja `comandi` en
+   lineSales y en config. Se convierten aquí, que es el único embudo por donde
+   entra el estado (localStorage, Supabase e importación de respaldo), así que
+   un respaldo viejo también se restaura bien. Al primer save() queda escrito
+   con la clave nueva y esta función deja de tener trabajo. */
+function migrateComandiToKomandi(d){
+  if(!d||typeof d!=='object')return d;
+  const ls=d.lineSales;
+  if(ls&&typeof ls==='object'&&!Array.isArray(ls)&&Object.prototype.hasOwnProperty.call(ls,'comandi')){
+    const viejo=Array.isArray(ls.comandi)?ls.comandi:[];
+    const nuevo=Array.isArray(ls.komandi)?ls.komandi:[];
+    // Si por alguna razón ya existieran las dos, se unen sin duplicar por id.
+    const ids=new Set(nuevo.map(v=>v&&v.id));
+    ls.komandi=nuevo.concat(viejo.filter(v=>!(v&&ids.has(v.id))));
+    delete ls.comandi;
+  }
+  const c=d.config;
+  if(c&&typeof c==='object'){
+    [['comandiMetaMRR','komandiMetaMRR'],['comandiMetaCli','komandiMetaCli']].forEach(([viejo,nuevo])=>{
+      if(Object.prototype.hasOwnProperty.call(c,viejo)){
+        if(c[nuevo]===undefined||c[nuevo]===null)c[nuevo]=c[viejo];
+        delete c[viejo];
+      }
+    });
+  }
+  return d;
+}
+function normalize(d){d=migrateComandiToKomandi(d);const s={...structuredClone(defaultState),...d,config:{...defaultState.config,...(d.config||{})}};['tasks','sales','services','prospects','campaigns','projects','history','contadores'].forEach(k=>{if(!Array.isArray(s[k]))s[k]=[];});
   if(!s.lineSales||typeof s.lineSales!=='object'||Array.isArray(s.lineSales))s.lineSales={};
-  ['vendi','comandi'].forEach(k=>{if(!Array.isArray(s.lineSales[k]))s.lineSales[k]=[];});
+  ['vendi','komandi'].forEach(k=>{if(!Array.isArray(s.lineSales[k]))s.lineSales[k]=[];});
   s.prospects.forEach(p=>{if(STAGEMAP[p.stage])p.stage=STAGEMAP[p.stage];if(!p.bant)p.bant={b:false,a:false,n:false,t:false};});
   // Limpieza: ventas auto-creadas desde un prospecto Ganada cuyo prospecto ya no existe (huérfanas)
   const _pids=new Set(s.prospects.map(p=>p.id));
@@ -1416,7 +1444,7 @@ const VIEWS={
   config:{title:'Ajustes y Datos',sub:'Configura tu punto de partida y respaldos.',action:null},
   contadores:{title:'Contadores',sub:'Red de contadores referidores · Alianza Contable.',action:{label:'Nuevo contador',fn:()=>openContador()}},
   vendi:{title:'Vendi',sub:'Vende por WhatsApp 24/7 · marca Stradia.',action:{label:'Nueva venta Vendi',fn:()=>openLineSale('vendi')}},
-  comandi:{title:'Comandi',sub:'Pedidos de restaurante por WhatsApp · marca Stradia.',action:{label:'Nueva venta Comandi',fn:()=>openLineSale('comandi')}},
+  komandi:{title:'Komandi',sub:'Pedidos de restaurante por WhatsApp · marca Stradia.',action:{label:'Nueva venta Komandi',fn:()=>openLineSale('komandi')}},
 };
 function go(view){
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
@@ -1430,8 +1458,8 @@ function go(view){
   else{act.classList.add('hide');act.onclick=null;}
   window.scrollTo({top:0});
   const seg=$('line-seg');
-  if(seg){const ln=view==='vendi'?'vendi':(view==='comandi'?'comandi':'fia');seg.querySelectorAll('button').forEach(b=>b.classList.toggle('active',b.dataset.line===ln));}
-  ({inicio:renderInicio,resumen:renderResumen,tareas:renderTasks,pipeline:renderPipeline,campaigns:renderCampaigns,ventas:renderSales,planes:renderPlanes,canales:renderCanales,calendario:renderCalendar,metas:renderMetas,config:fillConfig,contadores:renderContadores,vendi:()=>renderLine('vendi'),comandi:()=>renderLine('comandi')}[view])();
+  if(seg){const ln=view==='vendi'?'vendi':(view==='komandi'?'komandi':'fia');seg.querySelectorAll('button').forEach(b=>b.classList.toggle('active',b.dataset.line===ln));}
+  ({inicio:renderInicio,resumen:renderResumen,tareas:renderTasks,pipeline:renderPipeline,campaigns:renderCampaigns,ventas:renderSales,planes:renderPlanes,canales:renderCanales,calendario:renderCalendar,metas:renderMetas,config:fillConfig,contadores:renderContadores,vendi:()=>renderLine('vendi'),komandi:()=>renderLine('komandi')}[view])();
 }
 document.addEventListener('click',e=>{
   const nav=e.target.closest('[data-nav] [data-view]');if(nav){go(nav.dataset.view);return;}
@@ -1979,7 +2007,7 @@ function reactivateSale(id){const s=findSale(id);if(!s)return;s.churned=false;de
 /* re-render de las vistas que dependen de ventas (Ventas y Planes) */
 function refreshSalesViews(){if($('view-ventas').classList.contains('active'))renderSales();if($('view-planes').classList.contains('active'))renderPlanes();if($('view-canales').classList.contains('active'))renderCanales();if($('view-resumen').classList.contains('active'))renderResumen();if($('view-inicio').classList.contains('active'))renderInicio();if($('view-metas').classList.contains('active'))renderMetas();if($('view-contadores').classList.contains('active'))renderContadores();}
 
-/* ===================== LÍNEAS VENDI / COMANDI ===================== */
+/* ===================== LÍNEAS VENDI / KOMANDI ===================== */
 function renderLine(k){
   const L=LINES[k],act=lineActive(k),all=lineSales(k);
   const goalMRR=+state.config[L.metaKey]||L.defMRR,goalCli=+state.config[L.cliKey]||L.defCli;
@@ -2004,7 +2032,7 @@ function renderLine(k){
     ${msRow(L.milestones,mrr)}
   </div>
   <div class="card" style="margin-bottom:16px">
-    <div class="section-head"><h2>Planes y precios</h2><span class="hint">tarifario Stradia · sin comisión ${k==='comandi'?'por pedido':'sobre ventas'}</span></div>
+    <div class="section-head"><h2>Planes y precios</h2><span class="hint">tarifario Stradia · sin comisión ${k==='komandi'?'por pedido':'sobre ventas'}</span></div>
     <div class="lplans">`+Object.entries(LINE_PLANS).map(([pk,p])=>{
       const cnt=act.filter(s=>s.plan===pk).length;
       return `<div class="lplan ${p.star?'star':''}">
@@ -2748,8 +2776,8 @@ function renderComision(){
 }
 
 /* ===================== CONFIG / DATOS ===================== */
-function fillConfig(){const c=state.config;$('c-baseClients').value=c.baseClients;$('c-goalClients').value=c.goalClients;$('c-baseRecurring').value=c.baseRecurring;$('c-goalRecurring').value=c.goalRecurring;$('c-annual').value=c.annualPayments;$('c-mrrmes').value=c.mrrMesMeta;$('c-salary').value=c.salaryBase;$('c-bono').value=c.bono;$('c-metaMes').value=c.metaMes;$('c-fiaMetaSMB').value=c.fiaMetaSMB;$('c-vendiMetaMRR').value=c.vendiMetaMRR;$('c-comandiMetaMRR').value=c.comandiMetaMRR;$('c-vendiMetaCli').value=c.vendiMetaCli;$('c-comandiMetaCli').value=c.comandiMetaCli;renderBackupBanner();}
-$('cfg-save').onclick=()=>{const c=state.config;c.baseClients=+$('c-baseClients').value||0;c.goalClients=+$('c-goalClients').value||1;c.baseRecurring=+$('c-baseRecurring').value||0;c.goalRecurring=+$('c-goalRecurring').value||1;c.annualPayments=+$('c-annual').value||0;c.mrrMesMeta=+$('c-mrrmes').value||0;c.fiaMetaSMB=+$('c-fiaMetaSMB').value||18928;c.vendiMetaMRR=+$('c-vendiMetaMRR').value||6921;c.comandiMetaMRR=+$('c-comandiMetaMRR').value||4582;c.vendiMetaCli=+$('c-vendiMetaCli').value||30;c.comandiMetaCli=+$('c-comandiMetaCli').value||18;save();go('inicio');};
+function fillConfig(){const c=state.config;$('c-baseClients').value=c.baseClients;$('c-goalClients').value=c.goalClients;$('c-baseRecurring').value=c.baseRecurring;$('c-goalRecurring').value=c.goalRecurring;$('c-annual').value=c.annualPayments;$('c-mrrmes').value=c.mrrMesMeta;$('c-salary').value=c.salaryBase;$('c-bono').value=c.bono;$('c-metaMes').value=c.metaMes;$('c-fiaMetaSMB').value=c.fiaMetaSMB;$('c-vendiMetaMRR').value=c.vendiMetaMRR;$('c-komandiMetaMRR').value=c.komandiMetaMRR;$('c-vendiMetaCli').value=c.vendiMetaCli;$('c-komandiMetaCli').value=c.komandiMetaCli;renderBackupBanner();}
+$('cfg-save').onclick=()=>{const c=state.config;c.baseClients=+$('c-baseClients').value||0;c.goalClients=+$('c-goalClients').value||1;c.baseRecurring=+$('c-baseRecurring').value||0;c.goalRecurring=+$('c-goalRecurring').value||1;c.annualPayments=+$('c-annual').value||0;c.mrrMesMeta=+$('c-mrrmes').value||0;c.fiaMetaSMB=+$('c-fiaMetaSMB').value||18928;c.vendiMetaMRR=+$('c-vendiMetaMRR').value||6921;c.komandiMetaMRR=+$('c-komandiMetaMRR').value||4582;c.vendiMetaCli=+$('c-vendiMetaCli').value||30;c.komandiMetaCli=+$('c-komandiMetaCli').value||18;save();go('inicio');};
 $('cfg-save2').onclick=()=>{const c=state.config;c.salaryBase=+$('c-salary').value||0;c.bono=+$('c-bono').value||0;c.metaMes=+$('c-metaMes').value||24;save();alert('Comisiones actualizadas.');go('metas');};
 $('cfg-export').onclick=()=>{const b=new Blob([JSON.stringify(state,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='smb-erp-respaldo-'+todayISO()+'.json';a.click();state.config.lastBackup=todayISO();save();renderBackupBanner();};
 $('cfg-import-btn').onclick=()=>$('importer').click();

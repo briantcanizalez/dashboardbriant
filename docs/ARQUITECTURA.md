@@ -30,7 +30,7 @@ Todo el estado es **un solo objeto JSON** (`state`), definido por `defaultState`
 state = {
   tasks, sales, services, prospects, campaigns, projects, history,   // arreglos
   contadores,                       // red de contadores referidores (con hist)
-  lineSales: { vendi: [], comandi: [] },   // ventas de las líneas Stradia
+  lineSales: { vendi: [], komandi: [] },   // ventas de las líneas Stradia
   config: { ...metas, flags de seeds, comisiones }
 }
 ```
@@ -70,7 +70,7 @@ Seeds activos (en orden de ejecución): `seedOdooBatch1`, `seedBookV3`, `seedAnn
 | `LEGACY_PLAN_PRICES` | Precios **anteriores** (starter $9.99, professional $19.99, …) |
 | `PRICE_CUTOVER` = `'2026-08-01'` | Ventas con inicio ≥ esta fecha usan precio nuevo, salvo `priceBook` explícito |
 | `SERVICE_PRICES` | Tarifas de servicios especiales |
-| `LINE_PLANS` | Tarifario Stradia (Vendi/Comandi): Emprende/Crece/Profesional/Empresarial/Corporativo |
+| `LINE_PLANS` | Tarifario Stradia (Vendi/Komandi): Emprende/Crece/Profesional/Empresarial/Corporativo |
 | `LINES` | Config de cada línea Stradia: color, metas por defecto, escalera mensual y mezcla meta |
 | `FIA_SMB_MILESTONES` | Escalera de recurrente de Factura IA (sep–dic) |
 | `FIA_SMB_ALTAS` | Escalera de altas 52/79/96/105 (332 del período) |
@@ -81,7 +81,7 @@ Seeds activos (en orden de ejecución): `seedOdooBatch1`, `seedBookV3`, `seedAnn
 
 - Cada vista es un `<section class="view" id="view-XXX">`; `go('XXX')` la activa, actualiza topbar/nav y llama a su render (mapa dentro de `go()`).
 - Registro de una vista nueva: sección HTML + entrada en `VIEWS` (título, subtítulo, botón de acción) + render en el mapa de `go()` + botón en el sidebar (`data-view`).
-- El **selector de línea** (`#line-seg`) resalta Factura IA/Vendi/Comandi según la vista activa.
+- El **selector de línea** (`#line-seg`) resalta Factura IA/Vendi/Komandi según la vista activa.
 - `refreshSalesViews()` re-renderiza las vistas dependientes de ventas cuando algo cambia.
 
 ## 6. Gráficas

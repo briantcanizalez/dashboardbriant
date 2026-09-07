@@ -28,7 +28,7 @@
     "escalera_recurrente": { "2026-09": 349, "2026-10": 1642, "2026-11": 3832, "2026-12": 6921 },
     "mezcla_meta": { "emprende": 1, "crece": 14, "profesional": 12, "empresarial": 2, "corporativo": 1 }
   },
-  "comandi": {
+  "komandi": {
     "recurrente_dic": 4582,
     "clientes_dic": 18,
     "escalera_recurrente": { "2026-09": 0, "2026-10": 895, "2026-11": 2289, "2026-12": 4582 },

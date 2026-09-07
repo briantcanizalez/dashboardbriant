@@ -38,7 +38,7 @@ Al pasar a **Ganada** → `syncWonSale()` crea la venta (hereda plan, libro, ori
 
 La cartera "viva" de un contador = `hist` + ventas con `contadorId` = su id.
 
-### `lineSales.vendi[]` / `lineSales.comandi[]` — líneas Stradia
+### `lineSales.vendi[]` / `lineSales.komandi[]` — líneas Stradia
 `id, client, plan` (clave de `LINE_PLANS`: `emprende|crece|profesional|empresarial|corporativo`), `mode ('mensual'|'anual')`, `start, origen, implGratis?, churned?, createdAt`.
 
 ### `campaigns[]`
@@ -63,7 +63,7 @@ Snapshot mensual automático: `{m: 'AAAA-MM', clients, mrr}` (alimenta la evoluc
 | `salaryBase`, `bono`, `metaMes` | — | esquema de comisiones |
 | `fiaMetaSMB` | **$18,928** | meta SMB de Factura IA (dic-2026) |
 | `vendiMetaMRR` / `vendiMetaCli` | **$6,921 / 30** | meta SMB de Vendi |
-| `comandiMetaMRR` / `comandiMetaCli` | **$4,582 / 18** | meta SMB de Comandi |
+| `komandiMetaMRR` / `komandiMetaCli` | **$4,582 / 18** | meta SMB de Komandi |
 | `seededXxx` (≈20 flags) | false | seeds ya ejecutados (no tocar) |
 | `lastBackup` | — | fecha del último respaldo exportado |
 
@@ -81,7 +81,7 @@ Snapshot mensual automático: `{m: 'AAAA-MM', clients, mrr}` (alimenta la evoluc
 
 Copia de referencia: [`data/planes-factura-ia.json`](../data/planes-factura-ia.json).
 
-## 3. Tarifario Stradia (Vendi y Comandi)
+## 3. Tarifario Stradia (Vendi y Komandi)
 
 Misma lista para ambas líneas — ver [`data/tarifario-stradia.json`](../data/tarifario-stradia.json): Emprende $50 *(no publicado)* · Crece $99 · Profesional $299 ⭐ · Empresarial $499 · Corporativo $899, con implementaciones $50/$99/$490/$990/$1,900. Anual adelantado = 10% dcto + implementación bonificada. Excedente $0.10/conversación; local extra $25/mes.
 
@@ -95,9 +95,9 @@ Referencia completa: [`data/metas-smb-2026.json`](../data/metas-smb-2026.json).
 | Factura IA · altas | 332 en el período | 52 · 79 · 96 · 105 |
 | Canal contadores | 220 altas · $4,620/mes | 55 · 55 · 55 · 55 |
 | Vendi | $6,921/mes · 30 clientes | $349 · $1,642 · $3,832 · $6,921 |
-| Comandi | $4,582/mes · 18 restaurantes | $0 · $895 · $2,289 · $4,582 |
+| Komandi | $4,582/mes · 18 restaurantes | $0 · $895 · $2,289 · $4,582 |
 
-Mezcla meta a diciembre (cartera): Vendi = 1 Emprende · 14 Crece · 12 Profesional · 2 Empresarial · 1 Corporativo. Comandi = 9 Crece · 6 Profesional · 2 Empresarial · 1 Corporativo.
+Mezcla meta a diciembre (cartera): Vendi = 1 Emprende · 14 Crece · 12 Profesional · 2 Empresarial · 1 Corporativo. Komandi = 9 Crece · 6 Profesional · 2 Empresarial · 1 Corporativo.
 
 ## 5. Fórmulas
 

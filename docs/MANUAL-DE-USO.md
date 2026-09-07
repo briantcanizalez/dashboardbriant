@@ -19,9 +19,9 @@ Arriba del contenido hay tres botones que cambian la línea activa:
 |---|---|
 | **Factura IA** | El dashboard completo (Inicio y todas las vistas del menú "Panel") |
 | **Vendi** | La vista de la línea Vendi (Stradia) |
-| **Comandi** | La vista de la línea Comandi (Stradia) |
+| **Komandi** | La vista de la línea Komandi (Stradia) |
 
-Los datos de cada línea viven separados: las ventas de Vendi/Comandi **no** se mezclan con las de Factura IA ni afectan sus KPIs.
+Los datos de cada línea viven separados: las ventas de Vendi/Komandi **no** se mezclan con las de Factura IA ni afectan sus KPIs.
 
 ---
 
@@ -92,14 +92,14 @@ Los datos de cada línea viven separados: las ventas de Vendi/Comandi **no** se 
 
 ---
 
-## 4. Vendi y Comandi (marca Stradia)
+## 4. Vendi y Komandi (marca Stradia)
 
 Cada línea tiene su vista con:
 
 - **KPIs**: clientes cerrados vs meta, facturación recurrente vs meta, cierres del mes e implementación cobrada.
 - **Meta de facturación · Plan SMB 2026** con % de avance y escalera:
   - Vendi: sep $349 · oct $1,642 · nov $3,832 · **dic $6,921** (30 clientes).
-  - Comandi: sep $0 · oct $895 · nov $2,289 · **dic $4,582** (18 restaurantes).
+  - Komandi: sep $0 · oct $895 · nov $2,289 · **dic $4,582** (18 restaurantes).
 - **Planes y precios (tarifario Stradia, mismo para ambas)**:
 
   | Plan | Conversaciones/mes | Locales | Mensual | Implementación |
@@ -118,7 +118,7 @@ Cada línea tiene su vista con:
 
 ## 5. Ajustes y Datos
 
-- **Punto de partida y metas**: clientes base, metas personales (1,000 clientes / $25K), pagos anuales, meta de MRR nuevo por mes y **metas SMB por línea** (Factura IA / Vendi / Comandi, en $ y clientes).
+- **Punto de partida y metas**: clientes base, metas personales (1,000 clientes / $25K), pagos anuales, meta de MRR nuevo por mes y **metas SMB por línea** (Factura IA / Vendi / Komandi, en $ y clientes).
 - **Comisiones**: salario base, bono por meta y meta de clientes/mes.
 - **Datos y respaldo**:
   - **Exportar respaldo (JSON)** — descarga todo el estado (`smb-erp-respaldo-AAAA-MM-DD.json`). Hazlo con frecuencia.
@@ -139,7 +139,7 @@ Cada línea tiene su vista con:
 | **Campaña** | ✅ *Nueva campaña* | ✅ | ✅ | Activar/cerrar · ver sus leads y clientes |
 | **Contador referidor** | ✅ *Nuevo contador* | ✅ | ✅ | Al eliminarlo se desvincula de sus ventas (no las borra) |
 | **Cliente en la cartera de un contador** | ✅ botón **➕** en su fila, o *Agregar cliente a esta cartera* dentro de su lista | ✅ | ✅ | Montos autocompletados por plan y período |
-| **Venta de Vendi / Comandi** | ✅ *Nueva venta Vendi/Comandi* | ✅ | ✅ | Dar de baja y reactivar · promo 🎁 |
+| **Venta de Vendi / Komandi** | ✅ *Nueva venta Vendi/Komandi* | ✅ | ✅ | Dar de baja y reactivar · promo 🎁 |
 | **Metas y configuración** | — | ✅ *Ajustes y Datos* | — | Metas SMB por línea, metas personales y esquema de comisiones |
 | **Todo el estado** | — | ✅ | ✅ | Exportar / importar respaldo JSON · exportar ventas CSV · importar clientes CSV |
 

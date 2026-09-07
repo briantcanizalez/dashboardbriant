@@ -2,6 +2,17 @@
 
 Historial de cambios del dashboard. Formato: fecha · qué cambió.
 
+## 2026-09-07 · Comandi pasa a llamarse **Komandi** (con K)
+
+Cambio de nombre de la línea de negocio, decidido el 07-sep-2026. Se renombró tanto lo visible como la **clave interna**, con migración automática para no perder nada de lo ya registrado.
+
+- **Etiquetas visibles:** «Comandi» → «Komandi» en menú, selector de línea, títulos, botones y ajustes.
+- **Clave interna:** `comandi` → `komandi` en `state.lineSales`, y `comandiMetaMRR` / `comandiMetaCli` → `komandiMetaMRR` / `komandiMetaCli`.
+- **Migración `migrateComandiToKomandi()`**: corre al inicio de `normalize()`, que es el único embudo por donde entra el estado — **localStorage, Supabase e importación de respaldo**. Mueve las ventas y las metas a la clave nueva y borra la vieja; si por alguna razón ya existieran las dos, las une sin duplicar por `id`. Al primer `save()` el estado queda escrito con la clave nueva.
+- **No hace falta migración SQL:** Supabase guarda un único JSON por usuario (`dashboards.data`), así que el cambio de forma viaja en el mismo documento.
+- **`backups/` y `db/restore-datos-2026-08-31.sql` se dejaron intactos a propósito** — son registros fechados de lo que el sistema tenía ese día. Si se restauran, la migración los convierte al cargarlos.
+- Probado en local con un estado de clave vieja (2 ventas + metas) y con el respaldo real del 31-ago: ambos migran completos, sin errores de consola.
+
 ## 2026-09-02 · Tres bajas de cartera
 
 - **`seedSyncOdooV7`** (one-shot, confirmada por Briant): se dan de baja al **02-sep-2026** tres clientes mensuales sin suscripción activa, los tres de Briant, del libro anterior y sin contador referidor asociado:
@@ -54,7 +65,7 @@ Cruce de las 527 suscripciones activas del export `sale.order` contra el dashboa
 - Al ganar el prospecto, la venta hereda contador, origen y promo — y alimenta la cartera del contador.
 
 ### Promo "Implementación gratis"
-- Checkbox 🎁 destacado (verde punteado) bajo el selector de plan en los tres formularios: venta Factura IA, venta Vendi/Comandi y prospecto.
+- Checkbox 🎁 destacado (verde punteado) bajo el selector de plan en los tres formularios: venta Factura IA, venta Vendi/Komandi y prospecto.
 - La implementación cuenta $0 en todo el dashboard (KPIs, campañas, comisiones, listas) y muestra etiqueta **Gratis**.
 - Se hereda del prospecto a la venta; en la tarjeta del tablero aparece "🎁 Impl. gratis".
 
@@ -64,8 +75,8 @@ Cruce de las 527 suscripciones activas del export `sale.order` contra el dashboa
 
 ## 2026-08-30 · Líneas de negocio
 
-- **Selector de línea** (Factura IA · Vendi · Comandi) visible en todas las vistas + entradas en menú lateral.
-- **Vistas Vendi y Comandi**: KPIs con % de avance, meta de facturación con escalera sep–dic, **tarifario Stradia** (Emprende $50 no publicado · Crece $99 · Profesional $299 ⭐ · Empresarial $499 · Corporativo $899), cartera meta a diciembre (mezcla por plan) y registro de clientes con editar/baja/eliminar.
+- **Selector de línea** (Factura IA · Vendi · Komandi) visible en todas las vistas + entradas en menú lateral.
+- **Vistas Vendi y Komandi**: KPIs con % de avance, meta de facturación con escalera sep–dic, **tarifario Stradia** (Emprende $50 no publicado · Crece $99 · Profesional $299 ⭐ · Empresarial $499 · Corporativo $899), cartera meta a diciembre (mezcla por plan) y registro de clientes con editar/baja/eliminar.
 - Regla anual adelantado: **10% de descuento + implementación bonificada**.
 - Metas SMB por línea editables en Ajustes.
 - Tarjeta **"Meta SMB · Factura IA"** en Inicio.
