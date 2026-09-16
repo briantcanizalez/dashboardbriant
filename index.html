@@ -1138,7 +1138,7 @@ const STAGEMAP={Prospecto:'Lead',Demo:'MQL','Negociación':'Oportunidad'}; // mi
 const MOTIVOS_BASURA=['Click por error','Confusión de tema','Solo consultaba precio','Fuera de zona / país','Rubro no aplica','Datos falsos / spam','Ya es cliente','Otro'];
 const MEDIOS=['WhatsApp','Facebook','Reunión','Visita','Llamada'];
 const ORIGENES=['Pauta','Referido','Alianza Contable','Contacto personal'];
-const defaultState={tasks:[],sales:[],services:[],prospects:[],campaigns:[],projects:[],history:[],contadores:[],lineSales:{vendi:[],komandi:[]},config:{baseClients:494,goalClients:1000,baseRecurring:7151.23,goalRecurring:25000,annualPayments:11988.18,mrrMesMeta:1000,salaryBase:0,bono:0,metaMes:24,fiaMetaSMB:18928,vendiMetaMRR:6921,vendiMetaCli:30,komandiMetaMRR:4582,komandiMetaCli:18,lastBackup:null,seededOdooBatch1:false,seededBookV3:false,seededAnnualV1:false,seededComercialV1:false,seededComercialV2:false,seededProspectsV1:false,seededProspectsV2:false,seededClosesV1:false,seededWonV1:false,seededOriginV1:false,seededCampaignLinkV1:false,seededRestoreAireV1:false,seededCampaignDaysV1:false,seededChurnV1:false,seededOriginV2:false,seededRestoreDetV1:false,seededFixBautistaV1:false,seededJulyBriantV1:false,seededJulyBriantV2:false,seededFixIdaliaV1:false,seededAugBriantV1:false,seededContadoresV1:false,seededSyncOdooV1:false,seededSyncOdooV2:false,seededSyncOdooV3:false,seededSyncOdooV4:false,seededSyncOdooV5:false,seededSyncOdooV6:false,seededSyncOdooV7:false}};
+const defaultState={tasks:[],sales:[],services:[],prospects:[],campaigns:[],projects:[],history:[],contadores:[],lineSales:{vendi:[],komandi:[]},config:{baseClients:494,goalClients:1000,baseRecurring:7151.23,goalRecurring:25000,annualPayments:11988.18,mrrMesMeta:1000,salaryBase:0,bono:0,metaMes:24,fiaMetaSMB:18928,vendiMetaMRR:6921,vendiMetaCli:30,komandiMetaMRR:4582,komandiMetaCli:18,lastBackup:null,seededOdooBatch1:false,seededBookV3:false,seededAnnualV1:false,seededComercialV1:false,seededComercialV2:false,seededProspectsV1:false,seededProspectsV2:false,seededClosesV1:false,seededWonV1:false,seededOriginV1:false,seededCampaignLinkV1:false,seededRestoreAireV1:false,seededCampaignDaysV1:false,seededChurnV1:false,seededOriginV2:false,seededRestoreDetV1:false,seededFixBautistaV1:false,seededJulyBriantV1:false,seededJulyBriantV2:false,seededFixIdaliaV1:false,seededAugBriantV1:false,seededContadoresV1:false,seededSyncOdooV1:false,seededSyncOdooV2:false,seededSyncOdooV3:false,seededSyncOdooV4:false,seededSyncOdooV5:false,seededSyncOdooV6:false,seededSyncOdooV7:false,seededSyncOdooV8:false}};
 /* Migración 07-sep-2026 · Comandi pasó a llamarse Komandi (con K).
    Los estados guardados antes de esa fecha traen la clave vieja `comandi` en
    lineSales y en config. Se convierten aquí, que es el único embudo por donde
@@ -3425,7 +3425,33 @@ function seedSyncOdooV7(){
   state.config.seededSyncOdooV7=true;
   save();
 }
-function initApp(){seedOdooBatch1();seedBookV3();seedAnnualBookV1();seedComercialV1();seedComercialV2();seedProspectsV1();seedProspectsV2();seedClosesV1();seedWonV1();seedOriginV1();seedCampaignLinkV1();seedRestoreAireV1();seedCampaignDaysV1();seedChurnV1();seedOriginV2();seedRestoreDetV1();seedFixBautistaV1();seedJulyBriantV1();seedJulyBriantV2();seedFixIdaliaV1();seedAugBriantV1();seedContadoresV1();seedSyncOdooV1();seedSyncOdooV2();seedSyncOdooV3();seedSyncOdooV4();seedSyncOdooV5();seedSyncOdooV6();seedSyncOdooV7();fillPlanSelect();updateBadges();renderBackupBanner();go('inicio');document.body.classList.remove('booting');}
+/* ---- Conciliación con Odoo · parte 8 (16-sep-2026) · cruce con export de churn ----
+   (a) 8 clientes que en Odoo están "Perdido" pero seguían ACTIVOS en el dashboard → se dan de
+       baja. Confirmados contra la base activa (ninguno tiene suscripción viva). Reversibles.
+   (b) 5 bajas de Odoo que NO existían como venta en el dashboard → se crean como baja, con su
+       plan y etiqueta a PRECIO ANTIGUO (libro legacy), para que el churn refleje las 41 completas.
+   MARISELA GENOVEZ queda fuera (en Odoo es contacto/referidor de la oportunidad de Iván Velásquez,
+   no una baja propia) — pendiente de revisión de Briant. Fechas de alta aproximadas (el export de
+   churn no las trae); no afectan MRR/comisión porque son bajas. ---- */
+function seedSyncOdooV8(){
+  if(state.config.seededSyncOdooV8)return;
+  // (a) marcar de baja las 8 que seguían activas
+  const bajas=['ROMERO GUADRON, OSCAR MOUSELY','CESAR ANTONIO HERRERA PORTILLO','DEL CID ARGUELLO, ROGER FRANCISCO','IVAN VLADIMIR VELASQUEZ BLANCO','JSL, S.A. de C.V.','LAURA CECILIA ORTIZ ALAS','PLANET FITNESS GYM S.A. DE C.V.','POLANCO HERNANDEZ, ENRIQUE ARTURO'].map(normName);
+  state.sales.forEach(s=>{if(!s.churned&&bajas.includes(normName(s.client))){s.churned=true;s.churnDate='2026-09-16';}});
+  // (b) crear las 5 que no existían, como baja y a precio antiguo
+  const crear=[
+    {client:'ARISTIDES PAUL, VIGIL PALACIOS',plan:'professional',mode:'mensual',priceBook:'legacy',comercial:'Briant Canizalez'},
+    {client:'PINTURAS Y MAS, SOCIEDAD ANONIMA DE CAPITAL VARIABLE',plan:'starter',mode:'mensual',priceBook:'legacy',comercial:'Briant Canizalez'},
+    {client:'GUZMÁN VIERA, MARÍA CONCEPCIÓN',plan:'basicoAnual',mode:'anual',comercial:'Briant Canizalez'},
+    {client:'GAMEZ DE LARA, NATHALY ARABELLA',plan:'starter',mode:'mensual',priceBook:'legacy',comercial:'Briant Canizalez'},
+    {client:'INVERSIONES GRUPO LOS SIETE S.A DE C.V',plan:'professional',mode:'mensual',priceBook:'legacy',comercial:'Ejecutivo de Ventas Odoo'}
+  ];
+  const have=new Set(state.sales.map(s=>normName(s.client)));
+  crear.forEach(c=>{if(!have.has(normName(c.client))){const v={id:uid(),client:c.client,plan:c.plan,mode:c.mode,comercial:c.comercial,start:'2025-01-01',churned:true,churnDate:'2026-09-16',seed:'churn-v8',createdAt:Date.now()};if(c.priceBook)v.priceBook=c.priceBook;state.sales.push(v);have.add(normName(c.client));}});
+  state.config.seededSyncOdooV8=true;
+  save();
+}
+function initApp(){seedOdooBatch1();seedBookV3();seedAnnualBookV1();seedComercialV1();seedComercialV2();seedProspectsV1();seedProspectsV2();seedClosesV1();seedWonV1();seedOriginV1();seedCampaignLinkV1();seedRestoreAireV1();seedCampaignDaysV1();seedChurnV1();seedOriginV2();seedRestoreDetV1();seedFixBautistaV1();seedJulyBriantV1();seedJulyBriantV2();seedFixIdaliaV1();seedAugBriantV1();seedContadoresV1();seedSyncOdooV1();seedSyncOdooV2();seedSyncOdooV3();seedSyncOdooV4();seedSyncOdooV5();seedSyncOdooV6();seedSyncOdooV7();seedSyncOdooV8();fillPlanSelect();updateBadges();renderBackupBanner();go('inicio');document.body.classList.remove('booting');}
 
 async function boot(){
   if(initSupabase()){
