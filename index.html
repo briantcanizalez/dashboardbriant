@@ -1543,7 +1543,9 @@ let curView='inicio';
 /* Selector de línea de arriba: en la hoja Resumen cambia la línea del resumen (sin salir);
    en otras vistas navega a la línea (Vendi/Komandi) o al Inicio (Factura IA). */
 function pickLine(ln){
-  if(curView==='resumen'){resumenLine=ln;const seg=$('line-seg');if(seg)seg.querySelectorAll('button').forEach(b=>b.classList.toggle('active',b.dataset.line===ln));renderResumen();window.scrollTo({top:0});return;}
+  const setSeg=()=>{const seg=$('line-seg');if(seg)seg.querySelectorAll('button').forEach(b=>b.classList.toggle('active',b.dataset.line===ln));};
+  if(curView==='resumen'){resumenLine=ln;setSeg();renderResumen();window.scrollTo({top:0});return;}
+  if(curView==='metas'){planSMBLine=ln;setSeg();renderPlanSMB();window.scrollTo({top:0});return;}
   if(ln==='vendi')go('vendi');else if(ln==='komandi')go('komandi');else go('inicio');
 }
 function go(view){
@@ -1559,7 +1561,7 @@ function go(view){
   else{act.classList.add('hide');act.onclick=null;}
   window.scrollTo({top:0});
   const seg=$('line-seg');
-  if(seg){const ln=view==='vendi'?'vendi':(view==='komandi'?'komandi':(view==='resumen'?resumenLine:'fia'));seg.querySelectorAll('button').forEach(b=>b.classList.toggle('active',b.dataset.line===ln));}
+  if(seg){const ln=view==='vendi'?'vendi':(view==='komandi'?'komandi':(view==='resumen'?resumenLine:(view==='metas'?planSMBLine:'fia')));seg.querySelectorAll('button').forEach(b=>b.classList.toggle('active',b.dataset.line===ln));}
   /* Mantener visible en la barra lateral la página activa: si queda bajo el fold (p. ej. Vendi/
      Komandi en "Líneas de negocio"), desplaza SOLO la barra —no la página— para mostrarla. */
   (function(){const side=document.querySelector('.side'),act=side&&side.querySelector('[data-view].active');
@@ -3121,6 +3123,7 @@ function planSMBData(){
     cnt({linea:'Komandi',color:'#FDC555',label:'Restaurantes',actual:kCli,dic:kGoalCli,esperado:Math.round(kGoalCli*(mi+1)/4)})
   ];
   metas.forEach(m=>{m.pctDic=m.dic?Math.min(100,m.actual/m.dic*100):0;m.faltanDic=Math.max(0,m.dic-m.actual);m.flag=planFlag(m.actual,m.esperado);m.faltanMes=Math.max(0,m.esperado-m.actual);});
+  ['fia','fia','fia','fia','vendi','vendi','komandi','komandi'].forEach((g,i)=>{if(metas[i])metas[i].grupo=g;}); // agrupación por línea para el filtro del panel
   return {metas,mi,mesLbl:FIA_SMB_MILESTONES[mi][1],mesesRest,fiaRec,fiaGoal,fiaAltas};
 }
 /* Proyección de una línea Stradia (Vendi/Komandi): brecha a la meta y # de clientes por plan */
@@ -3138,6 +3141,7 @@ function lineProjCard(line,mesesRest){
     <p class="subt" style="margin-top:10px">Faltan <b>${cliFaltan}</b> ${unidad} de ${goalCli}${cliFaltan>0?` (≈ ${Math.ceil(cliFaltan/mesesRest)}/mes)`:' ✓'}.</p>
   </div>`;
 }
+let planSMBLine='fia'; // línea enfocada en el panel de metas (lo cambia el selector de arriba)
 function renderPlanSMB(){
   const box=$('plan-smb');if(!box)return;
   const D=planSMBData(),metas=D.metas;
@@ -3157,13 +3161,29 @@ function renderPlanSMB(){
   const planOpts=[['starter','Starter',14.99],['basicoMensual','Básico',5],['professional','Professional',24.99],['advanced','Advanced',34.99]];
   const proySugerencias=planOpts.map(([k,lb,p])=>`<tr><td>${lb} <span class="muted-3">(${fmtUSD(p)}/mes)</span></td><td class="num"><b>${Math.ceil(gap/p)}</b></td></tr>`).join('');
   const altasFaltan=Math.max(0,332-D.fiaAltas);
+  const lineName={fia:'Factura IA',vendi:'Vendi',komandi:'Komandi'}[planSMBLine]||'Factura IA';
+  const lineColor={fia:'#9a73ff',vendi:'#3ddc97',komandi:'#FDC555'}[planSMBLine];
+  const selMetas=metas.filter(m=>m.grupo===planSMBLine);
+  const rojoLine=enRojo.filter(m=>m.grupo===planSMBLine);
+  const semCard=m=>`<div class="card" style="padding:14px;border-left:3px solid ${m.color}">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><span class="klabel" style="color:${m.color}">${m.linea}</span><span title="${m.flag.t}" style="font-size:14px">${m.flag.e}</span></div>
+      <div class="muted-3" style="font-size:11px;margin-top:2px">${m.label}</div>
+      <div style="font-family:'Space Grotesk';font-weight:700;font-size:22px;margin:6px 0 2px;font-variant-numeric:tabular-nums">${val(m)} <span style="font-size:12px;color:var(--txt-3)">/ ${dicv(m)}</span></div>
+      <div class="bar" style="margin:4px 0"><i style="width:${m.pctDic}%;background:${m.color}"></i></div>
+      <div class="muted-3" style="font-size:11px">${m.pctDic.toFixed(0)}% a dic · esperado hoy ${espv(m)}${m.faltanMes>0?` · faltan ${faltaMesV(m)}`:' ✓'}</div>
+    </div>`;
+  const fiaProj=`<div class="card"><div class="section-head"><h2>Proyección · Factura IA</h2><span class="hint">para llegar a ${fmtUSD0(D.fiaGoal)}/mes</span></div>
+      <p class="subt">Falta <b style="color:#f87171">${fmtUSD0(gap)}/mes</b> · a ${D.mesesRest} meses son <b>${fmtUSD0(porMes)}/mes nuevos</b>. Clientes que cerrarían la brecha:</p>
+      <div class="tablewrap"><table class="responsive"><thead><tr><th>Plan</th><th class="num"># clientes</th></tr></thead><tbody>${proySugerencias}</tbody></table></div>
+      <p class="subt" style="margin-top:10px">También faltan <b>${altasFaltan} altas</b> de las 332 del período (≈ ${Math.ceil(altasFaltan/D.mesesRest)}/mes).</p></div>`;
+  const projCard=planSMBLine==='fia'?fiaProj:lineProjCard(planSMBLine,D.mesesRest);
   box.innerHTML=`
     <div class="ct-hero" style="background:linear-gradient(135deg,rgba(154,115,255,.12),rgba(45,212,191,.06))">
       <div class="ct-hero-grid">
         <div style="min-width:min(100%,340px)">
           <div class="eyebrow">Plan Línea SMB 2026 · cómo vamos</div>
           <div class="big">${fmtUSD0(recActual)} <span style="font-size:16px;color:var(--txt-3)">/ ${fmtUSD0(recMeta)}</span></div>
-          <p class="sub">Recurrente total del plan (Factura IA + Vendi + Komandi) a diciembre · <b style="color:var(--brand-3)">${recPct.toFixed(1)}%</b>. Estamos en <b>${D.mesLbl}</b>: ${enPlan} de ${metas.length} metas en plan${enRojo.length?` · <b style="color:#f87171">${enRojo.length} atrasada(s)</b>`:''}.</p>
+          <p class="sub">Recurrente total (Factura IA + Vendi + Komandi) a diciembre · <b style="color:var(--brand-3)">${recPct.toFixed(1)}%</b>. Estamos en <b>${D.mesLbl}</b>: ${enPlan} de ${metas.length} metas en plan${enRojo.length?` · <b style="color:#f87171">${enRojo.length} atrasada(s)</b>`:''}.</p>
         </div>
         <div class="ct-mini">
           <div class="m"><div class="n" style="color:${enRojo.length?'#f87171':'#34d399'}">${enRojo.length?'🔴 '+enRojo.length:'🟢 OK'}</div><div class="k">Alertas del plan</div></div>
@@ -3173,34 +3193,14 @@ function renderPlanSMB(){
         </div>
       </div>
     </div>
-    <div class="card" style="margin:16px 0">
-      <div class="section-head"><h2>Semáforo de metas · ${D.mesLbl}</h2><span class="hint">actual vs lo esperado a hoy</span></div>
-      <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px">
-        ${metas.map(m=>`<div class="card" style="padding:14px;border-left:3px solid ${m.color}">
-          <div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><span class="klabel" style="color:${m.color}">${m.linea}</span><span title="${m.flag.t}" style="font-size:14px">${m.flag.e}</span></div>
-          <div class="muted-3" style="font-size:11px;margin-top:2px">${m.label}</div>
-          <div style="font-family:'Space Grotesk';font-weight:700;font-size:22px;margin:6px 0 2px;font-variant-numeric:tabular-nums">${val(m)} <span style="font-size:12px;color:var(--txt-3)">/ ${dicv(m)}</span></div>
-          <div class="bar" style="margin:4px 0"><i style="width:${m.pctDic}%;background:${m.color}"></i></div>
-          <div class="muted-3" style="font-size:11px">${m.pctDic.toFixed(0)}% de la meta a dic · esperado hoy ${espv(m)}${m.faltanMes>0?` · faltan ${faltaMesV(m)}`:' ✓'}</div>
-        </div>`).join('')}
-      </div>
-    </div>
-    <div class="two" style="margin-bottom:16px">
-      <div class="card"><div class="section-head"><h2>Recurrente por línea · actual vs meta dic</h2></div><div class="chart-box"><canvas id="chartPlanRec"></canvas></div></div>
-      <div class="card"><div class="section-head"><h2>Proyección · Factura IA recurrente</h2><span class="hint">para llegar a ${fmtUSD0(D.fiaGoal)}/mes</span></div>
-        <p class="subt">Falta <b style="color:#f87171">${fmtUSD0(gap)}/mes</b> · a ${D.mesesRest} meses son <b>${fmtUSD0(porMes)}/mes nuevos</b>. Clientes nuevos que cerrarían la brecha, según el plan:</p>
-        <div class="tablewrap"><table class="responsive"><thead><tr><th>Plan</th><th class="num"># clientes para cerrar</th></tr></thead><tbody>${proySugerencias}</tbody></table></div>
-        <p class="subt" style="margin-top:10px">También faltan <b>${altasFaltan} altas</b> de las 332 del período (≈ ${Math.ceil(altasFaltan/D.mesesRest)}/mes).</p>
-      </div>
-    </div>
-    <div class="two" style="margin-bottom:16px">
-      ${lineProjCard('vendi',D.mesesRest)}
-      ${lineProjCard('komandi',D.mesesRest)}
-    </div>
-    ${enRojo.length?`<div class="card" style="margin-bottom:16px;border-color:#f8717155">
-      <div class="section-head"><h2>⚠️ Alertas · dónde estamos jodidos</h2><span class="hint">metas por debajo de lo esperado</span></div>
-      ${enRojo.map(m=>`<div class="cmeta" style="padding:8px 0;border-bottom:1px solid var(--border)"><span>${m.flag.e} <b>${m.linea} · ${m.label}</b>: vas en ${val(m)}, se esperaban ${espv(m)} a la fecha</span><span style="color:#f87171;font-weight:700">faltan ${faltaMesV(m)}</span></div>`).join('')}
-    </div>`:`<div class="card" style="margin-bottom:16px;border-color:#34d39955"><div class="cmeta" style="padding:6px 0"><span>🟢 <b>Vas en plan</b> en todas las metas con avance a hoy. A seguir así.</span></div></div>`}`;
+    <div class="card" style="margin:16px 0"><div class="section-head"><h2>Recurrente por línea · actual vs meta dic</h2><span class="hint">las 3 líneas</span></div><div class="chart-box" style="height:210px"><canvas id="chartPlanRec"></canvas></div></div>
+    <div class="section-head" style="margin:18px 0 10px"><h2 style="font-size:16px;color:${lineColor}">Detalle · ${lineName}</h2><span class="hint">toca Factura IA / Vendi / Komandi arriba para cambiar de línea</span></div>
+    <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;margin-bottom:16px">${selMetas.map(semCard).join('')}</div>
+    ${projCard}
+    ${rojoLine.length?`<div class="card" style="margin-top:16px;border-color:#f8717155">
+      <div class="section-head"><h2>⚠️ Alertas · ${lineName}</h2><span class="hint">metas por debajo de lo esperado</span></div>
+      ${rojoLine.map(m=>`<div class="cmeta" style="padding:8px 0;border-bottom:1px solid var(--border)"><span>${m.flag.e} <b>${m.linea} · ${m.label}</b>: vas en ${val(m)}, se esperaban ${espv(m)}</span><span style="color:#f87171;font-weight:700">faltan ${faltaMesV(m)}</span></div>`).join('')}
+    </div>`:`<div class="card" style="margin-top:16px;border-color:#34d39955"><div class="cmeta" style="padding:6px 0"><span>🟢 <b>${lineName} va en plan</b> en sus metas con avance a hoy.</span></div></div>`}`;
   // gráfica recurrente por línea
   const recMetas=[{l:'Factura IA',a:metas[0].actual,m:metas[0].dic,c:'#9a73ff'},{l:'Vendi',a:metas[4].actual,m:metas[4].dic,c:'#3ddc97'},{l:'Komandi',a:metas[6].actual,m:metas[6].dic,c:'#FDC555'}];
   if(charts.planRec)charts.planRec.destroy();
