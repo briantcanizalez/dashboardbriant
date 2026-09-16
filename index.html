@@ -638,9 +638,9 @@ th.ct-sort:hover{color:var(--txt)}
 
       <!-- ====== SELECTOR DE LÍNEA DE NEGOCIO ====== -->
       <div class="line-switch" id="line-seg" role="tablist" aria-label="Línea de negocio">
-        <button data-line="fia" class="active" onclick="go('inicio')"><span class="dot"></span>Factura IA</button>
-        <button data-line="vendi" onclick="go('vendi')"><span class="dot"></span>Vendi</button>
-        <button data-line="komandi" onclick="go('komandi')"><span class="dot"></span>Komandi</button>
+        <button data-line="fia" class="active" onclick="pickLine('fia')"><span class="dot"></span>Factura IA</button>
+        <button data-line="vendi" onclick="pickLine('vendi')"><span class="dot"></span>Vendi</button>
+        <button data-line="komandi" onclick="pickLine('komandi')"><span class="dot"></span>Komandi</button>
       </div>
 
       <!-- ====== INICIO ====== -->
@@ -669,6 +669,7 @@ th.ct-sort:hover{color:var(--txt)}
 
       <!-- ====== RESUMEN EJECUTIVO ====== -->
       <section class="view" id="view-resumen">
+        <div id="rs-fia">
         <!-- ¿CÓMO VA EL MES? (mes actual destacado, por comercial) -->
         <div class="card" id="rs-month-card" style="margin-bottom:20px">
           <div class="section-head"><h2 id="rs-month-title">¿Cómo va el mes?</h2><span class="hint">toca otro mes para verlo</span></div>
@@ -703,6 +704,8 @@ th.ct-sort:hover{color:var(--txt)}
           <div id="rs-pareto-insight" class="rs-ins"></div>
           <div class="chart-box" style="margin-top:12px;height:300px"><canvas id="chartPareto"></canvas></div>
         </div>
+        </div><!-- /rs-fia -->
+        <div id="rs-line" hidden></div>
       </section>
 
       <!-- ====== TAREAS ====== -->
@@ -1534,7 +1537,15 @@ const VIEWS={
   vendi:{title:'Vendi',sub:'Vende por WhatsApp 24/7 · marca Stradia.',action:{label:'Nueva venta Vendi',fn:()=>openLineSale('vendi')}},
   komandi:{title:'Komandi',sub:'Pedidos de restaurante por WhatsApp · marca Stradia.',action:{label:'Nueva venta Komandi',fn:()=>openLineSale('komandi')}},
 };
+let curView='inicio';
+/* Selector de línea de arriba: en la hoja Resumen cambia la línea del resumen (sin salir);
+   en otras vistas navega a la línea (Vendi/Komandi) o al Inicio (Factura IA). */
+function pickLine(ln){
+  if(curView==='resumen'){resumenLine=ln;const seg=$('line-seg');if(seg)seg.querySelectorAll('button').forEach(b=>b.classList.toggle('active',b.dataset.line===ln));renderResumen();window.scrollTo({top:0});return;}
+  if(ln==='vendi')go('vendi');else if(ln==='komandi')go('komandi');else go('inicio');
+}
 function go(view){
+  curView=view;
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
   $('view-'+view).classList.add('active');
   document.querySelectorAll('[data-nav] [data-view]').forEach(b=>b.classList.toggle('active',b.dataset.view===view));
@@ -1546,7 +1557,7 @@ function go(view){
   else{act.classList.add('hide');act.onclick=null;}
   window.scrollTo({top:0});
   const seg=$('line-seg');
-  if(seg){const ln=view==='vendi'?'vendi':(view==='komandi'?'komandi':'fia');seg.querySelectorAll('button').forEach(b=>b.classList.toggle('active',b.dataset.line===ln));}
+  if(seg){const ln=view==='vendi'?'vendi':(view==='komandi'?'komandi':(view==='resumen'?resumenLine:'fia'));seg.querySelectorAll('button').forEach(b=>b.classList.toggle('active',b.dataset.line===ln));}
   /* Mantener visible en la barra lateral la página activa: si queda bajo el fold (p. ej. Vendi/
      Komandi en "Líneas de negocio"), desplaza SOLO la barra —no la página— para mostrarla. */
   (function(){const side=document.querySelector('.side'),act=side&&side.querySelector('[data-view].active');
@@ -2804,7 +2815,54 @@ const COM_BUCKETS=[
   {label:'Otros',short:'Otros',pred:s=>s.comercial&&s.comercial!=='Briant Canizalez'&&s.comercial!=='Rene Gonzalez'},
 ];
 const _pct=(a,b)=>b?Math.round(a/b*100):0;
+/* Resumen por línea: Factura IA (histórico completo) o Vendi/Komandi (resumen propio).
+   Lo cambia el selector de arriba (pickLine) sin salir de la hoja Resumen. */
+let resumenLine='fia';
 function renderResumen(){
+  const fia=resumenLine==='fia';
+  if($('rs-fia'))$('rs-fia').hidden=!fia;
+  if($('rs-line'))$('rs-line').hidden=fia;
+  if(fia)renderResumenFIA(); else renderResumenLine(resumenLine);
+}
+function renderResumenLine(line){
+  const box=$('rs-line');if(!box)return;
+  const L=LINES[line];if(!L){box.innerHTML='';return;}
+  const all=lineSales(line),act=lineActive(line);
+  const cli=act.length,mrr=lineMRR(line),impl=lineImplTotal(line);
+  const goalMRR=+state.config[L.metaKey]||L.defMRR,goalCli=+state.config[L.cliKey]||L.defCli;
+  const pctM=goalMRR?Math.min(100,mrr/goalMRR*100):0,pctC=goalCli?Math.min(100,cli/goalCli*100):0;
+  const M=curMonth();const d=new Date(M+'-01T00:00:00');d.setMonth(d.getMonth()-1);const prevM=localISO(d).slice(0,7);
+  const cierresMes=act.filter(s=>(s.start||'').slice(0,7)===M).length;
+  const mrrMes=act.filter(s=>(s.start||'').slice(0,7)===M).reduce((a,s)=>a+lineSaleMonthly(s),0);
+  const cierresPrev=all.filter(s=>(s.start||'').slice(0,7)===prevM&&!s.churned).length;
+  const dC=cierresMes-cierresPrev;
+  const planKeys=Object.keys(LINE_PLANS).filter(k=>act.some(s=>s.plan===k)||L.mix[k]);
+  const bar=(pct,grad)=>`<div style="height:10px;background:var(--bg);border:1px solid var(--border);border-radius:99px;overflow:hidden"><i style="display:block;height:100%;width:${Math.max(2,pct)}%;background:${grad}"></i></div>`;
+  box.innerHTML=`
+    <div class="card" style="margin-bottom:20px;border-color:${L.color}55">
+      <div class="section-head"><h2>¿Cómo va ${esc(L.label)} este mes?</h2><span class="hint">${fmtMonth(M)}</span></div>
+      <div class="grid kpis">
+        <div class="card kpi"><div class="khead"><span class="klabel">Cierres del mes</span></div><div class="kval tnum">${cierresMes}</div><div class="kmeta">${dC>=0?'+':''}${dC} vs ${fmtMonth(prevM)}</div></div>
+        <div class="card kpi"><div class="khead"><span class="klabel">Facturación nueva del mes</span></div><div class="kval tnum" style="color:${L.color}">${fmtUSD(mrrMes)}</div><div class="kmeta">recurrente sumado este mes</div></div>
+      </div>
+    </div>
+    <div class="section-head" style="margin:4px 0 12px"><h2 style="font-size:16px;color:var(--txt-3)">Histórico · cartera ${esc(L.label)}</h2></div>
+    <div class="grid kpis" style="margin-bottom:16px">
+      <div class="card kpi"><div class="khead"><span class="klabel">Clientes activos</span></div><div class="kval tnum">${cli}</div><div class="kmeta">meta ${goalCli} · ${Math.round(pctC)}%</div></div>
+      <div class="card kpi"><div class="khead"><span class="klabel">Facturación recurrente</span></div><div class="kval tnum" style="color:${L.color}">${fmtUSD(mrr)}</div><div class="kmeta">meta ${fmtUSD(goalMRR)} · ${Math.round(pctM)}%</div></div>
+      <div class="card kpi"><div class="khead"><span class="klabel">Implementación cobrada</span></div><div class="kval lav tnum">${fmtUSD(impl)}</div><div class="kmeta">histórico</div></div>
+    </div>
+    <div class="card" style="margin-bottom:16px">
+      <div class="section-head"><h2>Meta de facturación · dic 2026</h2><span class="hint">${Math.round(pctM)}% de ${fmtUSD(goalMRR)}/mes</span></div>
+      ${bar(pctM,L.grad)}
+    </div>
+    <div class="card">
+      <div class="section-head"><h2>Cartera por plan · mezcla vs meta</h2><span class="hint">actual vs meta a diciembre</span></div>
+      <div class="rs-plangrid">${planKeys.map(k=>{const p=LINE_PLANS[k];const n=act.filter(s=>s.plan===k).length;const meta=L.mix[k]||0;return `<div class="rs-planchip"><div class="rp-n">${esc(p.label)}</div><div class="rp-c">${n}</div><div class="rp-m">meta ${meta}</div></div>`;}).join('')||'<span class="muted-3" style="font-size:13px">Aún no hay clientes en esta línea.</span>'}</div>
+      <div class="cmeta" style="margin-top:14px"><span class="muted-3">Tarifario y lista de clientes:</span><button class="btn sm ghost" onclick="go('${line}')">Ver ficha completa de ${esc(L.label)} →</button></div>
+    </div>`;
+}
+function renderResumenFIA(){
   const A=activeSales(),M=curMonth();
   const totCli=A.length,totMRR=salesMRR(false),totImpl=implCollected();
   const mesSales=state.sales.filter(s=>(s.start||'').slice(0,7)===M);
