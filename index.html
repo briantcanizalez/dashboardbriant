@@ -830,6 +830,8 @@ th.ct-sort:hover{color:var(--txt)}
 
       <!-- ====== METAS Y PROYECCIÓN ====== -->
       <section class="view" id="view-metas">
+        <div id="plan-smb" style="margin-bottom:22px"></div>
+        <div class="section-head" style="margin:6px 0 12px"><h2 style="font-size:16px;color:var(--txt-3)">Tus metas personales y comisiones</h2></div>
         <div class="two" style="margin-bottom:16px">
           <div class="card kpi" onclick="showList('metas-cli')"><div class="khead"><span class="klabel">Meta · 1,000 clientes</span><span class="kchip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/></svg></span></div><div class="kval" id="m-cli-val">0%</div><div class="kmeta" id="m-cli-meta"></div><div class="bar"><i id="m-cli-bar"></i></div></div>
           <div class="card kpi" onclick="showList('metas-mrr')"><div class="khead"><span class="klabel">Meta · $25,000 recurrentes / mes</span><span class="kchip green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="2" x2="12" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span></div><div class="kval lav" id="m-mrr-val">0%</div><div class="kmeta" id="m-mrr-meta"></div><div class="bar green"><i id="m-mrr-bar"></i></div></div>
@@ -3088,7 +3090,108 @@ function velocity(){ // clientes y MRR ganados en últimos 90 días → por mes
   const mrrV=recent.filter(s=>s.mode==='mensual').reduce((a,s)=>a+saleMonthly(s),0)/3;
   return {cliV,mrrV,n:recent.length};
 }
+/* ===================== PLAN SMB 2026 · panel consolidado ===================== */
+function planFlag(actual,esperado){
+  if(esperado<=0)return {c:'#8a8a9a',e:'⚪',t:'sin meta este mes'};
+  const r=actual/esperado;
+  if(r>=1)return {c:'#34d399',e:'🟢',t:'en plan'};
+  if(r>=0.8)return {c:'#fbbf24',e:'🟡',t:'cerca'};
+  if(r>=0.5)return {c:'#fb923c',e:'🟠',t:'atrasado'};
+  return {c:'#f87171',e:'🔴',t:'muy atrasado'};
+}
+function planSMBData(){
+  const order=['2026-09','2026-10','2026-11','2026-12'];
+  const M=curMonth();let mi=order.indexOf(M);if(mi<0)mi=M<'2026-09'?0:3;
+  const mesesRest=Math.max(1,4-mi); // meses que faltan (incluye el actual) hasta diciembre
+  const fiaRec=currentMRR(),fiaGoal=+state.config.fiaMetaSMB||18928;
+  const fiaAltas=state.sales.filter(s=>{const m=(s.start||'').slice(0,7);return m>='2026-09'&&m<='2026-12';}).length;
+  const canal=canalPeriodo();
+  const vMRR=lineMRR('vendi'),vCli=lineActive('vendi').length,vGoal=+state.config.vendiMetaMRR||6921,vGoalCli=+state.config.vendiMetaCli||30;
+  const kMRR=lineMRR('komandi'),kCli=lineActive('komandi').length,kGoal=+state.config.komandiMetaMRR||4582,kGoalCli=+state.config.komandiMetaCli||18;
+  const cumFIAaltas=[52,131,227,332],cumCanal=[55,110,165,220];
+  const rec=v=>({...v,money:true}),cnt=v=>({...v,money:false});
+  const metas=[
+    rec({linea:'Factura IA',color:'#9a73ff',label:'Recurrente/mes',actual:fiaRec,dic:fiaGoal,esperado:FIA_SMB_MILESTONES[mi][2]}),
+    cnt({linea:'Factura IA',color:'#9a73ff',label:'Altas del período',actual:fiaAltas,dic:332,esperado:cumFIAaltas[mi]}),
+    cnt({linea:'Contadores',color:'#2dd4bf',label:'Altas del canal',actual:canal.altas,dic:220,esperado:cumCanal[mi]}),
+    rec({linea:'Contadores',color:'#2dd4bf',label:'Aporte recurrente/mes',actual:canal.mrr,dic:4620,esperado:Math.round(4620*(mi+1)/4)}),
+    rec({linea:'Vendi',color:'#3ddc97',label:'Recurrente/mes',actual:vMRR,dic:vGoal,esperado:LINES.vendi.milestones[mi][2]}),
+    cnt({linea:'Vendi',color:'#3ddc97',label:'Clientes',actual:vCli,dic:vGoalCli,esperado:Math.round(vGoalCli*(mi+1)/4)}),
+    rec({linea:'Komandi',color:'#FDC555',label:'Recurrente/mes',actual:kMRR,dic:kGoal,esperado:LINES.komandi.milestones[mi][2]}),
+    cnt({linea:'Komandi',color:'#FDC555',label:'Restaurantes',actual:kCli,dic:kGoalCli,esperado:Math.round(kGoalCli*(mi+1)/4)})
+  ];
+  metas.forEach(m=>{m.pctDic=m.dic?Math.min(100,m.actual/m.dic*100):0;m.faltanDic=Math.max(0,m.dic-m.actual);m.flag=planFlag(m.actual,m.esperado);m.faltanMes=Math.max(0,m.esperado-m.actual);});
+  return {metas,mi,mesLbl:FIA_SMB_MILESTONES[mi][1],mesesRest,fiaRec,fiaGoal,fiaAltas};
+}
+function renderPlanSMB(){
+  const box=$('plan-smb');if(!box)return;
+  const D=planSMBData(),metas=D.metas;
+  // Total recurrente del plan (FIA + Vendi + Komandi) vs $30,431 bruto a dic
+  const recActual=metas.filter(m=>m.money&&m.label==='Recurrente/mes').reduce((a,m)=>a+m.actual,0);
+  const recMeta=metas.filter(m=>m.money&&m.label==='Recurrente/mes').reduce((a,m)=>a+m.dic,0);
+  const recPct=recMeta?Math.min(100,recActual/recMeta*100):0;
+  const enRojo=metas.filter(m=>m.flag.e==='🔴'||m.flag.e==='🟠');
+  const enPlan=metas.filter(m=>m.flag.e==='🟢').length;
+  const val=m=>m.money?fmtUSD0(m.actual):m.actual;
+  const dicv=m=>m.money?fmtUSD0(m.dic):m.dic;
+  const espv=m=>m.money?fmtUSD0(m.esperado):m.esperado;
+  const faltaMesV=m=>m.money?fmtUSD0(m.faltanMes):m.faltanMes;
+  // proyección Factura IA recurrente
+  const gap=Math.max(0,D.fiaGoal-D.fiaRec);
+  const porMes=gap/D.mesesRest;
+  const planOpts=[['starter','Starter',14.99],['basicoMensual','Básico',5],['professional','Professional',24.99],['advanced','Advanced',34.99]];
+  const proySugerencias=planOpts.map(([k,lb,p])=>`<tr><td>${lb} <span class="muted-3">(${fmtUSD(p)}/mes)</span></td><td class="num"><b>${Math.ceil(gap/p)}</b></td></tr>`).join('');
+  const altasFaltan=Math.max(0,332-D.fiaAltas);
+  box.innerHTML=`
+    <div class="ct-hero" style="background:linear-gradient(135deg,rgba(154,115,255,.12),rgba(45,212,191,.06))">
+      <div class="ct-hero-grid">
+        <div style="min-width:min(100%,340px)">
+          <div class="eyebrow">Plan Línea SMB 2026 · cómo vamos</div>
+          <div class="big">${fmtUSD0(recActual)} <span style="font-size:16px;color:var(--txt-3)">/ ${fmtUSD0(recMeta)}</span></div>
+          <p class="sub">Recurrente total del plan (Factura IA + Vendi + Komandi) a diciembre · <b style="color:var(--brand-3)">${recPct.toFixed(1)}%</b>. Estamos en <b>${D.mesLbl}</b>: ${enPlan} de ${metas.length} metas en plan${enRojo.length?` · <b style="color:#f87171">${enRojo.length} atrasada(s)</b>`:''}.</p>
+        </div>
+        <div class="ct-mini">
+          <div class="m"><div class="n" style="color:${enRojo.length?'#f87171':'#34d399'}">${enRojo.length?'🔴 '+enRojo.length:'🟢 OK'}</div><div class="k">Alertas del plan</div></div>
+          <div class="m"><div class="n">${D.mesesRest}</div><div class="k">Meses a dic.</div></div>
+          <div class="m"><div class="n">${fmtUSD0(Math.max(0,recMeta-recActual))}</div><div class="k">Falta recurrente</div></div>
+          <div class="m"><div class="n">${altasFaltan}</div><div class="k">Altas FIA por hacer</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="card" style="margin:16px 0">
+      <div class="section-head"><h2>Semáforo de metas · ${D.mesLbl}</h2><span class="hint">actual vs lo esperado a hoy</span></div>
+      <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px">
+        ${metas.map(m=>`<div class="card" style="padding:14px;border-left:3px solid ${m.color}">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><span class="klabel" style="color:${m.color}">${m.linea}</span><span title="${m.flag.t}" style="font-size:14px">${m.flag.e}</span></div>
+          <div class="muted-3" style="font-size:11px;margin-top:2px">${m.label}</div>
+          <div style="font-family:'Space Grotesk';font-weight:700;font-size:22px;margin:6px 0 2px;font-variant-numeric:tabular-nums">${val(m)} <span style="font-size:12px;color:var(--txt-3)">/ ${dicv(m)}</span></div>
+          <div class="bar" style="margin:4px 0"><i style="width:${m.pctDic}%;background:${m.color}"></i></div>
+          <div class="muted-3" style="font-size:11px">${m.pctDic.toFixed(0)}% de la meta a dic · esperado hoy ${espv(m)}${m.faltanMes>0?` · faltan ${faltaMesV(m)}`:' ✓'}</div>
+        </div>`).join('')}
+      </div>
+    </div>
+    <div class="two" style="margin-bottom:16px">
+      <div class="card"><div class="section-head"><h2>Recurrente por línea · actual vs meta dic</h2></div><div class="chart-box"><canvas id="chartPlanRec"></canvas></div></div>
+      <div class="card"><div class="section-head"><h2>Proyección · Factura IA recurrente</h2><span class="hint">para llegar a ${fmtUSD0(D.fiaGoal)}/mes</span></div>
+        <p class="subt">Falta <b style="color:#f87171">${fmtUSD0(gap)}/mes</b> · a ${D.mesesRest} meses son <b>${fmtUSD0(porMes)}/mes nuevos</b>. Clientes nuevos que cerrarían la brecha, según el plan:</p>
+        <div class="tablewrap"><table class="responsive"><thead><tr><th>Plan</th><th class="num"># clientes para cerrar</th></tr></thead><tbody>${proySugerencias}</tbody></table></div>
+        <p class="subt" style="margin-top:10px">También faltan <b>${altasFaltan} altas</b> de las 332 del período (≈ ${Math.ceil(altasFaltan/D.mesesRest)}/mes).</p>
+      </div>
+    </div>
+    ${enRojo.length?`<div class="card" style="margin-bottom:16px;border-color:#f8717155">
+      <div class="section-head"><h2>⚠️ Alertas · dónde estamos jodidos</h2><span class="hint">metas por debajo de lo esperado</span></div>
+      ${enRojo.map(m=>`<div class="cmeta" style="padding:8px 0;border-bottom:1px solid var(--border)"><span>${m.flag.e} <b>${m.linea} · ${m.label}</b>: vas en ${val(m)}, se esperaban ${espv(m)} a la fecha</span><span style="color:#f87171;font-weight:700">faltan ${faltaMesV(m)}</span></div>`).join('')}
+    </div>`:`<div class="card" style="margin-bottom:16px;border-color:#34d39955"><div class="cmeta" style="padding:6px 0"><span>🟢 <b>Vas en plan</b> en todas las metas con avance a hoy. A seguir así.</span></div></div>`}`;
+  // gráfica recurrente por línea
+  const recMetas=[{l:'Factura IA',a:metas[0].actual,m:metas[0].dic,c:'#9a73ff'},{l:'Vendi',a:metas[4].actual,m:metas[4].dic,c:'#3ddc97'},{l:'Komandi',a:metas[6].actual,m:metas[6].dic,c:'#FDC555'}];
+  if(charts.planRec)charts.planRec.destroy();
+  if($('chartPlanRec'))charts.planRec=new Chart($('chartPlanRec'),{type:'bar',data:{labels:recMetas.map(r=>r.l),datasets:[
+    {label:'Actual',data:recMetas.map(r=>+r.a.toFixed(0)),backgroundColor:recMetas.map(r=>r.c),borderRadius:6},
+    {label:'Meta dic',data:recMetas.map(r=>r.m),backgroundColor:'#3a3a52',borderRadius:6}
+  ]},options:{maintainAspectRatio:false,plugins:{legend:{labels:{color:CTXT,boxWidth:12}},tooltip:{callbacks:{label:c=>c.dataset.label+': '+fmtUSD0(c.parsed.y)}}},scales:{x:{grid:{display:false},ticks:{color:CTXT}},y:{grid:{color:CGRID},ticks:{color:CTXT,callback:v=>'$'+(v/1000)+'k'}}}}});
+}
 function renderMetas(){
+  renderPlanSMB();
   const tc=totalClients(),gc=state.config.goalClients,mrr=currentMRR(),gm=state.config.goalRecurring;
   const pc=Math.min(100,tc/gc*100),pm=Math.min(100,mrr/gm*100);
   $('m-cli-val').textContent=pc.toFixed(1)+'%';$('m-cli-meta').textContent=`${tc.toLocaleString('en-US')} de ${gc.toLocaleString('en-US')} · faltan ${Math.max(0,gc-tc).toLocaleString('en-US')}`;$('m-cli-bar').style.width=pc+'%';
