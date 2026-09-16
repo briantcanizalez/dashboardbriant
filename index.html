@@ -3123,6 +3123,21 @@ function planSMBData(){
   metas.forEach(m=>{m.pctDic=m.dic?Math.min(100,m.actual/m.dic*100):0;m.faltanDic=Math.max(0,m.dic-m.actual);m.flag=planFlag(m.actual,m.esperado);m.faltanMes=Math.max(0,m.esperado-m.actual);});
   return {metas,mi,mesLbl:FIA_SMB_MILESTONES[mi][1],mesesRest,fiaRec,fiaGoal,fiaAltas};
 }
+/* Proyección de una línea Stradia (Vendi/Komandi): brecha a la meta y # de clientes por plan */
+function lineProjCard(line,mesesRest){
+  const L=LINES[line];
+  const actual=lineMRR(line),goal=+state.config[L.metaKey]||L.defMRR;
+  const cli=lineActive(line).length,goalCli=+state.config[L.cliKey]||L.defCli;
+  const gap=Math.max(0,goal-actual),porMes=gap/mesesRest,cliFaltan=Math.max(0,goalCli-cli);
+  const opts=[['crece','Crece',99],['profesional','Profesional',299],['empresarial','Empresarial',499],['corporativo','Corporativo',899]];
+  const rows=opts.map(([k,lb,p])=>`<tr><td>${lb} <span class="muted-3">(${fmtUSD0(p)}/mes)</span></td><td class="num"><b>${gap>0?Math.ceil(gap/p):0}</b></td></tr>`).join('');
+  const unidad=line==='komandi'?'restaurantes':'clientes';
+  return `<div class="card"><div class="section-head"><h2>Proyección · ${esc(L.label)}</h2><span class="hint">para llegar a ${fmtUSD0(goal)}/mes</span></div>
+    <p class="subt">Falta <b style="color:${L.color}">${fmtUSD0(gap)}/mes</b>${gap>0?` · a ${mesesRest} meses son <b>${fmtUSD0(porMes)}/mes nuevos</b>. Clientes que cerrarían la brecha:`:' · <b style="color:#34d399">meta alcanzada ✓</b>'}</p>
+    ${gap>0?`<div class="tablewrap"><table class="responsive"><thead><tr><th>Plan</th><th class="num"># clientes</th></tr></thead><tbody>${rows}</tbody></table></div>`:''}
+    <p class="subt" style="margin-top:10px">Faltan <b>${cliFaltan}</b> ${unidad} de ${goalCli}${cliFaltan>0?` (≈ ${Math.ceil(cliFaltan/mesesRest)}/mes)`:' ✓'}.</p>
+  </div>`;
+}
 function renderPlanSMB(){
   const box=$('plan-smb');if(!box)return;
   const D=planSMBData(),metas=D.metas;
@@ -3177,6 +3192,10 @@ function renderPlanSMB(){
         <div class="tablewrap"><table class="responsive"><thead><tr><th>Plan</th><th class="num"># clientes para cerrar</th></tr></thead><tbody>${proySugerencias}</tbody></table></div>
         <p class="subt" style="margin-top:10px">También faltan <b>${altasFaltan} altas</b> de las 332 del período (≈ ${Math.ceil(altasFaltan/D.mesesRest)}/mes).</p>
       </div>
+    </div>
+    <div class="two" style="margin-bottom:16px">
+      ${lineProjCard('vendi',D.mesesRest)}
+      ${lineProjCard('komandi',D.mesesRest)}
     </div>
     ${enRojo.length?`<div class="card" style="margin-bottom:16px;border-color:#f8717155">
       <div class="section-head"><h2>⚠️ Alertas · dónde estamos jodidos</h2><span class="hint">metas por debajo de lo esperado</span></div>
