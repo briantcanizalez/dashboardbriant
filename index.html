@@ -3199,7 +3199,7 @@ function renderPlanSMB(){
     ${projCard}
     ${rojoLine.length?`<div class="card" style="margin-top:16px;border-color:#f8717155">
       <div class="section-head"><h2>⚠️ Alertas · ${lineName}</h2><span class="hint">metas por debajo de lo esperado</span></div>
-      ${rojoLine.map(m=>`<div class="cmeta" style="padding:8px 0;border-bottom:1px solid var(--border)"><span>${m.flag.e} <b>${m.linea} · ${m.label}</b>: vas en ${val(m)}, se esperaban ${espv(m)}</span><span style="color:#f87171;font-weight:700">faltan ${faltaMesV(m)}</span></div>`).join('')}
+      ${rojoLine.map(m=>`<div class="cmeta" style="padding:9px 0;border-bottom:1px solid var(--border);align-items:baseline;gap:16px"><span style="flex:1;min-width:0">${m.flag.e} <b>${m.linea} · ${m.label}</b>: vas en ${val(m)}, se esperaban ${espv(m)}</span><span style="color:#f87171;font-weight:700;white-space:nowrap">faltan ${faltaMesV(m)}</span></div>`).join('')}
     </div>`:`<div class="card" style="margin-top:16px;border-color:#34d39955"><div class="cmeta" style="padding:6px 0"><span>🟢 <b>${lineName} va en plan</b> en sus metas con avance a hoy.</span></div></div>`}`;
   // gráfica recurrente por línea
   const recMetas=[{l:'Factura IA',a:metas[0].actual,m:metas[0].dic,c:'#9a73ff'},{l:'Vendi',a:metas[4].actual,m:metas[4].dic,c:'#3ddc97'},{l:'Komandi',a:metas[6].actual,m:metas[6].dic,c:'#FDC555'}];
