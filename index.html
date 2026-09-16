@@ -1870,10 +1870,10 @@ function syncWonContador(p){
   state.contadores.push(nc);p.contadorRealId=nc.id;
 }
 function unsyncWonContador(p){if(p.contadorRealId){const c=findContador(p.contadorRealId);if(c&&c.origenProspecto===p.id&&(!c.hist||!c.hist.length))state.contadores=state.contadores.filter(x=>x.id!==p.contadorRealId);}delete p.contadorRealId;}
-/* Contadores: al cerrar NO se crea el contador solo — se agrega al módulo con el botón
-   "Convertir a contador" (control manual, lleva tipo y cartera). El pipeline es seguimiento. */
-function syncWonProspect(p){const line=p.line||'factura-ia';if(line==='vendi'||line==='komandi')return syncWonLineClient(p,line);if(line==='alianza-contable')return;return syncWonSale(p);}
-function unsyncWonProspect(p){const line=p.line||'factura-ia';if(line==='vendi'||line==='komandi')return unsyncWonLineClient(p,line);if(line==='alianza-contable')return;return unsyncWonSale(p);}
+/* Cierre por línea: FI → venta · Vendi/Komandi → cliente de la línea · Contadores → módulo
+   de Contadores (automático al cerrar, con tipo y cartera). Reversible al salir de Ganada. */
+function syncWonProspect(p){const line=p.line||'factura-ia';if(line==='vendi'||line==='komandi')return syncWonLineClient(p,line);if(line==='alianza-contable')return syncWonContador(p);return syncWonSale(p);}
+function unsyncWonProspect(p){const line=p.line||'factura-ia';if(line==='vendi'||line==='komandi')return unsyncWonLineClient(p,line);if(line==='alianza-contable')return unsyncWonContador(p);return unsyncWonSale(p);}
 /* mapa etapa del Pipeline → clasificación de la campaña de origen (para reflejar el arrastre) */
 const PIPELINE_TO_CLEAD={Lead:'Nuevo',MQL:'MQL',SQL:'SQL',Oportunidad:'Oportunidad',Ganada:'Cerrado',Perdida:'Perdido',Basura:'Basura'};
 function setProspectStage(p,stage){const was=p.stage;p.stage=stage;p.updatedAt=Date.now();
@@ -1941,6 +1941,12 @@ function cleadPlanLabel(line,plan){
 function cleadDesc(line,l){
   if(isAlianzaLine(line)){const t=(l.ctipo==='despacho')?'Despacho contable':'Contador independiente';return t+((l.cartera!=null&&l.cartera!=='')?` · ${l.cartera} cli`:'');}
   return cleadPlanLabel(line,l.plan);
+}
+/* contador real vinculado a un prospecto de campaña (creado auto al cerrar, o por el botón viejo) */
+function cleadContadorId(l){
+  if(l.contadorId&&findContador(l.contadorId))return l.contadorId;
+  if(l.prospectId){const p=findProspect(l.prospectId);if(p&&p.contadorRealId&&findContador(p.contadorRealId))return p.contadorRealId;}
+  return '';
 }
 /* opciones de plan a elegir según la línea (Factura IA = solo planes vigentes, sin el libro anterior) */
 function campaignLinePlanOptions(line,sel){
@@ -2045,7 +2051,7 @@ function convertCleadToContador(cid,leadId){
   l.converted=true;l.contadorId=contadorId;l.updatedAt=Date.now();
   save();renderCampaigns();if(cleadsCtx.cid===cid)renderCleadsModal();
 }
-function verContadorDesdeClead(cid,leadId){const c=findCampaign(cid);const l=c&&campaignLeads2(c).find(x=>x.id===leadId);closeModal('modal-cleads');go('contadores');if(l&&l.contadorId&&findContador(l.contadorId))setTimeout(()=>openContador(l.contadorId),120);}
+function verContadorDesdeClead(cid,leadId){const c=findCampaign(cid);const l=c&&campaignLeads2(c).find(x=>x.id===leadId);closeModal('modal-cleads');go('contadores');const cid2=l&&cleadContadorId(l);if(cid2)setTimeout(()=>openContador(cid2),120);}
 /* ---- Lista de prospectos de una campaña ---- */
 let cleadsCtx={cid:null,stage:null};
 function openCampaignLeadsList(cid,stage){const c=findCampaign(cid);if(!c)return;cleadsCtx={cid,stage:stage||null};renderCleadsModal();openModal('modal-cleads','cleads-search');}
@@ -2065,11 +2071,8 @@ function renderCleadsModal(){
   $('cleads-count').textContent=arr.length+' de '+total;
   $('cleads-tbody').innerHTML=arr.map(l=>{
     const col=cleadStageColor(l.stage||'Nuevo');
-    const yaContador=l.converted&&l.contadorId&&findContador(l.contadorId);
-    const convAction=(alianza&&(l.stage||'')==='Cerrado')
-      ?(yaContador
-        ?`<button class="btn sm ghost" title="Ver en el módulo de Contadores" onclick="verContadorDesdeClead('${c.id}','${l.id}')" style="color:var(--ok)">✓ En Contadores</button>`
-        :`<button class="btn sm" title="Agregar al módulo de Contadores" onclick="convertCleadToContador('${c.id}','${l.id}')">Convertir a contador →</button>`)
+    const convAction=(alianza&&(l.stage||'')==='Cerrado'&&cleadContadorId(l))
+      ?`<button class="btn sm ghost" title="Ver en el módulo de Contadores" onclick="verContadorDesdeClead('${c.id}','${l.id}')" style="color:var(--ok)">✓ En Contadores</button>`
       :'';
     return `<tr>
       <td class="cellwrap" data-label="${alianza?'Contador':'Prospecto'}"><span class="cellmain">${esc(l.name||'—')}</span>${(l.tel||l.mail)?`<br><span class="muted-3" style="font-size:11px">${esc([l.tel,l.mail].filter(Boolean).join(' · '))}</span>`:''}${l.note?`<br><span class="muted-3" style="font-size:11px">${esc(l.note)}</span>`:''}</td>
@@ -2145,12 +2148,12 @@ function renderCampaigns(){
     const valorCerrado=leadsArr.filter(l=>(l.stage||'')==='Cerrado').reduce((a,l)=>a+cleadValue(line,l.plan),0);
     const despachos=leadsArr.filter(l=>l.ctipo==='despacho').length,indeps=nLeads-despachos;
     const carteraCerr=leadsArr.filter(l=>l.stage==='Cerrado').reduce((a,l)=>a+(+l.cartera||0),0);
-    const enContadores=leadsArr.filter(l=>l.converted&&l.contadorId).length;
+    const enContadores=leadsArr.filter(l=>cleadContadorId(l)).length;
     const funnelChips=CAMPAIGN_STAGES.filter(s=>cnt[s.k]>0).map(s=>`<span class="cmp-stage" onclick="openCampaignLeadsList('${c.id}','${s.k}')"><i class="dotc" style="background:${s.c}"></i>${s.k} <b>${cnt[s.k]}</b></span>`).join('');
     const addLbl=alianza?'Contador':'Prospecto',verLbl=alianza?'Ver contadores':'Ver todos',tituloP=alianza?'🤝 Contadores de campaña':'🎯 Prospectos de campaña';
     const metricsCliente=`<div class="metric clk" onclick="openCampaignLeadsList('${c.id}','Cerrado')"><div class="ml">Cerrados ›</div><div class="mv green">${cerrados}</div></div><div class="metric"><div class="ml">Costo / cerrado</div><div class="mv lav">${cerrados?fmtUSD(m.spend/cerrados):'—'}</div></div><div class="metric"><div class="ml">Valor cerrado · 12m</div><div class="mv green">${fmtUSD(valorCerrado)}</div></div>`;
     const metricsAlianza=`<div class="metric clk" onclick="openCampaignLeadsList('${c.id}','Cerrado')"><div class="ml">Contadores cerrados ›</div><div class="mv green">${cerrados}</div></div><div class="metric"><div class="ml">Costo / contador</div><div class="mv lav">${cerrados?fmtUSD(m.spend/cerrados):'—'}</div></div><div class="metric"><div class="ml">Clientes en cartera · cerr.</div><div class="mv green">${carteraCerr}</div></div>`;
-    const tipoLine=(alianza&&nLeads)?`<div class="cmeta" style="margin-top:6px"><span>🧑 Independientes ${indeps}</span><span>🏢 Despachos ${despachos}</span>${enContadores?`<span style="color:var(--ok)">✓ ${enContadores} en Contadores</span>`:''}<span class="muted-3">los cerrados no entran como clientes de Factura IA; conviértelos a contador cuando arranquen</span></div>`:'';
+    const tipoLine=(alianza&&nLeads)?`<div class="cmeta" style="margin-top:6px"><span>🧑 Independientes ${indeps}</span><span>🏢 Despachos ${despachos}</span>${enContadores?`<span style="color:var(--ok)">✓ ${enContadores} en Contadores</span>`:''}<span class="muted-3">los cerrados se agregan al módulo de Contadores automáticamente</span></div>`:'';
     const emptyMsg=alianza?'Aún sin contadores — agrega el primero con “Contador”.':'Aún sin prospectos — agrega el primero con “Prospecto”.';
     const cleadPanel=`<div class="clead-panel"><div class="section-head" style="margin:0 0 6px"><h3 style="font-size:13px">${tituloP} <span class="tag" style="background:${lc}22;color:${lc};margin-left:2px">${campaignLineLabel(line)}</span></h3><div style="display:flex;gap:6px;flex-wrap:wrap"><button class="btn sm ghost" onclick="openCampaignLeadsList('${c.id}')">${verLbl} (${nLeads})</button><button class="btn sm" onclick="openClead('${c.id}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>${addLbl}</button></div></div><div class="mgrid" style="margin:6px 0"><div class="metric"><div class="ml">Mensajes entrantes</div><div class="mv">${incoming}</div></div><div class="metric"><div class="ml">Costo / mensaje</div><div class="mv lav">${incoming?fmtUSD(cpm):'—'}</div></div><div class="metric clk" onclick="openCampaignLeadsList('${c.id}')"><div class="ml">Prospectos ›</div><div class="mv">${nLeads}${(cnt.Nuevo||0)?` <span class="muted-3" style="font-size:10px;font-weight:600">${cnt.Nuevo} sin clasificar</span>`:''}</div></div>${alianza?metricsAlianza:metricsCliente}</div>${funnelChips?`<div class="cmp-funnel">${funnelChips}</div>`:`<div class="muted-3" style="font-size:12px;padding:2px 0">${emptyMsg}</div>`}${tipoLine}</div>`;
     const hasReal=(line==='factura-ia')&&(campaignProspects(c).length>0||campaignSales(c).length>0);
