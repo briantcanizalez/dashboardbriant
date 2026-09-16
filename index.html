@@ -1547,6 +1547,11 @@ function go(view){
   window.scrollTo({top:0});
   const seg=$('line-seg');
   if(seg){const ln=view==='vendi'?'vendi':(view==='komandi'?'komandi':'fia');seg.querySelectorAll('button').forEach(b=>b.classList.toggle('active',b.dataset.line===ln));}
+  /* Mantener visible en la barra lateral la página activa: si queda bajo el fold (p. ej. Vendi/
+     Komandi en "Líneas de negocio"), desplaza SOLO la barra —no la página— para mostrarla. */
+  (function(){const side=document.querySelector('.side'),act=side&&side.querySelector('[data-view].active');
+    if(side&&act&&side.scrollHeight>side.clientHeight+2){const top=act.offsetTop,bot=top+act.offsetHeight,st=side.scrollTop,vh=side.clientHeight;
+      if(top<st)side.scrollTop=Math.max(0,top-10);else if(bot>st+vh)side.scrollTop=bot-vh+10;}})();
   ({inicio:renderInicio,resumen:renderResumen,tareas:renderTasks,pipeline:renderPipeline,campaigns:renderCampaigns,ventas:renderSales,planes:renderPlanes,canales:renderCanales,calendario:renderCalendar,metas:renderMetas,churn:renderChurn,config:fillConfig,contadores:renderContadores,vendi:()=>renderLine('vendi'),komandi:()=>renderLine('komandi')}[view])();
 }
 document.addEventListener('click',e=>{
