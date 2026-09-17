@@ -1088,7 +1088,7 @@ th.ct-sort:hover{color:var(--txt)}
 /* ===================== DATOS ===================== */
 const PRICE_CUTOVER='2026-08-01'; // los precios nuevos aplican a ventas con fecha de inicio >= a esta fecha
 /* PLANS = LIBRO DE PRECIOS VIGENTE (nuevos, desde 2026-08-01). Es el precio de lista que se muestra en selectores y referencias. */
-const PLANS={starter:{label:'Starter',impl:40,monthly:14.99},basicoMensual:{label:'Plan Básico Mensual',impl:30,monthly:5},professional:{label:'Professional',impl:50,monthly:24.99},advanced:{label:'Advanced',impl:60,monthly:34.99},deluxe:{label:'Deluxe',impl:70,monthly:59.99},enterprise:{label:'Enterprise',impl:100,monthly:150},basicoAnual:{label:'Básico Anual',impl:30,monthly:5,annualOnly:true},starterAnual:{label:'Starter Anual',impl:30,monthly:9.99,annualOnly:true},professionalIncrize:{label:'Professional Incrize',impl:0,monthly:20,annualOnly:true},especial:{label:'Caso especial',impl:0,monthly:0,special:true}};
+const PLANS={starter:{label:'Starter',impl:40,monthly:14.99},basicoMensual:{label:'Plan Básico Mensual',impl:30,monthly:5},professional:{label:'Professional',impl:50,monthly:24.99},advanced:{label:'Advanced',impl:60,monthly:34.99},deluxe:{label:'Deluxe',impl:70,monthly:59.99},enterprise:{label:'Enterprise',impl:100,monthly:150},basicoAnual:{label:'Básico Anual',impl:30,monthly:7.5,annualOnly:true},starterAnual:{label:'Starter Anual',impl:30,monthly:9.99,annualOnly:true},professionalIncrize:{label:'Professional Incrize',impl:0,monthly:20,annualOnly:true},especial:{label:'Caso especial',impl:0,monthly:0,special:true}};
 /* PRECIOS ANTERIORES (vigentes hasta 2026-07-31). Solo los planes cuyo precio cambió; el resto usa el vigente. Preserva el MRR/implementación histórico sin recalcular hacia atrás. */
 const LEGACY_PLAN_PRICES={starter:{impl:30,monthly:9.99},professional:{impl:40,monthly:19.99},advanced:{impl:50,monthly:29.99},deluxe:{impl:60,monthly:49.99},enterprise:{impl:100,monthly:100}};
 /* libro de precios que aplica a una venta: manual (s.priceBook) o automático por fecha de inicio */
@@ -1147,7 +1147,7 @@ const STAGEMAP={Prospecto:'Lead',Demo:'MQL','Negociación':'Oportunidad'}; // mi
 const MOTIVOS_BASURA=['Click por error','Confusión de tema','Solo consultaba precio','Fuera de zona / país','Rubro no aplica','Datos falsos / spam','Ya es cliente','Otro'];
 const MEDIOS=['WhatsApp','Facebook','Reunión','Visita','Llamada'];
 const ORIGENES=['Pauta','Referido','Alianza Contable','Contacto personal'];
-const defaultState={tasks:[],sales:[],services:[],prospects:[],campaigns:[],projects:[],history:[],contadores:[],lineSales:{vendi:[],komandi:[]},config:{baseClients:494,goalClients:1000,baseRecurring:7151.23,goalRecurring:25000,annualPayments:11988.18,mrrMesMeta:1000,salaryBase:0,bono:0,metaMes:24,fiaMetaSMB:18928,vendiMetaMRR:6921,vendiMetaCli:30,komandiMetaMRR:4582,komandiMetaCli:18,lastBackup:null,seededOdooBatch1:false,seededBookV3:false,seededAnnualV1:false,seededComercialV1:false,seededComercialV2:false,seededProspectsV1:false,seededProspectsV2:false,seededClosesV1:false,seededWonV1:false,seededOriginV1:false,seededCampaignLinkV1:false,seededRestoreAireV1:false,seededCampaignDaysV1:false,seededChurnV1:false,seededOriginV2:false,seededRestoreDetV1:false,seededFixBautistaV1:false,seededJulyBriantV1:false,seededJulyBriantV2:false,seededFixIdaliaV1:false,seededAugBriantV1:false,seededContadoresV1:false,seededSyncOdooV1:false,seededSyncOdooV2:false,seededSyncOdooV3:false,seededSyncOdooV4:false,seededSyncOdooV5:false,seededSyncOdooV6:false,seededSyncOdooV7:false,seededSyncOdooV8:false,seededSyncOdooV9:false,seededSyncOdooV10:false}};
+const defaultState={tasks:[],sales:[],services:[],prospects:[],campaigns:[],projects:[],history:[],contadores:[],lineSales:{vendi:[],komandi:[]},config:{baseClients:494,goalClients:1000,baseRecurring:7151.23,goalRecurring:25000,annualPayments:11988.18,mrrMesMeta:1000,salaryBase:0,bono:0,metaMes:24,fiaMetaSMB:18928,vendiMetaMRR:6921,vendiMetaCli:30,komandiMetaMRR:4582,komandiMetaCli:18,lastBackup:null,seededOdooBatch1:false,seededBookV3:false,seededAnnualV1:false,seededComercialV1:false,seededComercialV2:false,seededProspectsV1:false,seededProspectsV2:false,seededClosesV1:false,seededWonV1:false,seededOriginV1:false,seededCampaignLinkV1:false,seededRestoreAireV1:false,seededCampaignDaysV1:false,seededChurnV1:false,seededOriginV2:false,seededRestoreDetV1:false,seededFixBautistaV1:false,seededJulyBriantV1:false,seededJulyBriantV2:false,seededFixIdaliaV1:false,seededAugBriantV1:false,seededContadoresV1:false,seededSyncOdooV1:false,seededSyncOdooV2:false,seededSyncOdooV3:false,seededSyncOdooV4:false,seededSyncOdooV5:false,seededSyncOdooV6:false,seededSyncOdooV7:false,seededSyncOdooV8:false,seededSyncOdooV9:false,seededSyncOdooV10:false,seededSyncOdooV11:false}};
 /* Migración 07-sep-2026 · Comandi pasó a llamarse Komandi (con K).
    Los estados guardados antes de esa fecha traen la clave vieja `comandi` en
    lineSales y en config. Se convierten aquí, que es el único embudo por donde
@@ -3709,7 +3709,21 @@ function seedSyncOdooV10(){
   state.config.seededSyncOdooV10=true;
   save();
 }
-function initApp(){seedOdooBatch1();seedBookV3();seedAnnualBookV1();seedComercialV1();seedComercialV2();seedProspectsV1();seedProspectsV2();seedClosesV1();seedWonV1();seedOriginV1();seedCampaignLinkV1();seedRestoreAireV1();seedCampaignDaysV1();seedChurnV1();seedOriginV2();seedRestoreDetV1();seedFixBautistaV1();seedJulyBriantV1();seedJulyBriantV2();seedFixIdaliaV1();seedAugBriantV1();seedContadoresV1();seedSyncOdooV1();seedSyncOdooV2();seedSyncOdooV3();seedSyncOdooV4();seedSyncOdooV5();seedSyncOdooV6();seedSyncOdooV7();seedSyncOdooV8();seedSyncOdooV9();seedSyncOdooV10();fillPlanSelect();updateBadges();renderBackupBanner();go('inicio');document.body.classList.remove('booting');}
+/* ---- Conciliación con Odoo · parte 11 (17-sep-2026) · Básico Anual a $90/año ----
+   El plan Básico Anual pasa de $60 a $90/año (así se ofrece en el Pipeline). Los clientes que
+   YA estaban registrados a $60 (sin customMonthly explícito) se conservan a $60 (grandfather).
+   VELADO LEON, JOSE MANUEL: ya pagó → se agrega como Básico Anual $90/año + $40 de implementación. ---- */
+function seedSyncOdooV11(){
+  if(state.config.seededSyncOdooV11)return;
+  state.sales.forEach(s=>{if(s.plan==='basicoAnual'&&(s.customMonthly==null||s.customMonthly==='')){s.customMonthly=5;}}); // conserva $60 los previos sin precio explícito
+  const have=new Set(state.sales.map(s=>normName(s.client)));
+  if(!have.has(normName('VELADO LEON, JOSE MANUEL'))){
+    state.sales.push({id:uid(),client:'VELADO LEON, JOSE MANUEL',plan:'basicoAnual',mode:'anual',comercial:'Briant Canizalez',customMonthly:7.5,customImpl:40,start:'2026-09-01',seed:'sync-v11',createdAt:Date.now()});
+  }
+  state.config.seededSyncOdooV11=true;
+  save();
+}
+function initApp(){seedOdooBatch1();seedBookV3();seedAnnualBookV1();seedComercialV1();seedComercialV2();seedProspectsV1();seedProspectsV2();seedClosesV1();seedWonV1();seedOriginV1();seedCampaignLinkV1();seedRestoreAireV1();seedCampaignDaysV1();seedChurnV1();seedOriginV2();seedRestoreDetV1();seedFixBautistaV1();seedJulyBriantV1();seedJulyBriantV2();seedFixIdaliaV1();seedAugBriantV1();seedContadoresV1();seedSyncOdooV1();seedSyncOdooV2();seedSyncOdooV3();seedSyncOdooV4();seedSyncOdooV5();seedSyncOdooV6();seedSyncOdooV7();seedSyncOdooV8();seedSyncOdooV9();seedSyncOdooV10();seedSyncOdooV11();fillPlanSelect();updateBadges();renderBackupBanner();go('inicio');document.body.classList.remove('booting');}
 
 async function boot(){
   if(initSupabase()){

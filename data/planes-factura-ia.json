@@ -11,7 +11,7 @@
     "advanced":       { "mensual": 34.99, "implementacion": 60 },
     "deluxe":         { "mensual": 59.99, "implementacion": 70 },
     "enterprise":     { "mensual": 150,   "implementacion": 100 },
-    "basicoAnual":    { "mensual": 5,     "implementacion": 30, "soloAnual": true },
+    "basicoAnual":    { "mensual": 7.5,   "implementacion": 30, "soloAnual": true, "anual": 90 },
     "starterAnual":   { "mensual": 9.99,  "implementacion": 30, "soloAnual": true },
     "professionalIncrize": { "mensual": 20, "implementacion": 0, "soloAnual": true }
   },
