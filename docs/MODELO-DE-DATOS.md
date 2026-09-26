@@ -4,7 +4,7 @@ Todas las entidades del estado, sus campos y las fórmulas de cálculo. El estad
 
 ## 1. Entidades
 
-### `sales[]` — ventas de Factura IA
+### `sales[]` — ventas de Factu IA
 | Campo | Tipo | Notas |
 |---|---|---|
 | `id` | string | aleatorio (`uid()`) |
@@ -61,13 +61,13 @@ Snapshot mensual automático: `{m: 'AAAA-MM', clients, mrr}` (alimenta la evoluc
 | `annualPayments` | $11,988.18 | pagos anuales previos |
 | `mrrMesMeta` | $1,000 | meta de MRR nuevo por mes (Pulso) |
 | `salaryBase`, `bono`, `metaMes` | — | esquema de comisiones |
-| `fiaMetaSMB` | **$18,928** | meta SMB de Factura IA (dic-2026) |
+| `fiaMetaSMB` | **$18,928** | meta SMB de Factu IA (dic-2026) |
 | `vendiMetaMRR` / `vendiMetaCli` | **$6,921 / 30** | meta SMB de Vendi |
 | `komandiMetaMRR` / `komandiMetaCli` | **$4,582 / 18** | meta SMB de Komandi |
 | `seededXxx` (≈20 flags) | false | seeds ya ejecutados (no tocar) |
 | `lastBackup` | — | fecha del último respaldo exportado |
 
-## 2. Libros de precios de Factura IA
+## 2. Libros de precios de Factu IA
 
 | Plan | Nuevo (≥ 1-ago-2026) | Anterior |
 |---|---|---|
@@ -91,8 +91,8 @@ Referencia completa: [`data/metas-smb-2026.json`](../data/metas-smb-2026.json).
 
 | Línea | Meta dic-2026 | Escalera (sep · oct · nov · dic) |
 |---|---|---|
-| Factura IA · recurrente | $18,928/mes | $10,638 · $13,341 · $16,195 · $18,928 |
-| Factura IA · altas | 332 en el período | 52 · 79 · 96 · 105 |
+| Factu IA · recurrente | $18,928/mes | $10,638 · $13,341 · $16,195 · $18,928 |
+| Factu IA · altas | 332 en el período | 52 · 79 · 96 · 105 |
 | Canal contadores | 220 altas · $4,620/mes | 55 · 55 · 55 · 55 |
 | Vendi | $6,921/mes · 30 clientes | $349 · $1,642 · $3,832 · $6,921 |
 | Komandi | $4,582/mes · 18 restaurantes | $0 · $895 · $2,289 · $4,582 |

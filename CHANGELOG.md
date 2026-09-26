@@ -2,6 +2,16 @@
 
 Historial de cambios del dashboard. Formato: fecha · qué cambió.
 
+## 2026-09-26 · Factura IA pasa a llamarse **Factu IA** (solo etiquetas)
+
+Rebrand decidido por Briant el 26-sep-2026. A diferencia de Komandi, **aquí solo cambia lo visible**.
+
+- **Etiquetas visibles:** «Factura IA» → «Factu IA» en selector de línea, pipeline, campañas, metas SMB, Plan SMB, ajustes y comentarios; README, CLAUDE.md y `docs/` actualizados.
+- **Clave interna sin cambios, a propósito:** `factura-ia` (valor de `line` en prospectos/campañas, guardado en localStorage y Supabase), `fia`, `fiaMetaSMB`, `FIA_SMB_MILESTONES` y `factura_ia` en `data/metas-smb-2026.json`. No hay migración.
+- **Datos intactos:** `data/*.json` (incluye `planes-factura-ia.json` y su campo `producto`), `backups/` y `db/`. Odoo sigue llamando al producto con el nombre viejo hasta que se renombre allá.
+- Origen de venta de Vendi/Komandi: la opción se ve como «Venta cruzada Factu IA» pero su `value` sigue siendo «Venta cruzada Factura IA», para que los registros ya guardados sigan coincidiendo.
+- Entradas anteriores de este changelog se dejan con el nombre de su fecha.
+
 ## 2026-09-07 · Comandi pasa a llamarse **Komandi** (con K)
 
 Cambio de nombre de la línea de negocio, decidido el 07-sep-2026. Se renombró tanto lo visible como la **clave interna**, con migración automática para no perder nada de lo ya registrado.
