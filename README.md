@@ -1,6 +1,6 @@
 # SMB ERP · Grupo Consiti
 
-**Dashboard ejecutivo de la Línea SMB** — la herramienta de gestión comercial de Briant Canizalez para operar las tres líneas de negocio del plan SMB 2026: **Factu IA** (Grupo Consiti), **Vendi** y **Komandi** (marca Stradia).
+**Dashboard ejecutivo de la Línea SMB** — la herramienta de gestión comercial de Briant Canizalez para operar las tres líneas de negocio del plan SMB 2026: **FactuIA** (Grupo Consiti), **Vendi** y **Komandi** (marca Stradia).
 
 > 🌐 **Producción:** https://odoodash.vercel.app
 > 📦 **Repo:** https://github.com/briantcanizalez/dashboardbriant
@@ -12,7 +12,7 @@
 
 | Módulo | Para qué sirve |
 |---|---|
-| **Inicio** | KPIs del día, meta SMB de Factu IA (recurrente + 332 altas), pulso masivo y agenda |
+| **Inicio** | KPIs del día, meta SMB de FactuIA (recurrente + 332 altas), pulso masivo y agenda |
 | **Resumen** | Cómo va el mes vs el anterior, cartera por comercial y Pareto de clientes |
 | **Tareas** | Lista/tablero kanban con prioridades, recurrencia y cronómetro de tiempo |
 | **Pipeline** | Embudo de prospectos con BANT, contador referidor, promo y auto-conversión a venta |
@@ -30,7 +30,7 @@
 
 El selector superior cambia entre líneas (los datos de cada una viven separados):
 
-- **Factu IA** — facturación electrónica de Grupo Consiti. 524+ clientes. Meta SMB: **$18,928/mes y 332 altas a diciembre 2026**.
+- **FactuIA** — facturación electrónica de Grupo Consiti. 524+ clientes. Meta SMB: **$18,928/mes y 332 altas a diciembre 2026**.
 - **Vendi** — agente de IA que vende por WhatsApp 24/7 (Stradia). Meta: **$6,921/mes y 30 clientes**.
 - **Komandi** — toma pedidos de restaurantes por WhatsApp (Stradia). Meta: **$4,582/mes y 18 restaurantes**.
 

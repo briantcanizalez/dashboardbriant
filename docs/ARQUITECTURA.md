@@ -66,13 +66,13 @@ Seeds activos (en orden de ejecución): `seedOdooBatch1`, `seedBookV3`, `seedAnn
 
 | Constante | Qué es |
 |---|---|
-| `PLANS` | Libro de precios **vigente** de Factu IA (desde 2026-08-01) |
+| `PLANS` | Libro de precios **vigente** de FactuIA (desde 2026-08-01) |
 | `LEGACY_PLAN_PRICES` | Precios **anteriores** (starter $9.99, professional $19.99, …) |
 | `PRICE_CUTOVER` = `'2026-08-01'` | Ventas con inicio ≥ esta fecha usan precio nuevo, salvo `priceBook` explícito |
 | `SERVICE_PRICES` | Tarifas de servicios especiales |
 | `LINE_PLANS` | Tarifario Stradia (Vendi/Komandi): Emprende/Crece/Profesional/Empresarial/Corporativo |
 | `LINES` | Config de cada línea Stradia: color, metas por defecto, escalera mensual y mezcla meta |
-| `FIA_SMB_MILESTONES` | Escalera de recurrente de Factu IA (sep–dic) |
+| `FIA_SMB_MILESTONES` | Escalera de recurrente de FactuIA (sep–dic) |
 | `FIA_SMB_ALTAS` | Escalera de altas 52/79/96/105 (332 del período) |
 | `CANAL_SMB` | Meta del canal de contadores: 55 altas/mes, 220 período, $4,620 a dic |
 | `SEED_CONTADORES` | Dataset embebido de la red (36 contadores, 205 clientes) — copia en `data/contadores-seed.json` |
@@ -81,7 +81,7 @@ Seeds activos (en orden de ejecución): `seedOdooBatch1`, `seedBookV3`, `seedAnn
 
 - Cada vista es un `<section class="view" id="view-XXX">`; `go('XXX')` la activa, actualiza topbar/nav y llama a su render (mapa dentro de `go()`).
 - Registro de una vista nueva: sección HTML + entrada en `VIEWS` (título, subtítulo, botón de acción) + render en el mapa de `go()` + botón en el sidebar (`data-view`).
-- El **selector de línea** (`#line-seg`) resalta Factu IA/Vendi/Komandi según la vista activa.
+- El **selector de línea** (`#line-seg`) resalta FactuIA/Vendi/Komandi según la vista activa.
 - `refreshSalesViews()` re-renderiza las vistas dependientes de ventas cuando algo cambia.
 
 ## 6. Gráficas

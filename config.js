@@ -1,6 +1,6 @@
 // ============================================================
 //  CONFIGURACIÓN DE SUPABASE
-//  Datos del proyecto de Briant (Factu IA).
+//  Datos del proyecto de Briant (FactuIA).
 //
 //  Estos dos valores son PÚBLICOS por diseño (la "anon key"
 //  está pensada para vivir en el navegador). La seguridad la

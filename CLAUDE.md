@@ -7,7 +7,7 @@ Dashboard ejecutivo **SMB ERP** en producción en https://odoodash.vercel.app.
 Este directorio es un clon git de `briantcanizalez/dashboardbriant`: **push a `main` despliega
 a producción en ~30 s**. No suba nada sin autorización de Briant.
 
-Líneas de negocio: **Factu IA · Vendi · Komandi**.
+Líneas de negocio: **FactuIA · Vendi · Komandi**.
 
 ---
 

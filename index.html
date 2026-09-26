@@ -479,7 +479,7 @@ canvas{max-width:100%}
   .kpi .kval,.section-head h2{color:#000}
   .content{max-width:100%}
 }
-/* ===== Líneas de negocio · Factu IA / Vendi / Komandi ===== */
+/* ===== Líneas de negocio · FactuIA / Vendi / Komandi ===== */
 .line-switch{display:flex;gap:5px;background:var(--surface-2);border:1px solid var(--border);border-radius:14px;padding:5px;margin-bottom:20px;width:max-content;max-width:100%;overflow-x:auto}
 .line-switch button{border:none;background:transparent;color:var(--txt-2);font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;padding:9px 18px;border-radius:10px;cursor:pointer;transition:.15s;display:inline-flex;align-items:center;gap:8px;white-space:nowrap}
 .line-switch button .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
@@ -638,7 +638,7 @@ th.ct-sort:hover{color:var(--txt)}
 
       <!-- ====== SELECTOR DE LÍNEA DE NEGOCIO ====== -->
       <div class="line-switch" id="line-seg" role="tablist" aria-label="Línea de negocio">
-        <button data-line="fia" class="active" onclick="pickLine('fia')"><span class="dot"></span>Factu IA</button>
+        <button data-line="fia" class="active" onclick="pickLine('fia')"><span class="dot"></span>FactuIA</button>
         <button data-line="vendi" onclick="pickLine('vendi')"><span class="dot"></span>Vendi</button>
         <button data-line="komandi" onclick="pickLine('komandi')"><span class="dot"></span>Komandi</button>
       </div>
@@ -733,7 +733,7 @@ th.ct-sort:hover{color:var(--txt)}
       <!-- ====== PIPELINE ====== -->
       <section class="view" id="view-pipeline">
         <div class="pline-seg" id="pline-seg" style="margin-bottom:16px">
-          <button class="pls-btn active" data-pline="factura-ia" onclick="setPipeLine('factura-ia')">Factu IA</button>
+          <button class="pls-btn active" data-pline="factura-ia" onclick="setPipeLine('factura-ia')">FactuIA</button>
           <button class="pls-btn" data-pline="vendi" onclick="setPipeLine('vendi')">Vendi</button>
           <button class="pls-btn" data-pline="komandi" onclick="setPipeLine('komandi')">Komandi</button>
           <button class="pls-btn" data-pline="alianza-contable" onclick="setPipeLine('alianza-contable')">Contadores</button>
@@ -880,9 +880,9 @@ th.ct-sort:hover{color:var(--txt)}
           <div class="row c2"><div class="field"><label>Pagos anuales adelantados (USD)</label><input type="number" step="0.01" id="c-annual" /></div><div class="field"><label>Meta de MRR nuevo por mes (USD)</label><input type="number" step="0.01" id="c-mrrmes" /></div></div>
           <p class="helper" style="margin-bottom:16px">La implementación es pago único; la mensualidad cuenta al MRR a partir del 3er mes. La meta de MRR nuevo por mes alimenta el Pulso Masivo.</p>
           <div class="section-head"><h2>Metas SMB por línea (dic-2026)</h2></div>
-          <div class="row c3"><div class="field"><label>Factu IA (USD/mes)</label><input type="number" step="0.01" id="c-fiaMetaSMB" /></div><div class="field"><label>Vendi (USD/mes)</label><input type="number" step="0.01" id="c-vendiMetaMRR" /></div><div class="field"><label>Komandi (USD/mes)</label><input type="number" step="0.01" id="c-komandiMetaMRR" /></div></div>
+          <div class="row c3"><div class="field"><label>FactuIA (USD/mes)</label><input type="number" step="0.01" id="c-fiaMetaSMB" /></div><div class="field"><label>Vendi (USD/mes)</label><input type="number" step="0.01" id="c-vendiMetaMRR" /></div><div class="field"><label>Komandi (USD/mes)</label><input type="number" step="0.01" id="c-komandiMetaMRR" /></div></div>
           <div class="row c2"><div class="field"><label>Meta clientes Vendi</label><input type="number" id="c-vendiMetaCli" /></div><div class="field"><label>Meta clientes Komandi</label><input type="number" id="c-komandiMetaCli" /></div></div>
-          <p class="helper" style="margin-bottom:16px">Metas del Plan Línea SMB 2026 (14-ago): Factu IA $18,928 · Vendi $6,921 con 30 clientes · Komandi $4,582 con 18 restaurantes.</p>
+          <p class="helper" style="margin-bottom:16px">Metas del Plan Línea SMB 2026 (14-ago): FactuIA $18,928 · Vendi $6,921 con 30 clientes · Komandi $4,582 con 18 restaurantes.</p>
           <button class="btn" id="cfg-save">Guardar ajustes</button>
         </div>
 
@@ -968,7 +968,7 @@ th.ct-sort:hover{color:var(--txt)}
   <div class="field"><label>Nombre del cliente <span class="req">*</span></label><input id="ls-client" placeholder="Ej. Boutique Karla / Pupusería La Bendición" /></div>
   <div class="row c2"><div class="field"><label>Plan</label><select id="ls-plan"></select></div><div class="field"><label>Modalidad</label><select id="ls-mode"><option value="mensual">Mensual</option><option value="anual">Anual adelantado (10% dcto)</option></select></div></div>
   <div class="field"><label class="bchk promo"><input type="checkbox" id="ls-free"><span>🎁 <b>Implementación GRATIS</b> — esta venta va con la promo (no se cobra la implementación)</span></label></div>
-  <div class="row c2"><div class="field"><label>Fecha de inicio</label><input type="date" id="ls-start" /></div><div class="field"><label>Origen</label><select id="ls-origen"><option value="">—</option><option value="Venta cruzada Factura IA">Venta cruzada Factu IA</option><option>Campaña</option><option>Referido</option><option>Directo</option><option>Otro</option></select></div></div>
+  <div class="row c2"><div class="field"><label>Fecha de inicio</label><input type="date" id="ls-start" /></div><div class="field"><label>Origen</label><select id="ls-origen"><option value="">—</option><option value="Venta cruzada Factura IA">Venta cruzada FactuIA</option><option>Campaña</option><option>Referido</option><option>Directo</option><option>Otro</option></select></div></div>
   <div class="preview" id="ls-preview"></div>
   <div class="actions" style="margin-top:16px"><button class="btn ghost" data-close="modal-line-sale">Cancelar</button><button class="btn" id="ls-save">Guardar venta</button></div>
 </div></div>
@@ -1024,7 +1024,7 @@ th.ct-sort:hover{color:var(--txt)}
   <input type="hidden" id="cp-id" />
   <div class="field"><label>Nombre de la campaña <span class="req">*</span></label><input id="cp-name" placeholder="Ej. Meta Ads - Mensajes Junio" /></div>
   <div class="field"><label>Objetivo</label><input id="cp-objective" placeholder="Ej. Generar conversaciones de WhatsApp" /></div>
-  <div class="field"><label>Objetivo de la campaña <span class="req">*</span></label><select id="cp-line"><option value="factura-ia">Factu IA — captar clientes</option><option value="vendi">Vendi — captar clientes</option><option value="komandi">Komandi — captar clientes</option><option value="alianza-contable">Contadores — captar contadores (alianza contable)</option></select><p class="helper">Define cómo se clasifican sus prospectos: clientes con plan (Factu IA / Vendi / Komandi), o contadores con tipo y clientes en cartera (Contadores).</p></div>
+  <div class="field"><label>Objetivo de la campaña <span class="req">*</span></label><select id="cp-line"><option value="factura-ia">FactuIA — captar clientes</option><option value="vendi">Vendi — captar clientes</option><option value="komandi">Komandi — captar clientes</option><option value="alianza-contable">Contadores — captar contadores (alianza contable)</option></select><p class="helper">Define cómo se clasifican sus prospectos: clientes con plan (FactuIA / Vendi / Komandi), o contadores con tipo y clientes en cartera (Contadores).</p></div>
   <div class="row c2"><div class="field"><label>Presupuesto diario (USD) <span class="req">*</span></label><input type="number" step="0.01" id="cp-budget" placeholder="Ej. 15.00" /></div><div class="field"><label>Plataforma</label><select id="cp-platform"><option>Meta Ads</option><option>Google Ads</option><option>TikTok Ads</option><option>Otra</option></select></div></div>
   <div class="row c2"><div class="field"><label>Fecha de inicio</label><input type="date" id="cp-start" /></div><div class="field"><label>Fecha de fin (opcional)</label><input type="date" id="cp-end" /></div></div>
   <div class="field"><label>Días planeados (estimación)</label><input type="number" min="1" id="cp-days" placeholder="Ej. 30" /><p class="helper">Estima el total del mes: presupuesto diario × días planeados (aunque no se gaste exacto cada día). Déjalo vacío para usar los días transcurridos.</p></div>
@@ -1541,7 +1541,7 @@ const VIEWS={
 };
 let curView='inicio';
 /* Selector de línea de arriba: en la hoja Resumen cambia la línea del resumen (sin salir);
-   en otras vistas navega a la línea (Vendi/Komandi) o al Inicio (Factu IA). */
+   en otras vistas navega a la línea (Vendi/Komandi) o al Inicio (FactuIA). */
 function pickLine(ln){
   const setSeg=()=>{const seg=$('line-seg');if(seg)seg.querySelectorAll('button').forEach(b=>b.classList.toggle('active',b.dataset.line===ln));};
   if(curView==='resumen'){resumenLine=ln;setSeg();renderResumen();window.scrollTo({top:0});return;}
@@ -1616,7 +1616,7 @@ function renderInicio(){
   renderFiaSmb();
   renderPulso();
 }
-/* ---- Meta SMB de Factu IA (Plan Línea SMB 2026) ---- */
+/* ---- Meta SMB de FactuIA (Plan Línea SMB 2026) ---- */
 function msRow(list,val){
   const curM=todayISO().slice(0,7);
   return `<div class="lms">`+list.map(([iso,lb,amt])=>{
@@ -1635,7 +1635,7 @@ function renderFiaSmb(){
     const n=altasDelMes(iso),done=n>=meta,cur=iso===curM;
     return `<div class="ms ${done?'done':''} ${cur?'cur':''}"><div class="m1">${lb}${cur?' · en curso':''}</div><div class="m2">${n} / ${meta}</div><div class="m3">${done?'✓ alcanzado':Math.min(999,Math.round(n/meta*100))+'% logrado'}</div></div>`;
   }).join('')+`</div>`;
-  card.innerHTML=`<div class="section-head"><h2>Meta SMB · Factu IA</h2><span class="hint">Plan Línea SMB 2026 · recurrente + altas</span></div>
+  card.innerHTML=`<div class="section-head"><h2>Meta SMB · FactuIA</h2><span class="hint">Plan Línea SMB 2026 · recurrente + altas</span></div>
     <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap"><span style="font-family:'Space Grotesk';font-weight:700;font-size:28px;font-variant-numeric:tabular-nums">${fmtUSD0(mrr)}</span><span class="muted-3" style="font-size:13px">de ${fmtUSD0(goal)}/mes a diciembre · <b style="color:var(--brand-3)">${pct.toFixed(1)}%</b> de avance</span></div>
     <div class="bar" style="margin-top:10px"><i style="width:${pct}%"></i></div>
     ${msRow(FIA_SMB_MILESTONES,mrr)}
@@ -1789,7 +1789,7 @@ function bindDnD(cardSel,colSel,onDrop){
 $('btn-new-campaign').onclick=()=>openCampaign();
 function campIsActive(id){const c=state.campaigns.find(x=>x.id===id);return !c||c.active!==false;}
 function prospectInActive(p){return !!p.campaignId&&campIsActive(p.campaignId);}
-/* Pipeline por línea: Factu IA / Vendi / Komandi / Contadores (alianza-contable) */
+/* Pipeline por línea: FactuIA / Vendi / Komandi / Contadores (alianza-contable) */
 let pipeLine='factura-ia';
 function setPipeLine(k){pipeLine=k;document.querySelectorAll('#pline-seg .pls-btn').forEach(b=>b.classList.toggle('active',b.dataset.pline===k));renderPipeline();}
 /* MRR estimado de un prospecto según su línea (FI y Stradia; contadores no aportan MRR aquí) */
@@ -1911,7 +1911,7 @@ function syncWonSale(p){
 }
 function unsyncWonSale(p){state.sales=state.sales.filter(s=>!(s.seed==='won'&&s.prospectId===p.id));}
 /* ---- Cierre por LÍNEA: al ganar un prospecto se crea el cliente/contador que corresponde ----
-   Factu IA → venta (syncWonSale, con contador si vino por alianza).
+   FactuIA → venta (syncWonSale, con contador si vino por alianza).
    Vendi/Komandi → cliente de esa línea (lineSales) con su plan.
    Contadores → se agrega al módulo de Contadores con tipo y cartera (sin plan). */
 function syncWonLineClient(p,line){
@@ -1974,9 +1974,9 @@ function campaignMetrics(c){
    Cada campaña tiene un objetivo (c.line) que define cómo se clasifican sus prospectos:
    - factura-ia / vendi / komandi → captan CLIENTES, se clasifican con un plan.
    - alianza-contable → capta CONTADORES (tipo + clientes en cartera). Los cerrados son
-     "contadores cerrados": NO entran como clientes de Factu IA; más adelante darán frutos
+     "contadores cerrados": NO entran como clientes de FactuIA; más adelante darán frutos
      cuando esos contadores empiecen a referir clientes. */
-const CAMPAIGN_LINES=[{k:'factura-ia',label:'Factu IA'},{k:'vendi',label:'Vendi'},{k:'komandi',label:'Komandi'},{k:'alianza-contable',label:'Contadores'}];
+const CAMPAIGN_LINES=[{k:'factura-ia',label:'FactuIA'},{k:'vendi',label:'Vendi'},{k:'komandi',label:'Komandi'},{k:'alianza-contable',label:'Contadores'}];
 const campaignLineLabel=k=>(CAMPAIGN_LINES.find(l=>l.k===k)||CAMPAIGN_LINES[0]).label;
 const isAlianzaLine=line=>line==='alianza-contable';
 /* Clasificación pedida por Briant. "Nuevo" = mensaje entrante aún sin calificar. */
@@ -1987,7 +1987,7 @@ const campaignIncoming=c=>Math.max(+c.mensajes||0,campaignLeads2(c).length); // 
 const campaignCostPerMsg=c=>{const n=campaignIncoming(c);return n?campaignSpend(c)/n:0;};
 function campaignLeadCounts(c){const by={};CAMPAIGN_STAGES.forEach(s=>by[s.k]=0);campaignLeads2(c).forEach(l=>{const k=l.stage||'Nuevo';by[k]=(by[k]||0)+1;});return by;}
 /* valor proyectado a 12 meses (implementación + 12 mensualidades) de un prospecto con plan, según la línea.
-   Planes viejos desactivados: Factu IA usa SOLO el libro vigente (PLANS); Vendi/Komandi usan LINE_PLANS. */
+   Planes viejos desactivados: FactuIA usa SOLO el libro vigente (PLANS); Vendi/Komandi usan LINE_PLANS. */
 function cleadValue(line,plan){
   if(!plan)return 0;
   if(line==='vendi'||line==='komandi'){const p=LINE_PLANS[plan];return p?(p.impl+p.monthly*12):0;}
@@ -2009,7 +2009,7 @@ function cleadContadorId(l){
   if(l.prospectId){const p=findProspect(l.prospectId);if(p&&p.contadorRealId&&findContador(p.contadorRealId))return p.contadorRealId;}
   return '';
 }
-/* opciones de plan a elegir según la línea (Factu IA = solo planes vigentes, sin el libro anterior) */
+/* opciones de plan a elegir según la línea (FactuIA = solo planes vigentes, sin el libro anterior) */
 function campaignLinePlanOptions(line,sel){
   const opt=(v,label,extra)=>`<option value="${v}" ${v===sel?'selected':''}>${esc(label)}${extra?' — '+extra:''}</option>`;
   let html='<option value="">— Sin plan —</option>';
@@ -2030,7 +2030,7 @@ function openClead(cid,id){
   // Cliente → plan; Contador (alianza) → tipo + clientes en cartera
   $('cl-plan-field').style.display=alianza?'none':'';
   $('cl-contador-fields').style.display=alianza?'':'none';
-  $('cl-ref-field').style.display=(line==='factura-ia')?'':'none'; // contador referidor solo aplica a Factu IA
+  $('cl-ref-field').style.display=(line==='factura-ia')?'':'none'; // contador referidor solo aplica a FactuIA
   if(alianza){
     $('cl-ctipo').value=(lead&&lead.ctipo)?lead.ctipo:'independiente';
     $('cl-cartera').value=(lead&&lead.cartera!=null)?lead.cartera:'';
@@ -2043,7 +2043,7 @@ function openClead(cid,id){
   $('cl-name-label').textContent=nombreLbl;
   if(lead){$('clead-title').textContent=alianza?'Editar contador de campaña':'Editar prospecto de campaña';$('cl-id').value=lead.id;$('cl-name').value=lead.name||'';$('cl-tel').value=lead.tel||'';$('cl-mail').value=lead.mail||'';$('cl-stage').value=lead.stage||'Nuevo';$('cl-note').value=lead.note||'';}
   else{$('clead-title').textContent=alianza?'Nuevo contador de campaña':'Nuevo prospecto de campaña';$('cl-id').value='';$('cl-name').value='';$('cl-tel').value='';$('cl-mail').value='';$('cl-stage').value='Nuevo';$('cl-note').value='';}
-  $('clead-sub').textContent=c.name+' · '+campaignLineLabel(line)+(alianza?' · contador (no entra a Factu IA)':' · aislado del pipeline real');
+  $('clead-sub').textContent=c.name+' · '+campaignLineLabel(line)+(alianza?' · contador (no entra a FactuIA)':' · aislado del pipeline real');
   openModal('modal-clead','cl-name');
 }
 $('cl-save').onclick=()=>{
@@ -2062,12 +2062,12 @@ $('cl-save').onclick=()=>{
   if(cleadsCtx.cid===c.id)renderCleadsModal(); // si la lista está abierta detrás, refréscala
 };
 function delClead(cid,id){const c=findCampaign(cid);if(!c||!Array.isArray(c.leads))return;if(!confirm('¿Eliminar este prospecto de campaña?'))return;const l=c.leads.find(x=>x.id===id);if(l&&l.prospectId){const p=findProspect(l.prospectId);if(p){unsyncWonSale(p);state.prospects=state.prospects.filter(x=>x.id!==p.id);}}c.leads=c.leads.filter(l=>l.id!==id);save();renderCampaigns();renderPipeline();refreshSalesViews();if(cleadsCtx.cid===cid)renderCleadsModal();}
-/* Mapa clasificación de campaña → etapa del Pipeline real de Factu IA */
+/* Mapa clasificación de campaña → etapa del Pipeline real de FactuIA */
 const CLEAD_TO_PIPELINE={Nuevo:null,MQL:'MQL',SQL:'SQL',Oportunidad:'Oportunidad',Cerrado:'Ganada',Perdido:'Perdida',Basura:'Basura'};
-/* Al clasificar un prospecto de campaña de FACTU IA, se refleja en el Pipeline real del mes
+/* Al clasificar un prospecto de campaña de FACTUIA, se refleja en el Pipeline real del mes
    (state.prospects). 'Cerrado' → 'Ganada' y, por el flujo normal, genera la venta. 'Nuevo' NO
    entra (mensaje aún sin calificar). Editarlo actualiza el espejo; borrarlo o volverlo a 'Nuevo'
-   lo quita del pipeline (y su venta, si la hubo). Solo aplica a Factu IA: Vendi/Komandi/Alianza
+   lo quita del pipeline (y su venta, si la hubo). Solo aplica a FactuIA: Vendi/Komandi/Alianza
    no usan este pipeline. */
 function syncCleadToPipeline(c,l){
   const line=c.line||'factura-ia';
@@ -2105,7 +2105,7 @@ function convertCleadToContador(cid,leadId){
     if(!confirm(`Ya existe un contador llamado "${existente.nombre}" en el módulo de Contadores.\n\n¿Vincular este registro a ese contador existente? (no se crea uno nuevo)`))return;
     contadorId=existente.id;
   }else{
-    if(!confirm(`¿Agregar a "${l.name||'(sin nombre)'}" al módulo de Contadores como contador real?\n\nEntra sin clientes en cartera; su cartera se irá llenando cuando empiece a referir ventas de Factu IA.`))return;
+    if(!confirm(`¿Agregar a "${l.name||'(sin nombre)'}" al módulo de Contadores como contador real?\n\nEntra sin clientes en cartera; su cartera se irá llenando cuando empiece a referir ventas de FactuIA.`))return;
     const nc={id:uid(),nombre:l.name||'Contador sin nombre',tel:l.tel||'',mail:l.mail||'',hist:[],tipo:(l.ctipo==='despacho'?'despacho':'independiente'),carteraInicial:(l.cartera!=null?l.cartera:null),createdAt:Date.now(),origenCampana:c.id};
     state.contadores.push(nc);contadorId=nc.id;
   }
@@ -2607,7 +2607,7 @@ function renderContadores(){
   </div>
   <div class="card" style="margin-bottom:16px">
     <div class="section-head"><h2>Meta SMB · Canal de contadores</h2><span class="hint">palanca 3 del Plan Línea SMB 2026</span></div>
-    <p class="subt" style="margin-bottom:14px"><b>55 altas al mes · 220 en el período sep–dic</b> (son parte de las 332 de Factu IA) · aporte de <b>$4,620/mes a diciembre</b> · comisión al contador: un mes de servicio por alta activada (~$21).</p>
+    <p class="subt" style="margin-bottom:14px"><b>55 altas al mes · 220 en el período sep–dic</b> (son parte de las 332 de FactuIA) · aporte de <b>$4,620/mes a diciembre</b> · comisión al contador: un mes de servicio por alta activada (~$21).</p>
     <div class="muted-3" style="font-size:12px;margin-bottom:6px">Altas del mes en curso: <b style="color:#10b981">${mesN} de ${CANAL_SMB.altasMes}</b> · ${pctMes.toFixed(0)}%</div>
     <div class="bar green" style="margin-bottom:14px"><i style="width:${pctMes}%"></i></div>
     <div class="muted-3" style="font-size:12px;margin-bottom:6px">Altas del período (sep–dic): <b>${per.altas} de ${CANAL_SMB.altasPeriodo}</b> · ${pctPer.toFixed(0)}%</div>
@@ -2819,7 +2819,7 @@ const COM_BUCKETS=[
   {label:'Otros',short:'Otros',pred:s=>s.comercial&&s.comercial!=='Briant Canizalez'&&s.comercial!=='Rene Gonzalez'},
 ];
 const _pct=(a,b)=>b?Math.round(a/b*100):0;
-/* Resumen por línea: Factu IA (histórico completo) o Vendi/Komandi (resumen propio).
+/* Resumen por línea: FactuIA (histórico completo) o Vendi/Komandi (resumen propio).
    Lo cambia el selector de arriba (pickLine) sin salir de la hoja Resumen. */
 let resumenLine='fia';
 function renderResumen(){
@@ -3113,8 +3113,8 @@ function planSMBData(){
   const cumFIAaltas=[52,131,227,332],cumCanal=[55,110,165,220];
   const rec=v=>({...v,money:true}),cnt=v=>({...v,money:false});
   const metas=[
-    rec({linea:'Factu IA',color:'#9a73ff',label:'Recurrente/mes',actual:fiaRec,dic:fiaGoal,esperado:FIA_SMB_MILESTONES[mi][2]}),
-    cnt({linea:'Factu IA',color:'#9a73ff',label:'Altas del período',actual:fiaAltas,dic:332,esperado:cumFIAaltas[mi]}),
+    rec({linea:'FactuIA',color:'#9a73ff',label:'Recurrente/mes',actual:fiaRec,dic:fiaGoal,esperado:FIA_SMB_MILESTONES[mi][2]}),
+    cnt({linea:'FactuIA',color:'#9a73ff',label:'Altas del período',actual:fiaAltas,dic:332,esperado:cumFIAaltas[mi]}),
     cnt({linea:'Contadores',color:'#2dd4bf',label:'Altas del canal',actual:canal.altas,dic:220,esperado:cumCanal[mi]}),
     rec({linea:'Contadores',color:'#2dd4bf',label:'Aporte recurrente/mes',actual:canal.mrr,dic:4620,esperado:Math.round(4620*(mi+1)/4)}),
     rec({linea:'Vendi',color:'#3ddc97',label:'Recurrente/mes',actual:vMRR,dic:vGoal,esperado:LINES.vendi.milestones[mi][2]}),
@@ -3155,13 +3155,13 @@ function renderPlanSMB(){
   const dicv=m=>m.money?fmtUSD0(m.dic):m.dic;
   const espv=m=>m.money?fmtUSD0(m.esperado):m.esperado;
   const faltaMesV=m=>m.money?fmtUSD0(m.faltanMes):m.faltanMes;
-  // proyección Factu IA recurrente
+  // proyección FactuIA recurrente
   const gap=Math.max(0,D.fiaGoal-D.fiaRec);
   const porMes=gap/D.mesesRest;
   const planOpts=[['starter','Starter',14.99],['basicoMensual','Básico',5],['professional','Professional',24.99],['advanced','Advanced',34.99]];
   const proySugerencias=planOpts.map(([k,lb,p])=>`<tr><td>${lb} <span class="muted-3">(${fmtUSD(p)}/mes)</span></td><td class="num"><b>${Math.ceil(gap/p)}</b></td></tr>`).join('');
   const altasFaltan=Math.max(0,332-D.fiaAltas);
-  const lineName={fia:'Factu IA',vendi:'Vendi',komandi:'Komandi'}[planSMBLine]||'Factu IA';
+  const lineName={fia:'FactuIA',vendi:'Vendi',komandi:'Komandi'}[planSMBLine]||'FactuIA';
   const lineColor={fia:'#9a73ff',vendi:'#3ddc97',komandi:'#FDC555'}[planSMBLine];
   const selMetas=metas.filter(m=>m.grupo===planSMBLine);
   const rojoLine=enRojo.filter(m=>m.grupo===planSMBLine);
@@ -3172,7 +3172,7 @@ function renderPlanSMB(){
       <div class="bar" style="margin:4px 0"><i style="width:${m.pctDic}%;background:${m.color}"></i></div>
       <div class="muted-3" style="font-size:11px">${m.pctDic.toFixed(0)}% a dic · esperado hoy ${espv(m)}${m.faltanMes>0?` · faltan ${faltaMesV(m)}`:' ✓'}</div>
     </div>`;
-  const fiaProj=`<div class="card"><div class="section-head"><h2>Proyección · Factu IA</h2><span class="hint">para llegar a ${fmtUSD0(D.fiaGoal)}/mes</span></div>
+  const fiaProj=`<div class="card"><div class="section-head"><h2>Proyección · FactuIA</h2><span class="hint">para llegar a ${fmtUSD0(D.fiaGoal)}/mes</span></div>
       <p class="subt">Falta <b style="color:#f87171">${fmtUSD0(gap)}/mes</b> · a ${D.mesesRest} meses son <b>${fmtUSD0(porMes)}/mes nuevos</b>. Clientes que cerrarían la brecha:</p>
       <div class="tablewrap"><table class="responsive"><thead><tr><th>Plan</th><th class="num"># clientes</th></tr></thead><tbody>${proySugerencias}</tbody></table></div>
       <p class="subt" style="margin-top:10px">También faltan <b>${altasFaltan} altas</b> de las 332 del período (≈ ${Math.ceil(altasFaltan/D.mesesRest)}/mes).</p></div>`;
@@ -3183,7 +3183,7 @@ function renderPlanSMB(){
         <div style="min-width:min(100%,340px)">
           <div class="eyebrow">Plan Línea SMB 2026 · cómo vamos</div>
           <div class="big">${fmtUSD0(recActual)} <span style="font-size:16px;color:var(--txt-3)">/ ${fmtUSD0(recMeta)}</span></div>
-          <p class="sub">Recurrente total (Factu IA + Vendi + Komandi) a diciembre · <b style="color:var(--brand-3)">${recPct.toFixed(1)}%</b>. Estamos en <b>${D.mesLbl}</b>: ${enPlan} de ${metas.length} metas en plan${enRojo.length?` · <b style="color:#f87171">${enRojo.length} atrasada(s)</b>`:''}.</p>
+          <p class="sub">Recurrente total (FactuIA + Vendi + Komandi) a diciembre · <b style="color:var(--brand-3)">${recPct.toFixed(1)}%</b>. Estamos en <b>${D.mesLbl}</b>: ${enPlan} de ${metas.length} metas en plan${enRojo.length?` · <b style="color:#f87171">${enRojo.length} atrasada(s)</b>`:''}.</p>
         </div>
         <div class="ct-mini">
           <div class="m"><div class="n" style="color:${enRojo.length?'#f87171':'#34d399'}">${enRojo.length?'🔴 '+enRojo.length:'🟢 OK'}</div><div class="k">Alertas del plan</div></div>
@@ -3194,7 +3194,7 @@ function renderPlanSMB(){
       </div>
     </div>
     <div class="card" style="margin:16px 0"><div class="section-head"><h2>Recurrente por línea · actual vs meta dic</h2><span class="hint">las 3 líneas</span></div><div class="chart-box" style="height:210px"><canvas id="chartPlanRec"></canvas></div></div>
-    <div class="section-head" style="margin:18px 0 10px"><h2 style="font-size:16px;color:${lineColor}">Detalle · ${lineName}</h2><span class="hint">toca Factu IA / Vendi / Komandi arriba para cambiar de línea</span></div>
+    <div class="section-head" style="margin:18px 0 10px"><h2 style="font-size:16px;color:${lineColor}">Detalle · ${lineName}</h2><span class="hint">toca FactuIA / Vendi / Komandi arriba para cambiar de línea</span></div>
     <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;margin-bottom:16px">${selMetas.map(semCard).join('')}</div>
     ${projCard}
     ${rojoLine.length?`<div class="card" style="margin-top:16px;border-color:#f8717155">
@@ -3202,7 +3202,7 @@ function renderPlanSMB(){
       ${rojoLine.map(m=>`<div style="padding:13px 2px;border-bottom:1px solid var(--border);font-size:13px;color:var(--txt-2);line-height:1.6">${m.flag.e} <b style="color:var(--txt-1)">${m.linea} · ${m.label}</b><br><span class="muted-3">vas en</span> ${val(m)} &nbsp;·&nbsp; <span class="muted-3">esperado</span> ${espv(m)} &nbsp;·&nbsp; <b style="color:#f87171">faltan ${faltaMesV(m)}</b></div>`).join('')}
     </div>`:`<div class="card" style="margin-top:16px;border-color:#34d39955"><div class="cmeta" style="padding:6px 0"><span>🟢 <b>${lineName} va en plan</b> en sus metas con avance a hoy.</span></div></div>`}`;
   // gráfica recurrente por línea
-  const recMetas=[{l:'Factu IA',a:metas[0].actual,m:metas[0].dic,c:'#9a73ff'},{l:'Vendi',a:metas[4].actual,m:metas[4].dic,c:'#3ddc97'},{l:'Komandi',a:metas[6].actual,m:metas[6].dic,c:'#FDC555'}];
+  const recMetas=[{l:'FactuIA',a:metas[0].actual,m:metas[0].dic,c:'#9a73ff'},{l:'Vendi',a:metas[4].actual,m:metas[4].dic,c:'#3ddc97'},{l:'Komandi',a:metas[6].actual,m:metas[6].dic,c:'#FDC555'}];
   if(charts.planRec)charts.planRec.destroy();
   if($('chartPlanRec'))charts.planRec=new Chart($('chartPlanRec'),{type:'bar',data:{labels:recMetas.map(r=>r.l),datasets:[
     {label:'Actual',data:recMetas.map(r=>+r.a.toFixed(0)),backgroundColor:recMetas.map(r=>r.c),borderRadius:6},
@@ -3683,7 +3683,7 @@ function seedSyncOdooV8(){
    - Kevin Enrique Flores Gracias: es CONTADOR → sistema gratis (sin anualidad ni implementación).
    - FINARE CONSULTORES, S.A.S.: es CONTADOR → sistema gratis.
    VELADO LEON, JOSE MANUEL queda fuera (no ha pagado, confirmado por Briant).
-   Política de Briant: los contadores llevan Factu IA gratis (sin mensualidad/anualidad ni impl). ---- */
+   Política de Briant: los contadores llevan FactuIA gratis (sin mensualidad/anualidad ni impl). ---- */
 function seedSyncOdooV9(){
   if(state.config.seededSyncOdooV9)return;
   const nuevos=[

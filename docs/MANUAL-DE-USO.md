@@ -17,19 +17,19 @@ Arriba del contenido hay tres botones que cambian la línea activa:
 
 | Botón | Qué abre |
 |---|---|
-| **Factu IA** | El dashboard completo (Inicio y todas las vistas del menú "Panel") |
+| **FactuIA** | El dashboard completo (Inicio y todas las vistas del menú "Panel") |
 | **Vendi** | La vista de la línea Vendi (Stradia) |
 | **Komandi** | La vista de la línea Komandi (Stradia) |
 
-Los datos de cada línea viven separados: las ventas de Vendi/Komandi **no** se mezclan con las de Factu IA ni afectan sus KPIs.
+Los datos de cada línea viven separados: las ventas de Vendi/Komandi **no** se mezclan con las de FactuIA ni afectan sus KPIs.
 
 ---
 
-## 3. Factu IA
+## 3. FactuIA
 
 ### 3.1 Inicio
 - **KPIs**: clientes activos (base + ventas), recurrencia mensual, tareas en curso y horas invertidas.
-- **Meta SMB · Factu IA** (siempre visible):
+- **Meta SMB · FactuIA** (siempre visible):
   - **Recurrente**: avance hacia **$18,928/mes a diciembre** con la escalera sep $10,638 · oct $13,341 · nov $16,195 · dic $18,928.
   - **Altas**: avance hacia **332 altas nuevas** del período sep–dic (112 campaña + 220 contadores), escalera mensual **52 / 79 / 96 / 105**. Cada venta registrada cuenta como alta de su mes.
 - **Pulso Masivo**: leads de hoy, pipeline, cierres del mes, MRR nuevo del mes (vs meta de Ajustes) y pasos vencidos.
@@ -118,7 +118,7 @@ Cada línea tiene su vista con:
 
 ## 5. Ajustes y Datos
 
-- **Punto de partida y metas**: clientes base, metas personales (1,000 clientes / $25K), pagos anuales, meta de MRR nuevo por mes y **metas SMB por línea** (Factu IA / Vendi / Komandi, en $ y clientes).
+- **Punto de partida y metas**: clientes base, metas personales (1,000 clientes / $25K), pagos anuales, meta de MRR nuevo por mes y **metas SMB por línea** (FactuIA / Vendi / Komandi, en $ y clientes).
 - **Comisiones**: salario base, bono por meta y meta de clientes/mes.
 - **Datos y respaldo**:
   - **Exportar respaldo (JSON)** — descarga todo el estado (`smb-erp-respaldo-AAAA-MM-DD.json`). Hazlo con frecuencia.
@@ -133,7 +133,7 @@ Cada línea tiene su vista con:
 | Registro | Crear | Editar | Eliminar | Acciones adicionales |
 |---|---|---|---|---|
 | **Tarea** | ✅ *Nueva tarea* | ✅ | ✅ | Iniciar / pausar / finalizar / reabrir cronómetro · mover en el tablero · recurrencia |
-| **Venta (Factu IA)** | ✅ *Nueva venta* | ✅ | ✅ | Dar de baja y reactivar · promo 🎁 implementación gratis · elegir libro de precios · vincular contador y campaña |
+| **Venta (FactuIA)** | ✅ *Nueva venta* | ✅ | ✅ | Dar de baja y reactivar · promo 🎁 implementación gratis · elegir libro de precios · vincular contador y campaña |
 | **Servicio especial** | ✅ *Nuevo servicio* | ✅ | ✅ | Tarifa autocompletada por tipo de servicio |
 | **Prospecto** | ✅ *Nuevo prospecto* | ✅ | ✅ | Mover de etapa (arrastrando o editando) · BANT · convertir a venta · al pasar a Ganada genera la venta |
 | **Campaña** | ✅ *Nueva campaña* | ✅ | ✅ | Activar/cerrar · ver sus leads y clientes |

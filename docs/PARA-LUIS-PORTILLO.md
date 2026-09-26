@@ -9,8 +9,8 @@ Luis: este documento te explica en 10 minutos cómo está construido y operado S
 
 ## 1. Qué es (y qué NO es)
 
-- **Es** la herramienta de gestión comercial de la Línea SMB: pipeline, ventas, campañas, comisiones, la red de contadores referidores y el seguimiento de las metas del Plan SMB 2026 para **Factu IA, Vendi y Komandi**.
-- **NO es** parte del producto. No toca Odoo, ni la plataforma de Factu IA, ni los MVP de Vendi/Komandi. No comparte base de datos ni credenciales con nada de producción de Consiti. Es una capa de gestión independiente; si mañana se apaga, ningún cliente lo nota.
+- **Es** la herramienta de gestión comercial de la Línea SMB: pipeline, ventas, campañas, comisiones, la red de contadores referidores y el seguimiento de las metas del Plan SMB 2026 para **FactuIA, Vendi y Komandi**.
+- **NO es** parte del producto. No toca Odoo, ni la plataforma de FactuIA, ni los MVP de Vendi/Komandi. No comparte base de datos ni credenciales con nada de producción de Consiti. Es una capa de gestión independiente; si mañana se apaga, ningún cliente lo nota.
 - Usuario hoy: Briant (mono-usuario por diseño, aunque la base ya soporta multi-usuario — ver §5).
 
 ## 2. Topología
@@ -46,7 +46,7 @@ Luis: este documento te explica en 10 minutos cómo está construido y operado S
 | **Estado = un documento JSON por usuario** | El volumen es pequeño (cientos de registros). Un solo upsert con debounce de 700 ms simplifica todo: sin migraciones SQL, sin ORM. Agregar un campo nuevo no requiere tocar la base |
 | **localStorage como espejo** | Funciona offline/local y sirve de respaldo instantáneo; al iniciar sesión, los datos locales migran solos a la nube |
 | **Seeds one-shot en el código** | Las cargas y correcciones de datos se publican como funciones `seedXxx()` con bandera en `config` — corren una vez por usuario y son idempotentes (patrón en `docs/ARQUITECTURA.md` §3) |
-| **Catálogos de negocio como constantes** | Libro de precios de Factu IA (nuevo/anterior, corte 1-ago-2026), tarifario Stradia y metas SMB viven en el código y en `data/*.json` de referencia. Cambian poco y así quedan versionados en git |
+| **Catálogos de negocio como constantes** | Libro de precios de FactuIA (nuevo/anterior, corte 1-ago-2026), tarifario Stradia y metas SMB viven en el código y en `data/*.json` de referencia. Cambian poco y así quedan versionados en git |
 
 ## 4. Seguridad
 
@@ -83,7 +83,7 @@ Luis: este documento te explica en 10 minutos cómo está construido y operado S
 
 ## 8. Relación con el Plan SMB 2026
 
-El dashboard **consume** las metas del plan (14-ago-2026): $18,928 y 332 altas de Factu IA, 55 altas/mes del canal de contadores, $6,921/30 de Vendi y $4,582/18 de Komandi — fijas en código y editables las de recurrente en Ajustes. Referencia completa en `data/metas-smb-2026.json`.
+El dashboard **consume** las metas del plan (14-ago-2026): $18,928 y 332 altas de FactuIA, 55 altas/mes del canal de contadores, $6,921/30 de Vendi y $4,582/18 de Komandi — fijas en código y editables las de recurrente en Ajustes. Referencia completa en `data/metas-smb-2026.json`.
 
 Lo que el plan le pide a Tecnología (contador de conversaciones, alertas de cupo, cambio automático de plan, gestión de números de WhatsApp, reverso de garantía) es **del producto Vendi/Komandi, no de este dashboard** — aquí solo se le da seguimiento comercial.
 
