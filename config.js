@@ -1,6 +1,6 @@
 // ============================================================
 //  CONFIGURACIÓN DE SUPABASE
-//  Datos del proyecto de Briant (Odoo Factu IA).
+//  Datos del proyecto de Briant (Factu IA).
 //
 //  Estos dos valores son PÚBLICOS por diseño (la "anon key"
 //  está pensada para vivir en el navegador). La seguridad la
