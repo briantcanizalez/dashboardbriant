@@ -2,6 +2,17 @@
 
 Historial de cambios del dashboard. Formato: fecha · qué cambió.
 
+## 2026-10-03 · Cierres de septiembre 2026 (`seedCierresSep26V1`)
+
+One-shot e idempotente. Sale del CRM (etapa Cierre) y de las suscripciones de Odoo, y lo confirmó Briant.
+
+- **Contadora nueva:** «Lic. Yani» (`lic-yani`).
+- **Clientes de contadores**, cargados como ventas vinculadas (`origen: Alianza Contable`):
+  - **Yessenia Rivera de Rivera** (Variedades Carlitos), de José Ernesto Martínez. Professional a $34.99, implementación $50 cobrada por Consiti, $140 de módulos y carga, primera mensualidad en ene 2027 (3 meses sin costo).
+  - **Marroquín Salas, Marjorie Magali** (Farmacia), de Lic. Yani. Deluxe a $79.99, implementación $70 cobrada por Consiti, $430 de implementación empresarial presencial, primera mensualidad en nov 2026.
+- **Ventas directas de Briant** por la campaña de Meta (`origen: Campaña`): ESACOL, Vásquez Yan (implementación gratis), Kevin Sandoval y Munari son nuevas. Kevin Flores, SAITEC, Finare, Velado León y Transporte Brisas ya estaban y no se tocaron sus montos.
+- **Edición desde la cartera:** las ventas vinculadas a un contador ahora se editan desde la cartera con el mismo formulario: extras, totales, primera mensualidad y quién cobra la implementación. Los campos que se guardan en la venta son `ctBase`, `ctExtras`, `implCobra`, `pagoInicial`, `pagaDesde` y `contacto`.
+
 ## 2026-10-03 · Contadores: reglas nuevas del Programa de Alianzas Contables
 
 El panel de Contadores sigue las reglas de la landing contadores.factuiasv.com.
