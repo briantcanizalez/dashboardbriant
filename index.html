@@ -1041,7 +1041,7 @@ th.ct-sort:hover{color:var(--txt)}
   <div class="row c2"><div class="field"><label>Empresa / Cliente <span class="req">*</span></label><input id="ctcli-emp" placeholder="Nombre del cliente" /></div><div class="field"><label>Contacto</label><input id="ctcli-con" placeholder="Persona de contacto" /></div></div>
   <div class="ct-step"><span>2</span>Plan e implementación</div>
   <div class="row c3"><div class="field"><label>Plan</label><select id="ctcli-plan"></select></div><div class="field"><label>Período</label><select id="ctcli-per"><option value="mensual">Mensual</option><option value="anual">Anual</option></select></div><div class="field"><label>Mes de alta</label><input type="month" id="ctcli-alta" /></div></div>
-  <div class="row c3"><div class="field"><label id="ctcli-base-lbl">Cuota del plan (USD/mes)</label><input type="number" step="0.01" min="0" id="ctcli-base" /></div><div class="field"><label>Implementación (USD)</label><input type="number" step="0.01" min="0" id="ctcli-impl" /></div><div class="field"><label>Meses sin costo (promo)</label><input type="number" step="1" min="0" max="24" id="ctcli-gratis" placeholder="0" /></div></div>
+  <div class="row c3"><div class="field"><label id="ctcli-base-lbl">Cuota del plan (USD/mes)</label><input type="number" step="0.01" min="0" id="ctcli-base" /></div><div class="field"><label>Implementación (USD)</label><input type="number" step="0.01" min="0" id="ctcli-impl" /></div><div class="field"><label>Primera mensualidad</label><input type="month" id="ctcli-paga" /></div></div>
   <div class="field"><label>¿Quién cobra la implementación?</label>
     <div class="ct-seg">
       <label><input type="radio" name="ctcli-cobra" value="contador" checked /><span><b>El contador</b>Se la cobra él al cliente. Ya es suya: no entra en la liquidación.</span></label>
@@ -2615,11 +2615,11 @@ const ctRound=n=>Math.round((+n||0)*100)/100;
 /* --- Cartera unificada por contador: histórico + ventas nuevas vinculadas (incluye bajas) --- */
 const ctCliAll=c=>[
   ...(c.hist||[]).map((h,i)=>({client:h.empresa,idx:i,planNombre:h.planNombre||'—',plan:h.plan==='anual'?'anual':'mensual',rr:+h.rr||0,impl:+h.impl||0,alta:h.alta||'',nuevo:false,
-    implCobra:h.implCobra||'contador',extras:h.extras||[],gratis:+h.mesesGratis||0,
+    implCobra:h.implCobra||'contador',extras:h.extras||[],pagaDesde:h.pagaDesde||'',
     extrasUnico:h.pagoInicial!=null?Math.max(0,(+h.pagoInicial||0)-(+h.impl||0)):ctExtrasSum(h.extras,'unico'),
     baja:h.estado==='baja'?(h.baja||curMonth()):''})),
   ...state.sales.filter(s=>s.contadorId===c.id).map(s=>({client:s.client,saleId:s.id,planNombre:(PLANS[s.plan]||{label:s.plan}).label,plan:s.mode==='anual'?'anual':'mensual',rr:s.mode==='anual'?+(saleMonthly(s)*12).toFixed(2):saleMonthly(s),impl:saleImpl(s),alta:(s.start||'').slice(0,7),nuevo:true,
-    implCobra:s.implCobra||'contador',extras:[],extrasUnico:0,gratis:0,
+    implCobra:s.implCobra||'contador',extras:[],extrasUnico:0,pagaDesde:'',
     baja:s.churned?((s.churnDate||'').slice(0,7)||curMonth()):''}))
 ];
 const ctCli=c=>ctCliAll(c).filter(x=>!x.baja); // cartera activa
@@ -2628,8 +2628,9 @@ const ctTotals=arr=>arr.reduce((t,x)=>({impl:t.impl+x.impl,mrr:t.mrr+ctMrrOf(x),
 const ctComisiona=x=>!!x.alta&&x.alta>=CT_PROG.desdeAlta; // cliente cerrado dentro del programa nuevo
 const ctComMes=x=>ctComisiona(x)?ctMrrOf(x)*CT_PROG.pctMensual:0;
 const ctActivoEn=(x,M)=>(x.alta||'0000-00')<=M&&!(x.baja&&x.baja<=M);
-const ctPagaDesde=x=>x.alta&&x.gratis?ctAddMonth(x.alta,x.gratis):(x.alta||'0000-00'); // mes en que el cliente empieza a pagar (promo de meses sin costo)
-const ctMesesPagadosAnio1=x=>Math.max(0,12-(x.gratis||0));
+const ctMesDiff=(a,b)=>{const [y1,m1]=a.split('-').map(Number),[y2,m2]=b.split('-').map(Number);return (y2-y1)*12+(m2-m1);};
+const ctPagaDesde=x=>x.pagaDesde&&x.pagaDesde>(x.alta||'')?x.pagaDesde:(x.alta||'0000-00'); // primera mensualidad (promo de meses sin costo, entrega posterior)
+const ctMesesPagadosAnio1=x=>x.alta?Math.max(0,12-ctMesDiff(x.alta,ctPagaDesde(x))):12;
 /* Rentabilidad: lo que Consiti se queda del contador en el año 1 (80 % de la mensualidad + productos adicionales).
    La implementación no suma ni resta: es del contador. */
 function ctRentab(c){
@@ -2973,18 +2974,18 @@ function ctcliRecalc(){
   $('ctcli-ini-adj').textContent=dIni?`Ajuste manual de ${dIni>0?'+':'−'}${fmtUSD(Math.abs(dIni))} sobre ${fmtUSD(iniCalc)}`:'';
   $('ctcli-rr-adj').textContent=dRr?`Ajuste manual de ${dRr>0?'+':'−'}${fmtUSD(Math.abs(dRr))} sobre ${fmtUSD(rrCalc)}`:'';
   $('ctcli-ini-reset').style.visibility=dIni?'visible':'hidden';$('ctcli-rr-reset').style.visibility=dRr?'visible':'hidden';
-  const altaM=$('ctcli-alta').value||curMonth(),elig=altaM>=CT_PROG.desdeAlta,gratis=Math.max(0,parseInt($('ctcli-gratis').value)||0),mp=Math.max(0,12-gratis);
+  const altaM=$('ctcli-alta').value||curMonth(),elig=altaM>=CT_PROG.desdeAlta,pagaM=$('ctcli-paga').value>altaM?$('ctcli-paga').value:altaM,gratis=ctMesDiff(altaM,pagaM),mp=Math.max(0,12-gratis);
   const mrr=anual?rr/12:rr,com=elig?mrr*CT_PROG.pctMensual:0,extras=Math.max(0,ini-impl),cobra=ctcliCobra();
   $('ctcli-sum').innerHTML=`
     <div class="box ct-gana"><h4>Gana el contador</h4>
       <div class="ln"><span>Implementación (100 %)</span><b>${fmtUSD(impl)}</b></div>
       <div class="ln"><span style="padding-left:10px">${cobra==='consiti'?'Se le paga en la liquidación de '+ctMesLbl($('ctcli-alta').value||curMonth()):'Se la cobra él directo al cliente'}</span><span></span></div>
-      <div class="ln"><span>${elig?'20 % de la mensualidad'+(gratis?' · desde '+ctMesLbl(ctAddMonth(altaM,gratis)):''):'Sin comisión (cliente anterior a '+ctMesLbl(CT_PROG.desdeAlta)+')'}</span><b>${fmtUSD(com)}/mes</b></div>
+      <div class="ln"><span>${elig?'20 % de la mensualidad'+(gratis?' · desde '+ctMesLbl(pagaM):''):'Sin comisión (cliente anterior a '+ctMesLbl(CT_PROG.desdeAlta)+')'}</span><b>${fmtUSD(com)}/mes</b></div>
       <div class="ln tot"><span>Año 1${gratis?' ('+mp+' meses pagados)':''}</span><b style="color:var(--brand-3)">${fmtUSD(impl+com*mp)}</b></div>
     </div>
     <div class="box"><h4>Se queda Consiti</h4>
       <div class="ln"><span>Productos adicionales (único)</span><b>${fmtUSD(extras)}</b></div>
-      <div class="ln"><span>${elig?'80':'100'} % de la mensualidad${gratis?' · '+gratis+' meses sin costo':''}</span><b>${fmtUSD(mrr-com)}/mes</b></div>
+      <div class="ln"><span>${elig?'80':'100'} % de la mensualidad${gratis?' · paga desde '+ctMesLbl(pagaM):''}</span><b>${fmtUSD(mrr-com)}/mes</b></div>
       <div class="ln"><span>Pago inicial del cliente</span><b>${fmtUSD(ini)}</b></div>
       <div class="ln tot"><span>Neto año 1</span><b>${fmtUSD(extras+(mrr-com)*mp)}</b></div>
     </div>`;
@@ -3007,7 +3008,7 @@ function openCtCliente(cid,idx){
   ctcliExtras=h&&Array.isArray(h.extras)?h.extras.map(e=>({...e})):[];
   ctcliIniManual=false;ctcliRrManual=false;
   if(h){
-    $('ctcli-impl').value=+h.impl||0;$('ctcli-gratis').value=+h.mesesGratis||'';
+    $('ctcli-impl').value=+h.impl||0;$('ctcli-paga').value=h.pagaDesde||h.alta||curMonth();
     const exMens=ctExtrasSum(ctcliExtras,'mensual')*(h.plan==='anual'?12:1);
     $('ctcli-base').value=h.base!=null?+h.base:ctRound((+h.rr||0)-exMens);
     $('ctcli-rr').value=+h.rr||0;
@@ -3015,17 +3016,18 @@ function openCtCliente(cid,idx){
     ctcliRrManual=ctRound(+h.rr||0)!==ctcliCalcRr();
     ctcliIniManual=h.pagoInicial!=null&&ctRound(h.pagoInicial)!==ctcliCalcIni();
     ctcliRenderExtras();ctcliRecalc();
-  }else{$('ctcli-gratis').value='';ctcliRenderExtras();ctcliAutofill();}
+  }else{$('ctcli-paga').value=curMonth();ctcliRenderExtras();ctcliAutofill();}
   openModal('modal-ctcli','ctcli-emp');
 }
 $('ctcli-plan').addEventListener('change',ctcliAutofill);
 $('ctcli-per').addEventListener('change',ctcliAutofill);
-['ctcli-base','ctcli-impl','ctcli-alta','ctcli-gratis'].forEach(id=>$(id).addEventListener('input',ctcliRecalc));
+['ctcli-base','ctcli-impl','ctcli-paga'].forEach(id=>$(id).addEventListener('input',ctcliRecalc));
 document.querySelectorAll('input[name="ctcli-cobra"]').forEach(r=>r.addEventListener('change',ctcliRecalc));
 $('ctcli-ini').addEventListener('input',()=>{ctcliIniManual=true;ctcliRecalc();});
 $('ctcli-rr').addEventListener('input',()=>{ctcliRrManual=true;ctcliRecalc();});
 $('ctcli-ini-reset').onclick=()=>{ctcliIniManual=false;ctcliRecalc();};
 $('ctcli-rr-reset').onclick=()=>{ctcliRrManual=false;ctcliRecalc();};
+$('ctcli-alta').addEventListener('input',()=>{if(!$('ctcli-paga').value||$('ctcli-paga').value<$('ctcli-alta').value)$('ctcli-paga').value=$('ctcli-alta').value;ctcliRecalc();});
 $('ctcli-estado').addEventListener('change',()=>{$('ctcli-baja-field').style.display=$('ctcli-estado').value==='baja'?'':'none';});
 $('ctcli-emp').addEventListener('input',()=>$('ctcli-emp').style.borderColor='');
 $('ctcli-save').onclick=()=>{
@@ -3037,7 +3039,7 @@ $('ctcli-save').onclick=()=>{
   const dato={empresa:emp,contacto:$('ctcli-con').value.trim(),planNombre:$('ctcli-plan').value,
     plan:$('ctcli-per').value,base:ctRound($('ctcli-base').value),rr:ctRound($('ctcli-rr').value),impl:ctRound($('ctcli-impl').value),
     implCobra:ctcliCobra(),extras:ctcliExtras.filter(e=>e.nombre.trim()||+e.precio).map(e=>({...e,nombre:e.nombre.trim()||'Producto adicional',precio:ctRound(e.precio),cant:+e.cant||1})),
-    pagoInicial:ctRound($('ctcli-ini').value),mesesGratis:Math.max(0,parseInt($('ctcli-gratis').value)||0),alta:$('ctcli-alta').value||curMonth(),
+    pagoInicial:ctRound($('ctcli-ini').value),pagaDesde:($('ctcli-paga').value||'')>($('ctcli-alta').value||'')?$('ctcli-paga').value:($('ctcli-alta').value||curMonth()),alta:$('ctcli-alta').value||curMonth(),
     estado:baja?'baja':'activo',baja:baja?($('ctcli-baja').value||curMonth()):''};
   const idx=$('ctcli-idx').value;
   if(idx!==''&&c.hist[+idx])Object.assign(c.hist[+idx],dato);else c.hist.push(dato);
@@ -3643,7 +3645,7 @@ function renderListModal(){
         <td data-label="Plan"><span class="tag">${esc(r.planLabel)}</span>${r.nuevo?' <span class="pl-new">Venta</span>':''}${r.baja?` <span class="badge b-overdue">Baja ${ctMesLbl(r.baja)}</span>`:''}</td>
         <td data-label="Mensualidad" class="num">${r.monto}</td>
         <td data-label="Adicionales" class="num">${r.extrasUnico?fmtUSD(r.extrasUnico):'—'}${nEx?`<span class="cellsub">${nEx} producto${nEx>1?'s':''}</span>`:''}</td>
-        <td data-label="Comisión/mes" class="num" style="color:var(--brand-3)">${r.baja?'—':fmtUSD(r.com)}${!r.baja&&r.gratis&&r.com?`<span class="cellsub">desde ${ctMesLbl(ctPagaDesde(r))}</span>`:''}</td>
+        <td data-label="Comisión/mes" class="num" style="color:var(--brand-3)">${r.baja?'—':fmtUSD(r.com)}${!r.baja&&r.com&&ctPagaDesde(r)>(r.alta||'')?`<span class="cellsub">desde ${ctMesLbl(ctPagaDesde(r))}</span>`:''}</td>
         <td data-label="Alta" class="num muted-3">${r.alta?ctMesLbl(r.alta):'—'}</td>
         <td class="t-actions-cell" data-label="Acciones"><div class="t-actions">${acc}</div></td></tr>`;
     }).join('')||_emptyRow(7);
