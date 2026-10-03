@@ -6,7 +6,7 @@ Historial de cambios del dashboard. Formato: fecha · qué cambió.
 
 One-shot e idempotente. Sale del CRM (etapa Cierre) y de las suscripciones de Odoo, y lo confirmó Briant.
 
-- **Contadora nueva:** «Lic. Yani» (`lic-yani`).
+- **Contadora nueva:** «Lic. Yani» (`lic-yani`). Su teléfono, +503 7874 4953, se carga con `seedYaniTelV1`.
 - **Clientes de contadores**, cargados como ventas vinculadas (`origen: Alianza Contable`):
   - **Yessenia Rivera de Rivera** (Variedades Carlitos), de José Ernesto Martínez. Professional a $34.99, implementación $50 cobrada por Consiti, $140 de módulos y carga, primera mensualidad en ene 2027 (3 meses sin costo).
   - **Marroquín Salas, Marjorie Magali** (Farmacia), de Lic. Yani. Deluxe a $79.99, implementación $70 cobrada por Consiti, $430 de implementación empresarial presencial, primera mensualidad en nov 2026.
