@@ -2605,8 +2605,10 @@ function toggleContadorField(pfx){const o=$(pfx+'-origen').value,f=$(pfx+'-conta
    · El contador gana el 20 % de la mensualidad de cada cliente mientras siga activo (en anual, el 20 % del equivalente mensual).
    · Se le paga en los primeros 5 días hábiles del mes siguiente. Para mantener la alianza refiere al menos 3 clientes al mes.
    · Los productos adicionales (módulos, carga de productos, capacitaciones…) son ingreso de Consiti; si son mensuales,
-     suman a la mensualidad y llevan el 20 %. Las liquidaciones se calculan desde CT_PROG.inicio. */
-const CT_PROG={pctMensual:.2,inicio:'2026-10',minMes:3,diasPago:5};
+     suman a la mensualidad y llevan el 20 %.
+   · Solo generan comisión los clientes cerrados desde CT_PROG.desdeAlta (sep 2026). Los del histórico
+     no llevan comisión: Consiti se queda el 100 % de su mensualidad. */
+const CT_PROG={pctMensual:.2,desdeAlta:'2026-09',inicio:'2026-09',minMes:3,diasPago:5};
 const CT_EXTRAS=[{nombre:'Módulo adicional',precio:30},{nombre:'Carga de productos',precio:50},{nombre:'Capacitación presencial',precio:100},{nombre:'Capacitación virtual',precio:50},{nombre:'Diseño de logo',precio:10},{nombre:'DTE adicional',precio:10}];
 const ctExtrasSum=(ex,tipo)=>(ex||[]).filter(e=>(e.tipo||'unico')===tipo).reduce((a,e)=>a+(+e.precio||0)*(+e.cant||1),0);
 const ctRound=n=>Math.round((+n||0)*100)/100;
@@ -2623,22 +2625,23 @@ const ctCliAll=c=>[
 const ctCli=c=>ctCliAll(c).filter(x=>!x.baja); // cartera activa
 const ctMrrOf=x=>x.plan==='mensual'?x.rr:x.rr/12; // rr anual viene como monto del año
 const ctTotals=arr=>arr.reduce((t,x)=>({impl:t.impl+x.impl,mrr:t.mrr+ctMrrOf(x),arr:t.arr+ctMrrOf(x)*12}),{impl:0,mrr:0,arr:0});
-const ctComMes=x=>ctMrrOf(x)*CT_PROG.pctMensual;
+const ctComisiona=x=>!!x.alta&&x.alta>=CT_PROG.desdeAlta; // cliente cerrado dentro del programa nuevo
+const ctComMes=x=>ctComisiona(x)?ctMrrOf(x)*CT_PROG.pctMensual:0;
 const ctActivoEn=(x,M)=>(x.alta||'0000-00')<=M&&!(x.baja&&x.baja<=M);
 /* Rentabilidad: lo que Consiti se queda del contador en el año 1 (80 % de la mensualidad + productos adicionales).
    La implementación no suma ni resta: es del contador. */
 function ctRentab(c){
   const cli=ctCli(c),t=ctTotals(cli),extras=cli.reduce((a,x)=>a+x.extrasUnico,0);
-  const comMes=t.mrr*CT_PROG.pctMensual,comAnio=comMes*12;
+  const comMes=cli.reduce((a,x)=>a+ctComMes(x),0),comAnio=comMes*12;
   const neto=t.arr-comAnio+extras;
   const M=curMonth(),altasMes=ctCliAll(c).filter(x=>x.alta===M).length;
   return {cli,...t,extras,comMes,comAnio,neto,altasMes,cumple:altasMes>=CT_PROG.minMes,ganaAnio:comAnio+t.impl};
 }
 /* Liquidación de un mes: 20 % de cada cliente activo ese mes + implementaciones que cobró Consiti con alta en ese mes */
 function ctLiquidacion(c,M){
-  const all=ctCliAll(c),act=all.filter(x=>ctActivoEn(x,M));
+  const all=ctCliAll(c),act=all.filter(x=>ctComisiona(x)&&ctActivoEn(x,M));
   const recurrente=act.reduce((a,x)=>a+ctComMes(x),0);
-  const impls=all.filter(x=>x.alta===M&&x.implCobra==='consiti'),impl=impls.reduce((a,x)=>a+x.impl,0);
+  const impls=all.filter(x=>x.alta===M&&x.implCobra==='consiti'&&ctComisiona(x)),impl=impls.reduce((a,x)=>a+x.impl,0);
   return {n:act.length,recurrente,impl,nImpl:impls.length,total:recurrente+impl,pago:(c.pagos||{})[M]||null};
 }
 /* Días hábiles de El Salvador (lunes a viernes sin feriados fijos; Semana Santa no se descuenta) */
@@ -2731,7 +2734,7 @@ function renderContadores(){
   </div>
   <div class="card" style="margin-bottom:16px">
     <div class="section-head"><h2>Meta SMB · Canal de contadores</h2><span class="hint">palanca 3 del Plan Línea SMB 2026</span></div>
-    <p class="subt" style="margin-bottom:14px"><b>55 altas al mes · 220 en el período sep–dic</b> (son parte de las 332 de FactuIA) · aporte de <b>$4,620/mes a diciembre</b> · comisión al contador: <b>la implementación completa + el 20 % de la mensualidad</b> mientras el cliente siga activo, pagada en los primeros ${CT_PROG.diasPago} días hábiles del mes siguiente.</p>
+    <p class="subt" style="margin-bottom:14px"><b>55 altas al mes · 220 en el período sep–dic</b> (son parte de las 332 de FactuIA) · aporte de <b>$4,620/mes a diciembre</b> · comisión al contador: <b>la implementación completa + el 20 % de la mensualidad</b> de los clientes cerrados desde ${ctMesLbl(CT_PROG.desdeAlta)}, mientras sigan activos, pagada en los primeros ${CT_PROG.diasPago} días hábiles del mes siguiente.</p>
     <div class="muted-3" style="font-size:12px;margin-bottom:6px">Altas del mes en curso: <b style="color:#10b981">${mesN} de ${CANAL_SMB.altasMes}</b> · ${pctMes.toFixed(0)}%</div>
     <div class="bar green" style="margin-bottom:14px"><i style="width:${pctMes}%"></i></div>
     <div class="muted-3" style="font-size:12px;margin-bottom:6px">Altas del período (sep–dic): <b>${per.altas} de ${CANAL_SMB.altasPeriodo}</b> · ${pctPer.toFixed(0)}%</div>
@@ -2754,7 +2757,7 @@ function renderContadores(){
   <div class="card pad-lg" id="ct-liq-card" style="margin-bottom:16px"></div>
   <div class="card pad-lg" id="ct-board-card" style="margin-bottom:16px">
     <div class="section-head"><h2>Desempeño y rentabilidad por contador</h2><span class="hint">clic en la fila para ver sus clientes · encabezados ordenan</span></div>
-    <p class="subt">Neto Consiti año 1 = 80 % de la mensualidad de sus clientes activos × 12 + productos adicionales. La implementación es del contador y no entra. Meta para mantener la alianza: ${CT_PROG.minMes} referidos al mes.</p>
+    <p class="subt">Neto Consiti año 1 = mensualidad de sus clientes activos × 12, menos el 20 % de los cerrados desde ${ctMesLbl(CT_PROG.desdeAlta)}, + productos adicionales. La implementación es del contador y no entra. Meta para mantener la alianza: ${CT_PROG.minMes} referidos al mes.</p>
     <div class="searchbar" style="margin-bottom:12px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input id="ct-search" type="search" placeholder="Buscar contador…" oninput="renderContadoresRows()"><span class="hint" id="ct-search-cnt"></span></div>
     <div class="tablewrap"><table class="responsive"><thead><tr>
       <th style="width:44px">#</th>
@@ -2877,7 +2880,7 @@ function renderCtLiquidacion(){
   box.innerHTML=`
     <div class="section-head"><h2>💸 Liquidación de comisiones</h2>
       <div class="ct-liq-nav"><button class="btn sm ghost icon" onclick="ctLiqNav(-1)" ${M<=CT_PROG.inicio?'disabled':''} aria-label="Mes anterior">‹</button><b>${ctMesLbl(M)}</b><button class="btn sm ghost icon" onclick="ctLiqNav(1)" ${M>=curMonth()?'disabled':''} aria-label="Mes siguiente">›</button></div></div>
-    <p class="subt">20 % de la mensualidad de cada cliente activo en ${ctMesLbl(M)}, más las implementaciones de ese mes que cobró Consiti. ${enCurso?'El mes todavía está en curso: el monto puede subir con nuevas altas. ':''}Se paga del <b>${ctFechaCorta(v.desde)}</b> al <b>${ctFechaCorta(v.hasta)}</b> (primeros ${CT_PROG.diasPago} días hábiles).</p>
+    <p class="subt">20 % de la mensualidad de cada cliente cerrado desde ${ctMesLbl(CT_PROG.desdeAlta)} y activo en ${ctMesLbl(M)}, más las implementaciones de ese mes que cobró Consiti. ${enCurso?'El mes todavía está en curso: el monto puede subir con nuevas altas. ':''}Se paga del <b>${ctFechaCorta(v.desde)}</b> al <b>${ctFechaCorta(v.hasta)}</b> (primeros ${CT_PROG.diasPago} días hábiles).</p>
     <div class="ct-liq-sum">
       <div class="m"><div class="n">${fmtUSD(total)}</div><div class="k">Total del mes</div></div>
       <div class="m"><div class="n" style="color:var(--brand-3)">${fmtUSD(rec)}</div><div class="k">20 % mensual</div></div>
@@ -2967,17 +2970,18 @@ function ctcliRecalc(){
   $('ctcli-ini-adj').textContent=dIni?`Ajuste manual de ${dIni>0?'+':'−'}${fmtUSD(Math.abs(dIni))} sobre ${fmtUSD(iniCalc)}`:'';
   $('ctcli-rr-adj').textContent=dRr?`Ajuste manual de ${dRr>0?'+':'−'}${fmtUSD(Math.abs(dRr))} sobre ${fmtUSD(rrCalc)}`:'';
   $('ctcli-ini-reset').style.visibility=dIni?'visible':'hidden';$('ctcli-rr-reset').style.visibility=dRr?'visible':'hidden';
-  const mrr=anual?rr/12:rr,com=mrr*CT_PROG.pctMensual,extras=Math.max(0,ini-impl),cobra=ctcliCobra();
+  const altaM=$('ctcli-alta').value||curMonth(),elig=altaM>=CT_PROG.desdeAlta;
+  const mrr=anual?rr/12:rr,com=elig?mrr*CT_PROG.pctMensual:0,extras=Math.max(0,ini-impl),cobra=ctcliCobra();
   $('ctcli-sum').innerHTML=`
     <div class="box ct-gana"><h4>Gana el contador</h4>
       <div class="ln"><span>Implementación (100 %)</span><b>${fmtUSD(impl)}</b></div>
       <div class="ln"><span style="padding-left:10px">${cobra==='consiti'?'Se le paga en la liquidación de '+ctMesLbl($('ctcli-alta').value||curMonth()):'Se la cobra él directo al cliente'}</span><span></span></div>
-      <div class="ln"><span>20 % de la mensualidad</span><b>${fmtUSD(com)}/mes</b></div>
+      <div class="ln"><span>${elig?'20 % de la mensualidad':'Sin comisión (cliente anterior a '+ctMesLbl(CT_PROG.desdeAlta)+')'}</span><b>${fmtUSD(com)}/mes</b></div>
       <div class="ln tot"><span>Año 1</span><b style="color:var(--brand-3)">${fmtUSD(impl+com*12)}</b></div>
     </div>
     <div class="box"><h4>Se queda Consiti</h4>
       <div class="ln"><span>Productos adicionales (único)</span><b>${fmtUSD(extras)}</b></div>
-      <div class="ln"><span>80 % de la mensualidad</span><b>${fmtUSD(mrr-com)}/mes</b></div>
+      <div class="ln"><span>${elig?'80':'100'} % de la mensualidad</span><b>${fmtUSD(mrr-com)}/mes</b></div>
       <div class="ln"><span>Pago inicial del cliente</span><b>${fmtUSD(ini)}</b></div>
       <div class="ln tot"><span>Neto año 1</span><b>${fmtUSD(extras+(mrr-com)*12)}</b></div>
     </div>`;
