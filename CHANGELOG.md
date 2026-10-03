@@ -2,6 +2,19 @@
 
 Historial de cambios del dashboard. Formato: fecha · qué cambió.
 
+## 2026-10-03 · Contadores: reglas nuevas del Programa de Alianzas Contables
+
+El panel de Contadores sigue las reglas de la landing contadores.factuiasv.com.
+
+- **Comisión:** la implementación es 100 % del contador, y además gana el **20 % de la mensualidad** de cada cliente activo. En anual, el 20 % se calcula sobre el equivalente mensual. Cada cliente guarda quién cobró la implementación (`implCobra`: `contador` o `consiti`). Solo la que cobró Consiti entra en la liquidación.
+- **Liquidación mensual** (tarjeta nueva): muestra por contador el 20 % mensual y las implementaciones, con la ventana de pago en los primeros 5 días hábiles del mes siguiente. Se saltan los fines de semana y los feriados fijos de El Salvador, pero no Semana Santa. Hay un botón para marcar el pago (`contador.pagos[YYYY-MM]`). Las liquidaciones empiezan en **oct 2026** (`CT_PROG.inicio`).
+- **Productos adicionales:** cada cliente lleva una lista `extras` con nombre, cantidad, precio editable y cobro único o mensual. Trae accesos rápidos para módulo adicional $30, carga de productos $50, capacitación presencial $100, capacitación virtual $50, diseño de logo $10 y DTE adicional $10. Los extras mensuales suman a la mensualidad y llevan el 20 %.
+- **Totales editables:** el pago inicial y la mensualidad total se calculan solos, pero se pueden sobrescribir. Se muestra el ajuste manual y hay un botón para recalcular. Se guardan `base`, `rr`, `pagoInicial` y `estado`/`baja` (cliente dado de baja).
+- **Rentabilidad:** la tabla de desempeño muestra la comisión por mes, el **neto Consiti del año 1** (80 % de la mensualidad × 12 + productos adicionales) y los referidos del mes contra la meta de 3.
+- **Precios:** el formulario usa el Tarifario de septiembre 2026 (Starter $14.99 / $170.89 al año / impl. $40 … Enterprise $150 / $1,530 / $100) y suma **Básico Anual $90** (impl. $30), que solo ofrecen los aliados. Los planes viejos de clientes ya cargados se conservan al editarlos.
+- **Arreglos:** el formulario de cliente ahora abre encima de la lista de la cartera y no detrás. El aviso «Migrar planes Básico» ya no cuenta a Básico Anual.
+- **Sin migración:** los clientes ya cargados funcionan igual. Si no tienen los campos nuevos, se toma que la implementación la cobró el contador, que no tienen extras y que siguen activos.
+
 ## 2026-09-26 · Factura IA pasa a llamarse **FactuIA** (solo etiquetas)
 
 Rebrand decidido por Briant el 26-sep-2026. A diferencia de Komandi, **aquí solo cambia lo visible**.

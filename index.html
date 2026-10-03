@@ -557,6 +557,57 @@ canvas{max-width:100%}
 th.ct-sort{cursor:pointer;user-select:none;white-space:nowrap}
 th.ct-sort:hover{color:var(--txt)}
 .ct-arrow{font-size:9px;margin-left:3px;color:var(--brand-3)}
+/* Alianzas Contables: cliente referido con extras, comisión y liquidación */
+.modal.ct-modal{max-width:760px}
+#modal-ctcli{z-index:62} /* se abre encima de la lista de clientes del contador */
+.ct-step{display:flex;align-items:center;gap:9px;font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--brand-3);margin:18px 0 10px}
+.ct-step:first-of-type{margin-top:4px}
+.ct-step span{display:grid;place-items:center;width:20px;height:20px;border-radius:7px;background:var(--brand-soft);font-size:11px;letter-spacing:0}
+.ct-seg{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.ct-seg label{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--border-2);border-radius:12px;padding:10px 12px;cursor:pointer;background:var(--bg);font-size:12.5px;color:var(--txt-2);line-height:1.45}
+.ct-seg label b{display:block;color:var(--txt);font-size:13px}
+.ct-seg input{flex:0 0 auto;width:16px;height:16px;min-height:0;padding:0;margin:2px 0 0;border:0;box-shadow:none;accent-color:var(--brand-2)}
+.ct-seg label:has(input:checked){border-color:var(--brand-2);background:var(--brand-soft)}
+.ct-chips{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:10px}
+.ct-chip{border:1px dashed var(--border-2);background:none;color:var(--txt-2);border-radius:99px;padding:6px 11px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit}
+.ct-chip b{color:var(--txt);font-weight:700}
+.ct-chip:hover{border-color:var(--brand-2);color:var(--txt);background:var(--brand-soft)}
+.ct-ex-head,.ct-ex-row{display:grid;grid-template-columns:minmax(0,1fr) 62px 96px 104px 84px 34px;gap:8px;align-items:center}
+.ct-ex-head{font-size:10.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--txt-3);padding:0 2px 6px}
+.ct-ex-row{margin-bottom:7px}
+.ct-ex-row input,.ct-ex-row select{width:100%;padding:8px 9px;font-size:13px}
+.ct-ex-row .sub{text-align:right;font-variant-numeric:tabular-nums;font-weight:700;font-size:13px}
+.ct-ex-empty{font-size:12.5px;color:var(--txt-3);padding:10px 12px;border:1px dashed var(--border);border-radius:10px}
+.ct-sum{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.ct-sum .box{background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:13px 14px}
+.ct-sum .box h4{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--txt-3);margin-bottom:9px}
+.ct-sum .ln{display:flex;justify-content:space-between;gap:10px;font-size:12.5px;color:var(--txt-2);padding:3px 0;font-variant-numeric:tabular-nums}
+.ct-sum .ln b{color:var(--txt)}
+.ct-sum .ln.tot{border-top:1px solid var(--border);margin-top:6px;padding-top:8px;font-size:13.5px}
+.ct-sum .ln.tot b{color:var(--ok)}
+.ct-sum .box.ct-gana{border-color:rgba(124,77,255,.35);background:linear-gradient(180deg,rgba(124,77,255,.1),var(--bg))}
+.ct-total-in{display:flex;align-items:center;gap:8px}
+.ct-total-in input{flex:1;font-weight:700}
+.ct-reset{background:none;border:none;color:var(--brand-3);font-size:11.5px;font-weight:700;cursor:pointer;padding:0;white-space:nowrap;font-family:inherit}
+.ct-adj{font-size:11.5px;color:var(--warn);margin-top:5px;min-height:15px}
+.ct-liq-nav{display:flex;align-items:center;gap:6px}
+.ct-liq-nav b{min-width:74px;text-align:center;font-size:13px}
+.ct-liq-sum{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:14px}
+.ct-liq-sum .m{background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:11px 14px}
+.ct-liq-sum .n{font-family:'Space Grotesk';font-weight:700;font-size:19px;font-variant-numeric:tabular-nums}
+.ct-liq-sum .k{font-size:11px;color:var(--txt-3);font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-top:2px}
+.ct-meta3{font-variant-numeric:tabular-nums;font-weight:700}
+.ct-meta3.ok{color:var(--ok)} .ct-meta3.no{color:var(--txt-3)}
+.ct-who .cellmain,.ct-who .cellsub,#list-tbody .cellsub{display:block}
+.ct-cli-sum{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:12.5px;color:var(--txt-2);padding:2px 0 10px}
+.ct-cli-sum b{color:var(--txt);font-variant-numeric:tabular-nums}
+@media(max-width:640px){
+  .ct-seg,.ct-sum{grid-template-columns:1fr}
+  .ct-ex-head{display:none}
+  .ct-ex-row{grid-template-columns:1fr 1fr 34px;background:var(--surface-2);border-radius:10px;padding:8px}
+  .ct-ex-row .nm{grid-column:1/3}
+  .ct-ex-row .sub{text-align:left}
+}
 .clead-panel{background:linear-gradient(180deg,rgba(154,115,255,.07),transparent);border:1px solid var(--border);border-radius:12px;padding:11px 13px;margin-top:2px}
 .clead-panel .section-head{align-items:center}
 .clead-panel h3{margin:0}
@@ -983,14 +1034,30 @@ th.ct-sort:hover{color:var(--txt)}
 </div></div>
 
 <!-- MODAL CLIENTE REFERIDO (cartera de un contador) -->
-<div class="overlay" id="modal-ctcli"><div class="modal" role="dialog" aria-modal="true">
+<div class="overlay" id="modal-ctcli"><div class="modal ct-modal" role="dialog" aria-modal="true">
   <div class="modal-head"><div><h3 id="ctcli-title">Nuevo cliente referido</h3><p id="ctcli-sub"></p></div><button class="iconbtn" data-close="modal-ctcli" aria-label="Cerrar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
   <input type="hidden" id="ctcli-cid" /><input type="hidden" id="ctcli-idx" />
-  <div class="field"><label>Empresa / Cliente <span class="req">*</span></label><input id="ctcli-emp" placeholder="Nombre del cliente" /></div>
-  <div class="field"><label>Contacto</label><input id="ctcli-con" placeholder="Persona de contacto" /></div>
-  <div class="row c2"><div class="field"><label>Plan</label><select id="ctcli-plan"></select></div><div class="field"><label>Período</label><select id="ctcli-per"><option value="mensual">Mensual</option><option value="anual">Anual</option></select></div></div>
-  <div class="row c3"><div class="field"><label>Recurrente (USD)</label><input type="number" step="0.01" min="0" id="ctcli-rr" /></div><div class="field"><label>Implementación (USD)</label><input type="number" step="0.01" min="0" id="ctcli-impl" /></div><div class="field"><label>Mes de alta</label><input type="month" id="ctcli-alta" /></div></div>
-  <p class="helper" style="margin-bottom:14px">Al elegir plan y período se autocompletan los montos (editables). En plan anual, el recurrente es el <b>monto del año</b>.</p>
+  <div class="ct-step"><span>1</span>Cliente</div>
+  <div class="row c2"><div class="field"><label>Empresa / Cliente <span class="req">*</span></label><input id="ctcli-emp" placeholder="Nombre del cliente" /></div><div class="field"><label>Contacto</label><input id="ctcli-con" placeholder="Persona de contacto" /></div></div>
+  <div class="ct-step"><span>2</span>Plan e implementación</div>
+  <div class="row c3"><div class="field"><label>Plan</label><select id="ctcli-plan"></select></div><div class="field"><label>Período</label><select id="ctcli-per"><option value="mensual">Mensual</option><option value="anual">Anual</option></select></div><div class="field"><label>Mes de alta</label><input type="month" id="ctcli-alta" /></div></div>
+  <div class="row c2"><div class="field"><label id="ctcli-base-lbl">Cuota del plan (USD/mes)</label><input type="number" step="0.01" min="0" id="ctcli-base" /></div><div class="field"><label>Implementación (USD)</label><input type="number" step="0.01" min="0" id="ctcli-impl" /></div></div>
+  <div class="field"><label>¿Quién cobra la implementación?</label>
+    <div class="ct-seg">
+      <label><input type="radio" name="ctcli-cobra" value="contador" checked /><span><b>El contador</b>Se la cobra él al cliente. Ya es suya: no entra en la liquidación.</span></label>
+      <label><input type="radio" name="ctcli-cobra" value="consiti" /><span><b>Consiti</b>La cobramos nosotros y se la pagamos al contador en la liquidación del mes.</span></label>
+    </div>
+  </div>
+  <div class="ct-step"><span>3</span>Productos adicionales</div>
+  <div class="ct-chips" id="ctcli-chips"></div>
+  <div id="ctcli-extras"></div>
+  <div class="ct-step"><span>4</span>Totales y comisión</div>
+  <div class="row c2">
+    <div class="field"><label>Pago inicial del cliente (USD)</label><div class="ct-total-in"><input type="number" step="0.01" min="0" id="ctcli-ini" /><button type="button" class="ct-reset" id="ctcli-ini-reset">Recalcular</button></div><div class="ct-adj" id="ctcli-ini-adj"></div></div>
+    <div class="field"><label id="ctcli-rr-lbl">Mensualidad total (USD/mes)</label><div class="ct-total-in"><input type="number" step="0.01" min="0" id="ctcli-rr" /><button type="button" class="ct-reset" id="ctcli-rr-reset">Recalcular</button></div><div class="ct-adj" id="ctcli-rr-adj"></div></div>
+  </div>
+  <div class="ct-sum" id="ctcli-sum"></div>
+  <div class="row c2" style="margin-top:14px"><div class="field"><label>Estado</label><select id="ctcli-estado"><option value="activo">Activo</option><option value="baja">Dado de baja</option></select></div><div class="field" id="ctcli-baja-field" style="display:none"><label>Mes de baja</label><input type="month" id="ctcli-baja" /></div></div>
   <div class="actions"><button class="btn ghost" data-close="modal-ctcli">Cancelar</button><button class="btn" id="ctcli-save">Guardar cliente</button></div>
 </div></div>
 
@@ -2533,30 +2600,84 @@ function canalPeriodo(){ // altas y recurrente nuevo del canal en sep–dic 2026
 }
 function contadorOptions(sel){return '<option value="">— Elige contador —</option>'+[...(state.contadores||[])].sort((a,b)=>a.nombre.localeCompare(b.nombre)).map(c=>`<option value="${c.id}"${c.id===sel?' selected':''}>${esc(c.nombre)}</option>`).join('');}
 function toggleContadorField(pfx){const o=$(pfx+'-origen').value,f=$(pfx+'-contador-field');if(f)f.style.display=(o==='Alianza Contable'||o==='Referido')?'':'none';}
-/* --- Cartera unificada por contador: histórico + ventas nuevas vinculadas --- */
-const ctCli=c=>[
-  ...(c.hist||[]).map(h=>({planNombre:h.planNombre||'—',plan:h.plan==='anual'?'anual':'mensual',rr:+h.rr||0,impl:+h.impl||0,alta:h.alta||'',nuevo:false})),
-  ...contadorLinkedSales(c.id).map(s=>({planNombre:(PLANS[s.plan]||{label:s.plan}).label,plan:s.mode==='anual'?'anual':'mensual',rr:s.mode==='anual'?+(saleMonthly(s)*12).toFixed(2):saleMonthly(s),impl:saleImpl(s),alta:(s.start||'').slice(0,7),nuevo:true}))
+/* --- Reglas del Programa de Alianzas Contables (las de contadores.factuiasv.com) ---
+   · La implementación es 100 % del contador. Si se la cobra él, ya es suya; si la cobra Consiti, se le paga en la liquidación.
+   · El contador gana el 20 % de la mensualidad de cada cliente mientras siga activo (en anual, el 20 % del equivalente mensual).
+   · Se le paga en los primeros 5 días hábiles del mes siguiente. Para mantener la alianza refiere al menos 3 clientes al mes.
+   · Los productos adicionales (módulos, carga de productos, capacitaciones…) son ingreso de Consiti; si son mensuales,
+     suman a la mensualidad y llevan el 20 %. Las liquidaciones se calculan desde CT_PROG.inicio. */
+const CT_PROG={pctMensual:.2,inicio:'2026-10',minMes:3,diasPago:5};
+const CT_EXTRAS=[{nombre:'Módulo adicional',precio:30},{nombre:'Carga de productos',precio:50},{nombre:'Capacitación presencial',precio:100},{nombre:'Capacitación virtual',precio:50},{nombre:'Diseño de logo',precio:10},{nombre:'DTE adicional',precio:10}];
+const ctExtrasSum=(ex,tipo)=>(ex||[]).filter(e=>(e.tipo||'unico')===tipo).reduce((a,e)=>a+(+e.precio||0)*(+e.cant||1),0);
+const ctRound=n=>Math.round((+n||0)*100)/100;
+/* --- Cartera unificada por contador: histórico + ventas nuevas vinculadas (incluye bajas) --- */
+const ctCliAll=c=>[
+  ...(c.hist||[]).map((h,i)=>({client:h.empresa,idx:i,planNombre:h.planNombre||'—',plan:h.plan==='anual'?'anual':'mensual',rr:+h.rr||0,impl:+h.impl||0,alta:h.alta||'',nuevo:false,
+    implCobra:h.implCobra||'contador',extras:h.extras||[],
+    extrasUnico:h.pagoInicial!=null?Math.max(0,(+h.pagoInicial||0)-(+h.impl||0)):ctExtrasSum(h.extras,'unico'),
+    baja:h.estado==='baja'?(h.baja||curMonth()):''})),
+  ...state.sales.filter(s=>s.contadorId===c.id).map(s=>({client:s.client,saleId:s.id,planNombre:(PLANS[s.plan]||{label:s.plan}).label,plan:s.mode==='anual'?'anual':'mensual',rr:s.mode==='anual'?+(saleMonthly(s)*12).toFixed(2):saleMonthly(s),impl:saleImpl(s),alta:(s.start||'').slice(0,7),nuevo:true,
+    implCobra:s.implCobra||'contador',extras:[],extrasUnico:0,
+    baja:s.churned?((s.churnDate||'').slice(0,7)||curMonth()):''}))
 ];
+const ctCli=c=>ctCliAll(c).filter(x=>!x.baja); // cartera activa
 const ctMrrOf=x=>x.plan==='mensual'?x.rr:x.rr/12; // rr anual viene como monto del año
 const ctTotals=arr=>arr.reduce((t,x)=>({impl:t.impl+x.impl,mrr:t.mrr+ctMrrOf(x),arr:t.arr+ctMrrOf(x)*12}),{impl:0,mrr:0,arr:0});
+const ctComMes=x=>ctMrrOf(x)*CT_PROG.pctMensual;
+const ctActivoEn=(x,M)=>(x.alta||'0000-00')<=M&&!(x.baja&&x.baja<=M);
+/* Rentabilidad: lo que Consiti se queda del contador en el año 1 (80 % de la mensualidad + productos adicionales).
+   La implementación no suma ni resta: es del contador. */
+function ctRentab(c){
+  const cli=ctCli(c),t=ctTotals(cli),extras=cli.reduce((a,x)=>a+x.extrasUnico,0);
+  const comMes=t.mrr*CT_PROG.pctMensual,comAnio=comMes*12;
+  const neto=t.arr-comAnio+extras;
+  const M=curMonth(),altasMes=ctCliAll(c).filter(x=>x.alta===M).length;
+  return {cli,...t,extras,comMes,comAnio,neto,altasMes,cumple:altasMes>=CT_PROG.minMes,ganaAnio:comAnio+t.impl};
+}
+/* Liquidación de un mes: 20 % de cada cliente activo ese mes + implementaciones que cobró Consiti con alta en ese mes */
+function ctLiquidacion(c,M){
+  const all=ctCliAll(c),act=all.filter(x=>ctActivoEn(x,M));
+  const recurrente=act.reduce((a,x)=>a+ctComMes(x),0);
+  const impls=all.filter(x=>x.alta===M&&x.implCobra==='consiti'),impl=impls.reduce((a,x)=>a+x.impl,0);
+  return {n:act.length,recurrente,impl,nImpl:impls.length,total:recurrente+impl,pago:(c.pagos||{})[M]||null};
+}
+/* Días hábiles de El Salvador (lunes a viernes sin feriados fijos; Semana Santa no se descuenta) */
+const SV_FERIADOS=['01-01','05-01','05-10','06-17','08-03','08-04','08-05','08-06','09-15','11-02','12-25'];
+function ctDiaHabil(y,m,n){
+  const d=new Date(y,m-1,1);let k=0;
+  for(;;){const md=String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+    if(d.getDay()!==0&&d.getDay()!==6&&!SV_FERIADOS.includes(md)&&++k===n)return d;
+    d.setDate(d.getDate()+1);}
+}
+function ctVentanaPago(M){const [y,m]=M.split('-').map(Number),ny=m===12?y+1:y,nm=m===12?1:m+1;return {desde:ctDiaHabil(ny,nm,1),hasta:ctDiaHabil(ny,nm,CT_PROG.diasPago)};}
+const ctFechaCorta=d=>d.getDate()+' '+CT_MES[d.getMonth()];
+const ctAddMonth=(M,k)=>{let [y,m]=M.split('-').map(Number);m+=k;while(m>12){m-=12;y++;}while(m<1){m+=12;y--;}return `${y}-${String(m).padStart(2,'0')}`;};
+function ctEstadoPago(M,liq){
+  if(liq.pago)return {cls:'st-finalizada',txt:'Pagado '+fmtDate(liq.pago.fecha)};
+  if(!liq.total)return {cls:'st-pendiente',txt:'Sin comisión'};
+  if(M>=curMonth())return {cls:'st-curso',txt:'Mes en curso'};
+  const v=ctVentanaPago(M),hoy=todayISO(),iso=d=>localISO(d);
+  if(hoy<iso(v.desde))return {cls:'st-pendiente',txt:'Se paga desde el '+ctFechaCorta(v.desde)};
+  if(hoy<=iso(v.hasta))return {cls:'b-soon',txt:'Toca pagar · vence '+ctFechaCorta(v.hasta)};
+  return {cls:'b-overdue',txt:'Vencido el '+ctFechaCorta(v.hasta)};
+}
 const CT_MES=['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
 const ctMesLbl=ym=>{if(!ym)return '—';const [y,m]=ym.split('-');return CT_MES[+m-1]+' '+String(y).slice(2);};
 const ctShort=n=>(n||'').replace(/^(licda?\.?|lic\.?|ing\.?)\s+/i,'').trim().split(/\s+/).slice(0,2).join(' ');
 const ctInitials=n=>ctShort(n).split(/\s+/).map(w=>(w[0]||'')).join('').toUpperCase()||'?';
 const CT_PLAN_COLORS={'Básico':'#5eead4','Starter':'#7c4dff','Professional':'#9a73ff','Advanced':'#FDC555','Deluxe':'#34d399','Enterprise':'#f87171','Básico Anual':'#2dd4bf','Starter Anual':'#a78bfa','Plan Básico Mensual':'#5eead4','Professional Incrize':'#c9b6fb'};
 const ctCompact=v=>'$'+new Intl.NumberFormat('en',{notation:'compact',maximumFractionDigits:1}).format(v);
-let ctSort={key:'anio1',dir:-1};
+let ctSort={key:'neto',dir:-1};
 function ctSortBoard(k){ctSort=ctSort.key===k?{key:k,dir:-ctSort.dir}:{key:k,dir:k==='n'?1:-1};renderContadoresRows();}
 function ctScrollBoard(){const el=$('ct-board-card');if(el)el.scrollIntoView({behavior:'smooth',block:'start'});}
 /* --- Acciones sugeridas (adaptado del panel ejecutivo) --- */
 function ctInsights(ranked,anio1Total){
   const list=[];
   const topShare=anio1Total&&ranked[0]?ranked[0].anio1/anio1Total*100:0;
-  const basico=ranked.reduce((a,r)=>a+r.cli.filter(x=>/b[áa]sico/i.test(x.planNombre)).length,0);
+  const basico=ranked.reduce((a,r)=>a+r.cli.filter(x=>/^b[áa]sico$/i.test(x.planNombre)).length,0);
   if(basico){
-    let uplift=0;ranked.forEach(r=>r.cli.filter(x=>/b[áa]sico/i.test(x.planNombre)).forEach(x=>{uplift+=Math.max(0,(x.plan==='anual'?113.87/12:14.99)-ctMrrOf(x));}));
-    const tgt=[...ranked].sort((a,b)=>b.cli.filter(x=>/b[áa]sico/i.test(x.planNombre)).length-a.cli.filter(x=>/b[áa]sico/i.test(x.planNombre)).length)[0];
+    let uplift=0;ranked.forEach(r=>r.cli.filter(x=>/^b[áa]sico$/i.test(x.planNombre)).forEach(x=>{uplift+=Math.max(0,(x.plan==="anual"?CT_PLANES.Starter.anual/12:CT_PLANES.Starter.mensual)-ctMrrOf(x));}));
+    const tgt=[...ranked].sort((a,b)=>b.cli.filter(x=>/^b[áa]sico$/i.test(x.planNombre)).length-a.cli.filter(x=>/^b[áa]sico$/i.test(x.planNombre)).length)[0];
     list.push({sev:'warn',title:'Migrar planes Básico (descontinuado)',desc:`<b>${basico}</b> clientes siguen en plan Básico. Migrarlos a Starter suma ~<b>${fmtUSD(uplift)}</b>/mes de MRR.`,action:'Abrir '+ctShort(tgt.n),fn:`contadorClientList('${tgt.id}')`});
   }
   const pocos=ranked.filter(r=>r.k<=1).length;
@@ -2575,6 +2696,9 @@ function renderContadores(){
   const T=ctTotals(all),anio1Total=T.impl+T.arr;
   const anualN=all.filter(x=>x.plan==='anual').length,pctAnual=all.length?Math.round(anualN/all.length*100):0;
   const ticket=all.length?T.arr/all.length:0;
+  const R=(state.contadores||[]).map(ctRentab);
+  const comMesTot=R.reduce((a,r)=>a+r.comMes,0),netoTot=R.reduce((a,r)=>a+r.neto,0),extrasTot=R.reduce((a,r)=>a+r.extras,0);
+  const cumplen=R.filter(r=>r.cumple).length;
   /* Meta SMB (siempre visible) */
   const curM=curMonth(),per=canalPeriodo();
   const mesN=canalAltasMes(curM),pctMes=Math.min(100,mesN/CANAL_SMB.altasMes*100);
@@ -2593,9 +2717,9 @@ function renderContadores(){
       </div>
       <div class="ct-mini">
         <div class="m"><div class="n">${fmtUSD0(T.mrr)}</div><div class="k">MRR recurrente</div></div>
-        <div class="m"><div class="n">${fmtUSD0(T.arr)}</div><div class="k">ARR recurrente</div></div>
-        <div class="m"><div class="n">${pctAnual}%</div><div class="k">Clientes anuales</div></div>
-        <div class="m"><div class="n">${fmtUSD0(ticket)}</div><div class="k">Ticket ARR prom.</div></div>
+        <div class="m"><div class="n" style="color:var(--brand-3)">${fmtUSD(comMesTot)}</div><div class="k">Comisión 20 % / mes</div></div>
+        <div class="m"><div class="n" style="color:var(--ok)">${fmtUSD0(netoTot)}</div><div class="k">Neto Consiti año 1</div></div>
+        <div class="m"><div class="n">${fmtUSD0(extrasTot)}</div><div class="k">Productos adicionales</div></div>
       </div>
     </div>
   </div>
@@ -2603,11 +2727,11 @@ function renderContadores(){
     <div class="card kpi"><div class="khead"><span class="klabel">Contadores en la red</span></div><div class="kval tnum">${stats.length}</div><div class="kmeta">${stats.filter(x=>x.s.n>0).length} con clientes · ≈ ${(stats.length?all.length/stats.length:0).toFixed(1)} por contador</div></div>
     <div class="card kpi"><div class="khead"><span class="klabel">Clientes referidos</span></div><div class="kval tnum">${all.length}</div><div class="kmeta">${tot.nuevos?tot.nuevos+' vinculados desde este dashboard · ':''}${pctAnual}% anuales</div><div class="bar"><i style="width:${pctAnual}%"></i></div></div>
     <div class="card kpi"><div class="khead"><span class="klabel">Implementaciones</span></div><div class="kval lav tnum">${fmtUSD0(T.impl)}</div><div class="kmeta">ingreso único acumulado del canal</div></div>
-    <div class="card kpi"><div class="khead"><span class="klabel">Altas este mes</span></div><div class="kval tnum" style="color:#10b981">${tot.mes} <span style="font-size:15px;color:var(--txt-3)">/ ${CANAL_SMB.altasMes}</span></div><div class="kmeta">Comisión est. del mes: ${fmtUSD(tot.com)} (1ª mensualidad)</div><div class="bar green"><i style="width:${Math.min(100,tot.mes/CANAL_SMB.altasMes*100)}%"></i></div></div>
+    <div class="card kpi"><div class="khead"><span class="klabel">Altas este mes</span></div><div class="kval tnum" style="color:#10b981">${tot.mes} <span style="font-size:15px;color:var(--txt-3)">/ ${CANAL_SMB.altasMes}</span></div><div class="kmeta">${cumplen} de ${stats.length} contadores llevan ${CT_PROG.minMes}+ referidos este mes</div><div class="bar green"><i style="width:${Math.min(100,tot.mes/CANAL_SMB.altasMes*100)}%"></i></div></div>
   </div>
   <div class="card" style="margin-bottom:16px">
     <div class="section-head"><h2>Meta SMB · Canal de contadores</h2><span class="hint">palanca 3 del Plan Línea SMB 2026</span></div>
-    <p class="subt" style="margin-bottom:14px"><b>55 altas al mes · 220 en el período sep–dic</b> (son parte de las 332 de FactuIA) · aporte de <b>$4,620/mes a diciembre</b> · comisión al contador: un mes de servicio por alta activada (~$21).</p>
+    <p class="subt" style="margin-bottom:14px"><b>55 altas al mes · 220 en el período sep–dic</b> (son parte de las 332 de FactuIA) · aporte de <b>$4,620/mes a diciembre</b> · comisión al contador: <b>la implementación completa + el 20 % de la mensualidad</b> mientras el cliente siga activo, pagada en los primeros ${CT_PROG.diasPago} días hábiles del mes siguiente.</p>
     <div class="muted-3" style="font-size:12px;margin-bottom:6px">Altas del mes en curso: <b style="color:#10b981">${mesN} de ${CANAL_SMB.altasMes}</b> · ${pctMes.toFixed(0)}%</div>
     <div class="bar green" style="margin-bottom:14px"><i style="width:${pctMes}%"></i></div>
     <div class="muted-3" style="font-size:12px;margin-bottom:6px">Altas del período (sep–dic): <b>${per.altas} de ${CANAL_SMB.altasPeriodo}</b> · ${pctPer.toFixed(0)}%</div>
@@ -2627,17 +2751,15 @@ function renderContadores(){
     <div class="section-head"><h2>Crecimiento de la red · altas por mes</h2><span class="hint" id="ct-altas-note"></span></div>
     <div class="chart-box" style="height:260px"><canvas id="chartCtAltas"></canvas></div>
   </div>
+  <div class="card pad-lg" id="ct-liq-card" style="margin-bottom:16px"></div>
   <div class="card pad-lg" id="ct-board-card" style="margin-bottom:16px">
-    <div class="section-head"><h2>Desempeño por contador</h2><span class="hint">clic en la fila para ver sus clientes · encabezados ordenan</span></div>
+    <div class="section-head"><h2>Desempeño y rentabilidad por contador</h2><span class="hint">clic en la fila para ver sus clientes · encabezados ordenan</span></div>
+    <p class="subt">Neto Consiti año 1 = 80 % de la mensualidad de sus clientes activos × 12 + productos adicionales. La implementación es del contador y no entra. Meta para mantener la alianza: ${CT_PROG.minMes} referidos al mes.</p>
     <div class="searchbar" style="margin-bottom:12px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input id="ct-search" type="search" placeholder="Buscar contador…" oninput="renderContadoresRows()"><span class="hint" id="ct-search-cnt"></span></div>
     <div class="tablewrap"><table class="responsive"><thead><tr>
       <th style="width:44px">#</th>
-      <th class="ct-sort" onclick="ctSortBoard('n')">Contador${ctSort.key==='n'?`<span class="ct-arrow">${ctSort.dir===1?'▲':'▼'}</span>`:''}</th>
-      <th class="num ct-sort" onclick="ctSortBoard('k')">Clientes${ctSort.key==='k'?`<span class="ct-arrow">${ctSort.dir===1?'▲':'▼'}</span>`:''}</th>
-      <th class="num ct-sort" onclick="ctSortBoard('mrr')">MRR${ctSort.key==='mrr'?`<span class="ct-arrow">${ctSort.dir===1?'▲':'▼'}</span>`:''}</th>
-      <th class="num ct-sort" onclick="ctSortBoard('arr')">ARR${ctSort.key==='arr'?`<span class="ct-arrow">${ctSort.dir===1?'▲':'▼'}</span>`:''}</th>
-      <th class="num ct-sort" onclick="ctSortBoard('anio1')">Participación${ctSort.key==='anio1'?`<span class="ct-arrow">${ctSort.dir===1?'▲':'▼'}</span>`:''}</th>
-      <th>Última alta</th><th class="right">Acciones</th>
+      ${[['n','Contador',''],['k','Clientes','num'],['mrr','MRR','num'],['com','Comisión/mes','num'],['neto','Neto Consiti año 1','num'],['mes','Referidos del mes','num']].map(([k,l,c])=>`<th class="${c} ct-sort" onclick="ctSortBoard('${k}')">${l}${ctSort.key===k?`<span class="ct-arrow">${ctSort.dir===1?'▲':'▼'}</span>`:''}</th>`).join('')}
+      <th class="right">Acciones</th>
     </tr></thead><tbody id="ct-tbody"></tbody></table></div>
     <div id="ct-empty" class="empty" style="display:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg><p>Aún no hay contadores</p><span>Agrega el primero con “Nuevo contador”.</span></div>
   </div>
@@ -2646,6 +2768,7 @@ function renderContadores(){
     <div class="card"><div class="section-head"><h2>🚀 A quién impulsar / reactivar</h2><span class="hint">según su última alta</span></div><div class="ct-push" id="ct-push"></div></div>
   </div>`;
   renderContadoresRows();
+  renderCtLiquidacion();
   /* --- Ranking (barras horizontales apiladas ARR + implementación) --- */
   const top=ranked.slice(0,12);
   charts.ctRank=new Chart($('chartCtRank'),{type:'bar',
@@ -2719,65 +2842,196 @@ function renderContadores(){
 }
 function renderContadoresRows(){
   const q=($('ct-search')?$('ct-search').value:'').toLowerCase();
-  const anio1Total=(state.contadores||[]).reduce((a,c)=>{const t=ctTotals(ctCli(c));return a+t.impl+t.arr;},0);
-  let rows=(state.contadores||[]).map(c=>{const cli=ctCli(c),t=ctTotals(cli),s=contadorStats(c);return {c,cli,s,k:cli.length,...t,anio1:t.impl+t.arr,ultima:cli.map(x=>x.alta).filter(Boolean).sort().pop()||''};});
-  const rankPos={};[...rows].sort((a,b)=>b.anio1-a.anio1).forEach((r,i)=>rankPos[r.c.id]=i+1);
-  const getv={n:r=>r.c.nombre.toLowerCase(),k:r=>r.k,mrr:r=>r.mrr,arr:r=>r.arr,anio1:r=>r.anio1};
+  let rows=(state.contadores||[]).map(c=>{const r=ctRentab(c),s=contadorStats(c);return {c,s,k:r.cli.length,...r,ultima:r.cli.map(x=>x.alta).filter(Boolean).sort().pop()||''};});
+  const netoTotal=rows.reduce((a,r)=>a+r.neto,0);
+  const rankPos={};[...rows].sort((a,b)=>b.neto-a.neto).forEach((r,i)=>rankPos[r.c.id]=i+1);
+  const getv={n:r=>r.c.nombre.toLowerCase(),k:r=>r.k,mrr:r=>r.mrr,com:r=>r.comMes,neto:r=>r.neto,mes:r=>r.altasMes};
   rows.sort((a,b)=>{const va=getv[ctSort.key](a),vb=getv[ctSort.key](b);return (va>vb?1:va<vb?-1:0)*ctSort.dir;});
   if(q)rows=rows.filter(r=>r.c.nombre.toLowerCase().includes(q));
   if($('ct-search-cnt'))$('ct-search-cnt').textContent=q?`${rows.length} de ${(state.contadores||[]).length}`:'';
   $('ct-tbody').innerHTML=rows.map(r=>{
-    const pos=rankPos[r.c.id],share=anio1Total?r.anio1/anio1Total*100:0;
+    const pos=rankPos[r.c.id],share=netoTotal?r.neto/netoTotal*100:0;
     return `<tr style="cursor:pointer" onclick="contadorClientList('${r.c.id}')">
       <td data-label="#"><span class="ctrk ${pos<=3?'top':''}">${pos}</span></td>
-      <td class="cellwrap" data-label="Contador"><div class="ct-who"><span class="ct-av">${ctInitials(r.c.nombre)}</span><span style="min-width:0"><span class="cellmain">${esc(r.c.nombre)}</span>${(r.c.tel||r.c.mail)?`<span class="cellsub">${esc([r.c.tel,r.c.mail].filter(Boolean).join(' · '))}</span>`:''}</span></div></td>
+      <td class="cellwrap" data-label="Contador"><div class="ct-who"><span class="ct-av">${ctInitials(r.c.nombre)}</span><span style="min-width:0"><span class="cellmain">${esc(r.c.nombre)}</span><span class="cellsub">${esc([r.c.tel,r.c.mail].filter(Boolean).join(' · ')||('Última alta: '+(r.ultima?ctMesLbl(r.ultima):'—')))}</span></span></div></td>
       <td class="num" data-label="Clientes"><b>${r.k}</b>${r.s.nuevos?` <span class="pl-new">+${r.s.nuevos}</span>`:''}</td>
       <td class="num" data-label="MRR">${fmtUSD(r.mrr)}</td>
-      <td class="num" data-label="ARR">${fmtUSD0(r.arr)}</td>
-      <td class="num" data-label="Participación"><div class="ct-share"><span class="track"><i style="width:${Math.min(100,share).toFixed(1)}%"></i></span><span class="pc">${share.toFixed(1)}%</span></div></td>
-      <td class="num muted-3" data-label="Última alta">${r.ultima?ctMesLbl(r.ultima):'—'}</td>
+      <td class="num" data-label="Comisión/mes" style="color:var(--brand-3)">${fmtUSD(r.comMes)}</td>
+      <td class="num" data-label="Neto Consiti año 1"><div class="ct-share"><span class="track"><i style="width:${Math.min(100,Math.max(0,share)).toFixed(1)}%"></i></span><span class="pc" style="min-width:64px;color:var(--txt)">${fmtUSD0(r.neto)}</span></div></td>
+      <td class="num" data-label="Referidos del mes"><span class="ct-meta3 ${r.cumple?'ok':'no'}">${r.altasMes} / ${CT_PROG.minMes}</span></td>
       <td class="t-actions-cell" data-label="Acciones"><div class="t-actions"><button class="btn sm ghost icon" onclick="event.stopPropagation();openCtCliente('${r.c.id}')" title="Agregar cliente a su cartera"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button><button class="btn sm ghost icon" onclick="event.stopPropagation();openContador('${r.c.id}')" title="Editar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4z"/></svg></button><button class="btn sm danger icon" onclick="event.stopPropagation();delContador('${r.c.id}')" title="Eliminar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg></button></div></td>
     </tr>`;}).join('');
   $('ct-empty').style.display=rows.length?'none':'';
 }
+/* --- Liquidación mensual de comisiones --- */
+let ctLiqMes=null;
+function ctLiqDefault(){const prev=ctAddMonth(curMonth(),-1);return prev>=CT_PROG.inicio?prev:CT_PROG.inicio;}
+function ctLiqNav(k){const m=ctAddMonth(ctLiqMes||ctLiqDefault(),k);if(m<CT_PROG.inicio||m>curMonth())return;ctLiqMes=m;renderCtLiquidacion();}
+function renderCtLiquidacion(){
+  const box=$('ct-liq-card');if(!box)return;
+  const M=ctLiqMes||(ctLiqMes=ctLiqDefault()),v=ctVentanaPago(M);
+  const rows=(state.contadores||[]).map(c=>({c,l:ctLiquidacion(c,M)})).filter(r=>r.l.total>0).sort((a,b)=>b.l.total-a.l.total);
+  const total=rows.reduce((a,r)=>a+r.l.total,0),pagado=rows.filter(r=>r.l.pago).reduce((a,r)=>a+r.l.total,0);
+  const rec=rows.reduce((a,r)=>a+r.l.recurrente,0),imp=rows.reduce((a,r)=>a+r.l.impl,0);
+  const enCurso=M>=curMonth();
+  box.innerHTML=`
+    <div class="section-head"><h2>💸 Liquidación de comisiones</h2>
+      <div class="ct-liq-nav"><button class="btn sm ghost icon" onclick="ctLiqNav(-1)" ${M<=CT_PROG.inicio?'disabled':''} aria-label="Mes anterior">‹</button><b>${ctMesLbl(M)}</b><button class="btn sm ghost icon" onclick="ctLiqNav(1)" ${M>=curMonth()?'disabled':''} aria-label="Mes siguiente">›</button></div></div>
+    <p class="subt">20 % de la mensualidad de cada cliente activo en ${ctMesLbl(M)}, más las implementaciones de ese mes que cobró Consiti. ${enCurso?'El mes todavía está en curso: el monto puede subir con nuevas altas. ':''}Se paga del <b>${ctFechaCorta(v.desde)}</b> al <b>${ctFechaCorta(v.hasta)}</b> (primeros ${CT_PROG.diasPago} días hábiles).</p>
+    <div class="ct-liq-sum">
+      <div class="m"><div class="n">${fmtUSD(total)}</div><div class="k">Total del mes</div></div>
+      <div class="m"><div class="n" style="color:var(--brand-3)">${fmtUSD(rec)}</div><div class="k">20 % mensual</div></div>
+      <div class="m"><div class="n">${fmtUSD(imp)}</div><div class="k">Implementaciones</div></div>
+      <div class="m"><div class="n" style="color:${total-pagado>0?'var(--warn)':'var(--ok)'}">${fmtUSD(total-pagado)}</div><div class="k">Pendiente de pago</div></div>
+    </div>
+    ${rows.length?`<div class="tablewrap"><table class="responsive"><thead><tr><th>Contador</th><th class="num">Clientes activos</th><th class="num">20 % mensual</th><th class="num">Implementaciones</th><th class="num">Total</th><th>Estado</th><th class="right">Pago</th></tr></thead><tbody>
+    ${rows.map(({c,l})=>{const e=ctEstadoPago(M,l);return `<tr>
+      <td class="cellwrap" data-label="Contador"><div class="ct-who"><span class="ct-av">${ctInitials(c.nombre)}</span><span class="cellmain" style="cursor:pointer" onclick="contadorClientList('${c.id}')">${esc(c.nombre)}</span></div></td>
+      <td class="num" data-label="Clientes activos">${l.n}</td>
+      <td class="num" data-label="20 % mensual">${fmtUSD(l.recurrente)}</td>
+      <td class="num" data-label="Implementaciones">${l.impl?fmtUSD(l.impl)+` <span class="muted-3">(${l.nImpl})</span>`:'—'}</td>
+      <td class="num" data-label="Total"><b>${fmtUSD(l.total)}</b></td>
+      <td data-label="Estado"><span class="badge ${e.cls}">${e.txt}</span></td>
+      <td class="t-actions-cell" data-label="Pago"><div class="t-actions">${l.pago?`<button class="btn sm ghost" onclick="ctMarcarPago('${c.id}','${M}')">Deshacer</button>`:enCurso?'':`<button class="btn sm" onclick="ctMarcarPago('${c.id}','${M}')">Marcar pagado</button>`}</div></td>
+    </tr>`;}).join('')}
+    </tbody></table></div>`:`<div class="empty"><p>Sin comisiones en ${ctMesLbl(M)}</p><span>Aparecen cuando un contador tiene clientes activos ese mes.</span></div>`}`;
+}
+function ctMarcarPago(cid,M){
+  const c=findContador(cid);if(!c)return;
+  if(!c.pagos||typeof c.pagos!=='object')c.pagos={};
+  if(c.pagos[M]){if(!confirm(`¿Quitar el pago de ${ctMesLbl(M)} a ${c.nombre}?`))return;delete c.pagos[M];}
+  else{const l=ctLiquidacion(c,M);c.pagos[M]={fecha:todayISO(),monto:ctRound(l.total)};}
+  save();renderCtLiquidacion();
+}
 function contadorClientList(id){
   const c=findContador(id);if(!c)return;
-  const rows=[
-    ...(c.hist||[]).map((h,i)=>({client:h.empresa,planLabel:h.planNombre||'—',monto:h.plan==='anual'?fmtUSD(+h.rr||0)+'/año':fmtUSD(+h.rr||0)+'/mes',alta:h.alta||'—',nuevo:false,cid:id,idx:i})),
-    ...contadorLinkedSales(id).map(s=>({client:s.client,planLabel:(PLANS[s.plan]||{label:s.plan}).label,monto:s.mode==='anual'?fmtUSD(saleMonthly(s)*12)+'/año':fmtUSD(saleMonthly(s))+'/mes',alta:(s.start||'').slice(0,7)||'—',nuevo:true,saleId:s.id}))
-  ];
-  listCtx={title:c.nombre,sub:'clientes referidos',list:rows,type:'contador',cid:id};
-  _openList(c.nombre,rows.length+' clientes referidos');
+  const rows=ctCliAll(c).map(x=>({...x,cid:id,planLabel:x.planNombre,monto:x.plan==='anual'?fmtUSD(x.rr)+'/año':fmtUSD(x.rr)+'/mes',com:ctComMes(x)}));
+  const r=ctRentab(c);
+  listCtx={title:c.nombre,sub:'clientes referidos',list:rows,type:'contador',cid:id,
+    resumen:`<div class="ct-cli-sum"><span>Activos <b>${r.cli.length}</b></span><span>MRR <b>${fmtUSD(r.mrr)}</b></span><span>Comisión <b style="color:var(--brand-3)">${fmtUSD(r.comMes)}/mes</b></span><span>Productos adicionales <b>${fmtUSD(r.extras)}</b></span><span>Neto Consiti año 1 <b style="color:var(--ok)">${fmtUSD0(r.neto)}</b></span><span>Referidos del mes <b>${r.altasMes} / ${CT_PROG.minMes}</b></span></div>`};
+  _openList(c.nombre,`${r.cli.length} activos${rows.length>r.cli.length?' · '+(rows.length-r.cli.length)+' de baja':''}`);
 }
-/* ---- Alta/edición/baja de clientes en la cartera de un contador ---- */
-const CT_PLANES={'Básico':{mensual:5,anual:60,impl:30},'Starter':{mensual:9.99,anual:113.87,impl:30},
-  'Professional':{mensual:19.99,anual:227.89,impl:40},'Advanced':{mensual:29.99,anual:341.89,impl:50},
-  'Deluxe':{mensual:49.99,anual:569.89,impl:60},'Enterprise':{mensual:100,anual:1140,impl:100},'Personalizado':null};
-function ctcliAutofill(){const p=CT_PLANES[$('ctcli-plan').value];if(!p)return;$('ctcli-rr').value=$('ctcli-per').value==='anual'?p.anual:p.mensual;$('ctcli-impl').value=p.impl;}
+/* ---- Alta/edición/baja de clientes en la cartera de un contador ----
+   Precios del Tarifario FactuIA de septiembre 2026 (los mismos de la landing de contadores).
+   Básico Anual solo lo ofrecen los contadores aliados. Los montos se autocompletan y siempre son editables. */
+const CT_PLANES={'Starter':{mensual:14.99,anual:170.89,impl:40},'Professional':{mensual:24.99,anual:284.89,impl:50},
+  'Advanced':{mensual:34.99,anual:377.89,impl:60},'Deluxe':{mensual:59.99,anual:647.89,impl:70},
+  'Enterprise':{mensual:150,anual:1530,impl:100},'Básico Anual':{mensual:null,anual:90,impl:30},'Personalizado':null};
+let ctcliExtras=[],ctcliIniManual=false,ctcliRrManual=false;
+const ctcliPer=()=>$('ctcli-per').value;
+const ctcliCobra=()=>(document.querySelector('input[name="ctcli-cobra"]:checked')||{}).value||'contador';
+function ctcliCalcIni(){return ctRound((+$('ctcli-impl').value||0)+ctExtrasSum(ctcliExtras,'unico'));}
+function ctcliCalcRr(){return ctRound((+$('ctcli-base').value||0)+ctExtrasSum(ctcliExtras,'mensual')*(ctcliPer()==='anual'?12:1));}
+function ctcliAutofill(){
+  const p=CT_PLANES[$('ctcli-plan').value];if(!p)return ctcliRecalc();
+  if(p.mensual==null)$('ctcli-per').value='anual';
+  $('ctcli-base').value=ctcliPer()==='anual'?p.anual:p.mensual;$('ctcli-impl').value=p.impl;
+  ctcliRecalc();
+}
+function ctcliRenderExtras(){
+  $('ctcli-chips').innerHTML=CT_EXTRAS.map((e,i)=>`<button type="button" class="ct-chip" onclick="ctcliAddExtra(${i})">+ ${esc(e.nombre)} <b>${fmtUSD0(e.precio)}</b></button>`).join('')
+    +`<button type="button" class="ct-chip" onclick="ctcliAddExtra(-1)">+ Otro producto</button>`;
+  $('ctcli-extras').innerHTML=ctcliExtras.length?`<div class="ct-ex-head"><span>Producto</span><span>Cant.</span><span>Precio c/u</span><span>Cobro</span><span style="text-align:right">Subtotal</span><span></span></div>`
+    +ctcliExtras.map((e,i)=>`<div class="ct-ex-row">
+      <input class="nm" value="${esc(e.nombre)}" placeholder="Producto" oninput="ctcliEx(${i},'nombre',this.value)" aria-label="Producto">
+      <input type="number" min="1" step="1" value="${e.cant}" oninput="ctcliEx(${i},'cant',this.value)" aria-label="Cantidad">
+      <input type="number" min="0" step="0.01" value="${e.precio}" oninput="ctcliEx(${i},'precio',this.value)" aria-label="Precio por unidad">
+      <select onchange="ctcliEx(${i},'tipo',this.value)" aria-label="Tipo de cobro"><option value="unico"${e.tipo==='unico'?' selected':''}>Único</option><option value="mensual"${e.tipo==='mensual'?' selected':''}>Mensual</option></select>
+      <span class="sub" id="ctcli-exsub-${i}">${fmtUSD((+e.precio||0)*(+e.cant||1))}${e.tipo==='mensual'?'<span class="muted-3" style="font-weight:500">/mes</span>':''}</span>
+      <button type="button" class="btn sm danger icon" onclick="ctcliDelExtra(${i})" title="Quitar" aria-label="Quitar producto"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>`).join('')
+    :`<div class="ct-ex-empty">Sin productos adicionales. Agregá los que lleve el cliente con los botones de arriba; el precio se puede cambiar.</div>`;
+}
+function ctcliAddExtra(i){
+  const e=i>=0?CT_EXTRAS[i]:{nombre:'',precio:0};
+  ctcliExtras.push({id:uid(),nombre:e.nombre,precio:e.precio,cant:1,tipo:'unico'});
+  ctcliRenderExtras();ctcliRecalc();
+  if(i<0){const rows=$('ctcli-extras').querySelectorAll('.ct-ex-row input.nm');rows[rows.length-1]?.focus();}
+}
+function ctcliDelExtra(i){ctcliExtras.splice(i,1);ctcliRenderExtras();ctcliRecalc();}
+function ctcliEx(i,k,v){
+  const e=ctcliExtras[i];if(!e)return;
+  e[k]=k==='nombre'||k==='tipo'?v:(k==='cant'?Math.max(1,parseInt(v)||1):(+v||0));
+  if(k==='tipo')ctcliRenderExtras();
+  else{const s=$('ctcli-exsub-'+i);if(s)s.innerHTML=fmtUSD((+e.precio||0)*(+e.cant||1))+(e.tipo==='mensual'?'<span class="muted-3" style="font-weight:500">/mes</span>':'');}
+  ctcliRecalc();
+}
+function ctcliRecalc(){
+  const anual=ctcliPer()==='anual',per=anual?'/año':'/mes';
+  $('ctcli-base-lbl').textContent=`Cuota del plan (USD${per})`;$('ctcli-rr-lbl').textContent=`Mensualidad total (USD${per})`;
+  const iniCalc=ctcliCalcIni(),rrCalc=ctcliCalcRr();
+  if(!ctcliIniManual)$('ctcli-ini').value=iniCalc;
+  if(!ctcliRrManual)$('ctcli-rr').value=rrCalc;
+  const ini=+$('ctcli-ini').value||0,rr=+$('ctcli-rr').value||0,impl=+$('ctcli-impl').value||0;
+  const dIni=ctRound(ini-iniCalc),dRr=ctRound(rr-rrCalc);
+  $('ctcli-ini-adj').textContent=dIni?`Ajuste manual de ${dIni>0?'+':'−'}${fmtUSD(Math.abs(dIni))} sobre ${fmtUSD(iniCalc)}`:'';
+  $('ctcli-rr-adj').textContent=dRr?`Ajuste manual de ${dRr>0?'+':'−'}${fmtUSD(Math.abs(dRr))} sobre ${fmtUSD(rrCalc)}`:'';
+  $('ctcli-ini-reset').style.visibility=dIni?'visible':'hidden';$('ctcli-rr-reset').style.visibility=dRr?'visible':'hidden';
+  const mrr=anual?rr/12:rr,com=mrr*CT_PROG.pctMensual,extras=Math.max(0,ini-impl),cobra=ctcliCobra();
+  $('ctcli-sum').innerHTML=`
+    <div class="box ct-gana"><h4>Gana el contador</h4>
+      <div class="ln"><span>Implementación (100 %)</span><b>${fmtUSD(impl)}</b></div>
+      <div class="ln"><span style="padding-left:10px">${cobra==='consiti'?'Se le paga en la liquidación de '+ctMesLbl($('ctcli-alta').value||curMonth()):'Se la cobra él directo al cliente'}</span><span></span></div>
+      <div class="ln"><span>20 % de la mensualidad</span><b>${fmtUSD(com)}/mes</b></div>
+      <div class="ln tot"><span>Año 1</span><b style="color:var(--brand-3)">${fmtUSD(impl+com*12)}</b></div>
+    </div>
+    <div class="box"><h4>Se queda Consiti</h4>
+      <div class="ln"><span>Productos adicionales (único)</span><b>${fmtUSD(extras)}</b></div>
+      <div class="ln"><span>80 % de la mensualidad</span><b>${fmtUSD(mrr-com)}/mes</b></div>
+      <div class="ln"><span>Pago inicial del cliente</span><b>${fmtUSD(ini)}</b></div>
+      <div class="ln tot"><span>Neto año 1</span><b>${fmtUSD(extras+(mrr-com)*12)}</b></div>
+    </div>`;
+}
 function openCtCliente(cid,idx){
   const c=findContador(cid);if(!c)return;
   const h=(idx!=null&&c.hist)?c.hist[idx]:null;
-  $('ctcli-plan').innerHTML=Object.keys(CT_PLANES).map(k=>`<option>${k}</option>`).join('');
+  const legacy=h&&h.planNombre&&CT_PLANES[h.planNombre]===undefined?h.planNombre:null; // planes viejos (Básico, etc.) se conservan
+  $('ctcli-plan').innerHTML=(legacy?`<option>${esc(legacy)}</option>`:'')+Object.keys(CT_PLANES).map(k=>`<option>${k}</option>`).join('');
   $('ctcli-title').textContent=h?'Editar cliente referido':'Nuevo cliente referido';
-  $('ctcli-sub').textContent='Cartera de '+c.nombre;
+  $('ctcli-sub').textContent='Cartera de '+c.nombre+' · Programa de Alianzas Contables';
   $('ctcli-cid').value=cid;$('ctcli-idx').value=(idx==null?'':idx);
-  $('ctcli-emp').value=h?h.empresa:'';$('ctcli-con').value=(h&&h.contacto)||'';
-  $('ctcli-plan').value=(h&&CT_PLANES[h.planNombre]!==undefined)?h.planNombre:'Starter';
+  $('ctcli-emp').value=h?h.empresa:'';$('ctcli-con').value=(h&&h.contacto)||'';$('ctcli-emp').style.borderColor='';
+  $('ctcli-plan').value=h?(h.planNombre||'Personalizado'):'Starter';
   $('ctcli-per').value=h?(h.plan==='anual'?'anual':'mensual'):'mensual';
   $('ctcli-alta').value=(h&&h.alta)||curMonth();
-  if(h){$('ctcli-rr').value=+h.rr||0;$('ctcli-impl').value=+h.impl||0;}else ctcliAutofill();
+  document.querySelectorAll('input[name="ctcli-cobra"]').forEach(r=>r.checked=r.value===((h&&h.implCobra)||'contador'));
+  $('ctcli-estado').value=h&&h.estado==='baja'?'baja':'activo';$('ctcli-baja').value=(h&&h.baja)||curMonth();
+  $('ctcli-baja-field').style.display=$('ctcli-estado').value==='baja'?'':'none';
+  ctcliExtras=h&&Array.isArray(h.extras)?h.extras.map(e=>({...e})):[];
+  ctcliIniManual=false;ctcliRrManual=false;
+  if(h){
+    $('ctcli-impl').value=+h.impl||0;
+    const exMens=ctExtrasSum(ctcliExtras,'mensual')*(h.plan==='anual'?12:1);
+    $('ctcli-base').value=h.base!=null?+h.base:ctRound((+h.rr||0)-exMens);
+    $('ctcli-rr').value=+h.rr||0;
+    $('ctcli-ini').value=h.pagoInicial!=null?+h.pagoInicial:ctcliCalcIni();
+    ctcliRrManual=ctRound(+h.rr||0)!==ctcliCalcRr();
+    ctcliIniManual=h.pagoInicial!=null&&ctRound(h.pagoInicial)!==ctcliCalcIni();
+    ctcliRenderExtras();ctcliRecalc();
+  }else{ctcliRenderExtras();ctcliAutofill();}
   openModal('modal-ctcli','ctcli-emp');
 }
 $('ctcli-plan').addEventListener('change',ctcliAutofill);
 $('ctcli-per').addEventListener('change',ctcliAutofill);
+['ctcli-base','ctcli-impl','ctcli-alta'].forEach(id=>$(id).addEventListener('input',ctcliRecalc));
+document.querySelectorAll('input[name="ctcli-cobra"]').forEach(r=>r.addEventListener('change',ctcliRecalc));
+$('ctcli-ini').addEventListener('input',()=>{ctcliIniManual=true;ctcliRecalc();});
+$('ctcli-rr').addEventListener('input',()=>{ctcliRrManual=true;ctcliRecalc();});
+$('ctcli-ini-reset').onclick=()=>{ctcliIniManual=false;ctcliRecalc();};
+$('ctcli-rr-reset').onclick=()=>{ctcliRrManual=false;ctcliRecalc();};
+$('ctcli-estado').addEventListener('change',()=>{$('ctcli-baja-field').style.display=$('ctcli-estado').value==='baja'?'':'none';});
 $('ctcli-emp').addEventListener('input',()=>$('ctcli-emp').style.borderColor='');
 $('ctcli-save').onclick=()=>{
   const emp=$('ctcli-emp').value.trim();
   if(!emp){$('ctcli-emp').focus();$('ctcli-emp').style.borderColor='var(--danger)';return;}
   const cid=$('ctcli-cid').value,c=findContador(cid);if(!c)return;
   if(!Array.isArray(c.hist))c.hist=[];
+  const baja=$('ctcli-estado').value==='baja';
   const dato={empresa:emp,contacto:$('ctcli-con').value.trim(),planNombre:$('ctcli-plan').value,
-    plan:$('ctcli-per').value,rr:+$('ctcli-rr').value||0,impl:+$('ctcli-impl').value||0,alta:$('ctcli-alta').value||curMonth()};
+    plan:$('ctcli-per').value,base:ctRound($('ctcli-base').value),rr:ctRound($('ctcli-rr').value),impl:ctRound($('ctcli-impl').value),
+    implCobra:ctcliCobra(),extras:ctcliExtras.filter(e=>e.nombre.trim()||+e.precio).map(e=>({...e,nombre:e.nombre.trim()||'Producto adicional',precio:ctRound(e.precio),cant:+e.cant||1})),
+    pagoInicial:ctRound($('ctcli-ini').value),alta:$('ctcli-alta').value||curMonth(),
+    estado:baja?'baja':'activo',baja:baja?($('ctcli-baja').value||curMonth()):''};
   const idx=$('ctcli-idx').value;
   if(idx!==''&&c.hist[+idx])Object.assign(c.hist[+idx],dato);else c.hist.push(dato);
   save();closeModal('modal-ctcli');
@@ -3369,15 +3623,23 @@ function renderListModal(){
   const q=normName($('list-search').value||'');
   const arr=(q?listCtx.list.filter(s=>normName(s.client).includes(q)):listCtx.list).slice().sort((a,b)=>normName(a.client).localeCompare(normName(b.client)));
   $('list-count').textContent=arr.length+' de '+listCtx.list.length;
+  $('modal-list').querySelector('.modal').style.maxWidth=listCtx.type==='contador'?'980px':'700px';
   if(listCtx.type==='contador'){
-    $('list-thead').innerHTML=`<tr><th colspan="5" style="padding-bottom:10px"><button class="btn sm" onclick="openCtCliente('${listCtx.cid}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Agregar cliente a esta cartera</button></th></tr>
-      <tr><th>Cliente</th><th>Plan</th><th>Monto</th><th>Alta</th><th class="right">Acciones</th></tr>`;
+    $('list-thead').innerHTML=`<tr><th colspan="7" style="padding-bottom:4px;font-weight:400;text-transform:none;letter-spacing:0">${listCtx.resumen||''}<button class="btn sm" onclick="openCtCliente('${listCtx.cid}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Agregar cliente a esta cartera</button></th></tr>
+      <tr><th>Cliente</th><th>Plan</th><th class="num">Mensualidad</th><th class="num">Adicionales</th><th class="num">Comisión/mes</th><th class="num">Alta</th><th class="right">Acciones</th></tr>`;
     $('list-tbody').innerHTML=arr.map(r=>{
       const acc=r.idx!=null
         ?`<button class="btn sm ghost icon" title="Editar" onclick="openCtCliente('${r.cid}',${r.idx})"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4z"/></svg></button><button class="btn sm danger icon" title="Quitar de la cartera" onclick="delCtCliente('${r.cid}',${r.idx})"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg></button>`
         :`<button class="btn sm ghost" title="Es una venta del dashboard" onclick="closeModal('modal-list');go('ventas');openSale('${r.saleId}')">Ver venta →</button>`;
-      return `<tr><td class="cellwrap" data-label="Cliente"><span class="cellmain">${esc(r.client)}</span></td><td data-label="Plan"><span class="tag">${esc(r.planLabel)}</span>${r.nuevo?' <span class="pl-new">Nuevo</span>':''}</td><td data-label="Monto" class="num">${r.monto}</td><td data-label="Alta" class="num muted-3">${r.alta}</td><td class="t-actions-cell" data-label="Acciones"><div class="t-actions">${acc}</div></td></tr>`;
-    }).join('')||_emptyRow(5);
+      const nEx=(r.extras||[]).length;
+      return `<tr${r.baja?' style="opacity:.55"':''}><td class="cellwrap" data-label="Cliente"><span class="cellmain">${esc(r.client)}</span><span class="cellsub">Implementación ${fmtUSD(r.impl)} · la cobra ${r.implCobra==='consiti'?'Consiti':'el contador'}</span></td>
+        <td data-label="Plan"><span class="tag">${esc(r.planLabel)}</span>${r.nuevo?' <span class="pl-new">Venta</span>':''}${r.baja?` <span class="badge b-overdue">Baja ${ctMesLbl(r.baja)}</span>`:''}</td>
+        <td data-label="Mensualidad" class="num">${r.monto}</td>
+        <td data-label="Adicionales" class="num">${r.extrasUnico?fmtUSD(r.extrasUnico):'—'}${nEx?`<span class="cellsub">${nEx} producto${nEx>1?'s':''}</span>`:''}</td>
+        <td data-label="Comisión/mes" class="num" style="color:var(--brand-3)">${r.baja?'—':fmtUSD(r.com)}</td>
+        <td data-label="Alta" class="num muted-3">${r.alta?ctMesLbl(r.alta):'—'}</td>
+        <td class="t-actions-cell" data-label="Acciones"><div class="t-actions">${acc}</div></td></tr>`;
+    }).join('')||_emptyRow(7);
   }else if(listCtx.type==='prospects'){
     $('list-thead').innerHTML='<tr><th>Prospecto</th><th>Plan est.</th><th>Etapa</th><th>Próximo paso</th></tr>';
     $('list-tbody').innerHTML=arr.map(p=>{const pl=PLANS[p.plan]||{label:p.plan||'—'};return `<tr style="cursor:pointer" onclick="closeModal('modal-list');openProspect('${p.id}')"><td class="cellwrap" data-label="Prospecto"><span class="cellmain">${esc(p.client)}</span></td><td data-label="Plan est."><span class="tag">${esc(pl.label)}${p.priceBook==='legacy'?' · ant.':''}</span></td><td data-label="Etapa">${stageBadge(p.stage)}</td><td data-label="Próximo paso" class="muted-3">${esc(p.nextStep||'—')}</td></tr>`;}).join('')||_emptyRow(4);
