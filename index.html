@@ -4094,7 +4094,14 @@ function seedBajasVenturaSadcoV1(){
   state.config.seededBajasVenturaSadcoV1=true;
   save();
 }
-function initApp(){seedOdooBatch1();seedBookV3();seedAnnualBookV1();seedComercialV1();seedComercialV2();seedProspectsV1();seedProspectsV2();seedClosesV1();seedWonV1();seedOriginV1();seedCampaignLinkV1();seedRestoreAireV1();seedCampaignDaysV1();seedChurnV1();seedOriginV2();seedRestoreDetV1();seedFixBautistaV1();seedJulyBriantV1();seedJulyBriantV2();seedFixIdaliaV1();seedAugBriantV1();seedContadoresV1();seedSyncOdooV1();seedSyncOdooV2();seedSyncOdooV3();seedSyncOdooV4();seedSyncOdooV5();seedSyncOdooV6();seedSyncOdooV7();seedSyncOdooV8();seedSyncOdooV9();seedSyncOdooV10();seedSyncOdooV11();seedSyncOdooV12();seedCierresSep26V1();seedCierresSep26FixV1();seedYaniTelV1();seedBajaDianaMoranV1();seedBajasVenturaSadcoV1();fillPlanSelect();updateBadges();renderBackupBanner();go('inicio');document.body.classList.remove('booting');}
+/* Grupo SADCO (Grupo Soluciones Ambientales) sigue activa: revierte la baja de seedBajasVenturaSadcoV1 (Briant, 03-oct-2026). */
+function seedReactivaSadcoV1(){
+  if(state.config.seededReactivaSadcoV1)return;
+  state.sales.forEach(s=>{if(/grupo soluciones ambientales dise[nñ]o y construcci[oó]n/i.test(s.client||'')&&s.churned&&s.churnDate==='2026-10-03'){s.churned=false;delete s.churnDate;}});
+  state.config.seededReactivaSadcoV1=true;
+  save();
+}
+function initApp(){seedOdooBatch1();seedBookV3();seedAnnualBookV1();seedComercialV1();seedComercialV2();seedProspectsV1();seedProspectsV2();seedClosesV1();seedWonV1();seedOriginV1();seedCampaignLinkV1();seedRestoreAireV1();seedCampaignDaysV1();seedChurnV1();seedOriginV2();seedRestoreDetV1();seedFixBautistaV1();seedJulyBriantV1();seedJulyBriantV2();seedFixIdaliaV1();seedAugBriantV1();seedContadoresV1();seedSyncOdooV1();seedSyncOdooV2();seedSyncOdooV3();seedSyncOdooV4();seedSyncOdooV5();seedSyncOdooV6();seedSyncOdooV7();seedSyncOdooV8();seedSyncOdooV9();seedSyncOdooV10();seedSyncOdooV11();seedSyncOdooV12();seedCierresSep26V1();seedCierresSep26FixV1();seedYaniTelV1();seedBajaDianaMoranV1();seedBajasVenturaSadcoV1();seedReactivaSadcoV1();fillPlanSelect();updateBadges();renderBackupBanner();go('inicio');document.body.classList.remove('booting');}
 
 async function boot(){
   if(initSupabase()){
