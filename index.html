@@ -4101,7 +4101,17 @@ function seedReactivaSadcoV1(){
   state.config.seededReactivaSadcoV1=true;
   save();
 }
-function initApp(){seedOdooBatch1();seedBookV3();seedAnnualBookV1();seedComercialV1();seedComercialV2();seedProspectsV1();seedProspectsV2();seedClosesV1();seedWonV1();seedOriginV1();seedCampaignLinkV1();seedRestoreAireV1();seedCampaignDaysV1();seedChurnV1();seedOriginV2();seedRestoreDetV1();seedFixBautistaV1();seedJulyBriantV1();seedJulyBriantV2();seedFixIdaliaV1();seedAugBriantV1();seedContadoresV1();seedSyncOdooV1();seedSyncOdooV2();seedSyncOdooV3();seedSyncOdooV4();seedSyncOdooV5();seedSyncOdooV6();seedSyncOdooV7();seedSyncOdooV8();seedSyncOdooV9();seedSyncOdooV10();seedSyncOdooV11();seedSyncOdooV12();seedCierresSep26V1();seedCierresSep26FixV1();seedYaniTelV1();seedBajaDianaMoranV1();seedBajasVenturaSadcoV1();seedReactivaSadcoV1();fillPlanSelect();updateBadges();renderBackupBanner();go('inicio');document.body.classList.remove('booting');}
+/* Vendi: Smart Tienda, plan Profesional $299/mes desde sep-2026, sin implementación (Briant, 03-oct-2026). */
+function seedVendiSmartTiendaV1(){
+  if(state.config.seededVendiSmartTiendaV1)return;
+  if(!state.lineSales||typeof state.lineSales!=='object')state.lineSales={};
+  if(!Array.isArray(state.lineSales.vendi))state.lineSales.vendi=[];
+  if(!state.lineSales.vendi.some(s=>/smart\s*tienda/i.test(s.client||'')))
+    state.lineSales.vendi.push({id:uid(),client:'Smart Tienda',plan:'profesional',mode:'mensual',start:'2026-09-01',origen:'Directo',implGratis:true,seed:'vendiSmartTienda1',createdAt:Date.now()});
+  state.config.seededVendiSmartTiendaV1=true;
+  save();
+}
+function initApp(){seedOdooBatch1();seedBookV3();seedAnnualBookV1();seedComercialV1();seedComercialV2();seedProspectsV1();seedProspectsV2();seedClosesV1();seedWonV1();seedOriginV1();seedCampaignLinkV1();seedRestoreAireV1();seedCampaignDaysV1();seedChurnV1();seedOriginV2();seedRestoreDetV1();seedFixBautistaV1();seedJulyBriantV1();seedJulyBriantV2();seedFixIdaliaV1();seedAugBriantV1();seedContadoresV1();seedSyncOdooV1();seedSyncOdooV2();seedSyncOdooV3();seedSyncOdooV4();seedSyncOdooV5();seedSyncOdooV6();seedSyncOdooV7();seedSyncOdooV8();seedSyncOdooV9();seedSyncOdooV10();seedSyncOdooV11();seedSyncOdooV12();seedCierresSep26V1();seedCierresSep26FixV1();seedYaniTelV1();seedBajaDianaMoranV1();seedBajasVenturaSadcoV1();seedReactivaSadcoV1();seedVendiSmartTiendaV1();fillPlanSelect();updateBadges();renderBackupBanner();go('inicio');document.body.classList.remove('booting');}
 
 async function boot(){
   if(initSupabase()){

@@ -2,6 +2,10 @@
 
 Historial de cambios del dashboard. Formato: fecha · qué cambió.
 
+## 2026-10-03 · Vendi: Smart Tienda (`seedVendiSmartTiendaV1`)
+
+- Cliente nuevo de Vendi: **Smart Tienda**, plan Profesional a $299/mes desde sep 2026, sin implementación (`implGratis`). No se duplica si ya existe.
+
 ## 2026-10-03 · Cierres de septiembre 2026 (`seedCierresSep26V1`)
 
 One-shot e idempotente. Sale del CRM (etapa Cierre) y de las suscripciones de Odoo, y lo confirmó Briant.
